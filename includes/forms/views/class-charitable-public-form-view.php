@@ -263,6 +263,7 @@ if ( ! class_exists( 'Charitable_Public_Form_View' ) ) :
 		 * @return boolean       False if the field was not rendered. True otherwise.
 		 */
 		public function render_field( $field, $key, $args = array() ) {
+			error_log( var_export( $field, true ) );
 			if ( ! array_key_exists( 'type', $field ) ) {
 				return false;
 			}
