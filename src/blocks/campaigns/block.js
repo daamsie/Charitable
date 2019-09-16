@@ -55,7 +55,7 @@ class CharitableCampaignsBlock extends Component {
 			edit_mode: ! this.state.edit_mode
 		} );
 	}
-	
+
 	/**
 	 * Turn the masonry layout on/off.
 	 */
@@ -74,7 +74,7 @@ class CharitableCampaignsBlock extends Component {
 		const { setAttributes } = this.props;
 
 		setAttributes( { responsiveLayout: ! responsiveLayout } );
-	}    
+	}
 
 	/**
 	 * Get the components for the sidebar settings area that is rendered while focused on a Donation Form block.
@@ -190,7 +190,7 @@ class CharitableCampaignsBlock extends Component {
 			</BlockControls>
 		);
 	}
-	
+
 	/**
 	 * Get the block settings editor UI.
 	 *
