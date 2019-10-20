@@ -64,26 +64,33 @@ if ( ! class_exists( 'Charitable_API_Route_Donation_Fields' ) ) :
 							'default'           => '',
 							'validate_callback' => array( $this, 'validate_campaign_arg' ),
 						),
+						'section'  => array(
+							'default'           => '',
+							'validate_callback' => array( $this, 'validate_section_arg' ),
+						),
+						'orderby'  => array(
+							'default'           => 'priority',
+							'validate_callback' => array( $this, 'validate_orderby_arg' ),
+						),
 					),
 				)
 			);
 
-			// register_rest_route(
-			// 	$this->namespace,
-			// 	'/' . $this->base . '/donations/',
-			// 	array(
-			// 		'methods'             => WP_REST_Server::READABLE,
-			// 		'callback'            => array( $this, 'get_donations_report' ),
-			// 		'permission_callback' => array( $this, 'user_can_get_charitable_reports' ),
-			// 		'args'                => array(
-			// 			'campaigns' => array(
-			// 				'default'           => 'all',
-			// 				'validate_callback' => array( $this, 'validate_campaigns_arg' ),
-			// 				'sanitize_callback' => array( $this, 'sanitize_campaigns_arg' ),
-			// 			),
-			// 		),
-			// 	)
-			// );
+			register_rest_route(
+				$this->namespace,
+				'/' . $this->base . '/sections',
+				array(
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_donation_form_sections' ),
+					'permission_callback' => '__return_true',
+					'args'                => array(
+						'campaign' => array(
+							'default'           => '',
+							'validate_callback' => array( $this, 'validate_campaign_arg' ),
+						),
+					),
+				)
+			);
 		}
 
 		/**
@@ -101,6 +108,10 @@ if ( ! class_exists( 'Charitable_API_Route_Donation_Fields' ) ) :
 
 			$fields = charitable()->donation_fields()->get_donation_form_fields();
 
+			if ( 'priority' == $this->request->get_param( 'orderby' ) ) {
+				uasort( $fields, 'charitable_priority_sort' );;
+			}
+
 			return rest_ensure_response(
 				array_map(
 					array( $this, 'get_parsed_donation_field' ),
@@ -111,10 +122,36 @@ if ( ! class_exists( 'Charitable_API_Route_Donation_Fields' ) ) :
 		}
 
 		/**
+		 * Return a response with all registered donation form sections.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @param  WP_REST_Request $request The API request object.
+		 * @return WP_REST_Response|mixed If response generated an error, WP_Error, if response
+		 *                                is already an instance, WP_HTTP_Response, otherwise
+		 *                                returns a new WP_REST_Response instance.
+		 */
+		public function get_donation_form_sections( $request ) {
+			$this->request = $request;
+
+			$sections = charitable()->donation_fields()->get_sections( 'public' );
+
+			return rest_ensure_response(
+				array_map(
+					array( $this, 'get_parsed_sections' ),
+					$sections,
+					array_keys( $sections )
+				)
+			);
+		}
+
+		/**
 		 * Return the output for a donation form field.
 		 *
 		 * @since  1.7.0
 		 *
+		 * @param  Charitable_Donation_Field $field Donation field.
+		 * @param  string                    $key   The key of the field.
 		 * @return string|null
 		 */
 		public function get_donation_form_field_output( $field, $key ) {
@@ -132,9 +169,23 @@ if ( ! class_exists( 'Charitable_API_Route_Donation_Fields' ) ) :
 
 			$this->form->view()->render_field( $field, $key );
 
-			$t = ob_get_clean();
-			error_log( var_export( $t, true ) );
-			return $t;
+			return ob_get_clean();
+		}
+
+		/**
+		 * Return the output for a donation form section.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @param  string $section Section label.
+		 * @param  string $key     Section key.
+		 * @return array
+		 */
+		public function get_parsed_sections( $section, $key ) {
+			return array(
+				'label' => $section,
+				'key'   => $key,
+			);
 		}
 
 		/**
@@ -143,6 +194,7 @@ if ( ! class_exists( 'Charitable_API_Route_Donation_Fields' ) ) :
 		 * @since  1.7.0
 		 *
 		 * @param  Charitable_Donation_Field $field Donation field.
+		 * @param  string                    $key   The key of the field.
 		 * @return array
 		 */
 		protected function get_parsed_donation_field( $field, $key ) {
@@ -158,24 +210,6 @@ if ( ! class_exists( 'Charitable_API_Route_Donation_Fields' ) ) :
 		}
 
 		/**
-		 * Return a response with the donations report.
-		 *
-		 * @since  1.6.0
-		 *
-		 * @param  WP_REST_Request $request The API request object.
-		 * @return WP_REST_Response|mixed If response generated an error, WP_Error, if response
-		 *                                is already an instance, WP_HTTP_Response, otherwise
-		 *                                returns a new WP_REST_Response instance.
-		 */
-		public function get_donations_report( $request ) {
-			$report = new Charitable_Donation_Report( array(
-				'campaigns' => $request->get_param( 'campaigns' ),
-			) );
-
-			return rest_ensure_response( $report->get_reports() );
-		}
-
-		/**
 		 * Validate the 'campaign' argument.
 		 *
 		 * @since  1.7.0
@@ -185,6 +219,30 @@ if ( ! class_exists( 'Charitable_API_Route_Donation_Fields' ) ) :
 		 */
 		public function validate_campaign_arg( $param ) {
 			return '' == $param || is_numeric( $param );
+		}
+
+		/**
+		 * Validate the 'section' argument.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @param  mixed $param The parameter value.
+		 * @return boolean
+		 */
+		public function validate_section_arg( $param ) {
+			return '' == $param || array_key_exists( $param, charitable()->donation_fields()->get_sections( 'public' ) );
+		}
+
+		/**
+		 * Validate the 'orderby' argument.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @param  mixed $param The parameter value.
+		 * @return boolean
+		 */
+		public function validate_orderby_arg( $param ) {
+			return in_array( $param, array( 'priority', 'registered' ) );
 		}
 	}
 
