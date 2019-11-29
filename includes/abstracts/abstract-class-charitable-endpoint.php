@@ -4,21 +4,22 @@
  *
  * @package   Charitable/Classes/Charitable_Endpoint
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.5.0
+ * @version   1.6.29
  */
 
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Endpoint' ) ) :
 
 	/**
 	 * Charitable_Endpoint
 	 *
-	 * @abstract
-	 * @since  1.5.0
+	 * @since 1.5.0
 	 */
 	abstract class Charitable_Endpoint implements Charitable_Endpoint_Interface {
 
@@ -58,6 +59,18 @@ if ( ! class_exists( 'Charitable_Endpoint' ) ) :
 		public function add_query_vars( array $vars ) {
 			/* Return vars unchanged by default. */
 			return $vars;
+		}
+
+		/**
+		 * If the user should be redirected somewhere, return a URL. Otherwise,
+		 * simply return false.
+		 *
+		 * @since  1.6.26
+		 *
+		 * @return false|string
+		 */
+		public function get_redirect() {
+			return false;
 		}
 
 		/**
@@ -110,6 +123,43 @@ if ( ! class_exists( 'Charitable_Endpoint' ) ) :
 		 */
 		public function is_cacheable() {
 			return $this->cacheable;
+		}
+
+		/**
+		 * Return a nav menu object, or null if the endpoint should not be
+		 * added to navigation menus.
+		 *
+		 * @since  1.6.29
+		 *
+		 * @return object|null
+		 */
+		public function nav_menu_object() {
+			return null;
+		}
+
+		/**
+		 * Return a nav menu object.
+		 *
+		 * @since  1.6.29
+		 *
+		 * @param  string $title Menu item title.
+		 * @return object
+		 */
+		public function get_nav_menu_object( $title ) {
+			$menu_object                   = new stdClass();
+			$menu_object->classes          = array( 'charitable-menu' );
+			$menu_object->type             = 'custom';
+			$menu_object->object_id        = $this->get_endpoint_id();
+			$menu_object->title            = $title;
+			$menu_object->object           = 'custom';
+			$menu_object->url              = esc_url_raw( $this->get_page_url() );
+			$menu_object->attr_title       = $title;
+			$menu_object->db_id            = '';
+			$menu_object->menu_item_parent = 0;
+			$menu_object->target           = '';
+			$menu_object->xfn              = '';
+
+			return $menu_object;
 		}
 	}
 

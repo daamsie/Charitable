@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_Donation_Field_Registry
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
  * @version   1.6.0
@@ -70,19 +70,22 @@ if ( ! class_exists( 'Charitable_Donation_Field_Registry' ) ) :
 			 *
 			 * @param array $sections The full array of sections for all forms, including defaults.
 			 */
-			return apply_filters( 'charitable_default_donation_sections', array(
-				'defaults' => array(
-					'public' => 'user',
-					'admin'  => 'user',
-				),
-				'public'   => array(
-					'user' => __( 'Your Details', 'charitable' ),
-				),
-				'admin'    => array(
-					'user' => '',
-					'meta' => '',
-				),
-			) );
+			return apply_filters(
+				'charitable_default_donation_sections',
+				array(
+					'defaults' => array(
+						'public' => 'user',
+						'admin'  => 'user',
+					),
+					'public'   => array(
+						'user' => __( 'Your Details', 'charitable' ),
+					),
+					'admin'    => array(
+						'user' => '',
+						'meta' => '',
+					),
+				)
+			);
 		}
 
 		/**

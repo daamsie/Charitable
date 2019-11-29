@@ -6,7 +6,7 @@
  *
  * @package   Charitable/Functions/Campaign
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
  * @version   1.5.14
@@ -126,4 +126,41 @@ function charitable_get_campaign_creator_field( Charitable_Campaign $campaign, $
 	$key     = str_replace( 'campaign_creator_', '', $key );
 
 	return $creator->get( $key );
+}
+
+/**
+ * Get a particular taxonomy field for a campaign.
+ *
+ * @since  1.6.19
+ *
+ * @param  Charitable_Campaign $campaign The campaign object.
+ * @param  string              $key      The meta key.
+ * @return string
+ */
+function charitable_get_campaign_taxonomy_terms_list( Charitable_Campaign $campaign, $key ) {
+	$taxonomies = array(
+		'categories' => 'campaign_category',
+		'tags'       => 'campaign_tag',
+	);
+
+	$taxonomy = array_key_exists( $key, $taxonomies ) ? $taxonomies[ $key ] : $key;
+	$terms    = wp_get_object_terms( $campaign->ID, $taxonomy, array( 'fields' => 'names' ) );
+
+	if ( is_wp_error( $terms ) ) {
+		return '';
+	}
+
+	return implode( ', ', $terms );
+}
+
+/**
+ * Get the featured image for a particular campaign.
+ *
+ * @since  1.6.25
+ *
+ * @param  Charitable_Campaign $campaign The campaign object.
+ * @return string|int
+ */
+function charitable_get_campaign_featured_image( Charitable_Campaign $campaign ) {
+	return get_post_thumbnail_id( $campaign->ID );
 }

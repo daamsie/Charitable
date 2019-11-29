@@ -2,23 +2,25 @@
 /**
  * Charitable Public class.
  *
- * @package 	Charitable/Classes/Charitable_Public
- * @version     1.0.0
- * @author 		Eric Daams
- * @copyright 	Copyright (c) 2018, Studio 164a
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @package   Charitable/Classes/Charitable_Public
+ * @author    Eric Daams
+ * @copyright Copyright (c) 2019, Studio 164a
+ * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since     1.0.0
+ * @version   1.2.0
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Public' ) ) :
 
 	/**
 	 * Charitable Public class.
 	 *
-	 * @final
-	 * @since   1.0.0
+	 * @since 1.0.0
 	 */
 	final class Charitable_Public {
 
@@ -138,6 +140,28 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 			}
 
 			return $open;
+		}
+
+		/**
+		 * Load the template functions after theme is loaded.
+		 *
+		 * This gives themes time to override the functions.
+		 *
+		 * @deprecated 2.0.0
+		 *
+		 * @since  1.2.3
+		 * @since  1.6.10 Deprecated
+		 *
+		 * @return void
+		 */
+		public function load_template_files() {
+			charitable_get_deprecated()->deprecated_function(
+				__METHOD__,
+				'1.6.10',
+				'charitable()->load_template_files()'
+			);
+
+			charitable()->load_template_files();
 		}
 	}
 

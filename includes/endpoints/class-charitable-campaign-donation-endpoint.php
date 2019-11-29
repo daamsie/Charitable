@@ -4,10 +4,10 @@
  *
  * @package   Charitable/Classes/Charitable_Campaign_Donation_Endpoint
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.5.4
+ * @version   1.6.25
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -19,15 +19,21 @@ if ( ! class_exists( 'Charitable_Campaign_Donation_Endpoint' ) ) :
 	/**
 	 * Charitable_Campaign_Donation_Endpoint
 	 *
-	 * @abstract
-	 * @since  1.5.0
+	 * @since 1.5.0
 	 */
 	class Charitable_Campaign_Donation_Endpoint extends Charitable_Endpoint {
 
-		/**
-		 * @var     string
-		 */
+		/** Endpoint ID. */
 		const ID = 'campaign_donation';
+
+		/**
+		 * Whether to force HTTPS on the endpoint.
+		 *
+		 * @since 1.6.14
+		 *
+		 * @var   boolean
+		 */
+		private $force_https;
 
 		/**
 		 * Object instantiation.
@@ -36,6 +42,15 @@ if ( ! class_exists( 'Charitable_Campaign_Donation_Endpoint' ) ) :
 		 */
 		public function __construct() {
 			$this->cacheable = false;
+
+			/**
+			 * Whether to force HTTPS on the donation endpoint.
+			 *
+			 * @since 1.6.14
+			 *
+			 * @param boolean $force_https Whether HTTPS is forced for the donation endpoint.
+			 */
+			$this->force_https = apply_filters( 'charitable_campaign_donation_endpoint_force_https', false );
 		}
 
 		/**
@@ -60,7 +75,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donation_Endpoint' ) ) :
 
 		/**
 		 * Return the endpoint URL.
-		 *		 
+		 *
 		 * @since  1.5.0
 		 *
 		 * @global WP_Rewrite $wp_rewrite
@@ -72,6 +87,10 @@ if ( ! class_exists( 'Charitable_Campaign_Donation_Endpoint' ) ) :
 
 			$campaign_id  = array_key_exists( 'campaign_id', $args ) ? $args['campaign_id'] : get_the_ID();
 			$campaign_url = get_permalink( $campaign_id );
+
+			if ( $this->force_https ) {
+				$campaign_url = str_replace( 'http://', 'https://', $campaign_url );
+			}
 
 			if ( 'same_page' == charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
 				return $campaign_url;
@@ -134,19 +153,38 @@ if ( ! class_exists( 'Charitable_Campaign_Donation_Endpoint' ) ) :
 				exit();
 			}
 
+			if ( $this->force_https && ! is_ssl() ) {
+				wp_safe_redirect( charitable_get_permalink( 'campaign_donation' ) );
+				exit();
+			}
+
 			$donation_id = get_query_var( 'donation_id', false );
 
 			/* If a donation ID is included, make sure it belongs to the current user. */
 			if ( $donation_id && ! charitable_user_can_access_donation( $donation_id ) ) {
-				wp_safe_redirect( charitable_get_permalink( 'campaign_donation', array(
-					'campaign_id' => $campaign_id,
-				) ) );
+				wp_safe_redirect(
+					charitable_get_permalink(
+						'campaign_donation',
+						array(
+							'campaign_id' => $campaign_id,
+						)
+					)
+				);
 				exit();
 			}
 
-			do_action( 'charitable_is_donate_page' );
+			/**
+			 * Do something when the donate page is loaded.
+			 *
+			 * @since 1.0.0
+			 * @since 1.6.25 Added $campaign_id and $donation_id parameters.
+			 *
+			 * @param int $campaign_id The campaign receiving the donation.
+			 * @param int $donation_id The donation id, if this is an update to an existing donation.
+			 */
+			do_action( 'charitable_is_donate_page', $campaign_id, $donation_id );
 
-			return array( 'campaign-donation-page.php', 'page.php', 'index.php' );
+			return array( 'campaign-donation-page.php', 'page.php', 'singular.php', 'index.php' );
 		}
 
 		/**
@@ -154,7 +192,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donation_Endpoint' ) ) :
 		 *
 		 * @since  1.5.0
 		 *
-		 * @param  string $content
+		 * @param  string $content Default content.
 		 * @return string
 		 */
 		public function get_content( $content ) {

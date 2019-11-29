@@ -4,10 +4,10 @@
  *
  * @package   Charitable/Classes/Charitable_Admin_Donation_Form
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.5.11
+ * @version   1.6.28
  */
 
 // Exit if accessed directly.
@@ -110,13 +110,13 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 				),
 				'user_fields'     => array(
 					'type'     => 'fieldset',
-					'fields'   => $this->get_section_fields( 'user' ),
+					'fields'   => $this->get_user_fields(),
 					'priority' => 50,
 					'tabindex' => 100,
 				),
 				'meta_fields'     => array(
 					'type'     => 'fieldset',
-					'fields'   => $this->get_section_fields( 'meta' ),
+					'fields'   => $this->get_meta_fields(),
 					'priority' => 60,
 					'tabindex' => 200,
 				),
@@ -134,16 +134,15 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 				);
 			} else {
 				$fields['donor_id'] = array(
-					'type'        => 'select',
-					'options'     => $this->get_all_donors(),
-					'priority'    => 41,
-					'value'       => '',
-					'description' => __( 'Select an existing donor or choose "Add a New Donor" to create a new donor.', 'charitable' ),
-				);
-
-				$fields['user_fields']['attrs'] = array(
-					'data-trigger-key'   => '#donor-id',
-					'data-trigger-value' => 'new',
+					'type'          => 'select',
+					'options'       => $this->get_all_donors(),
+					'priority'      => 41,
+					'value'         => '',
+					'description'   => __( 'Select an existing donor or choose "Add a New Donor" to create a new donor.', 'charitable' ),
+					'wrapper_class' => [ 'select2' ],
+					'attrs'         => [
+						'data-nonce' => wp_create_nonce( 'donor-select' ),
+					],
 				);
 			}
 
@@ -158,8 +157,8 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 			 *
 			 * @since 1.5.0
 			 *
-			 * @var   array                          $fields Array of fields.
-			 * @var   Charitable_Admin_Donation_Form $form   This instance of `Charitable_Admin_Donation_Form`.
+			 * @param array                          $fields Array of fields.
+			 * @param Charitable_Admin_Donation_Form $form   This instance of `Charitable_Admin_Donation_Form`.
 			 */
 			$fields = apply_filters( 'charitable_admin_donation_form_fields', $fields, $this );
 
@@ -206,23 +205,56 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 				array_map( array( $this, 'maybe_set_field_value' ), wp_list_pluck( $fields, 'admin_form' ), $keys )
 			);
 
-			if ( 'meta' == $section ) {
-				$fields['log_note'] = array(
-					'label'    => __( 'Donation Note', 'charitable' ),
-					'type'     => 'textarea',
-					'priority' => 12,
-					'required' => false,
-				);
+			uasort( $fields, 'charitable_priority_sort' );
 
-				if ( $this->should_add_donation_receipt_checkbox() ) {
-					$fields['send_donation_receipt'] = array(
-						'type'     => 'checkbox',
-						'label'    => __( 'Send an email receipt to the donor.', 'charitable' ),
-						'value'    => 1,
-						'default'  => 1,
-						'priority' => 16,
-					);
-				}
+			return $fields;
+		}
+
+		/**
+		 * Return the fields for the user section.
+		 *
+		 * @since  1.6.28
+		 *
+		 * @return array
+		 */
+		public function get_user_fields() {
+			$fields            = $this->get_section_fields( 'user' );
+			$loading_icon      = charitable()->get_path( 'assets', false ) . '/images/charitable-loading.gif';
+			$fields['overlay'] = array(
+				'type'     => 'content',
+				'priority' => 1,
+				'content'  => '<div class="charitable-overlay" style="display: none;"><img src="' . $loading_icon . '" width=60 height=60 alt="' . __( 'Loading icon', 'charitable' ) . '" /></div>',
+			);
+
+			uasort( $fields, 'charitable_priority_sort' );
+
+			return $fields;
+		}
+
+		/**
+		 * Return the fields for the meta section.
+		 *
+		 * @since  1.6.28
+		 *
+		 * @return array
+		 */
+		public function get_meta_fields() {
+			$fields             = $this->get_section_fields( 'meta' );
+			$fields['log_note'] = array(
+				'label'    => __( 'Donation Note', 'charitable' ),
+				'type'     => 'textarea',
+				'priority' => 12,
+				'required' => false,
+			);
+
+			if ( $this->should_add_donation_receipt_checkbox() ) {
+				$fields['send_donation_receipt'] = array(
+					'type'     => 'checkbox',
+					'label'    => __( 'Send an email receipt to the donor.', 'charitable' ),
+					'value'    => 1,
+					'default'  => 1,
+					'priority' => 16,
+				);
 			}
 
 			uasort( $fields, 'charitable_priority_sort' );
@@ -272,9 +304,12 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 		 *
 		 * @since  1.5.0
 		 *
+		 * @param  object $campaign_donation A particular campaign donation.
 		 * @return boolean
 		 */
 		public function filter_campaign_donation( $campaign_donation ) {
+			$campaign_donation = (array) $campaign_donation;
+
 			return array_key_exists( 'campaign_id', $campaign_donation )
 				&& array_key_exists( 'amount', $campaign_donation )
 				&& ! empty( $campaign_donation['campaign_id'] )
@@ -295,6 +330,14 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 			}
 
 			$this->valid = $this->check_required_fields( $this->get_merged_fields() );
+
+			/**
+			 * If required fields are missing, get the error message from the
+			 * notices and add them to the admin notices.
+			 */
+			if ( ! $this->valid ) {
+				charitable_get_admin_notices()->fill_notices_from_frontend();
+			}
 
 			$campaign_donations          = array_key_exists( 'campaign_donations', $_POST ) ? $_POST['campaign_donations'] : array();
 			$_POST['campaign_donations'] = array_filter( $campaign_donations, array( $this, 'filter_campaign_donation' ) );
@@ -451,18 +494,18 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 
 			$donor = new Charitable_Donor( $values['donor_id'] );
 
-			/* Populate the 'user' and 'user_id' args with this donor's stored details. */
+			/* Populate the user_id' arg, then prepare the 'user' array. */
 			$values['user_id'] = $donor->get_user()->ID;
 			$values['user']    = array(
-				'email'      => $donor->get_donor_meta( 'email' ),
-				'first_name' => $donor->get_donor_meta( 'first_name' ),
-				'last_name'  => $donor->get_donor_meta( 'last_name' ),
-				'address'    => $donor->get_donor_meta( 'address' ),
-				'address_2'  => $donor->get_donor_meta( 'address_2' ),
-				'postcode'   => $donor->get_donor_meta( 'postcode' ),
-				'state'      => $donor->get_donor_meta( 'state' ),
-				'country'    => $donor->get_donor_meta( 'country' ),
-				'phone'      => $donor->get_donor_meta( 'phone' ),
+				'email'      => $this->get_submitted_value( 'email' ),
+				'first_name' => $this->get_submitted_value( 'first_name' ),
+				'last_name'  => $this->get_submitted_value( 'last_name' ),
+				'address'    => $this->get_submitted_value( 'address' ),
+				'address_2'  => $this->get_submitted_value( 'address_2' ),
+				'postcode'   => $this->get_submitted_value( 'postcode' ),
+				'state'      => $this->get_submitted_value( 'state' ),
+				'country'    => $this->get_submitted_value( 'country' ),
+				'phone'      => $this->get_submitted_value( 'phone' ),
 			);
 
 			return $values;
@@ -591,14 +634,16 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 		 * @return array
 		 */
 		protected function get_all_donors() {
-			$donors = new Charitable_Donor_Query( array(
-				'number'         => -1,
-				'orderby'        => 'name',
-				'order'          => 'ASC',
-				'output'         => 'raw',
-				'status'         => false, // Return any.
-				'include_erased' => false,
-			) );
+			$donors = new Charitable_Donor_Query(
+				array(
+					'number'         => -1,
+					'orderby'        => 'name',
+					'order'          => 'ASC',
+					'output'         => 'raw',
+					'status'         => false, // Return any.
+					'include_erased' => false,
+				)
+			);
 
 			$donor_list = array();
 
@@ -613,7 +658,6 @@ if ( ! class_exists( 'Charitable_Admin_Donation_Form' ) ) :
 			}
 
 			$list = array(
-				''         => __( 'Select a Donor', 'charitable' ),
 				'new'      => __( 'Add a New Donor', 'charitable' ),
 				'existing' => array(
 					'label'   => __( 'Existing Donors', 'charitable' ),

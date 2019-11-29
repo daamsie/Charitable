@@ -4,10 +4,10 @@
  *
  * @package   Charitable/Classes/Charitable_Export_Campaigns
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.6.0
- * @version   1.6.0
+ * @version   1.6.25
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -15,11 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'Charitable_Export_Campaigns' ) ) :
-
-	/* Include Charitable_Export base class. */
-	if ( ! class_exists( 'Charitable_Export' ) ) {
-		require_once( charitable()->get_path( 'includes' ) . 'abstracts/abstract-class-charitable-export.php' );
-	}
 
 	/**
 	 * Charitable_Export_Campaigns

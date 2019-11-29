@@ -4,14 +4,16 @@
  *
  * @package   Charitable/Classes/Charitable_Campaign_Processor
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.9
  * @version   1.5.10
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Campaign_Processor' ) ) :
 
@@ -241,10 +243,14 @@ if ( ! class_exists( 'Charitable_Campaign_Processor' ) ) :
 			 * @param array                                     $data      Taxonomy data.
 			 * @param Charitable_Campaign_Processor $processor This processor object.
 			 */
-			$data = apply_filters( 'charitable_campaign_processor_taxonomy_data', array(
-				'campaign_category' => $this->get( 'categories' ),
-				'campaign_tag'      => $this->get( 'tags' ),
-			), $this );
+			$data = apply_filters(
+				'charitable_campaign_processor_taxonomy_data',
+				array(
+					'campaign_category' => $this->get( 'categories' ),
+					'campaign_tag'      => $this->get( 'tags' ),
+				),
+				$this
+			);
 
 			foreach ( $data as $taxonomy => $terms ) {
 				wp_set_object_terms( $this->campaign_id, $terms, $taxonomy, false );
@@ -278,22 +284,25 @@ if ( ! class_exists( 'Charitable_Campaign_Processor' ) ) :
 			 *
 			 * @param array $args The list of default arguments.
 			 */
-			return apply_filters( 'charitable_campaign_processor_default_args', array(
-				'ID'                     => 0,
-				'title'                  => '',
-				'content'                => '',
-				'creator'                => get_current_user_id(),
-				'status'                 => 'publish',
-				'parent'                 => 0,
-				'image'                  => 0,
-				'description'            => '',
-				'goal'                   => 0,
-				'end_date'               => 0,
-				'suggested_donations'    => array(),
-				'allow_custom_donations' => 1,
-				'categories'             => array(),
-				'tags'                   => array(),
-			) );
+			return apply_filters(
+				'charitable_campaign_processor_default_args',
+				array(
+					'ID'                     => 0,
+					'title'                  => '',
+					'content'                => '',
+					'creator'                => get_current_user_id(),
+					'status'                 => 'publish',
+					'parent'                 => 0,
+					'image'                  => 0,
+					'description'            => '',
+					'goal'                   => 0,
+					'end_date'               => 0,
+					'suggested_donations'    => array(),
+					'allow_custom_donations' => 1,
+					'categories'             => array(),
+					'tags'                   => array(),
+				)
+			);
 		}
 
 		/**
@@ -415,9 +424,7 @@ if ( ! class_exists( 'Charitable_Campaign_Processor' ) ) :
 				return $value;
 			}
 
-			return Charitable_Campaign::sanitize_custom_donations( $value, array(
-				'_campaign_suggested_donations' => $this->get_suggested_donations_value(),
-			) );
+			return Charitable_Campaign::sanitize_custom_donations( $value, $this->input );
 		}
 
 		/**
@@ -516,10 +523,12 @@ if ( ! class_exists( 'Charitable_Campaign_Processor' ) ) :
 
 			/* If the image is unattached to any post, attach it to the campaign. */
 			if ( 0 === $parent ) {
-				wp_update_post( array(
-					'ID'          => $value,
-					'post_parent' => $this->campaign_id,
-				) );
+				wp_update_post(
+					array(
+						'ID'          => $value,
+						'post_parent' => $this->campaign_id,
+					)
+				);
 			}
 		}
 
@@ -562,7 +571,7 @@ if ( ! class_exists( 'Charitable_Campaign_Processor' ) ) :
 		}
 
 		/**
-		 * Returns a sanitized meta	key.
+		 * Returns a sanitized meta key.
 		 *
 		 * @since  1.5.9
 		 *
@@ -628,7 +637,9 @@ if ( ! class_exists( 'Charitable_Campaign_Processor' ) ) :
 
 			charitable_get_deprecated()->doing_it_wrong(
 				$tag,
-				sprintf( __( '%s is deprecated as a sanitizer on the %s hook. To prevent sanitization, use add_filter( \'charitable_campaign_processor_disable_sanitizer_%s\', \'__return_true\' ) instead.', 'charitable' ),
+				sprintf(
+					/* translators: %1$s: PHP class method; %2$s: hook name; %3$s: key */
+					__( '%1$s is deprecated as a sanitizer on the %2$s hook. To prevent sanitization, use add_filter( \'charitable_campaign_processor_disable_sanitizer_%3$s\', \'__return_true\' ) instead.', 'charitable' ),
 					$method,
 					$tag,
 					$key

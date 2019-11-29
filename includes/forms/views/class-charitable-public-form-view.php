@@ -6,14 +6,16 @@
  *
  * @package   Charitable/Forms/Charitable_Public_Form_View
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
  * @version   1.5.2
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Public_Form_View' ) ) :
 
@@ -111,7 +113,10 @@ if ( ! class_exists( 'Charitable_Public_Form_View' ) ) :
 		 * @return void
 		 */
 		public function register_custom_field_template( $field_type, $class, $path ) {
-			$this->custom_field_templates[ $field_type ] = array( 'class' => $class, 'path' => $path );
+			$this->custom_field_templates[ $field_type ] = array(
+				'class' => $class,
+				'path'  => $path,
+			);
 		}
 
 		/**
@@ -136,9 +141,13 @@ if ( ! class_exists( 'Charitable_Public_Form_View' ) ) :
 		 * @return void
 		 */
 		public function render_notices() {
-			charitable_template_from_session( 'form-fields/notices.php', array(
-				'notices' => charitable_get_notices()->get_notices(),
-			), 'notices' );
+			charitable_template_from_session(
+				'form-fields/notices.php',
+				array(
+					'notices' => charitable_get_notices()->get_notices(),
+				),
+				'notices'
+			);
 
 			$this->rendered_notices = true;
 		}
@@ -203,9 +212,13 @@ if ( ! class_exists( 'Charitable_Public_Form_View' ) ) :
 			$i = 1;
 
 			foreach ( $fields as $key => $field ) {
-				$this->render_field( $field, $key, array(
-					'index' => $i,
-				) );
+				$this->render_field(
+					$field,
+					$key,
+					array(
+						'index' => $i,
+					)
+				);
 
 				$i += $this->increment_index( $field, $key, $i );
 			}
@@ -341,7 +354,7 @@ if ( ! class_exists( 'Charitable_Public_Form_View' ) ) :
 			/**
 			 * Filter the template to be used for the form.
 			 *
-			 * Any callback hooking into this filter should return a `Charitable_Template` 
+			 * Any callback hooking into this filter should return a `Charitable_Template`
 			 * instance. Anything else will be ignored.
 			 *
 			 * @since 1.0.0
@@ -350,7 +363,7 @@ if ( ! class_exists( 'Charitable_Public_Form_View' ) ) :
 			 * @param array                     $field    Field definition.
 			 * @param Charitable_Form           $form     The Charitable_Form object.
 			 * @param int                       $index    The current index.
-			 */            
+			 */
 			$template = apply_filters( 'charitable_form_field_template', $template, $field, $this->form, $index );
 
 			/* Fall back to default Charitable_Template if no template returned or if template was not object of 'Charitable_Template' class. */
@@ -508,16 +521,16 @@ if ( ! class_exists( 'Charitable_Public_Form_View' ) ) :
 			$classes = array();
 
 			switch ( $type ) {
-				case 'paragraph' :
+				case 'paragraph':
 					$classes[] = 'charitable-form-content';
 					break;
 
-				case 'fieldset' :
-				case 'donation-amount-wrapper' :
+				case 'fieldset':
+				case 'donation-amount-wrapper':
 					$classes[] = 'charitable-fieldset';
 					break;
 
-				default :
+				default:
 					$classes[] = 'charitable-form-field';
 					$classes[] = 'charitable-form-field-' . $type;
 			}
@@ -551,7 +564,7 @@ if ( ! class_exists( 'Charitable_Public_Form_View' ) ) :
 			 * @param Charitable_Form $form      The form we are displaying.
 			 * @param int             $index     The current index.
 			 */
-			return apply_filters( 'charitable_form_field_increment', 1, $field, $key, $this->form, $index );            
+			return apply_filters( 'charitable_form_field_increment', 1, $field, $key, $this->form, $index );
 		}
 
 		/**
@@ -634,4 +647,4 @@ if ( ! class_exists( 'Charitable_Public_Form_View' ) ) :
 		}
 	}
 
-endif; // End interface_exists check.
+endif;

@@ -5,11 +5,13 @@
  * @version     1.0.0
  * @package     Charitable/Classes/Charitable_Email_Donation_Receipt
  * @author      Eric Daams
- * @copyright   Copyright (c) 2018, Studio 164a
+ * @copyright   Copyright (c) 2019, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Email_Donation_Receipt' ) ) :
 
@@ -20,7 +22,7 @@ if ( ! class_exists( 'Charitable_Email_Donation_Receipt' ) ) :
 	 */
 	class Charitable_Email_Donation_Receipt extends Charitable_Email {
 
-		/* @var string */
+		/** Email ID */
 		const ID = 'donation_receipt';
 
 		/**
@@ -87,9 +89,11 @@ if ( ! class_exists( 'Charitable_Email_Donation_Receipt' ) ) :
 				return false;
 			}
 
-			$email = new self( array(
-				'donation' => $donation,
-			) );
+			$email = new self(
+				array(
+					'donation' => $donation,
+				)
+			);
 
 			/**
 			 * Don't resend the email.

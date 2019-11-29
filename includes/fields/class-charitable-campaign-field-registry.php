@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_Campaign_Field_Registry
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.6.0
  * @version   1.6.0
@@ -34,13 +34,13 @@ if ( ! class_exists( 'Charitable_Campaign_Field_Registry' ) ) :
 		protected $admin_form_fields;
 
 		/**
-		 * Ambassador form fields.
+		 * Campaign form fields.
 		 *
-		 * @since 1.6.0
+		 * @since 1.6.25
 		 *
 		 * @var   array
 		 */
-		protected $ambassador_form_fields;
+		protected $campaign_form_fields;
 
 		/**
 		 * Instantiate registry.
@@ -63,24 +63,20 @@ if ( ! class_exists( 'Charitable_Campaign_Field_Registry' ) ) :
 		 * @return array
 		 */
 		private function get_core_sections() {
-			/**
-			 * Default campaign sections.
-			 *
-			 * @since 1.6.0
-			 *
-			 * @param array $sections The full array of sections for all forms, including defaults.
-			 */
-			return apply_filters( 'charitable_default_campaign_sections', array(
-				'defaults' => array(
-					'admin' => 'campaign-extended-settings',
-				),
-				'admin'    => array(
-					'campaign-donation-options'     => __( 'Donation Options', 'charitable' ),
-					'campaign-extended-description' => __( 'Extended Description', 'charitable' ),
-					'campaign-creator'              => __( 'Campaign Creator', 'charitable' ),
-					'campaign-extended-settings'    => __( 'Extended Settings', 'charitable' ),
-				),
-			) );
+			return apply_filters(
+				'charitable_default_campaign_sections',
+				array(
+					'defaults' => array(
+						'admin' => 'campaign-extended-settings',
+					),
+					'admin'    => array(
+						'campaign-donation-options'     => __( 'Donation Options', 'charitable' ),
+						'campaign-extended-description' => __( 'Extended Description', 'charitable' ),
+						'campaign-creator'              => __( 'Campaign Creator', 'charitable' ),
+						'campaign-extended-settings'    => __( 'Extended Settings', 'charitable' ),
+					),
+				)
+			);
 		}
 
 		/**
@@ -104,23 +100,23 @@ if ( ! class_exists( 'Charitable_Campaign_Field_Registry' ) ) :
 		}
 
 		/**
-		 * Return the Ambassadors form fields.
+		 * Return the front-end campaign form fields.
 		 *
-		 * @since  1.6.0
+		 * @since  1.6.25
 		 *
 		 * @param  string $section The section of fields to get within the form.
 		 * @return array
 		 */
-		public function get_ambassadors_form_fields( $section = '' ) {
-			if ( ! isset( $this->ambassador_fields ) ) {
-				$this->ambassador_fields = array_filter( $this->fields, array( new Charitable_Field_Filter( 'ambassadors_form' ), 'is_not_false' ) );
+		public function get_campaign_form_fields( $section = '' ) {
+			if ( ! isset( $this->campaign_form_fields ) ) {
+				$this->campaign_form_fields = array_filter( $this->fields, array( new Charitable_Field_Filter( 'campaign_form' ), 'is_not_false' ) );
 			}
 
 			if ( empty( $section ) ) {
-				return $this->ambassador_fields;
+				return $this->campaign_form_fields;
 			}
 
-			return $this->get_form_fields_in_section( $section, $this->ambassadors_fields, 'ambassadors_form' );
+			return $this->get_form_fields_in_section( $section, $this->campaign_form_fields, 'campaign_form' );
 		}
 
 		/**
@@ -196,7 +192,7 @@ if ( ! class_exists( 'Charitable_Campaign_Field_Registry' ) ) :
 
 			$field->value_callback         = $this->get_field_value_callback( $field );
 			$field->admin_form             = $this->get_field_admin_form( $field );
-			$field->ambassadors_form       = $this->get_field_ambassadors_form( $field );
+			$field->campaign_form          = $this->get_field_campaign_form( $field );
 			$this->fields[ $field->field ] = $field;
 
 			return true;
@@ -211,7 +207,7 @@ if ( ! class_exists( 'Charitable_Campaign_Field_Registry' ) ) :
 		 * @return false|string|callable            Returns a callable function or false if none is set and
 		 *                                          we don't have a default one for the data type.
 		 */
-		public function get_field_value_callback( $field ) {		
+		public function get_field_value_callback( $field ) {
 			return isset( $field->value_callback ) && is_callable( $field->value_callback ) ? $field->value_callback : false;
 		}
 
@@ -247,20 +243,20 @@ if ( ! class_exists( 'Charitable_Campaign_Field_Registry' ) ) :
 		 * @param  Charitable_Campaign_Field $field Instance of `Charitable_Campaign_Field`.
 		 * @return array
 		 */
-		protected function get_field_ambassadors_form( Charitable_Campaign_Field $field ) {
-			$settings = $field->ambassadors_form;
+		protected function get_field_campaign_form( Charitable_Campaign_Field $field ) {
+			$settings = $field->campaign_form;
 
 			if ( false === $settings ) {
 				return $settings;
 			}
 
-			/* If the value is true, we use the same args as for the ambassadors_form setting. */
+			/* If the value is true, we use the same args as for the campaign_form setting. */
 			if ( true === $settings ) {
-				return $field->ambassadors_form;
+				return $field->campaign_form;
 			}
 
-			if ( is_array( $field->ambassadors_form ) ) {
-				$settings = array_merge( $field->ambassadors_form, $settings );
+			if ( is_array( $field->campaign_form ) ) {
+				$settings = array_merge( $field->campaign_form, $settings );
 			}
 
 			if ( ! array_key_exists( 'section', $settings ) ) {
@@ -280,8 +276,51 @@ if ( ! class_exists( 'Charitable_Campaign_Field_Registry' ) ) :
 		protected function set_forms() {
 			return array(
 				'admin_form',
-				'ambassadors_form',
+				'campaign_form',
 			);
+		}
+
+		/**
+		 * Return the Ambassadors form fields.
+		 *
+		 * @deprecated 1.9.0
+		 *
+		 * @since  1.6.0
+		 * @since  1.6.25 Deprecated. Use Charitable_Campaign_Field_Registry::get_campaign_form_fields() instead.
+		 *
+		 * @param  string $section The section of fields to get within the form.
+		 * @return array
+		 */
+		public function get_ambassadors_form_fields( $section = '' ) {
+			charitable_get_deprecated()->deprecated_function(
+				__METHOD__,
+				'1.6.25',
+				'Charitable_Campaign_Field_Registry::get_campaign_form_fields()'
+			);
+
+			return $this->get_campaign_form_fields( $section );
+		}
+
+		/**
+		 * Return a parsed array of settings for the field, or false if it should not appear
+		 * in the donation form.
+		 *
+		 * @deprecated 1.9.0
+		 *
+		 * @since  1.6.0
+		 * @since  1.6.25 Deprecated. Use Charitable_Campaign_Field_Registry::get_campaign_form_fields() instead.
+		 *
+		 * @param  Charitable_Campaign_Field $field Instance of `Charitable_Campaign_Field`.
+		 * @return array
+		 */
+		protected function get_field_ambadssadors_form( Charitable_Campaign_Field $field ) {
+			charitable_get_deprecated()->deprecated_function(
+				__METHOD__,
+				'1.6.25',
+				'Charitable_Campaign_Field_Registry::get_field_campaign_form()'
+			);
+
+			return $this->get_field_campaign_form( $field );
 		}
 	}
 

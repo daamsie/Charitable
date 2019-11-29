@@ -6,7 +6,7 @@
  *
  * @package   Charitable/Functions/Templates
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
  * @version   1.5.14
@@ -422,10 +422,13 @@ if ( ! function_exists( 'charitable_template_campaign_loop' ) ) :
 			$campaigns = $wp_query;
 		}
 
-		charitable_template( 'campaign-loop.php', array(
-			'campaigns' => $campaigns,
-			'columns'   => $columns,
-		) );
+		charitable_template(
+			'campaign-loop.php',
+			array(
+				'campaigns' => $campaigns,
+				'columns'   => $columns,
+			)
+		);
 	}
 
 endif;
@@ -451,14 +454,14 @@ if ( ! function_exists( 'charitable_template_responsive_styles' ) ) :
 		if ( preg_match( '/[px|em]/', $args['responsive'] ) ) {
 			$breakpoint = $args['responsive'];
 		}
-?>
+		?>
 <style type="text/css" media="screen">
 @media only screen and (max-width: <?php echo $breakpoint; ?>) {
 	.campaign-loop.campaign-grid.masonry { -moz-column-count: 1; -webkit-column-count: 1; column-count: 1; }
-	.campaign-loop.campaign-grid .campaign.hentry { width: 100% !important; }
+	.campaign-loop.campaign-grid .campaign,.campaign-loop.campaign-grid .campaign.hentry { width: 100% !important; }
 }
 </style>
-<?php
+		<?php
 	}
 
 endif;
@@ -689,16 +692,25 @@ if ( ! function_exists( 'charitable_template_donation_receipt_output' ) ) :
 		ob_start();
 
 		if ( ! $donation->is_from_current_user() ) {
-			charitable_template_from_session( 'donation-receipt/not-authorized.php', array( 'content' => $content ), 'donation_receipt', array( 'donation_id' => $donation->ID ) );
+			charitable_template_from_session(
+				'donation-receipt/not-authorized.php',
+				array( 'content' => $content ),
+				'donation_receipt',
+				array( 'donation_id' => $donation->ID )
+			);
+
 			return ob_get_clean();
 		}
 
 		do_action( 'charitable_donation_receipt_page', $donation );
 
-		charitable_template( 'content-donation-receipt.php', array(
-			'content'  => $content,
-			'donation' => $donation,
-		) );
+		charitable_template(
+			'content-donation-receipt.php',
+			array(
+				'content'  => $content,
+				'donation' => $donation,
+			)
+		);
 
 		$content = ob_get_clean();
 
@@ -1067,9 +1079,13 @@ if ( ! function_exists( 'charitable_template_notices' ) ) :
 			$notices = charitable_get_notices()->get_notices();
 		}
 
-		charitable_template_from_session( 'form-fields/notices.php', array(
-			'notices' => $notices,
-		), 'notices' );
+		charitable_template_from_session(
+			'form-fields/notices.php',
+			array(
+				'notices' => $notices,
+			),
+			'notices'
+		);
 	}
 
 endif;

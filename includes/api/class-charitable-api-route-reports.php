@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_API_Route_Reports
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.6.0
  * @version   1.6.0
@@ -41,7 +41,7 @@ if ( ! class_exists( 'Charitable_API_Route_Reports' ) ) :
 		 * @return void
 		 */
 		public function __construct() {
-			parent::__constrct();
+			parent::__construct();
 
 			$this->base = 'reports';
 		}
@@ -90,15 +90,17 @@ if ( ! class_exists( 'Charitable_API_Route_Reports' ) ) :
 		 *                                returns a new WP_REST_Response instance.
 		 */
 		public function get_reports() {
-			return rest_ensure_response( array(
-				'slug'        => 'donations',
-				'description' => __( 'List of donation reports.', 'charitable' ),
-				'_links'      => array(
-					'self' => array(
-						'href' => get_site_url( null, '/wp-json/' . $this->namespace . '/' . $this->base . '/donations/' ),
+			return rest_ensure_response(
+				array(
+					'slug'        => 'donations',
+					'description' => __( 'List of donation reports.', 'charitable' ),
+					'_links'      => array(
+						'self' => array(
+							'href' => get_site_url( null, '/wp-json/' . $this->namespace . '/' . $this->base . '/donations/' ),
+						),
 					),
-				),
-			) );
+				)
+			);
 		}
 
 		/**
@@ -112,9 +114,11 @@ if ( ! class_exists( 'Charitable_API_Route_Reports' ) ) :
 		 *                                returns a new WP_REST_Response instance.
 		 */
 		public function get_donations_report( $request ) {
-			$report = new Charitable_Donation_Report( array(
-				'campaigns' => $request->get_param( 'campaigns' ),
-			) );
+			$report = new Charitable_Donation_Report(
+				array(
+					'campaigns' => $request->get_param( 'campaigns' ),
+				)
+			);
 
 			return rest_ensure_response( $report->get_reports() );
 		}

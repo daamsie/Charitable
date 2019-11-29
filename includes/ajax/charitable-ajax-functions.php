@@ -4,15 +4,18 @@
  *
  * Functions used with ajax hooks.
  *
- * @package     Charitable/Functions/AJAX
- * @version     1.2.3
- * @author      Eric Daams
- * @copyright   Copyright (c) 2018, Studio 164a
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @package   Charitable/Functions/AJAX
+ * @author    Eric Daams
+ * @copyright Copyright (c) 2019, Studio 164a
+ * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since     1.2.3
+ * @version   1.6.28
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! function_exists( 'charitable_ajax_get_donation_form' ) ) :
 
@@ -38,7 +41,12 @@ if ( ! function_exists( 'charitable_ajax_get_donation_form' ) ) :
 
 		$campaign->get_donation_form()->render();
 
-		$output = ob_get_clean();
+		/**
+		 * Strip any shortcodes that haven't been rendered yet.
+		 *
+		 * @see https://github.com/Charitable/Charitable/issues/708
+		 */
+		$output = preg_replace( '~(?:\[/?)[^/\]]+/?\]~s', '', ob_get_clean() );
 
 		wp_send_json_success( $output );
 
@@ -108,6 +116,31 @@ if ( ! function_exists( 'charitable_plupload_image_upload' ) ) :
 	}
 
 endif;
+
+/**
+ * Get donor data, given a donor ID.
+ *
+ * @since  1.6.28
+ *
+ * @return void
+ */
+function charitable_ajax_get_donor_data() {
+	$donor_id = (int) filter_input( INPUT_POST, 'donor_id', FILTER_SANITIZE_NUMBER_INT );
+
+	if ( ! check_ajax_referer( 'donor-select', 'nonce' ) ) {
+		wp_send_json_error( 'nonce check failed', '403' );
+	}
+
+	$fields = array_key_exists( 'fields', $_POST ) ? $_POST['fields'] : [];
+	$donor  = new Charitable_Donor( $donor_id );
+	$data   = [];
+
+	foreach ( $fields as $field ) {
+		$data[ $field ] = $donor->get_donor_meta( $field );
+	}
+
+	wp_send_json_success( $data );
+}
 
 /**
  * Receives an AJAX request to load session content and returns
@@ -186,7 +219,8 @@ function charitable_ajax_get_session_donation_form_amount_field( $content, $args
 
 	ob_start();
 
-	charitable_template( 'donation-form/donation-amount-list.php',
+	charitable_template(
+		'donation-form/donation-amount-list.php',
 		array(
 			'campaign' => charitable_get_campaign( $args['campaign_id'] ),
 			'form_id'  => $args['form_id'],
@@ -236,9 +270,12 @@ function charitable_ajax_get_session_errors( $content ) {
 
 	ob_start();
 
-	charitable_template( 'form-fields/errors.php', array(
-		'errors' => $errors,
-	) );
+	charitable_template(
+		'form-fields/errors.php',
+		array(
+			'errors' => $errors,
+		)
+	);
 
 	return ob_get_clean();
 }
@@ -260,9 +297,12 @@ function charitable_ajax_get_session_notices( $content ) {
 
 	ob_start();
 
-	charitable_template( 'form-fields/notices.php', array(
-		'notices' => $notices,
-	) );
+	charitable_template(
+		'form-fields/notices.php',
+		array(
+			'notices' => $notices,
+		)
+	);
 
 	return ob_get_clean();
 }

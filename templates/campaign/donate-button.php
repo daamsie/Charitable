@@ -5,9 +5,9 @@
  * Override this template by copying it to yourtheme/charitable/campaign/donate-button.php
  *
  * @author  Studio 164a
- * @package Charitable/Templates/Campaign
+ * @package Charitable/Templates/Campaign Page
  * @since   1.3.0
- * @version 1.3.0
+ * @version 1.6.29
  */
 
 $campaign = $view_args['campaign'];
@@ -17,5 +17,5 @@ $campaign = $view_args['campaign'];
 	<?php wp_nonce_field( 'charitable-donate', 'charitable-donate-now' ); ?>
 	<input type="hidden" name="charitable_action" value="start_donation" />
 	<input type="hidden" name="campaign_id" value="<?php echo $campaign->ID; ?>" />
-	<button type="submit" name="charitable_submit" class="donate-button button button-primary"><?php esc_attr_e( 'Donate', 'charitable' ); ?></button>
+	<button type="submit" name="charitable_submit" class="<?php echo esc_attr( charitable_get_button_class( 'donate' ) ); ?>"><?php esc_attr_e( 'Donate', 'charitable' ); ?></button>
 </form>

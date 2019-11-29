@@ -4,15 +4,18 @@
  *
  * General core functions.
  *
- * @package 	Charitable/Functions/Core
- * @version     1.0.0
- * @author 		Eric Daams
- * @copyright 	Copyright (c) 2018, Studio 164a
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @package   Charitable/Functions/Core
+ * @author    Eric Daams
+ * @copyright Copyright (c) 2019, Studio 164a
+ * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since     1.0.0
+ * @version   1.4.0
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * This returns the original Charitable object.
@@ -57,7 +60,7 @@ function charitable_get_option( $key, $default = false, $settings = array() ) {
 	array_shift( $key );
 
 	if ( ! empty( $key ) ) {
-		return charitable_get_option( $key, $default, $settings[ $current_key ] );	
+		return charitable_get_option( $key, $default, $settings[ $current_key ] );
 	}
 
 	return $settings[ $current_key ];

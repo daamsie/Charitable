@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_Settings
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
  * @version   1.0.0
@@ -89,13 +89,16 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 			 *
 			 * @param string[] $tabs List of tabs in key=>label format.
 			 */
-			return apply_filters( 'charitable_settings_tabs', array(
-				'general'  => __( 'General', 'charitable' ),
-				'gateways' => __( 'Payment Gateways', 'charitable' ),
-				'emails'   => __( 'Emails', 'charitable' ),
-				'privacy'  => __( 'Privacy', 'charitable' ),
-				'advanced' => __( 'Advanced', 'charitable' ),
-			) );
+			return apply_filters(
+				'charitable_settings_tabs',
+				array(
+					'general'  => __( 'General', 'charitable' ),
+					'gateways' => __( 'Payment Gateways', 'charitable' ),
+					'emails'   => __( 'Emails', 'charitable' ),
+					'privacy'  => __( 'Privacy', 'charitable' ),
+					'advanced' => __( 'Advanced', 'charitable' ),
+				)
+			);
 
 		}
 

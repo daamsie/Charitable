@@ -4,13 +4,15 @@
  *
  * @package   Charitable/Classes/Charitable_Donation_Processing_Endpoint
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.5.9
+ * @version   1.6.25
  */
 
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Donation_Processing_Endpoint' ) ) :
 
@@ -21,7 +23,7 @@ if ( ! class_exists( 'Charitable_Donation_Processing_Endpoint' ) ) :
 	 */
 	class Charitable_Donation_Processing_Endpoint extends Charitable_Endpoint {
 
-		/* @var string */
+		/** Endpoint ID. */
 		const ID = 'donation_processing';
 
 		/**
@@ -38,7 +40,7 @@ if ( ! class_exists( 'Charitable_Donation_Processing_Endpoint' ) ) :
 		 *
 		 * @since  1.5.0
 		 *
-		 * @return 	string
+		 * @return string
 		 */
 		public static function get_endpoint_id() {
 			return self::ID;
@@ -71,10 +73,15 @@ if ( ! class_exists( 'Charitable_Donation_Processing_Endpoint' ) ) :
 			if ( $wp_rewrite->using_permalinks() ) {
 				$url = sprintf( '%s/donation-processing/%d', untrailingslashit( home_url() ), $donation_id );
 			} else {
-				$url = esc_url_raw( add_query_arg( array(
-					'donation_processing' => 1,
-					'donation_id' => $donation_id,
-				), home_url() ) );
+				$url = esc_url_raw(
+					add_query_arg(
+						array(
+							'donation_processing' => 1,
+							'donation_id' => $donation_id,
+						),
+						home_url()
+					)
+				);
 			}
 
 			return $url;
@@ -106,12 +113,15 @@ if ( ! class_exists( 'Charitable_Donation_Processing_Endpoint' ) ) :
 		 * @return string
 		 */
 		public function get_template( $template ) {
-			new Charitable_Ghost_Page( 'donation-processing-page', array(
-				'title'     => __( 'Thank you for your donation', 'charitable' ),
-				'content'   => sprintf( '<p>%s</p>', __( 'You will shortly be redirected to the payment gateway to complete your donation.', 'charitable' ) ),
-			) );
+			new Charitable_Ghost_Page(
+				'donation-processing-page',
+				array(
+					'title'   => __( 'Thank you for your donation', 'charitable' ),
+					'content' => sprintf( '<p>%s</p>', __( 'You will shortly be redirected to the payment gateway to complete your donation.', 'charitable' ) ),
+				)
+			);
 
-			return array( 'donation-processing-page.php', 'page.php', 'index.php' );
+			return array( 'donation-processing-page.php', 'page.php', 'singular.php', 'index.php' );
 		}
 
 		/**
@@ -137,7 +147,7 @@ if ( ! class_exists( 'Charitable_Donation_Processing_Endpoint' ) ) :
 		 *
 		 * @since  1.5.0
 		 *
-		 * @return 	string
+		 * @return string
 		 */
 		public function get_body_class() {
 			return 'campaign-donation-processing';

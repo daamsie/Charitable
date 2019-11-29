@@ -6,10 +6,10 @@
  *
  * @package   Charitable/Functions/Admin
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.0
+ * @version   1.6.24
  */
 
 // Exit if accessed directly.
@@ -33,6 +33,11 @@ add_filter( 'enter_title_here', array( $registry->get( 'campaign_meta_boxes' ), 
  * @see Charitable_Campaign_Meta_Boxes::campaign_form_top()
  */
 add_action( 'edit_form_after_title', array( $registry->get( 'campaign_meta_boxes' ), 'campaign_form_top' ) );
+
+/**
+ * Prevent meta box sorting for campaigns.
+ */
+add_filter( 'get_user_option_meta-box-order_' . Charitable::CAMPAIGN_POST_TYPE, '__return_false' );
 
 /**
  * Campaign Metaboxes.

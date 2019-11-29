@@ -5,7 +5,7 @@
  * @package     Charitable/Classes/Charitable_Licenses
  * @version     1.4.20
  * @author      Eric Daams
- * @copyright   Copyright (c) 2018, Studio 164a
+ * @copyright   Copyright (c) 2019, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -131,7 +131,7 @@ if ( ! class_exists( 'Charitable_Licenses' ) ) :
 						$plugin_file             = plugin_basename( $product['file'] );
 						$product_key             = array_search( $product['name'], wp_list_pluck( $this->get_products(), 'name' ) );
 						$version_info            = $versions[ array_search( $product['name'], $versions_name_lookup ) ];
-						$version_info['license'] = $this->get_license_details( $product_key ); 
+						$version_info['license'] = $this->get_license_details( $product_key );
 
 						if ( version_compare( $product['version'], $version_info['new_version'], '<' ) ) {
 
@@ -139,8 +139,15 @@ if ( ! class_exists( 'Charitable_Licenses' ) ) :
 								$version_info['sections'] = maybe_unserialize( $version_info['sections'] );
 							}
 
-							$_transient_data->response[ $plugin_file ] = (object) $version_info;
+							$can_update = $this->able_to_update( $version_info );
 
+							if ( is_array( $can_update ) ) {
+								$version_info['package']                      = $can_update['reason_code'];
+								$version_info['download_link']                = $can_update['reason_code'];
+								$version_info['package_download_restriction'] = $can_update['description'];
+							}
+
+							$_transient_data->response[ $plugin_file ] = (object) $version_info;
 						}
 
 						$_transient_data->last_checked            = time();
@@ -162,7 +169,7 @@ if ( ! class_exists( 'Charitable_Licenses' ) ) :
 		 *
 		 * @param  mixed  $_data   Default set of data.
 		 * @param  string $_action The current action.
-		 * @param  object $_args   Request args. 
+		 * @param  object $_args   Request args.
 		 * @return object $_data
 		 */
 		public function plugins_api_filter( $_data, $_action = '', $_args = null ) {
@@ -214,7 +221,7 @@ if ( ! class_exists( 'Charitable_Licenses' ) ) :
 		public function get_version_info( $slug, $update_cache = false ) {
 			if ( ! $update_cache ) {
 				$update_cache = get_site_transient( 'update_plugins' );
-			}			
+			}
 
 			if ( ! is_object( $update_cache ) || empty( $update_cache->response ) || ! array_key_exists( $slug, $update_cache->response ) ) {
 				return false;
@@ -270,7 +277,108 @@ if ( ! class_exists( 'Charitable_Licenses' ) ) :
 				return new WP_Error( 'expired_license_key', $message );
 			}
 
+			if ( false !== strpos( $package, 'missing_requirements:' ) ) {
+				$message = str_replace( 'missing_requirements:', '', htmlspecialchars_decode( $package ) );
+
+				return new WP_Error( 'missing_requirements_key', $message );
+			}
+
 			return $reply;
+		}
+
+		/**
+		 * Checks whether the given plugin can be updated.
+		 *
+		 * @since  1.6.14
+		 *
+		 * @param  array $version_info Version information.
+		 * @return true|array If it can be updated, returns true. Otherwise
+		 *                    returns an array with a reason_code and description.
+		 */
+		protected function able_to_update( $version_info ) {
+			$changelog_link = self_admin_url( 'index.php?edd_sl_action=view_plugin_changelog&plugin=' . $version_info['name'] . '&slug=' . $version_info['slug'] . '&TB_iframe=true&width=772&height=911' );
+
+			switch ( $version_info['package'] ) {
+
+				case 'missing_license':
+					return array(
+						'reason_code' => 'missing_license',
+						'description' => sprintf(
+							__( '<p>There is a new version of %1$s available but you have not activated your license. <a target="_top" href="%2$s">Activate your license</a> or <a target="_blank" class="thickbox" href="%3$s">view version %4$s details</a>.</p>', 'charitable' ),
+							esc_html( $version_info['name'] ),
+							admin_url( 'admin.php?page=charitable-settings&tab=licenses' ),
+							esc_url( $changelog_link ),
+							esc_html( $version_info['new_version'] )
+						),
+					);
+
+				case 'expired_license':
+					$base_renewal_url = isset( $version_info['renewal_link'] ) ? $version_info['renewal_link'] : 'https://www.wpcharitable.com/account';
+
+					return array(
+						'reason_code' => 'expired_license',
+						'description' => sprintf(
+							__( '<p>There is a new version of %1$s available but your license has expired. <a target="_blank" href="%2$s">Renew your license</a> or <a target="_blank" class="thickbox" href="%3$s">view version %4$s details</a>.</p>', 'charitable' ),
+							esc_html( $version_info['name'] ),
+							esc_url( add_query_arg( array(
+								'utm_source' => 'plugin-upgrades',
+								'utm_medium' => 'wordpress-dashboard',
+								'utm_campaign' => 'expired-license',
+							), $base_renewal_url ) ),
+							esc_url( $changelog_link ),
+							esc_html( $version_info['new_version'] )
+						),
+					);
+
+				default:
+					if ( ! isset( $version_info['requirements'] ) ) {
+						return true;
+					}
+
+					$messages = array();
+
+					foreach ( $version_info['requirements'] as $type => $details ) {
+
+						switch ( $type ) {
+							case 'php':
+								if ( version_compare( phpversion(), $details, '<' ) ) {
+									$messages[] = esc_html(
+										sprintf(
+											__( '<li>Requires PHP version %s or greater.</li>' ),
+											$details
+										)
+									);
+								}
+								break;
+
+							case 'charitable':
+								if ( version_compare( charitable()->get_version(), $details, '<' ) ) {
+									$messages[] = esc_html(
+										sprintf(
+											__( 'Requires Charitable version %s or greater.' ),
+											$details
+										)
+									);
+								}
+								break;
+						}
+
+						if ( empty( $messages ) ) {
+							return true;
+						}
+
+						return array(
+							'reason_code' => 'missing_requirements',
+							'description' => sprintf(
+								__( '<p>There is a new version of %1$s available but you are missing the following minimum requirements:</p>%2$s', 'charitable' ),
+								esc_html( $version_info['name'] ),
+								'<ul>' . implode( '<br/>', $messages ) . '</ul>'
+							),
+						);
+					}
+
+					return true;
+			}
 		}
 
 		/**
@@ -306,6 +414,13 @@ if ( ! class_exists( 'Charitable_Licenses' ) ) :
 				return $options;
 			}
 
+			/* Set up the renewal link for plugins where minimum requirements haven't been met. */
+			if ( 'missing_requirements' == $options['package'] ) {
+				$options['package'] = $this->get_missing_requirements_package( $options['hook_extra']['plugin'] );
+
+				return $options;
+			}
+
 			$license_details = $this->get_license_details( $plugin_key );
 
 			if ( ! is_array( $license_details ) || ! array_key_exists( 'license', $license_details ) || empty( $license_details['license'] ) ) {
@@ -332,6 +447,23 @@ if ( ! class_exists( 'Charitable_Licenses' ) ) :
 				'utm_medium'   => 'wordpress-dashboard',
 				'utm_campaign' => 'expired-license',
 			), $base_renewal_url ) );
+		}
+
+		/**
+		 * Return the package string for a plugin missing requirements.
+		 *
+		 * @since  1.6.14
+		 *
+		 * @param  string $plugin Plugin basename.
+		 * @return string
+		 */
+		public function get_missing_requirements_package( $plugin ) {
+			$version_info = $this->get_version_info( $plugin );
+
+			return sprintf(
+				'missing_requirements:%s',
+				$version_info->package_download_restriction
+			);
 		}
 
 		/**
@@ -581,7 +713,7 @@ if ( ! class_exists( 'Charitable_Licenses' ) ) :
 			if ( is_wp_error( $response ) ) {
 				return;
 			}
-			
+
 			$this->flush_update_cache();
 
 			/* Decode the license data */

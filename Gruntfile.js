@@ -7,25 +7,25 @@ const webpackConfig = require('./webpack.config');
 var path = require('path');
 
 module.exports = function(grunt) {
- 
+
     // load all grunt tasks
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
- 
+
     grunt.initConfig({
 
-        pkg: grunt.file.readJSON('package.json'),
- 
+        'pkg': grunt.file.readJSON('package.json'),
+
         // watch for changes and run sass
-        watch: {
-            php: {
-                files: [
+        'watch': {
+            'php': {
+                'files': [
                     'includes/**/*.php',
                     'templates/**/*.php'
                 ],
                 tasks: ['copy']
             },
             sass: {
-                files: [ 
+                files: [
                     'assets/css/',
                     'assets/css/**'
                 ],
@@ -87,9 +87,7 @@ module.exports = function(grunt) {
                     '_nx:1,2,4c,5d',
                     '_n_noop:1,2,3d',
                     '_nx_noop:1,2,3c,4d',
-                    ' __ngettext:1,2,3d',
-                    '__ngettext_noop:1,2,3d',
-                    '_c:1,2d',
+                   '_c:1,2d',
                     '_nc:1,2,4c,5d'
                 ]
             },
@@ -97,7 +95,9 @@ module.exports = function(grunt) {
                 src : [
                     '**/*.php', // Include all files
                     '!node_modules/**', // Exclude node_modules/
-                    '!build/.*'// Exclude build/
+                      ' __ngettext:1,2,3d',
+                    '__ngettext_noop:1,2,3d',
+                   '!build/.*'// Exclude build/
                 ],
                 expand : true
             }
@@ -128,7 +128,7 @@ module.exports = function(grunt) {
                                 'Author of the plugin/theme',
                                 'Author URI of the plugin/theme'
                             ];
-                            
+
                             for ( translation in pot.translations[''] ) {
                                 if ( 'undefined' !== typeof pot.translations[''][ translation ].comments.extracted ) {
                                     if ( excluded_meta.indexOf( pot.translations[''][ translation ].comments.extracted ) >= 0 ) {
@@ -143,7 +143,7 @@ module.exports = function(grunt) {
                 }
             }
         },
-        
+
         // babel
         // 'babel : {
         //     'options : {
@@ -156,7 +156,7 @@ module.exports = function(grunt) {
         //         }
         //     }
         // },
-        
+
         // webpack
         webpack: {
             options: {
@@ -180,7 +180,7 @@ module.exports = function(grunt) {
                 '!assets/js/libraries/**/*.js',
                 '!assets/js/charitable-blocks.js'
             ]
-        },        
+        },
 
         // uglify to concat, minify, and make source maps
         uglify : {
@@ -193,12 +193,12 @@ module.exports = function(grunt) {
                     },
                 banner : '/*! <%= pkg.title %> <%= pkg.version %> <%= grunt.template.today("yyyy-mm-dd HH:MM") %> */\n'
             },
-            build : {
-                files : [{
-                    expand : true,   // Enable dynamic expansion.
-                    src : [ 
-                        'assets/js/*.js',                         
-                        '!assets/js/*.min.js', 
+            'build' : {
+                'files' : [{
+                    'expand' : true,   // Enable dynamic expansion.
+                    'src' : [
+                        'assets/js/*.js',
+                        '!assets/js/*.min.js',
                         '!assets/js/libraries/*.js',
                         'assets/js/libraries/leanModal.js',
                         'assets/js/libraries/js-cookie.js'
@@ -237,7 +237,7 @@ module.exports = function(grunt) {
                     '!cypress.json',
                     '!docker-compose.yml',
                     '!composer.json',
-                    '!composer.lock', 
+                    '!composer.lock',
                     '!phpunit.xml',
                     '!phpcs.ruleset.xml',
                     '!phpunit.xml.dist',
@@ -255,7 +255,7 @@ module.exports = function(grunt) {
                     '!**/Gruntfile.js',
                     '!**/package.json',
                     '!**/README.md',
-                    '!**/*~', 
+                    '!**/*~',
                     '!assets/css/scss/**',
                     '!CHANGELOG.md',
                     '!phpdoc.xml',
@@ -283,7 +283,7 @@ module.exports = function(grunt) {
     grunt.registerTask( 'classmap', 'Generate class to file array" task.', function() {
         var map = "<?php\nreturn array(\n";
 
-        //loop through all files in logo directory
+        //loop through all files in includes directory
         grunt.file.recurse("includes", function (abspath, rootdir, subdir, filename) {
             var classname = filename.replace('.php', '');
             var filepath = typeof subdir === 'undefined' ? filename : subdir + '/' + filename;
@@ -318,7 +318,7 @@ module.exports = function(grunt) {
                 classname = classname.replace( '_I18n', '_i18n' );
 
                 map = map.concat( "\t'" + classname + "' => '" + filepath + "',\n" );
-            }     
+            }
         });
 
         map = map.concat( ");\n" );
@@ -330,10 +330,14 @@ module.exports = function(grunt) {
 
     // Default task. - grunt watch
     grunt.registerTask( 'default', 'watch' );
-    
+<<<<<<< HEAD
+
     // Webpack watch
     grunt.registerTask( 'webpack-watch', 'webpack' );
-    
+
+=======
+
+>>>>>>> master
     // Build task(s).
     grunt.registerTask( 'build-scripts', [ 'uglify' ] );
     grunt.registerTask( 'build-styles', [ 'cssmin' ] );

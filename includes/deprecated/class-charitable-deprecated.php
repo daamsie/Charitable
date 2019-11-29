@@ -4,14 +4,16 @@
  *
  * @package   Charitable/Classes/Charitable_Deprecated
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @version   1.4.0
  * @version   1.5.9
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Deprecated' ) ) :
 
@@ -47,7 +49,7 @@ if ( ! class_exists( 'Charitable_Deprecated' ) ) :
 		 *
 		 * @var   string
 		 */
-		private $context;
+		protected $context;
 
 		/**
 		 * Create class object. Private constructor.
@@ -140,9 +142,20 @@ if ( ! class_exists( 'Charitable_Deprecated' ) ) :
 				return false;
 			}
 
-			$version = is_null( $version ) ? '' : sprintf( __( '(This message was added in %s version %s.)', 'charitable' ), $this->context, $version );
+			$version = is_null( $version ) ? '' : sprintf(
+				/* translators: %1$s: plugin name; %2$s: version number */
+				__( '(This message was added in %1$s version %2$s.)', 'charitable' ),
+				$this->context,
+				$version
+			);
 
-			$message = sprintf( __( '%1$s was called <strong>incorrectly</strong>. %2$s %3$s', 'charitable' ), $function, $message, $version );
+			$message = sprintf(
+				/* translators: %1$s: function name; %2$s: message; %3$s: version number */
+				__( '%1$s was called <strong>incorrectly</strong>. %2$s %3$s', 'charitable' ),
+				$function,
+				$message,
+				$version
+			);
 
 			trigger_error( $message );
 

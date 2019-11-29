@@ -2,11 +2,12 @@
 /**
  * Donation model.
  *
- * @version   1.5.0
  * @package   Charitable/Classes/Charitable_Donation
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since     1.4.0
+ * @version   1.6.18
  */
 
 // Exit if accessed directly.
@@ -186,6 +187,26 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 			}
 
 			return $this->__get( $key );
+		}
+
+		/**
+		 * Limit properties to be serialized.
+		 *
+		 * @since  1.6.18
+		 *
+		 * @return array
+		 */
+		public function __sleep() {
+			return array(
+				'donation_id',
+				'donation_type',
+				'donation_plan',
+				'donation_data',
+				'campaign_donations_db',
+				'gateway_transaction_id',
+				'campaign_donations',
+				'donor',
+			);
 		}
 
 		/**
@@ -529,13 +550,13 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 * @return false|Charitable_Gateway
 		 */
 		public function get_gateway_object() {
-			$class = charitable_get_helper( 'gateways' )->get_gateway( $this->get_gateway() );
+			$object = charitable_get_helper( 'gateways' )->get_gateway_object( $this->get_gateway() );
 
-			if ( ! $class ) {
+			if ( is_null( $object ) ) {
 				return false;
 			}
 
-			return new $class;
+			return $object;
 		}
 
 		/**
@@ -1157,7 +1178,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 *
 		 * @param  mixed   $value
 		 * @param  string  $key
-		 * @return mixed		 
+		 * @return mixed
 		 */
 		public function sanitize_meta( $value, $key ) {
 			charitable_get_deprecated()->deprecated_function(

@@ -5,7 +5,7 @@
  * @package		Charitable/Classes/Charitable_Form
  * @version 	1.0.0
  * @author 		Eric Daams
- * @copyright 	Copyright (c) 2018, Studio 164a
+ * @copyright 	Copyright (c) 2019, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -154,6 +154,7 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 		 * @return array
 		 */
 		public function get_fields() {
+			return array();
 		}
 
 		/**
@@ -341,7 +342,8 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 				$missing_fields = implode( '</li><li>', $missing );
 
 				charitable_get_notices()->add_error(
-					sprintf( '<p>%s</p><ul class="error-list"><li>%s</li></ul>',
+					sprintf(
+						'<p>%s</p><ul class="error-list"><li>%s</li></ul>',
 						__( 'There were problems with your form submission. The following required fields were not filled out:', 'charitable' ),
 						$missing_fields
 					)
@@ -403,7 +405,7 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 		 * @since  1.0.0
 		 *
 		 * @param  string $key The key to search for.
-		 * @return  mixed Submitted value if set. NULL if value was not set.
+		 * @return mixed Submitted value if set. NULL if value was not set.
 		 */
 		public function get_submitted_value( $key ) {
 			$submitted = $this->get_submitted_values();

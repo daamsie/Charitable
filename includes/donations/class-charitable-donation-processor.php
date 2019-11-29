@@ -5,12 +5,14 @@
  * @version     1.0.0
  * @package     Charitable/Classes/Charitable_Donation_Processor
  * @author      Eric Daams
- * @copyright   Copyright (c) 2018, Studio 164a
+ * @copyright   Copyright (c) 2019, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 
@@ -274,12 +276,10 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 		 * @return void
 		 */
 		public static function process_donation_form_submission() {
-
 			$processor = self::get_instance();
 			$result    = $processor->process_donation();
 
 			$processor->redirect_after_gateway_processing( $result );
-
 		}
 
 		/**
@@ -296,13 +296,12 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 
 			$processor = self::get_instance();
 
-			$result = $processor->process_donation();
+			$result   = $processor->process_donation();
+			$response = is_array( $result ) ? $result : array();
 
-			if ( $result ) {
-				$response = array(
-					'success'     => true,
-					'redirect_to' => $processor->get_redirection_after_gateway_processing( $result ),
-				);
+			if ( false !== $result ) {
+				$response['success']     = true;
+				$response['redirect_to'] = $processor->get_redirection_after_gateway_processing( $result );
 			} else {
 				$errors = charitable_get_notices()->get_errors();
 
@@ -310,11 +309,9 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 					$errors = array( __( 'Unable to process donation.', 'charitable' ) );
 				}
 
-				$response = array(
-					'success'     => false,
-					'errors'      => $errors,
-					'donation_id' => (int) $processor->get_donation_id(),
-				);
+				$response['success']     = false;
+				$response['errors']      = $errors;
+				$response['donation_id'] = (int) $processor->get_donation_id();
 			}
 
 			wp_send_json( $response );
@@ -351,8 +348,9 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 			if ( $form->validate_submission() ) {
 
 				$submitted = $form->get_donation_values();
+				$period    = array_key_exists( 'donation_period', $submitted ) ? $submitted['donation_period'] : 'once';
 
-				charitable_get_session()->add_donation( $submitted['campaign_id'], $submitted['amount'] );
+				charitable_get_session()->add_donation( $submitted['campaign_id'], $submitted['amount'], $period );
 
 				/**
 				 * @hook charitable_after_process_donation_amount_form
@@ -464,7 +462,7 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 
 				/* Required in case the donor is redirected back to the donation form. */
 				foreach ( $this->get_campaign_donations_data() as $campaign ) {
-					$session->add_donation( $campaign['campaign_id'], $campaign['amount'] );
+					$session->add_donation( $campaign['campaign_id'], $campaign['amount'], $this->get_donation_data_value( 'donation_key', 'once' ) );
 				}
 			}
 
@@ -592,18 +590,21 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 		 * @return void
 		 */
 		public function save_donor_contact_consent() {
-			/* Contact consent requires he database upgrade to have been completed. */
+			/* Contact consent requires the database upgrade to have been completed. */
 			if ( ! charitable_is_contact_consent_activated() ) {
 				return;
 			}
 
 			$donor_id        = $this->get_donor_id();
-			$meta            = $this->get_donation_data_value( 'meta' );
+			$meta            = $this->get_donation_data_value( 'meta', array() );
 			$contact_consent = array_key_exists( 'contact_consent', $meta ) ? (bool) $meta['contact_consent'] : false;
 
-			charitable_get_table( 'donors' )->update( $donor_id, array(
-				'contact_consent' => $contact_consent,
-			) );
+			charitable_get_table( 'donors' )->update(
+				$donor_id,
+				array(
+					'contact_consent' => $contact_consent,
+				)
+			);
 		}
 
 		/**
@@ -665,7 +666,7 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 		 *
 		 * @since  1.0.0
 		 *
-		 * @return string[]|false
+		 * @return array[]|false
 		 */
 		public function get_campaign_donations_data() {
 			if ( ! isset( $this->campaign_donations_data ) ) {
@@ -684,7 +685,7 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 					}
 
 					if ( ! isset( $campaign['campaign_name'] ) ) {
-						$campaign['campaign_name'] = get_the_title( $campaign['campaign_id'] );
+						$campaign['campaign_name'] = get_post_field( 'post_title', $campaign['campaign_id'], 'raw' );
 					}
 
 					$this->campaign_donations_data[] = $campaign;
@@ -711,7 +712,7 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 
 				$user_data = $this->get_donation_data_value( 'user', array() );
 
-				if ( array_key_exists( 'email', $user_data ) ) {
+				if ( array_key_exists( 'email', $user_data ) && ! empty( $user_data['email'] ) ) {
 					$this->donor_id = charitable_get_table( 'donors' )->get_donor_id_by_email( $user_data['email'] );
 				}
 
@@ -723,6 +724,52 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 			}//end if
 
 			return $this->donor_id;
+		}
+
+		/**
+		 * Returns the name of the donor.
+		 *
+		 * @since  1.0.0
+		 * @since  1.6.14 Changed access to public. Previously protected.
+		 *
+		 * @return string
+		 */
+		public function get_donor_name() {
+			$user       = new WP_User( $this->get_donation_data_value( 'user_id', 0 ) );
+			$user_data  = $this->get_donation_data_value( 'user' );
+			$first_name = isset( $user_data['first_name'] ) ? $user_data['first_name'] : $user->get( 'first_name' );
+			$last_name  = isset( $user_data['last_name'] ) ? $user_data['last_name'] : $user->get( 'last_name' );
+			return trim( sprintf( '%s %s', $first_name, $last_name ) );
+		}
+
+		/**
+		 * Returns a comma separated list of the campaigns that are being donated to.
+		 *
+		 * @since  1.0.0
+		 * @since  1.6.14 Changed access to public. Previously protected.
+		 *
+		 * @return string
+		 */
+		public function get_campaign_names() {
+			$campaigns = wp_list_pluck( $this->get_campaign_donations_data(), 'campaign_name' );
+			return implode( ', ', $campaigns );
+		}
+
+		/**
+		 * Returns the donation status. Defaults to charitable-pending.
+		 *
+		 * @since  1.0.0
+		 *
+		 * @return string
+		 */
+		protected function get_donation_status() {
+			$status = $this->get_donation_data_value( 'status', 'charitable-pending' );
+
+			if ( ! charitable_is_valid_donation_status( $status ) ) {
+				$status = 'charitable-pending';
+			}
+
+			return $status;
 		}
 
 		/**
@@ -842,50 +889,6 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 			$core_values['post_date'] = get_date_from_gmt( $core_values['post_date_gmt'] );
 
 			return apply_filters( 'charitable_donation_values_core', $core_values, $this );
-		}
-
-		/**
-		 * Returns the donation status. Defaults to charitable-pending.
-		 *
-		 * @since  1.0.0
-		 *
-		 * @return string
-		 */
-		protected function get_donation_status() {
-			$status = $this->get_donation_data_value( 'status', 'charitable-pending' );
-
-			if ( ! charitable_is_valid_donation_status( $status ) ) {
-				$status = 'charitable-pending';
-			}
-
-			return $status;
-		}
-
-		/**
-		 * Returns the name of the donor.
-		 *
-		 * @since  1.0.0
-		 *
-		 * @return string
-		 */
-		protected function get_donor_name() {
-			$user       = new WP_User( $this->get_donation_data_value( 'user_id', 0 ) );
-			$user_data  = $this->get_donation_data_value( 'user' );
-			$first_name = isset( $user_data['first_name'] ) ? $user_data['first_name'] : $user->get( 'first_name' );
-			$last_name  = isset( $user_data['last_name'] ) ? $user_data['last_name'] : $user->get( 'last_name' );
-			return trim( sprintf( '%s %s', $first_name, $last_name ) );
-		}
-
-		/**
-		 * Returns a comma separated list of the campaigns that are being donated to.
-		 *
-		 * @since  1.0.0
-		 *
-		 * @return string
-		 */
-		protected function get_campaign_names() {
-			$campaigns = wp_list_pluck( $this->get_campaign_donations_data(), 'campaign_name' );
-			return implode( ', ', $campaigns );
 		}
 
 		/**

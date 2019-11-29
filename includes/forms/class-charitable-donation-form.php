@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_Donation_Form
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
  * @version   1.6.0
@@ -457,10 +457,14 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 			$amount = $this->get_campaign()->get_donation_amount_in_session();
 
 			if ( ! $amount ) {
-				$content = charitable_template_from_session_content( 'donation_form_current_amount_text', array(
-					'campaign_id' => $this->get_campaign()->ID,
-					'form_id'     => $this->get_form_identifier(),
-				), '' );
+				$content = charitable_template_from_session_content(
+					'donation_form_current_amount_text',
+					array(
+						'campaign_id' => $this->get_campaign()->ID,
+						'form_id'     => $this->get_form_identifier(),
+					),
+					''
+				);
 			} else {
 				$content = charitable_template_donation_form_current_amount_text( $amount, $this->get_form_identifier(), $this->get_campaign()->ID );
 			}
@@ -493,10 +497,13 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 		 * @return void
 		 */
 		public function render() {
-			charitable_template( 'donation-form/form-donation.php', array(
-				'campaign' => $this->get_campaign(),
-				'form'     => $this,
-			) );
+			charitable_template(
+				'donation-form/form-donation.php',
+				array(
+					'campaign' => $this->get_campaign(),
+					'form'     => $this,
+				)
+			);
 		}
 
 		/**
@@ -700,7 +707,6 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 		 * @return boolean
 		 */
 		public function validate_gateway() {
-
 			$ret = true;
 
 			/* Validate the gateway. */
@@ -739,10 +745,12 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 			$amount  = self::get_donation_amount();
 
 			if ( $minimum > 0 && $amount < $minimum ) {
-				charitable_get_notices()->add_error( sprintf(
-					__( 'You must donate more than %s.', 'charitable' ),
-					charitable_format_money( $minimum )
-				) );
+				charitable_get_notices()->add_error(
+					sprintf(
+						__( 'You must donate more than %s.', 'charitable' ),
+						charitable_format_money( $minimum )
+					)
+				);
 
 				$ret = false;
 			} elseif ( $minimum == 0 && $amount <= 0 && ! apply_filters( 'charitable_permit_0_donation', false ) ) {
@@ -794,13 +802,9 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 			foreach ( $this->get_merged_fields() as $key => $field ) {
 
 				if ( isset( $field['data_type'] ) || 'gateways' == $key ) {
-
 					if ( 'gateways' == $key ) {
-
 						foreach ( $field as $gateway_id => $gateway_fields ) {
-
 							foreach ( $gateway_fields as $key => $field ) {
-
 								if ( ! isset( $field['type'] ) ) {
 									continue;
 								}
@@ -818,13 +822,11 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 							}
 						}
 					} elseif ( isset( $field['type'] ) ) {
-
 						$data_type  = $field['data_type'];
 						$field_type = $field['type'];
 						$default    = 'checkbox' == $field_type ? false : '';
 
 						$values[ $data_type ][ $key ] = isset( $submitted[ $key ] ) ? $submitted[ $key ] : $default;
-
 					}
 				}
 			}
@@ -934,19 +936,17 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 		 */
 		public function maybe_add_terms_conditions_fields( $fields ) {
 			$terms_fields = array();
-			$privacy_page = (int) charitable_get_option( 'privacy_policy_page', 0 );
-			$terms_page   = (int) charitable_get_option( 'terms_conditions_page', 0 );
 			$show_consent = (int) charitable_get_option( 'contact_consent', 0 ) && Charitable_Upgrade::get_instance()->upgrade_has_been_completed( 'upgrade_donor_tables' );
 
-			if ( $privacy_page ) {
+			if ( charitable_is_privacy_policy_activated() ) {
 				$terms_fields['privacy_policy_text'] = array(
 					'type'     => 'content',
-					'content'  => '<p class="charitable-privacy-policy-text">' . $this->get_parsed_privacy_text( $privacy_page ) . '</p>',
+					'content'  => '<p class="charitable-privacy-policy-text">' . charitable_get_privacy_policy_field_text() . '</p>',
 					'priority' => 4,
 				);
 			}
 
-			if ( $show_consent ) {
+			if ( charitable_is_contact_consent_activated() ) {
 				$terms_fields['contact_consent'] = array(
 					'type'      => 'checkbox',
 					'label'     => charitable_get_option( 'contact_consent_label', __( 'Yes, I am happy for you to contact me via email or phone.', 'charitable' ) ),
@@ -956,16 +956,16 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 				);
 			}
 
-			if ( $terms_page ) {
+			if ( charitable_is_terms_and_conditions_activated() ) {
 				$terms_fields['terms_text'] = array(
 					'type'     => 'content',
-					'content'  => '<div class="charitable-terms-text">' . $this->get_terms( $terms_page ) . '</div>',
+					'content'  => '<div class="charitable-terms-text">' . charitable_get_terms_and_conditions() . '</div>',
 					'priority' => 12,
 				);
 
 				$terms_fields['accept_terms'] = array(
 					'type'      => 'checkbox',
-					'label'     => $this->get_parsed_terms_text( $terms_page ),
+					'label'     => charitable_get_terms_and_conditions_field_label(),
 					'priority'  => 16,
 					'required'  => true,
 					'data_type' => 'meta',
@@ -986,78 +986,80 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 				return $fields;
 			}
 
-			return array_merge( $fields, array(
-				'terms_fields' => array(
-					'legend'   => __( 'Terms and Conditions', 'charitable' ),
-					'type'     => 'fieldset',
-					'fields'   => $terms_fields,
-					'priority' => 80,
-				),
-			) );
+			return array_merge(
+				$fields,
+				array(
+					'terms_fields' => array(
+						'legend'   => __( 'Terms and Conditions', 'charitable' ),
+						'type'     => 'fieldset',
+						'fields'   => $terms_fields,
+						'priority' => 80,
+					),
+				)
+			);
 		}
 
 		/**
 		 * Return the terms and conditions text.
 		 *
+		 * @deprecated 2.0.0
+		 *
 		 * @since  1.6.0
+		 * @since  1.6.14 Deprecated.
 		 *
 		 * @param  int $terms_page The ID of the terms page.
 		 * @return string
 		 */
 		public function get_terms( $terms_page ) {
-			remove_filter( 'the_content', array( charitable()->endpoints(), 'get_content' ) );
+			charitable_get_deprecated()->deprecated_function(
+				__METHOD__,
+				'1.6.14',
+				'charitable_get_terms_and_conditions'
+			);
 
-			$content = apply_filters( 'the_content', get_post_field( 'post_content', $terms_page, 'display' ) );
-
-			add_filter( 'the_content', array( charitable()->endpoints(), 'get_content' ) );
-
-			return $content;
+			return charitable_get_terms_and_conditions();
 		}
 
 		/**
 		 * Return the terms text, with [terms] replaced by a link to the terms and conditions.
 		 *
+		 * @deprecated 2.0.0
+		 *
 		 * @since  1.6.0
+		 * @since  1.6.14 Deprecated.
 		 *
 		 * @param  int $terms_page The ID of the terms page.
 		 * @return string
 		 */
 		public function get_parsed_terms_text( $terms_page ) {
-			$url = get_the_permalink( $terms_page );
-
-			if ( ! $url ) {
-				return '';
-			}
-
-			$text    = charitable_get_option( 'terms_conditions', __( 'I have read and agree to the website [terms].', 'charitable' ) );
-			$replace = sprintf( '<a href="%s" target="_blank" class="charitable-terms-link">%s</a>',
-				$url,
-				__( 'terms and conditions', 'charitable' )
+			charitable_get_deprecated()->deprecated_function(
+				__METHOD__,
+				'1.6.14',
+				'charitable_get_terms_and_conditions_field_label'
 			);
-			return str_replace( '[terms]', $replace, $text );
+
+			return charitable_get_terms_and_conditions_field_label();
 		}
 
 		/**
 		 * Return the privacy policy text, with [privacy_policy] replaced by a link to the privacy policy page.
 		 *
+		 * @deprecated 2.0.0
+		 *
 		 * @since  1.6.0
+		 * @since  1.6.14 Deprecated.
 		 *
 		 * @param  int $privacy_page The ID of the privacy policy page.
 		 * @return string
 		 */
 		public function get_parsed_privacy_text( $privacy_page ) {
-			$url = get_the_permalink( $privacy_page );
-
-			if ( ! $url ) {
-				return '';
-			}
-
-			$text    = charitable_get_option( 'privacy_policy', __( 'Your personal data will be used to process your donation, support your experience throughout this website, and for other purposes described in our [privacy_policy].', 'charitable' ) );
-			$replace = sprintf( '<a href="%s" target="_blank" class="charitable-privacy-policy-link">%s</a>',
-				$url,
-				__( 'privacy policy', 'charitable' )
+			charitable_get_deprecated()->deprecated_function(
+				__METHOD__,
+				'1.6.14',
+				'charitable_get_privacy_policy_field_text'
 			);
-			return str_replace( '[privacy_policy]', $replace, $text );
+
+			return charitable_get_privacy_policy_field_text();
 		}
 
 		/**
@@ -1307,7 +1309,7 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 				'1.5.0'
 			);
 
-			return $custom_template;			
+			return $custom_template;
 		}
 	}
 

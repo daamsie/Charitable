@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.6.0
- * @version   1.6.0
+ * @version   1.6.19
  */
 
 // Exit if accessed directly.
@@ -89,16 +89,6 @@ return apply_filters(
 				'description' => __( 'The end date of the campaign', 'charitable' ),
 				'preview'     => date( get_option( 'date_format', 'd/m/Y' ) ),
 			),
-			'email_tag'      => array(
-				'tag'         => 'campaign_end_date',
-				'description' => __( 'The end date of the campaign', 'charitable' ),
-				'preview'     => date( get_option( 'date_format', 'd/m/Y' ) ),
-			),
-			'email_tag'      => array(
-				'tag'         => 'campaign_end_date',
-				'description' => __( 'The end date of the campaign', 'charitable' ),
-				'preview'     => date( get_option( 'date_format', 'd/m/Y' ) ),
-			),
 			'show_in_export' => true,
 		),
 		'suggested_donations'      => array(
@@ -170,6 +160,14 @@ return apply_filters(
 			'email_tag'      => false,
 			'show_in_export' => false,
 		),
+		'image'                    => array(
+			'label'          => __( 'Featured Image', 'charitable' ),
+			'data_type'      => 'meta',
+			'value_callback' => 'charitable_get_campaign_featured_image',
+			'admin_form'     => false,
+			'email_tag'      => false,
+			'show_in_export' => false,
+		),
 		'campaign_creator_name'    => array(
 			'label'          => __( 'Campaign Creator', 'charitable' ),
 			'data_type'      => 'core',
@@ -205,6 +203,14 @@ return apply_filters(
 			),
 			'show_in_export' => false,
 		),
+		'donated_amount'           => array(
+			'label'          => __( 'Amount Donated', 'charitable' ),
+			'data_type'      => 'core',
+			'value_callback' => false,
+			'admin_form'     => false,
+			'email_tag'      => false,
+			'show_in_export' => true,
+		),
 		'donated_amount_formatted' => array(
 			'label'          => __( 'Amount Donated', 'charitable' ),
 			'data_type'      => 'core',
@@ -215,6 +221,26 @@ return apply_filters(
 				'description' => __( 'Display the total amount donated to the campaign', 'charitable' ),
 				'preview'     => '$16,523',
 			),
+			'show_in_export' => false,
+		),
+		'percent_donated'          => array(
+			'label'          => __( 'Percent Donated', 'charitable' ),
+			'data_type'      => 'core',
+			'value_callback' => false,
+			'admin_form'     => false,
+			'email_tag'      => array(
+				'tag'         => 'campaign_percent_donated',
+				'description' => __( 'Display the percentage donated to the campaign', 'charitable' ),
+				'preview'     => '34%',
+			),
+			'show_in_export' => false,
+		),
+		'percent_donated_raw'      => array(
+			'label'          => __( 'Percent Donated', 'charitable' ),
+			'data_type'      => 'core',
+			'value_callback' => false,
+			'admin_form'     => false,
+			'email_tag'      => false,
 			'show_in_export' => true,
 		),
 		'donor_count'              => array(
@@ -260,6 +286,28 @@ return apply_filters(
 				'preview'     => get_edit_post_link( 1 ),
 			),
 			'show_in_export' => false,
+		),
+		'categories'               => array(
+			'label'          => __( 'Categories', 'charitable' ),
+			'data_type'      => 'taxonomy',
+			'value_callback' => 'charitable_get_campaign_taxonomy_terms_list',
+			'admin_form'     => false,
+			'email_tag'      => array(
+				'description' => __( 'Display a comma-separated list of campaign categories', 'charitable' ),
+				'preview'     => 'Category 1, Category 2',
+			),
+			'show_in_export' => true,
+		),
+		'tags'                     => array(
+			'label'          => __( 'Tags', 'charitable' ),
+			'data_type'      => 'taxonomy',
+			'value_callback' => 'charitable_get_campaign_taxonomy_terms_list',
+			'admin_form'     => false,
+			'email_tag'      => array(
+				'description' => __( 'Display a comma-separated list of campaign tags', 'charitable' ),
+				'preview'     => 'Tag 1, Tag 2, Tag 3',
+			),
+			'show_in_export' => true,
 		),
 	)
 );

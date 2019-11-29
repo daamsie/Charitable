@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Admin/Charitable_Campaign_Meta_Boxes
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
  * @version   1.6.0
@@ -45,6 +45,11 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 		 */
 		private function __construct() {
 			$this->meta_box_helper = new Charitable_Meta_Box_Helper( 'charitable-campaign' );
+
+			/**
+			 * Prevent sorting of campaign meta boxes.
+			 */
+			add_filter( 'get_user_option_meta-box-order_' . Charitable::CAMPAIGN_POST_TYPE, '__return_false' );
 		}
 
 		/**
@@ -132,6 +137,8 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 				do_meta_boxes( Charitable::CAMPAIGN_POST_TYPE, 'campaign-top', $post );
 			}
 		}
+
+
 
 		/**
 		 * Return campaign settings panels.
@@ -418,6 +425,11 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 			$campaign = charitable_get_campaign( $_GET['post'] );
 
 			if ( in_array( $campaign->post_status, array( 'auto-draft', 'draft' ) ) ) {
+				return $field;
+			}
+
+			if ( array_key_exists( 'value_callback', $field ) && is_callable( $field['value_callback'] ) ) {
+				$field['value'] = call_user_func( $field['value_callback'], $campaign, $key );
 				return $field;
 			}
 

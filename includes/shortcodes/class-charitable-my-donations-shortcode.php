@@ -4,14 +4,16 @@
  *
  * @package   Charitable/Shortcodes/My Donations
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.4.0
  * @version   1.5.7
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_My_Donations_Shortcode' ) ) :
 
@@ -76,6 +78,7 @@ if ( ! class_exists( 'Charitable_My_Donations_Shortcode' ) ) :
 						$message = __( 'We have sent you an email to confirm your email address.', 'charitable' );
 					} else {
 						$message = sprintf(
+							/* translators: %s: email verification link */
 							__( '<a href="%s">Confirm your email address</a> to access your full donation history.', 'charitable' ),
 							esc_url( charitable_get_email_verification_link( $user, charitable_get_current_url() ) )
 						);

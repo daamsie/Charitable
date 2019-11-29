@@ -1,16 +1,18 @@
 <?php
 /**
- * email_preview endpoint.
+ * Email preview endpoint.
  *
  * @package   Charitable/Classes/Charitable_Email_Preview_Endpoint
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
  * @version   1.5.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Email_Preview_Endpoint' ) ) :
 
@@ -21,7 +23,7 @@ if ( ! class_exists( 'Charitable_Email_Preview_Endpoint' ) ) :
 	 */
 	class Charitable_Email_Preview_Endpoint extends Charitable_Endpoint {
 
-		/* @var string */
+		/** Endpoint ID. */
 		const ID = 'email_preview';
 
 		/**
@@ -54,10 +56,15 @@ if ( ! class_exists( 'Charitable_Email_Preview_Endpoint' ) ) :
 				return '';
 			}
 
-			return esc_url_raw( add_query_arg( array(
-				'charitable_action' => 'preview_email',
-				'email_id' 			=> $args['email_id'],
-			), home_url() ) );
+			return esc_url_raw(
+				add_query_arg(
+					array(
+						'charitable_action' => 'preview_email',
+						'email_id'          => $args['email_id'],
+					),
+					home_url()
+				)
+			);
 		}
 
 		/**

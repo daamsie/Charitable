@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_Donor_Consent_Log
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.6.0
  * @version   1.6.0
@@ -74,11 +74,14 @@ if ( ! class_exists( 'Charitable_Donor_Consent_Log' ) ) :
 				return false;
 			}
 
-			array_push( $log, array(
-				'time'          => time(),
-				'consent_given' => $consent_given,
-				'statement'     => $consent_statement,
-			) );
+			array_push(
+				$log,
+				array(
+					'time'          => time(),
+					'consent_given' => $consent_given,
+					'statement'     => $consent_statement,
+				)
+			);
 
 			$ret = update_metadata( 'donor', $this->donor_id, 'consent_log', $log );
 

@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_Donation_Field
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
  * @version   1.5.3
@@ -170,13 +170,16 @@ if ( ! class_exists( 'Charitable_Donation_Field' ) ) :
 		 * @return boolean|array
 		 */
 		protected function sanitize_donation_form( $value ) {
-			return $this->sanitize_form_arg( $value, array(
-				'type'      => 'text',
-				'required'  => false,
-				'fullwidth' => false,
-				'default'   => '',
-				'attrs'     => array(),
-			) );
+			return $this->sanitize_form_arg(
+				$value,
+				array(
+					'type'      => 'text',
+					'required'  => false,
+					'fullwidth' => false,
+					'default'   => '',
+					'attrs'     => array(),
+				)
+			);
 		}
 	}
 

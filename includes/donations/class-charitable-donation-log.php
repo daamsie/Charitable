@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_Donation_Log
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.4
  * @version   1.5.4
@@ -83,10 +83,13 @@ if ( ! class_exists( 'Charitable_Donation_Log' ) ) :
 		public function add( $message ) {
 			$log = $this->get_meta_log();
 
-			array_push( $log, array(
-				'time'    => time(),
-				'message' => $message,
-			) );
+			array_push(
+				$log,
+				array(
+					'time'    => time(),
+					'message' => $message,
+				)
+			);
 
 			$ret = update_post_meta( $this->donation_id, '_donation_log', $log );
 

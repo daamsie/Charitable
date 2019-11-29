@@ -1,16 +1,18 @@
 <?php
 /**
- * donation_cancellation endpoint.
+ * Donation cancellation endpoint.
  *
  * @package   Charitable/Classes/Charitable_Donation_Cancellation_Endpoint
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
  * @version   1.5.4
  */
 
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Donation_Cancellation_Endpoint' ) ) :
 
@@ -21,7 +23,7 @@ if ( ! class_exists( 'Charitable_Donation_Cancellation_Endpoint' ) ) :
 	 */
 	class Charitable_Donation_Cancellation_Endpoint extends Charitable_Endpoint {
 
-		/* @var string */
+		/** Endpoint ID. */
 		const ID = 'donation_cancellation';
 
 		/**
@@ -66,20 +68,28 @@ if ( ! class_exists( 'Charitable_Donation_Cancellation_Endpoint' ) ) :
 
 			/* A donation ID must be provided. */
 			if ( ! array_key_exists( 'donation_id', $args ) ) {
-				return $url;
+				return '';
 			}
 
 			/* Grab the first campaign donation. */
 			$campaign_donation = current( charitable_get_donation( $args['donation_id'] )->get_campaign_donations() );
 
-			$donation_page = charitable_get_permalink( 'campaign_donation_page', array(
-				'campaign_id' => $campaign_donation->campaign_id,
-			) );
+			$donation_page = charitable_get_permalink(
+				'campaign_donation_page',
+				array(
+					'campaign_id' => $campaign_donation->campaign_id,
+				)
+			);
 
-			return esc_url_raw( add_query_arg( array(
-				'donation_id' => $args['donation_id'],
-				'cancel' => true,
-			), $donation_page ) );
+			return esc_url_raw(
+				add_query_arg(
+					array(
+						'donation_id' => $args['donation_id'],
+						'cancel'      => true,
+					),
+					$donation_page
+				)
+			);
 		}
 
 		/**

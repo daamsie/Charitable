@@ -5,7 +5,7 @@
  * @package     Charitable/Classes/Charitable_Donor
  * @version     1.0.0
  * @author      Eric Daams
- * @copyright   Copyright (c) 2018, Studio 164a
+ * @copyright   Copyright (c) 2019, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -21,7 +21,7 @@ if ( ! class_exists( 'Charitable_Donor' ) ) :
 	 *
 	 * @since    1.0.0
 	 *
-	 * @property int    $user_id
+	 * @property int    $donor_id
 	 * @property string $first_name
 	 * @property string $last_name
 	 * @property string $email
@@ -307,10 +307,12 @@ if ( ! class_exists( 'Charitable_Donor' ) ) :
 		 */
 		public function get_last_donation() {
 			if ( ! isset( $this->last_donation ) ) {
-				$donation = new Charitable_Donations_Query( array(
-					'number'   => 1,
-					'donor_id' => $this->donor_id,
-				) );
+				$donation = new Charitable_Donations_Query(
+					array(
+						'number'   => 1,
+						'donor_id' => $this->donor_id,
+					)
+				);
 
 				$this->last_donation = $donation->count() ? $donation->current() : null;
 			}
@@ -454,6 +456,18 @@ if ( ! class_exists( 'Charitable_Donor' ) ) :
 		 */
 		public function get_donation_amount( $campaign_id = '' ) {
 			return apply_filters( 'charitable_donor_donation_amount', charitable_get_table( 'campaign_donations' )->get_donation_amount( $this->donation_id, $campaign_id ), $this, $campaign_id );
+		}
+
+		/**
+		 * Return the number of donations made by the donor.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @param  boolean $distinct_donations If true, will only count unique donations.
+		 * @return int
+		 */
+		public function count_donations( $distinct_donations = false ) {
+			return apply_filters( 'charitable_donor_donation_count', charitable_get_table( 'campaign_donations' )->count_donations_by_donor( $this->donor_id, $distinct_donations ), $this, $distinct_donations );
 		}
 
 		/**

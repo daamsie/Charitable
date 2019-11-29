@@ -3,18 +3,18 @@
  * Plugin Name:       Charitable
  * Plugin URI:        https://www.wpcharitable.com
  * Description:       The WordPress fundraising alternative for non-profits, created to help non-profits raise money on their own website.
- * Version:           1.6.23
+ * Version:           1.6.30
  * Author:            WP Charitable
  * Author URI:        https://wpcharitable.com
  * Requires at least: 4.1
- * Tested up to:      5.2.3
+ * Tested up to:      5.3
  *
  * Text Domain:       charitable
  * Domain Path:       /i18n/languages/
  *
  * @package           Charitable
  * @author            Eric Daams
- * @copyright         Copyright (c) 2018, Studio 164a
+ * @copyright         Copyright (c) 2019, Studio 164a
  * @license           http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -26,38 +26,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'Charitable' ) ) :
 
 	/**
-	 * Main Charitable class
-	 *
-	 * @version 1.6.2
+	 * Main Charitable class.
 	 */
 	class Charitable {
 
-		/**
-		 * Plugin version.
-		 *
-		 * @var string
-		 */
-		const VERSION = '1.6.23';
+		/* Plugin version. */
+		const VERSION = '1.6.30';
 
-		/**
-		 * Version of database schema.
-		 *
-		 * @var string A date in the format: YYYYMMDD
-		 */
+		/* Version of database schema. */
 		const DB_VERSION = '20180522';
 
-		/**
-		 * Campaign post type.
-		 *
-		 * @var string
-		 */
+		/* Campaign post type. */
 		const CAMPAIGN_POST_TYPE = 'campaign';
 
-		/**
-		 * Donation post type.
-		 *
-		 * @var string
-		 */
+		/* Donation post type. */
 		const DONATION_POST_TYPE = 'donation';
 
 		/**
@@ -209,9 +191,11 @@ if ( ! class_exists( 'Charitable' ) ) :
 		}
 
 		/**
-		 * Load template files.
+		 * Load the template functions after theme is loaded.
 		 *
-		 * @since  1.6.0
+		 * This gives themes time to override the functions.
+		 *
+		 * @since  1.6.10
 		 *
 		 * @return void
 		 */
@@ -653,6 +637,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 				$endpoints->register( new Charitable_Registration_Endpoint );
 				$endpoints->register( new Charitable_Login_Endpoint );
 				$endpoints->register( new Charitable_Profile_Endpoint );
+				$endpoints->register( new Charitable_Webhook_Listener_Endpoint );
 
 				$this->registry->register_object( $endpoints );
 			}
@@ -724,11 +709,14 @@ if ( ! class_exists( 'Charitable' ) ) :
 			 *
 			 * @param array $tables List of tables as a key=>value array.
 			 */
-			return apply_filters( 'charitable_db_tables', array(
-				'campaign_donations' => 'Charitable_Campaign_Donations_DB',
-				'donors'             => 'Charitable_Donors_DB',
-				'donormeta'          => 'Charitable_Donormeta_DB',
-			) );
+			return apply_filters(
+				'charitable_db_tables',
+				array(
+					'campaign_donations' => 'Charitable_Campaign_Donations_DB',
+					'donors'             => 'Charitable_Donors_DB',
+					'donormeta'          => 'Charitable_Donormeta_DB',
+				)
+			);
 		}
 
 		/**
@@ -799,6 +787,8 @@ if ( ! class_exists( 'Charitable' ) ) :
 			if ( isset( $_REQUEST['charitable_action'] ) ) {
 
 				$action = $_REQUEST['charitable_action'];
+
+				error_log( var_export( 'charitable_' . $action, true ) );
 
 				/**
 				 * Handle Charitable action.

@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Functions/Donation
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
  * @version   1.5.0
@@ -149,9 +149,9 @@ function charitable_create_donation( array $args ) {
 function charitable_get_donation_by_key( $donation_key ) {
 	global $wpdb;
 
-	$sql = "SELECT post_id 
-			FROM $wpdb->postmeta 
-			WHERE meta_key = 'donation_key' 
+	$sql = "SELECT post_id
+			FROM $wpdb->postmeta
+			WHERE meta_key = 'donation_key'
 			AND meta_value = %s";
 
 	return $wpdb->get_var( $wpdb->prepare( $sql, $donation_key ) );
@@ -168,9 +168,9 @@ function charitable_get_donation_by_key( $donation_key ) {
 function charitable_get_donation_by_transaction_id( $transaction_id ) {
 	global $wpdb;
 
-	$sql = "SELECT post_id 
-			FROM $wpdb->postmeta 
-			WHERE meta_key = '_gateway_transaction_id' 
+	$sql = "SELECT post_id
+			FROM $wpdb->postmeta
+			WHERE meta_key = '_gateway_transaction_id'
 			AND meta_value = %s";
 
 	return $wpdb->get_var( $wpdb->prepare( $sql, $transaction_id ) );
@@ -187,7 +187,7 @@ function charitable_get_donation_by_transaction_id( $transaction_id ) {
  * @return string
  */
 function charitable_get_ipn_url( $gateway ) {
-	return add_query_arg( 'charitable-listener', $gateway, home_url( 'index.php' ) );
+	return charitable_get_permalink( 'webhook_listener', array( 'gateway' => $gateway ) );
 }
 
 /**
@@ -197,26 +197,21 @@ function charitable_get_ipn_url( $gateway ) {
  *
  * IPNs in Charitable are structured in this way: charitable-listener=gateway
  *
+ * @deprecated 1.9.0
+ *
  * @since  1.4.0
+ * @since  1.6.14 Deprecated. This is now handled by the webhook listener endpoint.
  *
  * @return boolean True if this is a call to our IPN. False otherwise.
  */
 function charitable_ipn_listener() {
-	if ( isset( $_GET['charitable-listener'] ) ) {
+	charitable_get_deprecated()->deprecated_function(
+		__FUNCTION__,
+		'1.6.14',
+		"charitable()->endpoints()->get_endpoint( 'webhook_listener' )->process_incoming_webhook()"
+	);
 
-		$gateway = $_GET['charitable-listener'];
-
-		/**
-		 * Handle a gateway's IPN.
-		 *
-		 * @since 1.0.0
-		 */
-		do_action( 'charitable_process_ipn_' . $gateway );
-
-		return true;
-	}
-
-	return false;
+	return charitable()->endpoints()->get_endpoint( 'webhook_listener' )->process_incoming_webhook();
 }
 
 /**

@@ -1,16 +1,18 @@
 <?php
 /**
- * email_verification endpoint.
+ * Email verification endpoint.
  *
  * @package   Charitable/Classes/Charitable_Email_Verification_Endpoint
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.5.4
+ * @version   1.6.26
  */
 
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Email_Verification_Endpoint' ) ) :
 
@@ -21,7 +23,7 @@ if ( ! class_exists( 'Charitable_Email_Verification_Endpoint' ) ) :
 	 */
 	class Charitable_Email_Verification_Endpoint extends Charitable_Endpoint {
 
-		/* @var string */
+		/** Endpoint ID. */
 		const ID = 'email_verification';
 
 		/**
@@ -105,14 +107,13 @@ if ( ! class_exists( 'Charitable_Email_Verification_Endpoint' ) ) :
 		}
 
 		/**
-		 * Return the template to display for this endpoint.
+		 * If the page should redirect, return the URL it should redirect to.
 		 *
-		 * @since  1.5.0
+		 * @since  1.6.26
 		 *
-		 * @param  string $template The default template.
-		 * @return string
+		 * @return false|string
 		 */
-		public function get_template( $template ) {
+		public function get_redirect() {
 			$result = $this->get_verification_check_result();
 
 			/* After successful verification, set a notice and redirect. */
@@ -121,19 +122,33 @@ if ( ! class_exists( 'Charitable_Email_Verification_Endpoint' ) ) :
 				charitable_get_session()->add_notices();
 
 				if ( array_key_exists( 'redirect_to', $_GET ) ) {
-					wp_safe_redirect( $_GET['redirect_to'] );
-					exit();
-				}				
+					return $_GET['redirect_to'];
+				}
 			}
 
+			return false;
+		}
+
+		/**
+		 * Return the template to display for this endpoint.
+		 *
+		 * @since  1.5.0
+		 *
+		 * @param  string $template The default template.
+		 * @return string
+		 */
+		public function get_template( $template ) {
 			$profile = charitable_get_option( 'profile_page', false );
 
-			new Charitable_Ghost_Page( 'email-verification-page', array(
-				'title'   => __( 'Email Verification', 'charitable' ),
-				'content' => '<!-- Silence is golden -->',
-			) );
+			new Charitable_Ghost_Page(
+				'email-verification-page',
+				array(
+					'title'   => __( 'Email Verification', 'charitable' ),
+					'content' => '<!-- Silence is golden -->',
+				)
+			);
 
-			$templates = array( 'email-verification-page.php', 'page.php', 'index.php' );
+			$templates = array( 'email-verification-page.php', 'page.php', 'singular.php', 'index.php' );
 
 			if ( $profile ) {
 				return charitable_splice_template( get_page_template_slug( $profile ), $templates );
@@ -155,9 +170,12 @@ if ( ! class_exists( 'Charitable_Email_Verification_Endpoint' ) ) :
 
 			ob_start();
 
-			charitable_template( $template, array(
-				'result' => $this->get_verification_check_result(),
-			) );
+			charitable_template(
+				$template,
+				array(
+					'result' => $this->get_verification_check_result(),
+				)
+			);
 
 			return ob_get_clean();
 		}

@@ -7,7 +7,7 @@
  *
  * @package   Charitable/Classes/Charitable_DB
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
  * @version   1.5.11
@@ -352,13 +352,10 @@ if ( ! class_exists( 'Charitable_DB' ) ) :
 		 *
 		 * @since  1.0.0
 		 *
-		 * @global $wpdb
 		 * @param  string $sql The SQL statement to execute.
 		 * @return void
 		 */
 		protected function _create_table( $sql ) {
-			global $wpdb;
-
 			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
 			dbDelta( $sql );

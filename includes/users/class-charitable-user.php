@@ -11,7 +11,7 @@
  * @version     1.0.0
  * @package     Charitable/Classes/Charitable_User
  * @author      Eric Daams
- * @copyright   Copyright (c) 2018, Studio 164a
+ * @copyright   Copyright (c) 2019, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -55,24 +55,27 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 *
 		 * NOTE: This is not the same as the user ID.
 		 *
-		 * @var     int
-		 * @since  1.0.0
+		 * @since 1.0.0
+		 *
+		 * @var   int
 		 */
 		protected $donor_id;
 
 		/**
 		 * A mapping of user keys.
 		 *
-		 * @var 	string[]
-		 * @since  1.4.0
+		 * @since 1.4.0
+		 *
+		 * @var   string[]
 		 */
 		protected $mapped_keys;
 
 		/**
 		 * Core keys.
 		 *
-		 * @var 	string[]
 		 * @since  1.4.0
+		 *
+		 * @var   string[]
 		 */
 		protected $core_keys;
 
@@ -264,6 +267,15 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 				$donor->set_user_id( $this->ID );
 			}
 
+			/**
+			 * Do something when a user is verified.
+			 *
+			 * @since 1.6.23
+			 *
+			 * @param Charitable_User $user The user object.
+			 */
+			do_action( 'charitable_user_verified', $this );
+
 			return $verified;
 		}
 
@@ -382,14 +394,17 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 * @return array
 		 */
 		public function get_address_fields() {
-			return apply_filters( 'charitable_user_address_fields', array(
-				'donor_address',
-				'donor_address_2',
-				'donor_city',
-				'donor_state',
-				'donor_postcode',
-				'donor_country',
-			) );
+			return apply_filters(
+				'charitable_user_address_fields',
+				array(
+					'donor_address',
+					'donor_address_2',
+					'donor_city',
+					'donor_state',
+					'donor_postcode',
+					'donor_country',
+				)
+			);
 		}
 
 		/**
@@ -479,13 +494,17 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 
 			if ( false === $amount ) {
 
-				$args = apply_filters( 'charitable_user_total_donated_query_args', array(
-					'output'          => 'raw',
-					'donor_id'        => $this->get_donor_id(),
-					'distinct_donors' => true,
-					'fields'          => 'amount',
-					'campaign'        => (int) $campaign_id,
-				), $this );
+				$args = apply_filters(
+					'charitable_user_total_donated_query_args',
+					array(
+						'output'          => 'raw',
+						'donor_id'        => $this->get_donor_id(),
+						'distinct_donors' => true,
+						'fields'          => 'amount',
+						'campaign'        => (int) $campaign_id,
+					),
+					$this
+				);
 
 				$query = new Charitable_Donor_Query( $args );
 
@@ -569,7 +588,7 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 */
 		public function get_campaigns( $args = array() ) {
 			$defaults = array(
-			'author' => $this->ID,
+				'author' => $this->ID,
 			);
 
 			$args = wp_parse_args( $args, $defaults );
@@ -582,7 +601,7 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 *
 		 * @since  1.0.0
 		 *
-		 * @param 	array $args Query arguments.
+		 * @param  array $args Query arguments.
 		 * @return WP_Query
 		 */
 		public function get_current_campaigns( $args = array() ) {
@@ -663,31 +682,26 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 				$email = $this->user_email;
 			}
 
-			/**
-			 * Filter whether donors can be added without an email address.
-			 *
-			 * Prior to Charitable 1.6, this was never permitted. As of Charitable 1.6, donors
-			 * without an email address can be added by default, primarily to support manual
-			 * donations without an email address. Use this filter to disable that ability.
-			 *
-			 * NOTE: By default, the public donation form still requires an email address, so this
-			 * primarily affects programmatically created donors, or donors created via manual
-			 * donations in the admin.
-			 *
-			 * @see https://github.com/Charitable/Charitable/issues/535
-			 *
-			 * @since 1.6.0
-			 *
-			 * @param boolean $permitted Whether donors can be added without an email address.
-			 */
-			if ( ! $email && ! charitable_permit_donor_without_email() ) {
-				charitable_get_deprecated()->doing_it_wrong(
-					__METHOD__,
-					__( 'Unable to add donor. Email not set for logged out user.', 'charitable' ),
-					'1.0.0'
-				);
+			$donor_values = array(
+				'user_id'    => $this->ID,
+				'email'      => $email,
+				'first_name' => array_key_exists( 'first_name', $submitted ) ? $submitted['first_name'] : $this->first_name,
+				'last_name'  => array_key_exists( 'last_name', $submitted ) ? $submitted['last_name'] : $this->last_name,
+			);
 
-				return 0;
+			if ( ! $email ) {
+				/* If email-less donations are OK, remove the email from the donor values. */
+				if ( charitable_permit_donor_without_email() ) {
+					unset( $donor_values['email'] );
+				} else {
+					charitable_get_deprecated()->doing_it_wrong(
+						__METHOD__,
+						__( 'Unable to add donor. Email not set for logged out user.', 'charitable' ),
+						'1.0.0'
+					);
+
+					return 0;
+				}
 			}
 
 			/**
@@ -699,12 +713,7 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 			 * @param Charitable_User $user         This instance of `Charitable_User`.
 			 * @param array           $submitted    Submitted values.
 			 */
-			$donor_values = apply_filters( 'charitable_donor_values', array(
-				'user_id'    => $this->ID,
-				'email'      => $email,
-				'first_name' => array_key_exists( 'first_name', $submitted ) ? $submitted['first_name'] : $this->first_name,
-				'last_name'  => array_key_exists( 'last_name', $submitted ) ? $submitted['last_name'] : $this->last_name,
-			), $this, $submitted );
+			$donor_values = apply_filters( 'charitable_donor_values', $donor_values, $this, $submitted );
 
 			$donor_id = charitable_get_table( 'donors' )->insert( $donor_values );
 
@@ -893,24 +902,35 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 					return false;
 				}
 
+				/**
+				 * Do something after a user has been registered.
+				 *
+				 * @since 1.0.0
+				 *
+				 * @param int   $user_id The new user's ID.
+				 * @param array $values  Values submitted to register user.
+				 */
 				do_action( 'charitable_after_insert_user', $user_id, $values );
 
 			} else {
-
 				$values['ID'] = $this->ID;
-
-				$user_id = wp_update_user( $values );
-
+				$user_id      = wp_update_user( $values );
 			}//end if
 
 			/* If there was an error when inserting or updating the user, lodge the error. */
 			if ( is_wp_error( $user_id ) ) {
-
 				charitable_get_notices()->add_errors_from_wp_error( $user_id );
 				return false;
-
 			}
 
+			/**
+			 * Do something after a user's account has been updated or created.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param int   $user_id The user's ID.
+			 * @param array $values  Values submitted to save user.
+			 */
 			do_action( 'charitable_after_save_user', $user_id, $values );
 
 			return $user_id;

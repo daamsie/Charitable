@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_Email_Email_Verification
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
  * @version   1.5.0
@@ -23,7 +23,7 @@ if ( ! class_exists( 'Charitable_Email_Email_Verification' ) ) :
 	 */
 	class Charitable_Email_Email_Verification extends Charitable_Email {
 
-		/* @var string */
+		/** Email ID */
 		const ID = 'email_verification';
 
 		/**
@@ -219,7 +219,7 @@ if ( ! class_exists( 'Charitable_Email_Email_Verification' ) ) :
 		 */
 		public function get_redirect_url() {
 			if ( ! isset( $this->redirect_url ) ) {
-				$profile = charitable_get_option( 'profile_page', false );
+				$profile            = charitable_get_option( 'profile_page', false );
 				$this->redirect_url = $profile ? get_permalink( $profile ) : false;
 			}
 

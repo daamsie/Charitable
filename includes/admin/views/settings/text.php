@@ -4,7 +4,7 @@
  *
  * @author    Eric Daams
  * @package   Charitable/Admin View/Settings
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
  * @version   1.0.0
@@ -25,5 +25,5 @@ endif;
 	<?php echo charitable_get_arbitrary_attributes( $view_args ); ?> />
 <?php if ( isset( $view_args['help'] ) ) : ?>
 	<div class="charitable-help"><?php echo $view_args['help']; ?></div>
-<?php
+	<?php
 endif;

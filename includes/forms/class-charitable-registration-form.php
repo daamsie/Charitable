@@ -5,12 +5,14 @@
  * @package     Charitable/Classes/Charitable_Registration_Form
  * @version     1.5.1
  * @author      Eric Daams
- * @copyright   Copyright (c) 2018, Studio 164a
+ * @copyright   Copyright (c) 2019, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 
@@ -229,11 +231,13 @@ if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 			$submitted = apply_filters( 'charitable_registration_values', $_POST, $fields, $form );
 
 			if ( ! isset( $submitted['user_email'] ) || ! is_email( $submitted['user_email'] ) ) {
-				charitable_get_notices()->add_error( sprintf(
-					/* translators: %s: submitted email address */
-					__( '%s is not a valid email address.', 'charitable' ),
-					$submitted['user_email']
-				) );
+				charitable_get_notices()->add_error(
+					sprintf(
+						/* translators: %s: submitted email address */
+						__( '%s is not a valid email address.', 'charitable' ),
+						$submitted['user_email']
+					)
+				);
 
 				return false;
 			}
@@ -285,7 +289,8 @@ if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 				$login_link = add_query_arg( 'redirect_to', $_GET['redirect_to'], $login_link );
 			}
 
-			return sprintf( '<a href="%1$s">%2$s</a>',
+			return sprintf(
+				'<a href="%1$s">%2$s</a>',
 				esc_url( $login_link ),
 				$this->shortcode_args['login_link_text']
 			);

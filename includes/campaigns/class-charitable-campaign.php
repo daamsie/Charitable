@@ -4,10 +4,10 @@
  *
  * @package   Charitable/Classes/Charitable_Campaign
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.0.0
+ * @version   1.6.18
  */
 
 // Exit if accessed directly.
@@ -129,6 +129,24 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 			}
 
 			return $this->get( $key );
+		}
+
+		/**
+		 * Limit properties to be serialized.
+		 *
+		 * @since  1.6.18
+		 *
+		 * @return array
+		 */
+		public function __sleep() {
+			return array(
+				'post',
+				'end_time',
+				'goal',
+				'donations',
+				'donated_amount',
+				'donation_form',
+			);
 		}
 
 		/**
@@ -332,7 +350,8 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 				/* Condition 2: There is less than an hour left. */
 
 				$minutes_remaining = ceil( $seconds_left / 60 );
-				$time_left = apply_filters( 'charitabile_campaign_minutes_left',
+				$time_left = apply_filters(
+					'charitabile_campaign_minutes_left',
 					sprintf( _n( '%s Minute Left', '%s Minutes Left', $minutes_remaining, 'charitable' ), '<span class="amount time-left minutes-left">' . $minutes_remaining . '</span>' ),
 					$this
 				);
@@ -342,7 +361,8 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 				/* Condition 3: There is less than a day left. */
 
 				$hours_remaining = floor( $seconds_left / 3600 );
-				$time_left = apply_filters( 'charitabile_campaign_hours_left',
+				$time_left = apply_filters(
+					'charitabile_campaign_hours_left',
 					sprintf( _n( '%s Hour Left', '%s Hours Left', $hours_remaining, 'charitable' ), '<span class="amount time-left hours-left">' . $hours_remaining . '</span>' ),
 					$this
 				);
@@ -350,9 +370,9 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 			} else {
 
 				/* Condition 4: There is more than a day left. */
-
 				$days_remaining = floor( $seconds_left / 86400 );
-				$time_left = apply_filters( 'charitabile_campaign_days_left',
+				$time_left = apply_filters(
+					'charitabile_campaign_days_left',
 					sprintf( _n( '%s Day Left', '%s Days Left', $days_remaining, 'charitable' ), '<span class="amount time-left days-left">' . $days_remaining . '</span>' ),
 					$this
 				);
@@ -878,6 +898,27 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		}
 
 		/**
+		 * Returns the donation period for the amount in session.
+		 *
+		 * @since  1.6.25
+		 *
+		 * @return false|string
+		 */
+		public function get_donation_period_in_session() {
+			$donation = charitable_get_session()->get_donation_by_campaign( $this->ID );
+
+			if ( ! $donation ) {
+				return false;
+			}
+
+			if ( ! is_array( $donation ) || ! array_key_exists( 'donation_period', $donation ) ) {
+				return 'once';
+			}
+
+			return $donation['donation_period'];
+		}
+
+		/**
 		 * Renders the donate button template.
 		 *
 		 * @since  1.0.0
@@ -926,16 +967,17 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 			$display_option = charitable_get_option( 'donation_form_display', 'separate_page' );
 
 			switch ( $display_option ) {
-				case 'modal' :
+				case 'modal':
 					$template_name = 'campaign-loop/donate-modal.php';
 					break;
 
-				default :
+				default:
 					$template_name = apply_filters( 'charitable_donate_button_loop_template', 'campaign-loop/donate-link.php', $this );
 			}
 
 			charitable_template( $template_name, array( 'campaign' => $this ) );
 		}
+
 		/**
 		 * Returns the campaign creator.
 		 *
@@ -1091,6 +1133,20 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 			$checked = self::sanitize_checkbox( $value );
 
 			if ( $checked ) {
+				return $checked;
+			}
+
+			/**
+			 * Filter whether a campaign can be saved with custom donations disabled
+			 * and no suggested donations.
+			 *
+			 * @since 1.6.14
+			 *
+			 * @param boolean $permitted Whether a campaign is permitted to be saved without
+			 *                           suggested donations or custom donations.
+			 * @param array   $submitted The submitted values.
+			 */
+			if ( apply_filters( 'charitable_campaign_permitted_without_custom_or_suggested', false, $submitted ) ) {
 				return $checked;
 			}
 

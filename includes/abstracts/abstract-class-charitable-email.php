@@ -1,16 +1,19 @@
 <?php
 /**
- * Email model
+ * Email model.
  *
- * @version   1.5.0
  * @package   Charitable/Classes/Charitable_Email
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since     1.0.0
+ * @version   1.5.0
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Email' ) ) :
 
@@ -21,7 +24,7 @@ if ( ! class_exists( 'Charitable_Email' ) ) :
 	 */
 	abstract class Charitable_Email implements Charitable_Email_Interface {
 
-		/* @var string */
+		/** Email ID */
 		const ID = '';
 
 		/**
@@ -320,7 +323,7 @@ if ( ! class_exists( 'Charitable_Email' ) ) :
 					'class'    => 'wide',
 					'default'  => $this->get_default_headline(),
 				),
-				'body'           => array(
+				'body'          => array(
 					'type'     => 'editor',
 					'title'    => __( 'Email Body', 'charitable' ),
 					'help'     => sprintf(

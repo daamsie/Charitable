@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_Donation_List_Table
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
  * @version   1.5.0
@@ -75,14 +75,17 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 			 *
 			 * @param array $columns The list of columns.
 			 */
-			return apply_filters( 'charitable_donation_dashboard_column_names', array(
-				'cb'            => '<input type="checkbox"/>',
-				'id'            => __( 'Donation', 'charitable' ),
-				'amount'        => __( 'Amount Donated', 'charitable' ),
-				'campaigns'     => __( 'Campaign(s)', 'charitable' ),
-				'donation_date' => __( 'Date', 'charitable' ),
-				'post_status'   => __( 'Status', 'charitable' ),
-			) );
+			return apply_filters(
+				'charitable_donation_dashboard_column_names',
+				array(
+					'cb'            => '<input type="checkbox"/>',
+					'id'            => __( 'Donation', 'charitable' ),
+					'amount'        => __( 'Amount Donated', 'charitable' ),
+					'campaigns'     => __( 'Campaign(s)', 'charitable' ),
+					'donation_date' => __( 'Date', 'charitable' ),
+					'post_status'   => __( 'Status', 'charitable' ),
+				)
+			);
 		}
 
 		/**
@@ -250,7 +253,7 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 			), $actions );
 
 			return $actions;
-		}   
+		}
 
 		/**
 		 * Customize the output of the status views.
@@ -394,23 +397,22 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 		 *
 		 * @global string $post_type
 		 *
-		 * @return void		 
+		 * @return void
 		 */
 		public function bulk_admin_footer() {
 			global $post_type;
 
 			if ( Charitable::DONATION_POST_TYPE == $post_type ) {
-				?>
-				<script type="text/javascript">
-				(function($) { 
-					<?php
-					foreach ( $this->get_bulk_actions() as $status_key => $label ) {
-						printf( "jQuery('<option>').val('%s').text('%s').appendTo( [ '#bulk-action-selector-top', '#bulk-action-selector-bottom' ] );", $status_key, $label );
-					}
-					?>
-				})(jQuery);
-				</script>
-				<?php
+
+				$js  = '<script type="text/javascript">';
+				$js .= '(function($) {';
+				foreach ( $this->get_bulk_actions() as $status_key => $label ) {
+					$js .= sprintf( "jQuery('<option>').val('%s').text('%s').appendTo( [ '#bulk-action-selector-top', '#bulk-action-selector-bottom' ] );", $status_key, $label );
+				}
+				$js .= '})(jQuery);';
+				$js .= '</script>';
+
+				echo $js;
 			}
 		}
 
@@ -661,7 +663,7 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 			}
 
 			/* No Status: fix WP's crappy handling of "all" post status. */
-			if ( ! isset( $vars['post_status'] ) ) {
+			if ( ! isset( $vars['post_status'] ) || empty( $vars['post_status'] ) ) {
 				$vars['post_status'] = array_keys( charitable_get_valid_donation_statuses() );
 			}
 
@@ -700,11 +702,13 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 		 * Column sorting handler.
 		 *
 		 * @since  1.5.0
+         * @update 1.7.0
 		 *
 		 * @global string $typenow The current post type.
-		 * @global WPDB   $wpdb    The WPDB object.
+		 * @global WPDB $wpdb The WPDB object.
 		 *
 		 * @param  array $clauses Array of SQL query clauses.
+		 *
 		 * @return array
 		 */
 		public function sort_donations( $clauses ) {
@@ -714,18 +718,23 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 				return $clauses;
 			}
 
-			if ( ! isset( $_GET['orderby'] ) ) {
-				return $clauses;
+			$campaign_table_name = $wpdb->prefix . "charitable_campaign_donations";
+			$clauses['join']     .= " LEFT JOIN $campaign_table_name cd ON cd.donation_id = $wpdb->posts.ID ";
+
+			// filter donations by donor id.
+			if ( ! empty( $_GET['donor_id'] ) ) {
+				$clauses['where'] = ' AND cd.donor_id = ' . absint( $_GET['donor_id'] ) . ' ';
 			}
 
-			/* Sorting */
-			$order = isset( $_GET['order'] ) && strtoupper( $_GET['order'] ) == 'ASC' ? 'ASC' : 'DESC';
+			if ( ! empty( $_GET['orderby'] ) ) {
+				/* Sorting */
+				$order = isset( $_GET['order'] ) && strtoupper( $_GET['order'] ) == 'ASC' ? 'ASC' : 'DESC';
 
-			switch ( $_GET['orderby'] ) {
-				case 'amount' :
-					$clauses['join'] = "JOIN {$wpdb->prefix}charitable_campaign_donations cd ON cd.donation_id = $wpdb->posts.ID ";
-					$clauses['orderby'] = 'cd.amount ' . $order;
-					break;
+				switch ( $_GET['orderby'] ) {
+					case 'amount' :
+						$clauses['orderby'] = 'cd.amount ' . $order;
+						break;
+				}
 			}
 
 			return $clauses;

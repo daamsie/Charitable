@@ -5,7 +5,7 @@
  * @package     Charitable/User Management/User Management
  * @version     1.4.0
  * @author      Rafe Colton
- * @copyright   Copyright (c) 2018, Studio 164a
+ * @copyright   Copyright (c) 2019, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -123,7 +123,7 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 			if ( 'POST' != $_SERVER['REQUEST_METHOD'] ) {
 				return $user_or_error;
 			}
-			
+
 			if ( ! is_wp_error( $user_or_error ) ) {
 				return $user_or_error;
 			}
@@ -365,6 +365,9 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 			$email = new Charitable_Email_Email_Verification( array( 'user' => $user ) );
 
 			if ( ! empty( $redirect_url ) ) {
+				/* Ensure that the redirect URL is encoded, but not double-encoded. */
+				$redirect_url = urlencode( urldecode( $redirect_url ) );
+
 				$email->set_redirect_url( $redirect_url );
 			}
 
