@@ -157,6 +157,8 @@ if ( ! class_exists( 'Charitable' ) ) :
 
 			$this->maybe_start_public();
 
+			$this->maybe_start_davy();
+
 			Charitable_Addons::load( $this );
 		}
 
@@ -338,6 +340,21 @@ if ( ! class_exists( 'Charitable' ) ) :
 			$this->registry->register_object( $public );
 
 			return $public;
+		}
+
+		/**
+		 * If Davy Donation Form is installed, load our integration class.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @return void
+		 */
+		public function maybe_start_davy() {
+			if ( ! function_exists( 'davy_donation_form_block_assets' ) ) {
+				return;
+			}
+
+			$this->registry->register_object( new Charitable_Davy_Donation_Form() );
 		}
 
 		/**

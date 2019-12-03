@@ -57,6 +57,7 @@ return array(
 	'Charitable_Request' => 'class-charitable-request.php',
 	'Charitable_Uninstall' => 'class-charitable-uninstall.php',
 	'Charitable_Currency' => 'currency/class-charitable-currency.php',
+	'Charitable_Davy_Donation_Form' => 'davy-donation-form/class-charitable-davy-donation-form.php',
 	'Charitable_Campaign_Donations_DB' => 'db/class-charitable-campaign-donations-db.php',
 	'Charitable_Donormeta_DB' => 'db/class-charitable-donormeta-db.php',
 	'Charitable_Donors_DB' => 'db/class-charitable-donors-db.php',
