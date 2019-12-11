@@ -7,22 +7,11 @@ import CampaignSelect from './../../components/campaign-select/index.js';
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-
 const { Component } = wp.element;
+const { InspectorControls } = wp.editor;
+const { PanelBody, PanelRow, SelectControl, ToggleControl, RangeControl } = wp.components;
 
-const {
-    InspectorControls
-} = wp.blocks;
-
-const {
-    PanelBody,
-    PanelRow,
-    SelectControl,
-    ToggleControl,
-    RangeControl
-} = wp.components;
-
-class CharitableDonorsBlock extends Component {
+export class CharitableDonorsBlock extends Component {
 	constructor() {
 		super( ...arguments );
 
@@ -39,28 +28,28 @@ class CharitableDonorsBlock extends Component {
 
 		setAttributes( { displayDonorName: ! displayDonorName } );
     }
-    
+
     toggleDisplayDonorLocation() {
 		const { displayDonorLocation } = this.props.attributes;
 		const { setAttributes } = this.props;
 
 		setAttributes( { displayDonorLocation: ! displayDonorLocation } );
     }
-    
+
     toggleDisplayDonorAvatar() {
 		const { displayDonorAvatar } = this.props.attributes;
 		const { setAttributes } = this.props;
 
 		setAttributes( { displayDonorAvatar: ! displayDonorAvatar } );
     }
-    
+
     toggleDisplayDonorAmount() {
 		const { displayDonorAmount } = this.props.attributes;
 		const { setAttributes } = this.props;
 
 		setAttributes( { displayDonorAmount: ! displayDonorAmount } );
     }
-    
+
     toggleDistinctDonors() {
 		const { distinctDonors } = this.props.attributes;
 		const { setAttributes } = this.props;
@@ -71,7 +60,7 @@ class CharitableDonorsBlock extends Component {
     render() {
 		const { attributes, isSelected, setAttributes } = this.props;
         const { number, orderBy, campaign, distinctDonors, orientation, displayDonorAmount, displayDonorName, displayDonorLocation, displayDonorAvatar } = attributes;
-        
+
         const inspectorControls = isSelected && (
             <InspectorControls key="inspector" description={ __( 'Configure' ) }>
                 <RangeControl
@@ -166,7 +155,7 @@ class CharitableDonorsBlock extends Component {
                 </PanelBody>
             </InspectorControls>
         );
-        
+
         return [
             inspectorControls,
             <p key="charitable-donors">

@@ -144,25 +144,13 @@ module.exports = function(grunt) {
             }
         },
 
-        // babel
-        // 'babel : {
-        //     'options : {
-        //         'sourceMap : true,
-        //         'presets : [ 'env' ]
-        //     },
-        //     'dist : {
-        //         'files : {
-        //             'assets/js/charitable-blocks.js : 'assets/js/src/*.js'
-        //         }
-        //     }
-        // },
-
         // webpack
         webpack: {
             options: {
-                stats: ! process.env.NODE_ENV || process.env.NODE_ENV === 'development'
-            },
-            build: Object.assign( { watch: true }, webpackConfig )
+                stats: !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
+              },
+            prod: webpackConfig,
+            dev: Object.assign({ watch: true }, webpackConfig)
         },
 
         // javascript linting with jshint
@@ -193,18 +181,20 @@ module.exports = function(grunt) {
                     },
                 banner : '/*! <%= pkg.title %> <%= pkg.version %> <%= grunt.template.today("yyyy-mm-dd HH:MM") %> */\n'
             },
-            'build' : {
-                'files' : [{
-                    'expand' : true,   // Enable dynamic expansion.
-                    'src' : [
-                        'assets/js/*.js',
-                        '!assets/js/*.min.js',
-                        '!assets/js/libraries/*.js',
-                        'assets/js/libraries/leanModal.js',
-                        'assets/js/libraries/js-cookie.js'
-                    ], // Actual pattern(s) to match.
-                    ext : '.min.js',   // Dest filepaths will have this extension.
-                }]
+            build : {
+                files : [
+                    {
+                        expand : true,   // Enable dynamic expansion.
+                        src : [
+                            'assets/js/*.js',
+                            '!assets/js/*.min.js',
+                            '!assets/js/libraries/*.js',
+                            'assets/js/libraries/leanModal.js',
+                            'assets/js/libraries/js-cookie.js'
+                        ], // Actual pattern(s) to match.
+                        ext : '.min.js',   // Dest filepaths will have this extension.
+                    }
+                ]
             }
         },
 
@@ -327,20 +317,15 @@ module.exports = function(grunt) {
 
     });
 
-
     // Default task. - grunt watch
     grunt.registerTask( 'default', 'watch' );
-<<<<<<< HEAD
 
     // Webpack watch
-    grunt.registerTask( 'webpack-watch', 'webpack' );
+    grunt.registerTask( 'webpack-watch', [ 'webpack:dev' ] );
 
-=======
-
->>>>>>> master
     // Build task(s).
     grunt.registerTask( 'build-scripts', [ 'uglify' ] );
     grunt.registerTask( 'build-styles', [ 'cssmin' ] );
 
-    grunt.registerTask( 'build', [ 'classmap', 'babel', 'uglify', 'cssmin', 'makepot', 'clean', 'copy', 'compress' ] );
+    grunt.registerTask( 'build', [ 'classmap', 'webpack:prod', 'uglify', 'cssmin', 'makepot', 'clean', 'copy', 'compress' ] );
 };

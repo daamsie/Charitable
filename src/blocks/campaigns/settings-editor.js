@@ -26,7 +26,7 @@ const {
  * The campaigns block settings area in Edit mode.
  */
 export class SettingsEditor extends Component {
-	
+
 	/**
 	 * Construtor.
 	 */
@@ -53,7 +53,7 @@ export class SettingsEditor extends Component {
 	componentDidMount() {
 		const { attributes } = this.props;
 		const { campaigns, categories, creator } = attributes;
-		
+
 		let display_option = 'all';
 
 		if ( campaigns.length ) {
@@ -77,7 +77,7 @@ export class SettingsEditor extends Component {
 			display_option_settings_open: false,
 		} );
 	}
-	 
+
 	/**
 	 * Toggle the includeInactive setting.
 	 */
@@ -165,7 +165,7 @@ export class SettingsEditor extends Component {
 		let settingsView = null;
 
 		if ( !! this.state.display_option_settings_open ) {
-			
+
 			switch ( this.state.display_option ) {
 				case 'all' :
 					settingsView = <AllSettingsView
@@ -200,7 +200,7 @@ export class SettingsEditor extends Component {
 		}
 
 		return settingsView;
-			
+
 	}
 
 	/**
@@ -305,7 +305,7 @@ class DisplayOption extends Component {
  * Specific campaign settings view.
  */
 class SpecificSettingsView extends Component {
-	
+
 	/**
 	 * Render the view.
 	 */
@@ -315,7 +315,7 @@ class SpecificSettingsView extends Component {
 
 		return (
 			<div className="charitable-block-settings-view charitable-block-settings-view--specific">
-				<CampaignSelect 
+				<CampaignSelect
 					attributes={ attributes }
 					label={ __( 'Choose campaigns', 'charitable' ) }
 					search_placeholder={ __( 'Search for campaigns to display', 'charitable' ) }
@@ -334,14 +334,14 @@ class SpecificSettingsView extends Component {
  * All campaigns settings view.
  */
 class AllSettingsView extends Component {
-	
+
 	/**
 	 * Render the view.
 	 */
 	render() {
 		const { attributes, setAttributes, update_include_inactive_callback } = this.props;
 		const { campaignsToExclude, includeInactive } = attributes;
-		
+
 		return (
 			<div className="charitable-block-settings-view charitable-block-settings-view--all">
 				<ToggleControl
@@ -369,7 +369,7 @@ class AllSettingsView extends Component {
  * Filtered campaigns settings view.
  */
 class FilterSettingsView extends Component {
-	
+
 	/**
 	 * Render the view.
 	 */
@@ -385,14 +385,14 @@ class FilterSettingsView extends Component {
 					onChange={ update_include_inactive_callback }
 				/>
 				<Filter title={ __( 'Category', 'charitable' ) } enabled={ false }>
-					<CampaignCategorySelect 
+					<CampaignCategorySelect
 						attributes={ attributes }
 						label={ __( 'Filter by category', 'charitable' ) }
 						selected_categories={ categories }
 						update_category_setting_callback={ ( value ) => setAttributes( { categories: value } ) }
 					/>
 				</Filter>
-				{/* <CampaignCategorySelect 
+				{/* <CampaignCategorySelect
 					attributes={ attributes }
 					label={ __( 'Filter by category', 'charitable' ) }
 					selected_categories={ categories }

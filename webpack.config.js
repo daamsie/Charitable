@@ -2,13 +2,16 @@ var webpack = require('webpack');
 var path = require('path');
 
 module.exports = {
-    entry: ['./src/blocks/index.js'],
+    mode: 'production',
+    entry: [
+        './src/blocks/index.js'
+    ],
     output: {
         path: path.join( __dirname, 'assets/js' ),
         filename: 'charitable-blocks.js'
     },
     externals: {
-		react: 'React',
+		'react': 'React',
 		'react-dom': 'ReactDOM',
 	},
     stats: {
@@ -22,13 +25,17 @@ module.exports = {
     watch: true,
     keepalive: true,
     module: {
-        loaders: [
-            { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        cacheDirectory: true,
+                    }
+                }
+            },
         ]
-    },
-    plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            compress: { warnings: false }
-        })
-    ]
+    }
 };

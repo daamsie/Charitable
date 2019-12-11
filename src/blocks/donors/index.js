@@ -25,7 +25,7 @@ registerBlockType( 'charitable/donors', {
         __( 'Charitable' ),
         __( 'Backer' )
     ],
-    
+
     edit: CharitableDonorsBlock,
 
     save: () => {

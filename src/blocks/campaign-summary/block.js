@@ -7,26 +7,11 @@ import CampaignSelect from './../../components/campaign-select/index.js';
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-
 const { Component } = wp.element;
-
-const {
-    InspectorControls
-} = wp.blocks;
-
-const {
-    PanelBody,
-    PanelRow,
-    withAPIData,
-    SelectControl,
-    ToggleControl,
-    RangeControl
-} = wp.components;
-
+const { useSelect } = wp.data;
+const { PanelBody, PanelRow, withAPIData, SelectControl, ToggleControl, RangeControl } = wp.components;
 const { findDOMNode } = wp.element;
-
-const { Store } = wp.editor;
-const { getCurrentPostType } = Store;
+const { InspectorControls } = wp.editor;
 
 class CharitableCampaignSummaryBlock extends Component {
 	constructor() {
@@ -34,6 +19,7 @@ class CharitableCampaignSummaryBlock extends Component {
 
         // this.toggleMasonryLayout = this.toggleMasonryLayout.bind( this );
         // this.toggleResponsiveLayout = this.toggleResponsiveLayout.bind( this );
+        this.getCurrentPostType = this.getCurrentPostType( this );
     }
 
     // toggleMasonryLayout() {
@@ -42,17 +28,25 @@ class CharitableCampaignSummaryBlock extends Component {
 
 	// 	setAttributes( { masonryLayout: ! masonryLayout } );
     // }
-    
+
     // toggleResponsiveLayout() {
 	// 	const { responsiveLayout } = this.props.attributes;
 	// 	const { setAttributes } = this.props;
 
 	// 	setAttributes( { responsiveLayout: ! responsiveLayout } );
-    // }    
+    // }
+
+    getCurrentPostType( state ) {
+        return useSelect( ( select ) => {
+            return select( 'core/editor' ).getCurrentPostType( state );
+        } );
+    }
 
     render() {
 		const { attributes, isSelected, setAttributes } = this.props;
         const { campaign, columns } = attributes;
+
+        const postType = this.getCurrentPostType( this.state );
 
         const inspectorControls = isSelected && (
             <InspectorControls key="inspector" description={ __( 'Configure' ) } >
@@ -62,7 +56,7 @@ class CharitableCampaignSummaryBlock extends Component {
                     selectedOption={ attributes.campaign }
                     onChange={ ( value ) => props.setAttributes( { campaign: value } ) }
                 />
-                <PanelBody title={ getCurrentPostType( this.state ) }>
+                <PanelBody title={ postType }>
                     <PanelRow>
                         <RangeControl
                             key="columns-select"
@@ -76,7 +70,7 @@ class CharitableCampaignSummaryBlock extends Component {
                 </PanelBody>
             </InspectorControls>
         );
-        
+
         return [
             inspectorControls,
             <p key="charitable-campaign-summary">

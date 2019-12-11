@@ -159,15 +159,18 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 				'render_callback' => array( $this, 'render_campaigns' ),
 			) );
 
-			// register_block_type( 'charitable/campaign-summary', array(
-			// 	'editor_script' => 'charitable-blocks',
-			// 	'attributes' => array(
-			// 		'campaign' => array(
-			// 			'type' => 'string',
-			// 		),
-			// 	),
-			// 	'render_callback' => array( $this, 'render_campaign_summary' ),
-			// ) );
+			register_block_type(
+				'charitable/campaign-summary',
+				array(
+					'editor_script'   => 'charitable-blocks',
+					'render_callback' => array( $this, 'render_campaign_summary' ),
+					'attributes'      => array(
+						'campaign' => array(
+							'type' => 'string',
+						),
+					),
+				)
+			);
 		}
 
 		/**

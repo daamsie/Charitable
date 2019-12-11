@@ -9,7 +9,7 @@ const { apiFetch } = wp;
  * Display a list of campaign categories with checkboxes, counts and a search filter.
  */
 export class CampaignCategorySelect extends Component {
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -69,7 +69,7 @@ export class CampaignCategorySelect extends Component {
 		if ( this.props.label.length ) {
 			label = <label>{ this.props.label }</label>;
 		}
-		
+
 		return (
 			<div className="charitable-campaign-categories-list">
 				{ label }
@@ -88,7 +88,7 @@ export class CampaignCategorySelect extends Component {
  * Fetch and build a tree of campaign categories.
  */
 class CampaignCategoryList extends Component {
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -132,7 +132,7 @@ class CampaignCategoryList extends Component {
 		const endpoint = '/wp/v2/campaignCategories';
 		return endpoint;
 	}
-	
+
 	/**
 	 * Update the preview with the latest settings.
 	 */
