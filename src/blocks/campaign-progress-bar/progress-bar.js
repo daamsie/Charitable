@@ -7,7 +7,7 @@ import { withSelect } from '@wordpress/data';
 
 const ProgressBarBase = (props) => {
 	const { attributes, donated, goal } = props;
-	const { height, colour } = attributes;
+	const { progressBarHeight, progressBarColour } = attributes;
 
 	if ( 0 === goal ) {
 		return null;
@@ -15,11 +15,11 @@ const ProgressBarBase = (props) => {
 
 	const progress      = 100 * ( donated / goal );
 	const bar_style     = {
-		height: height + 'px'
+		height: progressBarHeight + 'px'
 	};
 	const tracker_style = {
 		width: progress + '%',
-		backgroundColor: colour
+		backgroundColor: progressBarColour
 	};
 
 	const formatMoney = function( amount ) {

@@ -31,13 +31,13 @@ registerBlockType( 'charitable/campaign-progress-bar', {
             type: 'boolean',
             default: false
         },
-        colour: {
+        progressBarColour: {
             type: 'string',
-            default: '#f8e9fd'
+            default: '#c001ff'
         },
-        height: {
+        progressBarHeight: {
             type: 'number',
-            default: 30
+            default: 16
         },
         isCampaign: {
             type: 'boolean',

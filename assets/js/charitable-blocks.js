@@ -727,13 +727,13 @@ registerBlockType('charitable/campaign-progress-bar', {
       type: 'boolean',
       default: false
     },
-    colour: {
+    progressBarColour: {
       type: 'string',
-      default: '#f8e9fd'
+      default: '#c001ff'
     },
-    height: {
+    progressBarHeight: {
       type: 'number',
-      default: 30
+      default: 16
     },
     isCampaign: {
       type: 'boolean',
@@ -754,34 +754,23 @@ registerBlockType('charitable/campaign-progress-bar', {
 /*!*******************************************************!*\
   !*** ./src/blocks/campaign-progress-bar/inspector.js ***!
   \*******************************************************/
-/*! exports provided: Inspector, default */
+/*! exports provided: Inspector */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Inspector", function() { return Inspector; });
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
-/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
-/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
-/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
-/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _components_campaign_select_index_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./../../components/campaign-select/index.js */ "./src/components/campaign-select/index.js");
-/* harmony import */ var _settings_editor_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./settings-editor.js */ "./src/blocks/campaign-progress-bar/settings-editor.js");
-/* harmony import */ var _progress_bar_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./progress-bar.js */ "./src/blocks/campaign-progress-bar/progress-bar.js");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_9__);
-
-
-
-
-
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_campaign_select_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../components/campaign-select/index.js */ "./src/components/campaign-select/index.js");
+/* harmony import */ var _settings_editor_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./settings-editor.js */ "./src/blocks/campaign-progress-bar/settings-editor.js");
+/* harmony import */ var _progress_bar_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./progress-bar.js */ "./src/blocks/campaign-progress-bar/progress-bar.js");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/compose */ "@wordpress/compose");
+/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_compose__WEBPACK_IMPORTED_MODULE_6__);
 
 
 /**
@@ -790,6 +779,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+ // import {
+//     DimensionControl
+// } from '@wordpress/block-editor';
 
 /**
  * WordPress dependencies
@@ -808,77 +802,75 @@ var _wp$components = wp.components,
 var _wp$blockEditor = wp.blockEditor,
     InspectorControls = _wp$blockEditor.InspectorControls,
     BlockControls = _wp$blockEditor.BlockControls;
-var Inspector =
-/*#__PURE__*/
-function (_Component) {
-  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default()(Inspector, _Component);
 
-  function Inspector() {
-    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, Inspector);
+var InspectorBase = function InspectorBase(props) {
+  var attributes = props.attributes,
+      setAttributes = props.setAttributes,
+      isSelected = props.isSelected;
+  var showProgressBar = attributes.showProgressBar,
+      progressBarHeight = attributes.progressBarHeight,
+      progressBarColour = attributes.progressBarColour;
 
-    return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2___default()(this, _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3___default()(Inspector).apply(this, arguments));
+  if (!isSelected) {
+    return null;
   }
-  /**
-  * Get the components for the sidebar settings area that is rendered while focused on a Donation Form block.
-  *
-  * @return Component
-  */
 
-
-  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Inspector, [{
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          attributes = _this$props.attributes,
-          setAttributes = _this$props.setAttributes,
-          isSelected = _this$props.isSelected;
-      var colour = attributes.colour,
-          height = attributes.height,
-          showProgressBar = attributes.showProgressBar;
-
-      if (!isSelected) {
-        return null;
-      }
-
-      return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])(InspectorControls, {
-        key: "campaign-progress-bar-inspector",
-        description: __('Configure', 'charitable')
-      }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])(PanelBody, {
-        title: __('Progress Bar', 'charitable')
-      }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_9__["ToggleControl"], {
-        label: __('Show progress bar', 'charitable'),
-        checked: showProgressBar,
-        onChange: function onChange(checked) {
-          return setAttributes({
-            showProgressBar: checked
-          });
-        }
-      }), showProgressBar && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])(Fragment, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])(ColorPicker, {
-        label: __('Tracker Colour', 'charitable'),
-        color: colour,
-        onChangeComplete: function onChangeComplete(value) {
-          return setAttributes({
-            colour: value.hex
-          });
-        },
-        disableAlpha: true
-      }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])(RangeControl, {
-        label: __('Progress Bar Height', 'charitable'),
-        onChange: function onChange(value) {
-          return setAttributes({
-            height: value
-          });
-        },
-        min: 10,
-        max: 200,
-        value: height
-      }))));
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(InspectorControls, {
+    key: "campaign-progress-bar-inspector",
+    description: __('Configure', 'charitable')
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, {
+    title: __('Progress Bar', 'charitable')
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__["ToggleControl"], {
+    label: __('Show progress bar', 'charitable'),
+    checked: showProgressBar,
+    onChange: function onChange(checked) {
+      return setAttributes({
+        showProgressBar: checked
+      });
     }
-  }]);
+  }), showProgressBar && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(Fragment, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ColorPicker, {
+    label: __('Tracker Colour', 'charitable'),
+    color: progressBarColour,
+    onChangeComplete: function onChangeComplete(value) {
+      return setAttributes({
+        progressBarColour: value.hex
+      });
+    },
+    disableAlpha: true
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RangeControl, {
+    label: __('Progress Bar Height', 'charitable'),
+    onChange: function onChange(value) {
+      return setAttributes({
+        progressBarHeight: value
+      });
+    },
+    min: 8,
+    max: 60,
+    value: progressBarHeight
+  }))));
+};
 
-  return Inspector;
-}(Component);
-/* harmony default export */ __webpack_exports__["default"] = (Inspector);
+var applyWithSelect = Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_5__["withSelect"])(function (select) {
+  return {
+    goal: select('core/editor').getEditedPostAttribute('goal'),
+    end_date: select('core/editor').getEditedPostAttribute('end_date')
+  };
+});
+var applyWithDispatch = Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_5__["withDispatch"])(function (dispatch) {
+  return {
+    onGoalChange: function onGoalChange(value) {
+      dispatch('core/editor').editPost({
+        goal: value
+      });
+    },
+    onEndDateChange: function onEndDateChange(value) {
+      dispatch('core/editor').editPost({
+        end_date: value
+      });
+    }
+  };
+});
+var Inspector = Object(_wordpress_compose__WEBPACK_IMPORTED_MODULE_6__["compose"])(applyWithDispatch, applyWithSelect)(InspectorBase);
 
 /***/ }),
 
@@ -911,8 +903,8 @@ var ProgressBarBase = function ProgressBarBase(props) {
   var attributes = props.attributes,
       donated = props.donated,
       goal = props.goal;
-  var height = attributes.height,
-      colour = attributes.colour;
+  var progressBarHeight = attributes.progressBarHeight,
+      progressBarColour = attributes.progressBarColour;
 
   if (0 === goal) {
     return null;
@@ -920,11 +912,11 @@ var ProgressBarBase = function ProgressBarBase(props) {
 
   var progress = 100 * (donated / goal);
   var bar_style = {
-    height: height + 'px'
+    height: progressBarHeight + 'px'
   };
   var tracker_style = {
     width: progress + '%',
-    backgroundColor: colour
+    backgroundColor: progressBarColour
   };
 
   var formatMoney = function formatMoney(amount) {
@@ -4553,6 +4545,17 @@ function (_Component) {
 /***/ (function(module, exports) {
 
 (function() { module.exports = this["wp"]["components"]; }());
+
+/***/ }),
+
+/***/ "@wordpress/compose":
+/*!******************************************!*\
+  !*** external {"this":["wp","compose"]} ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function() { module.exports = this["wp"]["compose"]; }());
 
 /***/ }),
 

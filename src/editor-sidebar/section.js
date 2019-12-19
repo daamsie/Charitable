@@ -1,5 +1,5 @@
 import { Component } from '@wordpress/element';
-import { PanelBody, TextControl, DatePicker, ToggleControl } from '@wordpress/components';
+import { PanelBody, BaseControl, TextControl, DatePicker, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 const CACHE = {};
@@ -12,6 +12,7 @@ export class Section extends Component {
 		this.getMatchedField  = this.getMatchedField.bind( this );
 		this.getSectionFields = this.getSectionFields.bind( this );
 		this.getTextField     = this.getTextField.bind( this );
+		this.getNumberField   = this.getNumberField.bind( this );
 		this.getCachedValue   = this.getCachedValue.bind( this );
 		this.getDateField     = this.getDateField.bind( this );
 	};
@@ -74,6 +75,9 @@ export class Section extends Component {
 			case 'datepicker':
 				return this.getDateField( field, value );
 
+			case 'number':
+				return this.getNumberField( field, value );
+
 			default:
 				return this.getTextField( field, value );
 		}
@@ -90,6 +94,25 @@ export class Section extends Component {
 				value={ value }
 				onChange={ (value) => this.props.onMetaFieldChange( value, field.field ) }
 			/>
+		)
+	};
+
+	/**
+	 * Add a Number field.
+	*/
+	getNumberField( field, value ) {
+		return (
+			<BaseControl
+				key={ field.field }
+				id={ 'number-' + field.field }
+				label={ field.label }
+			>
+				<input
+					type="number"
+					value={ value }
+					onChange={ (value) => this.props.onMetaFieldChange( value, field.field ) }
+				/>
+			</BaseControl>
 		)
 	};
 

@@ -405,19 +405,13 @@ __webpack_require__.r(__webpack_exports__);
 
 var icon = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("svg", {
   version: "1.1",
-  id: "Layer_1",
   xmlns: "http://www.w3.org/2000/svg",
   width: "20px",
   height: "20px",
-  viewBox: "0 0 20 20"
+  viewBox: "0 0 20 20",
+  enableBackground: "new 0 0 20 20"
 }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("path", {
-  d: "M11.717,9.315c-0.582-1.569-0.764-3.073-0.558-4.046l-6.863,5.835c-0.103,0.087-0.14,0.231-0.093,0.358l0.207,0.559h0l0,0 l6.696-2.485c0.001,0.001,0.001,0.003,0.002,0.004c0.857,2.309,2.522,3.848,3.821,3.589c-0.018,0.001-0.037,0.003-0.056,0.003 C13.893,13.141,12.543,11.54,11.717,9.315z"
-}), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("path", {
-  d: "M10,14.45c0.005,0,0.009,0,0.014,0c0.612,0,1.116-0.431,1.223-1.01L8.76,13.436C8.857,14.032,9.376,14.45,10,14.45z"
-}), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("path", {
-  d: "M14.232,8.377c-0.203-0.548-0.813-0.828-1.361-0.624l0.737,1.986C14.156,9.535,14.435,8.926,14.232,8.377z"
-}), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("path", {
-  d: "M10,0C4.477,0,0,4.477,0,10s4.477,10,10,10c5.523,0,10-4.477,10-10S15.523,0,10,0z M15.278,13.403 c-0.124,0.041-0.253,0.041-0.383,0.041l-2.889-0.004c-0.081,1.024-0.935,1.744-1.984,1.756c-0.007,0-0.015,0-0.022,0 c-1.056,0-1.927-0.723-2.007-1.761l-3.068-0.004c-0.451,0.003-0.859-0.222-1.016-0.645l-0.207-0.501v0l-0.207-0.559 c-0.157-0.423-0.031-0.903,0.312-1.196l7.59-6.454c0.1-0.085,0.339-0.197,0.339-0.197c0.629-0.233,1.391,0.096,2.147,0.928 c0.677,0.745,1.3,1.829,1.754,3.054c0.454,1.224,0.69,2.442,0.663,3.448C16.269,12.433,15.907,13.169,15.278,13.403z"
+  d: "M18.967,7.452c-0.706-1.902-1.674-3.587-2.725-4.744c-1.174-1.292-2.359-1.804-3.335-1.442c0,0-0.371,0.174-0.526,0.307\nL0.589,11.599c-0.534,0.454-0.729,1.2-0.485,1.857l0.322,0.868v0l0.322,0.779c0.244,0.657,0.878,1.007,1.579,1.002l4.767,0.006\nc0.123,1.613,1.476,2.736,3.117,2.736c0.011,0,0.023,0,0.034,0c1.63-0.018,2.957-1.136,3.083-2.727l4.488,0.006\nc0.202-0.001,0.402-0.001,0.595-0.064c0.977-0.362,1.54-1.507,1.587-3.252C20.039,11.246,19.673,9.354,18.967,7.452z M16.784,8.254\nc0.316,0.852-0.118,1.799-0.97,2.115L14.67,7.284C15.521,6.968,16.468,7.403,16.784,8.254z M10.232,17.688c-0.007,0-0.014,0-0.021,0\nc-0.97,0-1.776-0.649-1.927-1.575l3.847,0.005C11.966,17.018,11.183,17.688,10.232,17.688z M11.931,10.063\nc-0.001-0.002-0.002-0.004-0.002-0.007l-10.403,3.86l0,0h0l-0.322-0.868c-0.073-0.197-0.015-0.42,0.145-0.556l10.662-9.065\nc-0.32,1.511-0.038,3.847,0.867,6.285c1.283,3.456,3.381,5.942,4.904,5.931c0.029,0,0.058-0.002,0.086-0.004\nC15.85,16.04,13.263,13.65,11.931,10.063z"
 }));
 /* harmony default export */ __webpack_exports__["default"] = (icon);
 
@@ -533,6 +527,7 @@ function (_Component) {
     _this.getMatchedField = _this.getMatchedField.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
     _this.getSectionFields = _this.getSectionFields.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
     _this.getTextField = _this.getTextField.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
+    _this.getNumberField = _this.getNumberField.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
     _this.getCachedValue = _this.getCachedValue.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
     _this.getDateField = _this.getDateField.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
     return _this;
@@ -602,6 +597,9 @@ function (_Component) {
         case 'datepicker':
           return this.getDateField(field, value);
 
+        case 'number':
+          return this.getNumberField(field, value);
+
         default:
           return this.getTextField(field, value);
       }
@@ -625,19 +623,40 @@ function (_Component) {
       });
     }
   }, {
+    key: "getNumberField",
+
+    /**
+     * Add a Number field.
+    */
+    value: function getNumberField(field, value) {
+      var _this4 = this;
+
+      return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__["BaseControl"], {
+        key: field.field,
+        id: 'number-' + field.field,
+        label: field.label
+      }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createElement"])("input", {
+        type: "number",
+        value: value,
+        onChange: function onChange(value) {
+          return _this4.props.onMetaFieldChange(value, field.field);
+        }
+      }));
+    }
+  }, {
     key: "getDateField",
 
     /**
      * Add a Date field.
     */
     value: function getDateField(field, value) {
-      var _this4 = this;
+      var _this5 = this;
 
       return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__["DatePicker"], {
         key: field.field,
         currentDate: value,
         onChange: function onChange(value) {
-          return _this4.props.onMetaFieldChange(value, field.field);
+          return _this5.props.onMetaFieldChange(value, field.field);
         }
       });
     }
@@ -648,7 +667,7 @@ function (_Component) {
      * Render the component.
      */
     value: function render() {
-      var _this5 = this;
+      var _this6 = this;
 
       console.log(this.props);
       var section = this.props.section;
@@ -656,7 +675,7 @@ function (_Component) {
         title: section.label,
         key: section.key
       }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createElement"])(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["Fragment"], null, this.getSectionFields().map(function (field) {
-        return _this5.getField(field);
+        return _this6.getField(field);
       })));
     }
   }]);

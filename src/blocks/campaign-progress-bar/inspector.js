@@ -5,6 +5,11 @@ import CampaignSelect from './../../components/campaign-select/index.js';
 import { SettingsEditor } from './settings-editor.js';
 import { ProgressBar } from './progress-bar.js';
 import { Panel, ToggleControl } from '@wordpress/components';
+import { withDispatch, withSelect } from '@wordpress/data';
+import { compose } from '@wordpress/compose';
+// import {
+//     DimensionControl
+// } from '@wordpress/block-editor';
 
 /**
  * WordPress dependencies
@@ -14,64 +19,75 @@ const { Component, Fragment } = wp.element;
 const { Toolbar, PanelBody, PanelRow, RangeControl, ColorPicker } = wp.components;
 const { InspectorControls, BlockControls } = wp.blockEditor;
 
-export class Inspector extends Component {
-	constructor() {
-        super( ...arguments );
-    }
+const InspectorBase = (props) => {
+	const {
+		attributes,
+		setAttributes,
+		isSelected
+	} = props;
 
-    /**
-	 * Get the components for the sidebar settings area that is rendered while focused on a Donation Form block.
-	 *
-	 * @return Component
-	 */
-	render() {
-		const {
-			attributes,
-			setAttributes,
-			isSelected
-		} = this.props;
+	const {
+		showProgressBar,
+		progressBarHeight,
+		progressBarColour
+	} = attributes;
 
-        const {
-			colour,
-			height,
-			showProgressBar
-		} = attributes;
+	if ( ! isSelected ) {
+		return null;
+	}
 
-        if ( ! isSelected ) {
-            return null;
-        }
+	return (
+		<InspectorControls
+			key="campaign-progress-bar-inspector"
+			description={ __( 'Configure', 'charitable' ) } >
+			<PanelBody title={ __( 'Progress Bar', 'charitable' ) }>
+				<ToggleControl
+					label={ __( 'Show progress bar', 'charitable' ) }
+					checked={ showProgressBar }
+					onChange={ (checked) => setAttributes( { showProgressBar: checked } ) }
+				/>
+				{ showProgressBar && (
+					<>
 
-		return (
-			<InspectorControls
-                key="campaign-progress-bar-inspector"
-				description={ __( 'Configure', 'charitable' ) } >
-				<PanelBody title={ __( 'Progress Bar', 'charitable' ) }>
-					<ToggleControl
-						label={ __( 'Show progress bar', 'charitable' ) }
-						checked={ showProgressBar }
-						onChange={ (checked) => setAttributes( { showProgressBar: checked } ) }
-					/>
-					{ showProgressBar && (
-						<>
-							<ColorPicker
-								label={ __( 'Tracker Colour', 'charitable' ) }
-								color={ colour }
-								onChangeComplete={ ( value ) => setAttributes( { colour: value.hex } ) }
-								disableAlpha
-							/>
-							<RangeControl
-								label={ __( 'Progress Bar Height', 'charitable' ) }
-								onChange={ ( value ) => setAttributes( { height: value } ) }
-								min={ 10 }
-								max={ 200 }
-								value={ height }
-							/>
-						</>
-					) }
-				</PanelBody>
-			</InspectorControls>
-		);
-    }
+						<ColorPicker
+							label={ __( 'Tracker Colour', 'charitable' ) }
+							color={ progressBarColour }
+							onChangeComplete={ ( value ) => setAttributes( { progressBarColour: value.hex } ) }
+							disableAlpha
+						/>
+						<RangeControl
+							label={ __( 'Progress Bar Height', 'charitable' ) }
+							onChange={ ( value ) => setAttributes( { progressBarHeight: value } ) }
+							min={ 8 }
+							max={ 60 }
+							value={ progressBarHeight }
+						/>
+					</>
+				) }
+			</PanelBody>
+		</InspectorControls>
+	);
 }
 
-export default Inspector;
+const applyWithSelect = withSelect( (select) => {
+	return {
+		goal: select( 'core/editor' ).getEditedPostAttribute( 'goal' ),
+		end_date: select( 'core/editor' ).getEditedPostAttribute( 'end_date' )
+	}
+} );
+
+const applyWithDispatch = withDispatch( (dispatch) => {
+	return {
+		onGoalChange: (value) => {
+			dispatch( 'core/editor' ).editPost( { goal: value } )
+		},
+		onEndDateChange: (value) => {
+			dispatch( 'core/editor' ).editPost( { end_date: value } )
+		}
+	}
+} );
+
+export const Inspector = compose(
+	applyWithDispatch,
+	applyWithSelect
+)( InspectorBase );
