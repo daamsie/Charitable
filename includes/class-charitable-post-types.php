@@ -52,12 +52,14 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
 		 * which can only be called during the start phase. In other words, don't try
 		 * to instantiate this object.
 		 *
-		 * @since   1.0.0
+		 * @since   1.0Register campaign meta fields as meta to make them available in the REST API.
 		 */
 		private function __construct() {
 			add_action( 'init', array( $this, 'register_post_types' ), 5 );
 			add_action( 'init', array( $this, 'register_post_statuses' ), 5 );
 			add_action( 'init', array( $this, 'register_taxonomies' ), 6 );
+			// add_action( 'init', array( $this, 'register_campaign_fields' ), 100 );
+			add_action( 'rest_api_init', array( $this, 'register_rest_fields' ) );
 		}
 
 		/**
@@ -110,7 +112,7 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
 							'with_front' => true,
 						),
 						'query_var'             => true,
-						'supports'              => array( 'editor', 'title', 'thumbnail', 'comments' ),
+						'supports'              => array( 'editor', 'title', 'thumbnail', 'comments', 'custom-fields' ),
 						'has_archive'           => false,
 						'show_in_nav_menus'     => true,
 						'show_in_menu'          => false,
@@ -143,38 +145,41 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
 			 *
 			 * @param array $args Post type arguments.
 			 */
-			$args = apply_filters( 'charitable_donation_post_type', array(
-				'labels'              => array(
-					'name'               => __( 'Donations', 'charitable' ),
-					'singular_name'      => __( 'Donation', 'charitable' ),
-					'menu_name'          => _x( 'Donations', 'Admin menu name', 'charitable' ),
-					'add_new'            => __( 'Add Donation', 'charitable' ),
-					'add_new_item'       => __( 'Add New Donation', 'charitable' ),
-					'edit'               => __( 'Edit', 'charitable' ),
-					'edit_item'          => __( 'Donation Details', 'charitable' ),
-					'new_item'           => __( 'New Donation', 'charitable' ),
-					'view'               => __( 'View Donation', 'charitable' ),
-					'view_item'          => __( 'View Donation', 'charitable' ),
-					'search_items'       => __( 'Search Donations', 'charitable' ),
-					'not_found'          => __( 'No Donations found', 'charitable' ),
-					'not_found_in_trash' => __( 'No Donations found in trash', 'charitable' ),
-					'parent'             => __( 'Parent Donation', 'charitable' ),
-				),
-				'public'              => false,
-				'show_ui'             => true,
-				'capability_type'     => 'donation',
-				'menu_icon'           => '',
-				'map_meta_cap'        => true,
-				'publicly_queryable'  => false,
-				'exclude_from_search' => false,
-				'hierarchical'        => false, // Hierarchical causes memory issues - WP loads all records!
-				'rewrite'             => false,
-				'query_var'           => false,
-				'supports'            => array( '' ),
-				'has_archive'         => false,
-				'show_in_nav_menus'   => false,
-				'show_in_menu'        => false,
-			) );
+			$args = apply_filters(
+				'charitable_donation_post_type',
+				array(
+					'labels'              => array(
+						'name'               => __( 'Donations', 'charitable' ),
+						'singular_name'      => __( 'Donation', 'charitable' ),
+						'menu_name'          => _x( 'Donations', 'Admin menu name', 'charitable' ),
+						'add_new'            => __( 'Add Donation', 'charitable' ),
+						'add_new_item'       => __( 'Add New Donation', 'charitable' ),
+						'edit'               => __( 'Edit', 'charitable' ),
+						'edit_item'          => __( 'Donation Details', 'charitable' ),
+						'new_item'           => __( 'New Donation', 'charitable' ),
+						'view'               => __( 'View Donation', 'charitable' ),
+						'view_item'          => __( 'View Donation', 'charitable' ),
+						'search_items'       => __( 'Search Donations', 'charitable' ),
+						'not_found'          => __( 'No Donations found', 'charitable' ),
+						'not_found_in_trash' => __( 'No Donations found in trash', 'charitable' ),
+						'parent'             => __( 'Parent Donation', 'charitable' ),
+					),
+					'public'              => false,
+					'show_ui'             => true,
+					'capability_type'     => 'donation',
+					'menu_icon'           => '',
+					'map_meta_cap'        => true,
+					'publicly_queryable'  => false,
+					'exclude_from_search' => false,
+					'hierarchical'        => false, // Hierarchical causes memory issues - WP loads all records!
+					'rewrite'             => false,
+					'query_var'           => false,
+					'supports'            => array( '' ),
+					'has_archive'         => false,
+					'show_in_nav_menus'   => false,
+					'show_in_menu'        => false,
+				)
+			);
 
 			register_post_type( 'donation', $args );
 		}
@@ -187,65 +192,83 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
 		 * @return  void
 		 */
 		public function register_post_statuses() {
-			register_post_status( 'charitable-pending', array(
-				'label'                     => _x( 'Pending', 'Pending Donation Status', 'charitable' ),
-				/* translators: %s: count */
-				'label_count'               => _n_noop( 'Pending (%s)', 'Pending (%s)', 'charitable' ),
-				'public'                    => false,
-				'show_in_admin_all_list'    => true,
-				'show_in_admin_status_list' => true,
-				'exclude_from_search'       => true,
-			) );
+			register_post_status(
+				'charitable-pending',
+				array(
+					'label'                     => _x( 'Pending', 'Pending Donation Status', 'charitable' ),
+					/* translators: %s: count */
+					'label_count'               => _n_noop( 'Pending (%s)', 'Pending (%s)', 'charitable' ),
+					'public'                    => false,
+					'show_in_admin_all_list'    => true,
+					'show_in_admin_status_list' => true,
+					'exclude_from_search'       => true,
+				)
+			);
 
-			register_post_status( 'charitable-completed', array(
-				'label'                     => _x( 'Paid', 'Paid Donation Status', 'charitable' ),
-				/* translators: %s: count */
-				'label_count'               => _n_noop( 'Paid (%s)', 'Paid (%s)', 'charitable' ),
-				'public'                    => false,
-				'show_in_admin_all_list'    => true,
-				'show_in_admin_status_list' => true,
-				'exclude_from_search'       => true,
-			) );
+			register_post_status(
+				'charitable-completed',
+				array(
+					'label'                     => _x( 'Paid', 'Paid Donation Status', 'charitable' ),
+					/* translators: %s: count */
+					'label_count'               => _n_noop( 'Paid (%s)', 'Paid (%s)', 'charitable' ),
+					'public'                    => false,
+					'show_in_admin_all_list'    => true,
+					'show_in_admin_status_list' => true,
+					'exclude_from_search'       => true,
+				)
+			);
 
-			register_post_status( 'charitable-failed', array(
-				'label'                     => _x( 'Failed', 'Failed Donation Status', 'charitable' ),
-				/* translators: %s: count */
-				'label_count'               => _n_noop( 'Failed (%s)', 'Failed (%s)', 'charitable' ),
-				'public'                    => false,
-				'show_in_admin_all_list'    => true,
-				'show_in_admin_status_list' => true,
-				'exclude_from_search'       => true,
-			) );
+			register_post_status(
+				'charitable-failed',
+				array(
+					'label'                     => _x( 'Failed', 'Failed Donation Status', 'charitable' ),
+					/* translators: %s: count */
+					'label_count'               => _n_noop( 'Failed (%s)', 'Failed (%s)', 'charitable' ),
+					'public'                    => false,
+					'show_in_admin_all_list'    => true,
+					'show_in_admin_status_list' => true,
+					'exclude_from_search'       => true,
+				)
+			);
 
-			register_post_status( 'charitable-cancelled', array(
-				'label'                     => _x( 'Canceled', 'Canceled Donation Status', 'charitable' ),
-				/* translators: %s: count */
-				'label_count'               => _n_noop( 'Canceled (%s)', 'Canceled (%s)', 'charitable' ),
-				'public'                    => false,
-				'show_in_admin_all_list'    => true,
-				'show_in_admin_status_list' => true,
-				'exclude_from_search'       => true,
-			) );
+			register_post_status(
+				'charitable-cancelled',
+				array(
+					'label'                     => _x( 'Canceled', 'Canceled Donation Status', 'charitable' ),
+					/* translators: %s: count */
+					'label_count'               => _n_noop( 'Canceled (%s)', 'Canceled (%s)', 'charitable' ),
+					'public'                    => false,
+					'show_in_admin_all_list'    => true,
+					'show_in_admin_status_list' => true,
+					'exclude_from_search'       => true,
+				)
+			);
 
-			register_post_status( 'charitable-refunded', array(
-				'label'                     => _x( 'Refunded', 'Refunded Donation Status', 'charitable' ),
-				/* translators: %s: count */
-				'label_count'               => _n_noop( 'Refunded (%s)', 'Refunded (%s)', 'charitable' ),
-				'public'                    => false,
-				'show_in_admin_all_list'    => true,
-				'show_in_admin_status_list' => true,
-				'exclude_from_search'       => true,
-			) );
+			register_post_status(
+				'charitable-refunded',
+				array(
+					'label'                     => _x( 'Refunded', 'Refunded Donation Status', 'charitable' ),
+					/* translators: %s: count */
+					'label_count'               => _n_noop( 'Refunded (%s)', 'Refunded (%s)', 'charitable' ),
+					'public'                    => false,
+					'show_in_admin_all_list'    => true,
+					'show_in_admin_status_list' => true,
+					'exclude_from_search'       => true,
+				)
+			);
 
-			register_post_status( 'charitable-preapproved', array(
-				'label'                     => _x( 'Pre Approved', 'Pre Approved Donation Status', 'charitable' ),
-				/* translators: %s: count */
-				'label_count'               => _n_noop( 'Pre Approved (%s)', 'Pre Approved (%s)', 'charitable' ),
-				'public'                    => false,
-				'show_in_admin_all_list'    => true,
-				'show_in_admin_status_list' => true,
-				'exclude_from_search'       => true,
-			) );
+			register_post_status(
+				'charitable-preapproved',
+				array(
+					'label'                     => _x( 'Pre Approved', 'Pre Approved Donation Status', 'charitable' ),
+					/* translators: %s: count */
+					'label_count'               => _n_noop( 'Pre Approved (%s)', 'Pre Approved (%s)', 'charitable' ),
+					'public'                    => false,
+					'show_in_admin_all_list'    => true,
+					'show_in_admin_status_list' => true,
+					'exclude_from_search'       => true,
+				)
+			);
 		}
 
 		/**
@@ -328,6 +351,49 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
 
 			register_taxonomy_for_object_type( 'campaign_category', 'campaign' );
 			register_taxonomy_for_object_type( 'campaign_tag', 'campaign' );
+		}
+
+		/**
+		 * Register meta to include in the WordPress REST API.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @return void
+		 */
+		public function register_rest_fields() {
+			foreach ( charitable()->campaign_fields()->get_rest_api_fields() as $field ) {
+				register_rest_field(
+					'campaign',
+					$field->field,
+					$field->rest_api
+				);
+			}
+		}
+
+		/**
+		 * Register campaign meta fields as meta to make them available in the REST API.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @return void
+		 */
+		public function register_campaign_fields() {
+			foreach ( charitable()->campaign_fields()->get_rest_api_fields() as $field ) {
+				$field_settings = $field->rest_api;
+
+				register_meta(
+					'post',
+					$field_settings['meta_key'],
+					array(
+						'object_subtype'    => 'campaign',
+						'show_in_rest'      => true,
+						'type'              => $field_settings['type'],
+						'single'            => $field_settings['single'],
+						'sanitize_callback' => $field_settings['sanitize_callback'],
+						'auth_callback'     => $field_settings['auth_callback'],
+					)
+				);
+			}
 		}
 	}
 

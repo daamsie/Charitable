@@ -87,7 +87,7 @@ registerBlockType( 'charitable/campaigns', {
 				type: 'number',
 			},
 		},
-		
+
 		/**
 		 * A campaign creator whose campaigns will be shown.
 		 */
@@ -103,7 +103,7 @@ registerBlockType( 'charitable/campaigns', {
 			type    : 'string',
 			default : 'DESC',
 		},
-		
+
 		/**
 		 * The criteria to order campaigns by.
 		 */

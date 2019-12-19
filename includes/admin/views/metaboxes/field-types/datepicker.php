@@ -42,10 +42,7 @@ $is_required = array_key_exists( 'required', $view_args ) && $view_args['require
 		name="<?php echo esc_attr( $view_args['key'] ); ?>"
 		class="charitable-datepicker"
 		tabindex="<?php echo esc_attr( $view_args['tabindex'] ); ?>"
-<<<<<<< HEAD
 		placeholder="<?php echo esc_attr( $view_args['placeholder'] ); ?>"
-=======
->>>>>>> master
 		<?php echo $date; ?>
 	/>
 	<?php if ( isset( $view_args['description'] ) ) : ?>

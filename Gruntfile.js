@@ -318,7 +318,7 @@ module.exports = function(grunt) {
     });
 
     // Default task. - grunt watch
-    grunt.registerTask( 'default', 'watch' );
+    grunt.registerTask( 'default', [ 'watch', 'webpack:dev' ] );
 
     // Webpack watch
     grunt.registerTask( 'webpack-watch', [ 'webpack:dev' ] );

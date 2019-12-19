@@ -1,3 +1,5 @@
+/*jshint browser: true */
+/*global CHARITABLE: true, CHARITABLE_SESSION, Cookies */
 CHARITABLE = window.CHARITABLE || {};
 
 ( function( exports ) {
@@ -21,7 +23,7 @@ CHARITABLE = window.CHARITABLE || {};
 
         exports.content_loading = true;
 
-        if (document.readyState != 'loading') {
+        if (document.readyState !== 'loading') {
             init();
             exports.content_loading = false;
         } else if (document.addEventListener) {
@@ -29,7 +31,7 @@ CHARITABLE = window.CHARITABLE || {};
             exports.content_loading = false;
         } else {
             document.attachEvent('onreadystatechange', function() {
-                document.readyState != 'loading' && init();
+                document.readyState !== 'loading' && init();
                 exports.content_loading = false;
             });
         }
@@ -94,7 +96,7 @@ CHARITABLE = window.CHARITABLE || {};
 
             return CHARITABLE_SESSION.generated_id + '||' + CHARITABLE_SESSION.expiration + '||' + CHARITABLE_SESSION.expiration_variant;
         }
-    }
+    };
 
     exports.Sessions = Sessions();
 

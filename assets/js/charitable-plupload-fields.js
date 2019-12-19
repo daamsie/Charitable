@@ -1,3 +1,5 @@
+/*jshint browser: true */
+/*global CHARITABLE: true, plupload, CHARITABLE_UPLOAD_VARS */
 CHARITABLE = window.CHARITABLE || {};
 
 ( function( $, exports ){
@@ -87,7 +89,7 @@ CHARITABLE = window.CHARITABLE || {};
         // Don't queue file if the max number of files have been uploaded.
         if ( full ) {
             if ( ! this.max_uploads_alert_shown ) {
-                alert( this.get_max_uploads_message() );
+                window.alert( this.get_max_uploads_message() );
             }
 
             this.max_uploads_alert_shown = true;
@@ -97,7 +99,7 @@ CHARITABLE = window.CHARITABLE || {};
         // If the file is too big, remove it and show a message.
         if ( file.size >= this.max_file_size ) {
             if ( ! this.max_upload_size_alert_shown ) {
-                alert( CHARITABLE_UPLOAD_VARS.max_file_size.replace('%1$s', file.name).replace('%2$s', this.bytes_to_mb( this.max_file_size ) ) );
+                window.alert( CHARITABLE_UPLOAD_VARS.max_file_size.replace('%1$s', file.name).replace('%2$s', this.bytes_to_mb( this.max_file_size ) ) );
             }
 
             this.max_upload_size_alert_shown = true;
@@ -112,7 +114,7 @@ CHARITABLE = window.CHARITABLE || {};
         }
 
         this.add_image_loader( file );
-    }
+    };
 
     /**
      * FilesAdded event
@@ -170,7 +172,7 @@ CHARITABLE = window.CHARITABLE || {};
      * @return  void
      */
     Uploader.prototype.add_image_loader = function( file ) {
-        this.$loader.fadeIn( 300 )
+        this.$loader.fadeIn( 300 );
         this.$loader.children('.images').append( '<li data-file-id="' + file.id + '" class="">' + file.name + '</li>' );
     };
 
@@ -209,7 +211,7 @@ CHARITABLE = window.CHARITABLE || {};
         uploader.refresh();
 
         return false;
-    }
+    };
 
     /**
      * Hide the dropzone.
@@ -220,7 +222,7 @@ CHARITABLE = window.CHARITABLE || {};
         // this.$dropzone.removeClass('drag-over').fadeOut( 300 );
         this.$dropzone.removeClass('drag-over');
         this.$dropzone.hide();
-    }
+    };
 
     /**
      * Return a readable filesize.
@@ -228,7 +230,7 @@ CHARITABLE = window.CHARITABLE || {};
     Uploader.prototype.bytes_to_mb = function( size ) {
         var i = Math.floor( Math.log(size) / Math.log(1024) );
         return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
-    }
+    };
 
     /**
      * Dequeues the file and displays an error.
@@ -247,7 +249,7 @@ CHARITABLE = window.CHARITABLE || {};
         self.$loader.find( '[data-file-id=' + file.id + ']' ).addClass( 'error' ).text( msg ).delay( 5000 ).fadeOut( 300, function(){
             self.hide_image_loader( file );
         });
-    }
+    };
 
     exports.Uploader = Uploader;
 

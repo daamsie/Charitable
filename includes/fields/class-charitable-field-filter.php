@@ -95,6 +95,18 @@ if ( ! class_exists( 'Charitable_Field_Filter' ) ) :
 		public function is_equal_to( Charitable_Field $field ) {
 			return $this->value === $field->{$this->property};
 		}
+
+		/**
+		 * Returns whether the value of the property for the given field is an array.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @param  Charitable_Field $field Instance of `Charitable_Field`.
+		 * @return boolean
+		 */
+		public function is_array( Charitable_Field $field ) {
+			return is_array( $field->{$this->property} );
+		}
 	}
 
 endif;

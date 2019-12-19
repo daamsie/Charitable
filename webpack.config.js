@@ -1,41 +1,14 @@
-var webpack = require('webpack');
-var path = require('path');
+const defaultConfig = require('@wordpress/scripts/config/webpack.config');
+const path = require('path');
 
 module.exports = {
-    mode: 'production',
-    entry: [
-        './src/blocks/index.js'
-    ],
+    ...defaultConfig,
+    entry: {
+        'charitable-blocks': './src/charitable-blocks.js',
+        'charitable-editor-sidebar': './src/charitable-editor-sidebar.js'
+    },
     output: {
-        path: path.join( __dirname, 'assets/js' ),
-        filename: 'charitable-blocks.js'
-    },
-    externals: {
-		'react': 'React',
-		'react-dom': 'ReactDOM',
-	},
-    stats: {
-        colors: false,
-        modules: true,
-        reasons: true
-    },
-    storeStatsTo: 'webpackStats',
-    progress: true,
-    failOnError: true,
-    watch: true,
-    keepalive: true,
-    module: {
-        rules: [
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        cacheDirectory: true,
-                    }
-                }
-            },
-        ]
+        path: path.resolve( process.cwd(), 'assets/js' ),
+        filename: '[name].js'
     }
 };

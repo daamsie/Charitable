@@ -27,10 +27,10 @@ if ( ! class_exists( 'Charitable_Donation_Factory' ) ) :
 		/**
 		 * Get donation.
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
 		 *
-		 * @param 	bool $donation (default: false)
-		 * @return 	Charitable_Donation|bool
+		 * @param  mixed $donation The donation.
+		 * @return Charitable_Donation|bool
 		 */
 		public function get_donation( $donation = false ) {
 			global $post;

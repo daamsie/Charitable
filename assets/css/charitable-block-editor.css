@@ -209,4 +209,11 @@
 .charitable-block-campaigns.has-preview {
   pointer-events: none; }
 
+.campaign-progress-bar .campaign-progress-bar-tracker {
+  display: block;
+  height: 100%; }
+
+.charitable-editor-sidebar .components-base-control {
+  margin-bottom: 24px; }
+
 /*# sourceMappingURL=charitable-block-editor.css.map */

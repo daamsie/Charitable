@@ -11,7 +11,9 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /* Donors have to be included in the view args. */
 if ( ! array_key_exists( 'donors', $view_args ) ) {

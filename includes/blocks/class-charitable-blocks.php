@@ -171,6 +171,18 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 					),
 				)
 			);
+
+			register_block_type(
+				'charitable/campaign-progress-bar',
+				array(
+					'editor_script' => 'charitable-blocks',
+					'attributes'    => array(
+						'goal' => array(
+							'type' => 'number',
+						),
+					),
+				)
+			);
 		}
 
 		/**
@@ -284,24 +296,35 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 		 * @return array
 		 */
 		public function change_campaign_fields_settings( $fields ) {
-			$fields['goal']['admin_form'] = array_merge(
-				$fields['goal']['admin_form'],
-				array(
-					'section'     => 'campaign-general-settings',
-					'placeholder' => '&#8734;',
-					'type'        => 'text',
-				)
-			);
+			foreach ( $fields as $key => $field ) {
+				$admin_form = array_key_exists( 'admin_form', $field ) ? $field['admin_form'] : false;
+				$rest_api   = array_key_exists( 'rest_api', $field ) ? $field['rest_api'] : false;
+				$data_type  = array_key_exists( 'data_type', $field ) ? $field['data_type'] : 'meta';
 
-			unset( $fields['goal']['admin_form']['view'] );
+				/* It's not an editable field anyway. */
+				if ( false === $admin_form ) {
+					continue;
+				}
 
-			$fields['end_date']['admin_form'] = array_merge(
-				$fields['end_date']['admin_form'],
-				array(
-					'section' => 'campaign-general-settings',
-					'title'   => $fields['end_date']['label'],
-				)
-			);
+				/* It's a core field, so this will be edited elsewhere. */
+				if ( 'core' === $data_type ) {
+					$field['admin_form'] = false;
+				} elseif ( is_array( $rest_api ) ) {
+					$editor = array_key_exists( 'editor', $rest_api ) ? $rest_api['editor'] : array();
+
+					if ( ! array_key_exists( 'update_callback', $rest_api ) || false !== $rest_api['update_callback'] ) {
+						$editor          = array_merge( $admin_form, $editor );
+						$editor['field'] = $key;
+						$editor['label'] = array_key_exists( 'label', $editor ) ? $editor['label'] : $field['label'];
+
+						$field['rest_api']['editor'] = $editor;
+					}
+
+					$field['admin_form'] = false;
+				}
+
+				$fields[ $key ] = $field;
+			}
 
 			return $fields;
 		}

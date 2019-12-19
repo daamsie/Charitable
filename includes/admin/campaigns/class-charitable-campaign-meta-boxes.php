@@ -138,8 +138,6 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 			}
 		}
 
-
-
 		/**
 		 * Return campaign settings panels.
 		 *
@@ -243,26 +241,6 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 			 * @param WP_Post $post An instance of `WP_Post`.
 			 */
 			do_action( 'charitable_campaign_save', $post );
-		}
-
-		/**
-		 * Set default post content when the extended description is left empty.
-		 *
-		 * @since  1.4.0
-		 *
-		 * @param  array $data    Submitted data.
-		 * @return array
-		 */
-		public function set_default_post_content( $data ) {
-			if ( Charitable::CAMPAIGN_POST_TYPE != $data['post_type'] ) {
-				return $data;
-			}
-
-			if ( 0 === strlen( $data['post_content'] ) ) {
-				$data['post_content'] = '<!-- Code is poetry -->';
-			}
-
-			return $data;
 		}
 
 		/**
@@ -482,6 +460,30 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 		 */
 		private function panel_has_fields( $panel ) {
 			return array_key_exists( 'view', $panel ) || count( $panel['fields'] );
+		}
+
+
+		/**
+		 * Set default post content when the extended description is left empty.
+		 *
+		 * @deprecated 2.1.0
+		 *
+		 * @since  1.4.0
+		 * @since  1.7.0 Deprecated.
+		 *
+		 * @param  array $data    Submitted data.
+		 * @return array
+		 */
+		public function set_default_post_content( $data ) {
+			if ( Charitable::CAMPAIGN_POST_TYPE != $data['post_type'] ) {
+				return $data;
+			}
+
+			if ( 0 === strlen( $data['post_content'] ) ) {
+				$data['post_content'] = '<!-- Code is poetry -->';
+			}
+
+			return $data;
 		}
 	}
 

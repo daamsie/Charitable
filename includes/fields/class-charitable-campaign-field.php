@@ -137,6 +137,7 @@ if ( ! class_exists( 'Charitable_Campaign_Field' ) ) :
 				'admin_form'     => true,
 				'show_in_export' => true,
 				'email_tag'      => true,
+				'rest_api'       => false,
 			);
 		}
 
@@ -228,6 +229,76 @@ if ( ! class_exists( 'Charitable_Campaign_Field' ) ) :
 
 			return array_merge( $defaults, $value );
 		}
+
+		/**
+		 * Sanitize the REST API field argument.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @return array|false
+		 */
+		public function sanitize_rest_api( $value ) {
+			if ( ! is_array( $value ) ) {
+				return false;
+			}
+
+			$defaults = array(
+				'get_callback'    => function( $object ) use ( $value ) {
+					$get = charitable_get_campaign( $object['id'] )->get( $this->field );
+
+					if ( ! array_key_exists( 'schema', $value ) ) {
+						return $get;
+					}
+
+					switch ( $value['schema']['type'] ) {
+						case 'number':
+							return (int) $get;
+
+						default:
+							return $get;
+					}
+
+					return $value;
+				},
+				'update_callback' => function( $value, $campaign_id ) {
+					error_log( var_export( $value, true ) );
+					return charitable_get_campaign( $campaign_id )->update( $this->field, $value );
+				},
+			);
+
+			return array_merge( $defaults, $value );
+		}
+
+		// /**
+		//  * Sanitize the rest_api setting.
+		//  *
+		//  * @since  1.7.0
+		//  *
+		//  * @param  mixed $value The supplied value.
+		//  * @return array|false
+		//  */
+		// public function sanitize_rest_api( $value ) {
+		// 	if ( ! is_array( $value ) ) {
+		// 		return false;
+		// 	}
+
+		// 	/* This only works for meta fields. */
+		// 	if ( array_key_exists( 'data_type', $this->raw_args ) && 'meta' != $this->raw_args['data_type'] ) {
+		// 		return false;
+		// 	}
+
+		// 	$defaults = array(
+		// 		'meta_key'          => '_campaign_' . $this->field,
+		// 		'type'              => 'string',
+		// 		'single'            => true,
+		// 		'sanitize_callback' => false,
+		// 		'auth_callback'     => function() {
+		// 			return current_user_can( 'view_charitable_sensitive_data' );
+		// 		},
+		// 	);
+
+		// 	return array_merge( $defaults, $value );
+		// }
 	}
 
 endif;

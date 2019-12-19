@@ -117,6 +117,8 @@ if ( ! class_exists( 'Charitable_Assets' ) ) :
 		 * @return void
 		 */
 		public function setup_admin_assets() {
+			$this->setup_global_styles();
+			$this->setup_global_scripts();
 			$this->setup_admin_styles();
 			$this->setup_admin_scripts();
 		}
@@ -137,8 +139,42 @@ if ( ! class_exists( 'Charitable_Assets' ) ) :
 					'wp-element',
 					'wp-components',
 					'wp-editor',
+					'accounting',
 				),
 				filemtime( charitable()->get_path( 'assets', true ) . 'js/charitable-blocks.js' )
+			);
+
+			if ( charitable()->registry()->get( 'admin' )->is_charitable_screen() ) {
+				$fields = charitable()->campaign_fields();
+				$asset  = include( charitable()->get_path( 'assets' ) . 'js/charitable-editor-sidebar.asset.php' );
+
+				wp_enqueue_script(
+					'charitable-editor-sidebar',
+					charitable()->get_path( 'assets', false ) . 'js/charitable-editor-sidebar.js',
+					$asset['dependencies'],
+					$asset['version']
+				);
+
+				wp_localize_script(
+					'charitable-editor-sidebar',
+					'CHARITABLE_EDITOR_SIDEBAR',
+					array(
+						'sections' => array_values( $fields->get_block_editor_sections() ),
+						'fields'   => array_values( $fields->get_block_editor_fields() ),
+					)
+				);
+			}
+			$currency = charitable_get_currency_helper();
+
+			wp_localize_script(
+				'charitable-blocks',
+				'CHARITABLE_BLOCK_VARS',
+				array(
+					'currency_format_num_decimals' => esc_attr( $currency->get_decimals() ),
+					'currency_format_decimal_sep'  => esc_attr( $currency->get_decimal_separator() ),
+					'currency_format_thousand_sep' => esc_attr( $currency->get_thousands_separator() ),
+					'currency_format'              => esc_attr( $currency->get_accounting_js_format() ),
+				)
 			);
 
 			if ( function_exists( 'wp_get_jed_locale_data' ) ) {
@@ -197,7 +233,7 @@ if ( ! class_exists( 'Charitable_Assets' ) ) :
 			$scripts = array(
 				'accounting' => array(
 					'src'     => 'js/libraries/accounting' . $this->suffix . '.js',
-					'deps'    => array( 'jquery-core' ),
+					'deps'    => array(),
 					'version' => '0.4.2',
 				),
 				'selectWoo'  => array(
@@ -365,15 +401,18 @@ if ( ! class_exists( 'Charitable_Assets' ) ) :
 			);
 
 			if ( $admin->is_charitable_screen() ) {
-				$scripts = array_merge( $scripts, array(
-					'charitable-admin' => array(
-						'src'     => 'js/charitable-admin' . $this->suffix . '.js',
-						'deps'    => $admin->is_screen( 'donation' )
-							? array( 'jquery-ui-datepicker', 'jquery-ui-tabs', 'jquery-ui-sortable', 'accounting' )
-							: array( 'jquery-ui-datepicker', 'jquery-ui-tabs', 'jquery-ui-sortable' ),
-						'version' => $this->version,
-					),
-				) );
+				$scripts = array_merge(
+					$scripts,
+					array(
+						'charitable-admin' => array(
+							'src'     => 'js/charitable-admin' . $this->suffix . '.js',
+							'deps'    => $admin->is_screen( 'donation' )
+								? array( 'jquery-ui-datepicker', 'jquery-ui-tabs', 'jquery-ui-sortable', 'accounting' )
+								: array( 'jquery-ui-datepicker', 'jquery-ui-tabs', 'jquery-ui-sortable' ),
+							'version' => $this->version,
+						),
+					)
+				);
 			}
 
 			array_walk( $scripts, array( $this, 'register_script' ) );
@@ -431,20 +470,23 @@ if ( ! class_exists( 'Charitable_Assets' ) ) :
 			 *
 			 * @param array $vars The set of vars.
 			 */
-			return apply_filters( 'charitable_javascript_vars', array(
-				'ajaxurl'                      => admin_url( 'admin-ajax.php' ),
-				'loading_gif'                  => $this->assets_dir . '/images/charitable-loading.gif',
-				'currency_format_num_decimals' => esc_attr( $currency->get_decimals() ),
-				'currency_format_decimal_sep'  => esc_attr( $currency->get_decimal_separator() ),
-				'currency_format_thousand_sep' => esc_attr( $currency->get_thousands_separator() ),
-				'currency_format'              => esc_attr( $currency->get_accounting_js_format() ), // For accounting.js.
-				'minimum_donation'             => $minimum,
-				'error_invalid_amount'         => $amount_msg,
-				'error_required_fields'        => __( 'Please fill out all required fields.', 'charitable' ),
-				'error_unknown'                => __( 'Your donation could not be processed. Please reload the page and try again.', 'charitable' ),
-				'error_invalid_cc_number'      => __( 'The credit card passed is not valid.', 'charitable' ),
-				'error_invalid_cc_expiry'      => __( 'The credit card expiry date is not valid.', 'charitable' ),
-			) );
+			return apply_filters(
+				'charitable_javascript_vars',
+				array(
+					'ajaxurl'                      => admin_url( 'admin-ajax.php' ),
+					'loading_gif'                  => $this->assets_dir . '/images/charitable-loading.gif',
+					'currency_format_num_decimals' => esc_attr( $currency->get_decimals() ),
+					'currency_format_decimal_sep'  => esc_attr( $currency->get_decimal_separator() ),
+					'currency_format_thousand_sep' => esc_attr( $currency->get_thousands_separator() ),
+					'currency_format'              => esc_attr( $currency->get_accounting_js_format() ), // For accounting.js.
+					'minimum_donation'             => $minimum,
+					'error_invalid_amount'         => $amount_msg,
+					'error_required_fields'        => __( 'Please fill out all required fields.', 'charitable' ),
+					'error_unknown'                => __( 'Your donation could not be processed. Please reload the page and try again.', 'charitable' ),
+					'error_invalid_cc_number'      => __( 'The credit card passed is not valid.', 'charitable' ),
+					'error_invalid_cc_expiry'      => __( 'The credit card expiry date is not valid.', 'charitable' ),
+				)
+			);
 		}
 
 		/**
@@ -479,12 +521,15 @@ if ( ! class_exists( 'Charitable_Assets' ) ) :
 
 			if ( charitable()->registry()->get( 'admin' )->is_screen( 'donation' ) ) {
 				$currency = charitable_get_currency_helper();
-				$vars     = array_merge( $vars, array(
-					'currency_format_num_decimals' => esc_attr( $currency->get_decimals() ),
-					'currency_format_decimal_sep'  => esc_attr( $currency->get_decimal_separator() ),
-					'currency_format_thousand_sep' => esc_attr( $currency->get_thousands_separator() ),
-					'currency_format'              => esc_attr( $currency->get_accounting_js_format() ),
-				) );
+				$vars     = array_merge(
+					$vars,
+					array(
+						'currency_format_num_decimals' => esc_attr( $currency->get_decimals() ),
+						'currency_format_decimal_sep'  => esc_attr( $currency->get_decimal_separator() ),
+						'currency_format_thousand_sep' => esc_attr( $currency->get_thousands_separator() ),
+						'currency_format'              => esc_attr( $currency->get_accounting_js_format() ),
+					)
+				);
 			}
 
 			/**

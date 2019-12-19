@@ -200,6 +200,43 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		}
 
 		/**
+		 * Update data for this campaign.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @param  array $data Data to be updated.
+		 * @return int
+		 */
+		public function update_data( $data ) {
+			if ( ! current_user_can( 'edit_campaign', $this->post->ID ) ) {
+				return $data;
+			}
+
+			if ( ! array_key_exists( 'ID', $data ) ) {
+				$data['ID'] = $this->post->ID;
+			}
+
+			error_log( var_export( $data, true ) );
+
+			$processor = new Charitable_Campaign_Processor( $data );
+
+			return $processor->save();
+		}
+
+		/**
+		 * Update a field for this campaign.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @param  string $field The field to be updated.
+		 * @param  mixed  $value The new field value.
+		 * @return int
+		 */
+		public function update( $field, $value ) {
+			return $this->update_data( array( $field => $value ) );
+		}
+
+		/**
 		 * Return the Charitable_Object_Fields instance.
 		 *
 		 * @since  1.6.0
