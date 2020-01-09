@@ -60,6 +60,39 @@
     display: block;
     height: 100%; }
 
+.charitable-campaign-progress-bar-block {
+  margin: 0 0 1em;
+  font-size: 0.9em; }
+  .charitable-campaign-progress-bar-block .charitable-campaign-progress-bar-percent-raised {
+    float: left; }
+  .charitable-campaign-progress-bar-block .charitable-campaign-progress-bar-goal {
+    float: right; }
+    .charitable-campaign-progress-bar-block .charitable-campaign-progress-bar-goal .charitable-campaign-progress-bar-goal {
+      font-size: 1em; }
+  .charitable-campaign-progress-bar-block .campaign-progress-bar {
+    clear: both; }
+    .charitable-campaign-progress-bar-block .campaign-progress-bar .campaign-progress-bar-tracker {
+      height: 100%; }
+  .charitable-campaign-progress-bar-block .charitable-campaign-stat-figure {
+    font-size: 1.2em;
+    font-weight: bold; }
+
+.charitable-campaign-stats-block {
+  font-size: 0.9em; }
+  .charitable-campaign-stats-block .charitable-campaign-stats {
+    display: flex;
+    margin: 0 0 1em; }
+  .charitable-campaign-stats-block .charitable-campaign-stat {
+    flex: auto; }
+  .charitable-campaign-stats-block .charitable-campaign-stat-figure {
+    font-size: 1.2em;
+    font-weight: bold; }
+
+.charitable-campaign-block-container .donate-button {
+  width: 100%;
+  margin: 0 0 1em;
+  font-size: 1.2em; }
+
 /* Donate Button */
 .donate-button {
   padding: 6px 24px;

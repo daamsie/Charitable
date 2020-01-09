@@ -216,8 +216,6 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 				$data['ID'] = $this->post->ID;
 			}
 
-			error_log( var_export( $data, true ) );
-
 			$processor = new Charitable_Campaign_Processor( $data );
 
 			return $processor->save();
@@ -364,9 +362,10 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		 *
 		 * @since  1.0.0
 		 *
+		 * @param  string $classes Classes to add to time left figure.
 		 * @return string
 		 */
-		public function get_time_left() {
+		public function get_time_left( $classes = 'amount time-left' ) {
 			if ( $this->is_endless() ) {
 				return '';
 			}
@@ -387,9 +386,15 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 				/* Condition 2: There is less than an hour left. */
 
 				$minutes_remaining = ceil( $seconds_left / 60 );
+				$class            .= ' minutes-left';
+
 				$time_left = apply_filters(
 					'charitabile_campaign_minutes_left',
-					sprintf( _n( '%s Minute Left', '%s Minutes Left', $minutes_remaining, 'charitable' ), '<span class="amount time-left minutes-left">' . $minutes_remaining . '</span>' ),
+					sprintf(
+						/* translators: %s: minutes left in span */
+						_n( '%s Minute Left', '%s Minutes Left', $minutes_remaining, 'charitable' ),
+						'<span class="' . esc_attr( $class ) . '">' . $minutes_remaining . '</span>'
+					),
 					$this
 				);
 
@@ -398,9 +403,15 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 				/* Condition 3: There is less than a day left. */
 
 				$hours_remaining = floor( $seconds_left / 3600 );
+				$classes        .= ' hours-left';
+
 				$time_left = apply_filters(
 					'charitabile_campaign_hours_left',
-					sprintf( _n( '%s Hour Left', '%s Hours Left', $hours_remaining, 'charitable' ), '<span class="amount time-left hours-left">' . $hours_remaining . '</span>' ),
+					sprintf(
+						/* translators: %s: hours left in span */
+						_n( '%s Hour Left', '%s Hours Left', $hours_remaining, 'charitable' ),
+						'<span class="' . esc_attr( $classes ) . '">' . $hours_remaining . '</span>'
+					),
 					$this
 				);
 
@@ -408,9 +419,15 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 
 				/* Condition 4: There is more than a day left. */
 				$days_remaining = floor( $seconds_left / 86400 );
+				$classes       .= ' days-left';
+
 				$time_left = apply_filters(
 					'charitabile_campaign_days_left',
-					sprintf( _n( '%s Day Left', '%s Days Left', $days_remaining, 'charitable' ), '<span class="amount time-left days-left">' . $days_remaining . '</span>' ),
+					sprintf(
+						/* translators: %s: days left in span */
+						_n( '%s Day Left', '%s Days Left', $days_remaining, 'charitable' ),
+						'<span class="' . esc_attr( $classes ) . '">' . $days_remaining . '</span>'
+					),
 					$this
 				);
 
@@ -885,6 +902,36 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 			 * @param Charitable_Campaign $this  This campaign object.
 			 */
 			return apply_filters( 'charitable_campaign_donor_count', charitable_get_table( 'campaign_donations' )->count_campaign_donors( $this->ID ), $this );
+		}
+
+		/**
+		 * Return the total number of donations to this campaign.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @param  boolean $include_all Whether to include all donations, including ones that have not been completed.
+		 * @return int
+		 */
+		public function get_donation_count( $include_all = false ) {
+			$statuses = $include_all ? array() : charitable_get_approval_statuses();
+			$query    = new Charitable_Donations_Query(
+				array(
+					'output'   => 'count',
+					'campaign' => $this->ID,
+					'status'   => $statuses,
+				)
+			);
+
+			/**
+			 * Set the number of donations who have donated to this campaign.
+			 *
+			 * @since 1.7.0
+			 *
+			 * @param int                 $count       Number of donations.
+			 * @param Charitable_Campaign $this        This campaign object.
+			 * @param boolean             $include_all Whether to include all donations, including ones that have not been completed.
+			 */
+			return apply_filters( 'charitable_campaign_donor_count', $query->count(), $this, $include_all );
 		}
 
 		/**

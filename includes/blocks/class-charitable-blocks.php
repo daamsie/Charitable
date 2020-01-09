@@ -11,7 +11,9 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Blocks' ) ) :
 
@@ -42,16 +44,21 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 		 * @return void
 		 */
 		public function register_blocks() {
-			register_block_type( 'charitable/donation-form', array(
-				'editor_script'   => 'charitable-blocks',
-				'attributes'      => array(
-					'campaign'  => array(
-						'type'    => 'number',
-						'default' => 0,
+			$highlight_colour = charitable_get_highlight_colour();
+
+			register_block_type(
+				'charitable/donation-form',
+				array(
+					'editor_script'   => 'charitable-blocks',
+					'attributes'      => array(
+						'campaign'  => array(
+							'type'    => 'number',
+							'default' => 0,
+						),
 					),
-				),
-				'render_callback' => array( $this, 'render_donation_form' ),
-			) );
+					'render_callback' => array( $this, 'render_donation_form' ),
+				)
+			);
 
 			// register_block_type( 'charitable/donors', array(
 			// 	'editor_script' => 'charitable-blocks',
@@ -95,78 +102,114 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 			// 	'render_callback' => array( $this, 'render_donors' ),
 			// ) );
 
-			register_block_type( 'charitable/campaigns', array(
-				'editor_script'   => 'charitable-blocks',
-				'attributes'      => array(
-					'categories'         => array(
-						'type'    => 'array',
-						'default' => array(),
-						'items'   => array(
-							'type' => 'string',
-						),
-					),
-					'includeInactive'    => array(
-						'type'    => 'boolean',
-						'default' => false,
-					),
-					'campaigns'          => array(
-						'type'    => 'array',
-						'default' => array(),
-						'items'   => array(
-							'type' => 'integer',
-						),
-					),
-					'campaignsToExclude' => array(
-						'type'    => 'array',
-						'default' => array(),
-						'items'   => array(
-							'type' => 'integer',
-						),
-					),
-					'creator'            => array(
-						'type'    => 'string',
-						'default' => '',
-					),
-					'order'              => array(
-						'type'    => 'string',
-						'default' => 'DESC',
-					),
-					'orderBy'            => array(
-						'type'    => 'string',
-						'default' => 'post_date',
-					),
-					'number'             => array(
-						'type'    => 'number',
-						'default' => 10,
-					),
-					'columns'            => array(
-						'type'    => 'number',
-						'default' => 2,
-					),
-					'masonryLayout'      => array(
-						'type'    => 'boolean',
-						'default' => false,
-					),
-					'responsiveLayout'   => array(
-						'type'    => 'boolean',
-						'default' => true,
-					),
-					'editMode'           => array(
-						'type'    => 'boolean',
-						'default' => false,
-					),
-				),
-				'render_callback' => array( $this, 'render_campaigns' ),
-			) );
-
 			register_block_type(
-				'charitable/campaign-summary',
+				'charitable/campaigns',
 				array(
 					'editor_script'   => 'charitable-blocks',
-					'render_callback' => array( $this, 'render_campaign_summary' ),
 					'attributes'      => array(
-						'campaign' => array(
-							'type' => 'string',
+						'categories'         => array(
+							'type'    => 'array',
+							'default' => array(),
+							'items'   => array(
+								'type' => 'string',
+							),
+						),
+						'includeInactive'    => array(
+							'type'    => 'boolean',
+							'default' => false,
+						),
+						'campaigns'          => array(
+							'type'    => 'array',
+							'default' => array(),
+							'items'   => array(
+								'type' => 'integer',
+							),
+						),
+						'campaignsToExclude' => array(
+							'type'    => 'array',
+							'default' => array(),
+							'items'   => array(
+								'type' => 'integer',
+							),
+						),
+						'creator'            => array(
+							'type'    => 'string',
+							'default' => '',
+						),
+						'order'              => array(
+							'type'    => 'string',
+							'default' => 'DESC',
+						),
+						'orderBy'            => array(
+							'type'    => 'string',
+							'default' => 'post_date',
+						),
+						'number'             => array(
+							'type'    => 'number',
+							'default' => 10,
+						),
+						'columns'            => array(
+							'type'    => 'number',
+							'default' => 2,
+						),
+						'masonryLayout'      => array(
+							'type'    => 'boolean',
+							'default' => false,
+						),
+						'responsiveLayout'   => array(
+							'type'    => 'boolean',
+							'default' => true,
+						),
+						'editMode'           => array(
+							'type'    => 'boolean',
+							'default' => false,
+						),
+					),
+					'render_callback' => array( $this, 'render_campaigns' ),
+				)
+			);
+
+			register_block_type(
+				'charitable/campaign-block-container',
+				array(
+					'editor_script' => 'charitable-blocks',
+					'attributes'    => array(
+						'backgroundColour' => array(
+							'type'    => 'string',
+							'default' => 'rgba(255, 255, 255, 0.01)',
+						),
+						'blockPadding'     => array(
+							'type'    => 'number',
+							'default' => 10,
+						),
+					),
+				)
+			);
+
+			register_block_type(
+				'charitable/campaign-stats',
+				array(
+					'editor_script'   => 'charitable-blocks',
+					'render_callback' => array( $this, 'render_campaign_stats' ),
+					'attributes'      => array(
+						'campaign'          => array(
+							'type' => 'int',
+						),
+						'showAmountRaised'  => array(
+							'type'    => 'boolean',
+							'default' => true,
+						),
+						'showDonorCount'    => array(
+							'type'    => 'boolean',
+							'default' => true,
+						),
+						'showDonationCount' => array(
+							'type'    => 'boolean',
+							'default' => true,
+						),
+						'showTimeLeft'      => array(
+							'type'    => 'boolean',
+							'default' => true,
 						),
 					),
 				)
@@ -175,14 +218,45 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 			register_block_type(
 				'charitable/campaign-progress-bar',
 				array(
-					'editor_script' => 'charitable-blocks',
-					'attributes'    => array(
-						'goal' => array(
-							'type' => 'number',
+					'editor_script'   => 'charitable-blocks',
+					'render_callback' => array( $this, 'render_campaign_progress_bar' ),
+					'attributes'      => array(
+						'campaign'          => array(
+							'type' => 'int',
+						),
+						'highlightColour'   => array(
+							'type'    => 'string',
+							'default' => charitable_get_highlight_colour(),
+						),
+						'progressBarHeight' => array(
+							'type'    => 'number',
+							'default' => 16,
 						),
 					),
 				)
 			);
+
+			register_block_type(
+				'charitable/donate-button',
+				array(
+					'editor_script'   => 'charitable-blocks',
+					'render_callback' => array( $this, 'render_donate_button' ),
+					'attributes'      => array(
+						'campaign'          => array(
+							'type' => 'int',
+						),
+						'highlightColour'   => array(
+							'type'    => 'string',
+							'default' => charitable_get_highlight_colour(),
+						),
+						'buttonText'        => array(
+							'type'    => 'string',
+							'default' => __( 'Donate', 'charitable' ),
+						),
+					),
+				)
+			);
+
 		}
 
 		/**
@@ -195,7 +269,6 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 		 * @return string Returns the donation form content.
 		 */
 		public function render_donation_form( $attributes ) {
-			error_log( var_export( $attributes, true ) );
 			ob_start();
 
 			charitable_template_donation_form( $attributes['campaign'] );
@@ -236,19 +309,21 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 		 * @return string Returns the campaigns block content.
 		 */
 		public function render_campaigns( $attributes ) {
-			return Charitable_Campaigns_Shortcode::display( array(
-				'category'         => implode( ',', $attributes['categories'] ),
-				'id'               => implode( ',', $attributes['campaigns'] ),
-				'exclude'          => implode( ',', $attributes['campaignsToExclude'] ),
-				'creator'          => $attributes['creator'],
-				'include_inactive' => $attributes['includeInactive'],
-				'number'           => $attributes['number'],
-				'orderby'          => $attributes['orderBy'],
-				'order'            => $attributes['order'],
-				'columns'          => $attributes['columns'],
-				'masonry'          => $attributes['masonryLayout'],
-				'responsive'       => $attributes['responsiveLayout'],
-			) );
+			return Charitable_Campaigns_Shortcode::display(
+				array(
+					'category'         => implode( ',', $attributes['categories'] ),
+					'id'               => implode( ',', $attributes['campaigns'] ),
+					'exclude'          => implode( ',', $attributes['campaignsToExclude'] ),
+					'creator'          => $attributes['creator'],
+					'include_inactive' => $attributes['includeInactive'],
+					'number'           => $attributes['number'],
+					'orderby'          => $attributes['orderBy'],
+					'order'            => $attributes['order'],
+					'columns'          => $attributes['columns'],
+					'masonry'          => $attributes['masonryLayout'],
+					'responsive'       => $attributes['responsiveLayout'],
+				)
+			);
 		}
 
 		/**
@@ -260,13 +335,48 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 		 *
 		 * @return string Returns the campaigns block content.
 		 */
-		public function render_campaign_summary( $attributes ) {
+		public function render_campaign_stats( $attributes ) {
 			ob_start();
 
-			charitable_template_campaign_summary( charitable_get_campaign( $attributes['campaign'] ) );
+			charitable_template( 'blocks/campaign-stats/stats.php', $attributes );
 
 			return ob_get_clean();
 		}
+
+		/**
+		 * Render the campaign progress bar block.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @param  array $attributes The block attributes.
+		 *
+		 * @return string Returns the campaigns block content.
+		 */
+		public function render_campaign_progress_bar( $attributes ) {
+			ob_start();
+
+			charitable_template( 'blocks/campaign-progress-bar/index.php', $attributes );
+
+			return ob_get_clean();
+		}
+
+		/**
+		 * Render the donate button block.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @param  array $attributes The block attributes.
+		 *
+		 * @return string Returns the campaigns block content.
+		 */
+		public function render_donate_button( $attributes ) {
+			ob_start();
+
+			charitable_template( 'blocks/donate-button/index.php', $attributes );
+
+			return ob_get_clean();
+		}
+
 
 		/**
 		 * Add additional sections for the Campaign Settings meta box in the Gutenberg editor.

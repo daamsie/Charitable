@@ -122,13 +122,7 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
 						'rest_controller_class' => 'WP_REST_Posts_Controller',
 						'template'              => array(
 							array(
-								'core/paragraph',
-								array(
-									'placeholder' => 'Add Description...',
-								),
-							),
-							array(
-								'charitable/campaign-summary',
+								'charitable/campaign-block-container',
 							),
 						),
 					)

@@ -1,7 +1,8 @@
 /**
  * Block dependencies
  */
-// import CampaignSelect from './../../components/campaign-select/index.js';
+import CampaignSelect from './../../components/campaign-select/index.js';
+import { SettingsEditor } from './settings-editor.js';
 import { Inspector } from './inspector.js';
 import { View } from './view.js';
 
@@ -9,19 +10,26 @@ import { View } from './view.js';
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Component } from '@wordpress/element';
+import { Component, Fragment } from '@wordpress/element';
+import { Toolbar, PanelBody, PanelRow, RangeControl, ColorPicker } from '@wordpress/components';
+import { BlockControls } from '@wordpress/blockEditor';
 
 class Block extends Component {
 	constructor() {
         super( ...arguments );
 
         this.state = {
-            edit_mode: false
+            edit_mode: false,
+            amount_raised: null,
+            ready: false
 		};
 
         this.updateCampaignId      = this.updateCampaignId.bind( this );
         this.toggleInitialSettings = this.toggleInitialSettings.bind( this );
+        this.updateEditMode        = this.updateEditMode.bind( this );
         this.getInspectorControls  = this.getInspectorControls.bind( this );
+		this.getToolbarControls    = this.getToolbarControls.bind( this );
+		this.getSettingsEditor     = this.getSettingsEditor.bind( this );
 		this.getPreview            = this.getPreview.bind( this );
     }
 
@@ -56,6 +64,10 @@ class Block extends Component {
      * Toggle initial settings based on the campaign.
      */
     toggleInitialSettings() {
+        if ( ! wp.data.select( 'core/editor' ).getEditedPostAttribute( 'end_date' ) ) {
+            this.props.setAttributes( { showTimeLeft: false } );
+        }
+
         if ( ! wp.data.select( 'core/editor' ).getEditedPostAttribute( 'goal' ) ) {
             this.props.setAttributes( {
                 showProgressBar: false,
@@ -85,6 +97,39 @@ class Block extends Component {
     }
 
     /**
+	 * Get the components for the toolbar area that appears on top of the block when focused.
+	 *
+	 * @return Component
+	 */
+	getToolbarControls() {
+		const editButton = [
+			{
+				icon: 'edit',
+				title: __( 'Edit Goal', 'charitable' ),
+				onClick: this.updateEditMode,
+                isActive: this.state.edit_mode
+			},
+		];
+
+		return (
+			<BlockControls>
+				<Toolbar controls={ editButton } />
+			</BlockControls>
+		);
+	}
+
+	/**
+	 * Get the block settings editor UI.
+	 *
+	 * @return Component
+	 */
+	getSettingsEditor() {
+		return (
+			<SettingsEditor { ...this.props } />
+		);
+    }
+
+    /**
      * Get the block preview.
      *
      * @return Component
@@ -101,11 +146,12 @@ class Block extends Component {
         }
 
         return (
-			<>
-				<Inspector { ...this.props } />
-				<View { ...this.props } />
-			</>
-		);
+            <>
+                { this.getInspectorControls() }
+                { this.getToolbarControls() }
+                { this.state.edit_mode ? this.getSettingsEditor() : this.getPreview() }
+            </>
+        );
     }
 }
 

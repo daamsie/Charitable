@@ -300,6 +300,38 @@ return apply_filters(
 				'preview'     => 23,
 			),
 			'show_in_export' => true,
+			'rest_api'       => array(
+				'update_callback' => false,
+				'schema'          => array(
+					'type'              => 'number',
+					'minimum'           => 0,
+					'sanitize_callback' => function( $value, $request, $param ) {
+						return (int) $value;
+					},
+				),
+			),
+		),
+		'donation_count'           => array(
+			'label'          => __( 'Number of Donations', 'charitable' ),
+			'data_type'      => 'core',
+			'value_callback' => false,
+			'admin_form'     => false,
+			'email_tag'      => array(
+				'tag'         => 'campaign_donation_count',
+				'description' => __( 'Display the number of donations to the campaign', 'charitable' ),
+				'preview'     => 23,
+			),
+			'show_in_export' => true,
+			'rest_api'       => array(
+				'update_callback' => false,
+				'schema'          => array(
+					'type'              => 'number',
+					'minimum'           => 0,
+					'sanitize_callback' => function( $value, $request, $param ) {
+						return (int) $value;
+					},
+				),
+			),
 		),
 		'status'                   => array(
 			'label'          => __( 'Campaign Status', 'charitable' ),

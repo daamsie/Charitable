@@ -174,6 +174,7 @@ if ( ! class_exists( 'Charitable_Assets' ) ) :
 					'currency_format_decimal_sep'  => esc_attr( $currency->get_decimal_separator() ),
 					'currency_format_thousand_sep' => esc_attr( $currency->get_thousands_separator() ),
 					'currency_format'              => esc_attr( $currency->get_accounting_js_format() ),
+					'donate_button_classes'        => esc_attr( charitable_get_button_class( 'donate' ) ),
 				)
 			);
 

@@ -15,19 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Filter the default highlight colour.
- *
- * @since 1.0.0
- *
- * @param string $colour Default colour as a CSS-compatible string (hex, rgb, etc.)
- */
-$default_colour = apply_filters(
-	'charitable_default_highlight_colour',
-	'#f89d35'
-);
-
-$highlight_colour = charitable_get_option( 'highlight_colour', $default_colour );
+$highlight_colour = charitable_get_highlight_colour();
 
 ?>
 <style id="charitable-highlight-colour-styles">

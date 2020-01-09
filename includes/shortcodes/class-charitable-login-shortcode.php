@@ -58,7 +58,11 @@ if ( ! class_exists( 'Charitable_Login_Shortcode' ) ) :
 				if ( charitable_get_permalink( 'login_page' ) === $registration_link ) {
 					$args['registration_link'] = false;
 				} else {
-					$args['registration_link'] = add_query_arg( 'redirect_to', $args['redirect'], $registration_link );
+					$args['registration_link'] = add_query_arg(
+						'redirect_to',
+						urlencode( urldecode( $args['redirect'] ) ),
+						$registration_link
+					);
 				}
 			}
 

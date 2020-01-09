@@ -110,7 +110,7 @@ export class Section extends Component {
 				<input
 					type="number"
 					value={ value }
-					onChange={ (value) => this.props.onMetaFieldChange( value, field.field ) }
+					onChange={ (event) => this.props.onMetaFieldChange( event.target.value, field.field ) }
 				/>
 			</BaseControl>
 		)
@@ -133,16 +133,13 @@ export class Section extends Component {
 	 * Render the component.
 	 */
 	render() {
-		console.log( this.props );
 		const { section } = this.props;
 
 		return (
-			<PanelBody title={ section.label } key={ section.key } >
-				<>
-					{
-						this.getSectionFields().map( field => this.getField( field ) )
-					}
-				</>
+			<PanelBody title={ section.label }>
+				{
+					this.getSectionFields().map( field => this.getField( field ) )
+				}
 			</PanelBody>
 		);
 	};

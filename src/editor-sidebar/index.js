@@ -11,8 +11,6 @@ import { PluginSidebar, PluginSidebarMoreMenuItem } from '@wordpress/edit-post';
 import { PanelBody, PanelRow, TextControl, NumberControl, RangeControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
-
-
 /**
  * Register the plugin.
  */

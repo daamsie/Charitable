@@ -638,8 +638,8 @@ function (_Component) {
       }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createElement"])("input", {
         type: "number",
         value: value,
-        onChange: function onChange(value) {
-          return _this4.props.onMetaFieldChange(value, field.field);
+        onChange: function onChange(event) {
+          return _this4.props.onMetaFieldChange(event.target.value, field.field);
         }
       }));
     }
@@ -669,14 +669,12 @@ function (_Component) {
     value: function render() {
       var _this6 = this;
 
-      console.log(this.props);
       var section = this.props.section;
       return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__["PanelBody"], {
-        title: section.label,
-        key: section.key
-      }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createElement"])(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["Fragment"], null, this.getSectionFields().map(function (field) {
+        title: section.label
+      }, this.getSectionFields().map(function (field) {
         return _this6.getField(field);
-      })));
+      }));
     }
   }]);
 

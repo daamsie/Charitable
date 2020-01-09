@@ -1,5 +1,5 @@
 .campaign-description {
-    margin-bottom: 1em;    
+    margin-bottom: 1em;
 }
 
 .single-campaign {
@@ -15,9 +15,9 @@
 }
 
 .campaign-summary {
-    @include clearfix();    
+    @include clearfix();
     padding: 0 1em;
-    margin-bottom: 1em;    
+    margin-bottom: 1em;
     border: 1px solid #e6e6e6;
 
     display: flex;
@@ -27,22 +27,22 @@
     .campaign-summary-item {
     	float: left;
         width: 50%;
-        padding: 1em 0;        
+        padding: 1em 0;
         border-bottom: 1px solid #e6e6e6;
     }
 
-    .campaign-raised .amount, 
+    .campaign-raised .amount,
     .campaign-figures .amount {
         display: block;
         font-size: 1.5em;
-        font-weight: bolder;        
+        font-weight: bolder;
     }
 
     .campaign-donors {
-        clear: left;        
+        clear: left;
     }
 
-    .donors-count, 
+    .donors-count,
     .time-left {
         font-weight: bolder;
     }
@@ -54,7 +54,7 @@
         text-align: center;
 
         .donate-button {
-            display: inline-block;    
+            display: inline-block;
         }
     }
 }
@@ -78,7 +78,62 @@
         position: relative;
         display: block;
         height: 100%;
-    }   
+    }
+}
+
+.charitable-campaign-progress-bar-block {
+    margin: 0 0 1em;
+    font-size: 0.9em;
+
+    .charitable-campaign-progress-bar-percent-raised {
+        float: left;
+    }
+
+    .charitable-campaign-progress-bar-goal {
+        float: right;
+        .charitable-campaign-progress-bar-goal {
+            font-size: 1em;
+        }
+    }
+
+    .campaign-progress-bar {
+        clear: both;
+
+        .campaign-progress-bar-tracker {
+            height: 100%;
+        }
+    }
+
+    .charitable-campaign-stat-figure {
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+}
+
+.charitable-campaign-stats-block {
+    font-size: 0.9em;
+
+    .charitable-campaign-stats {
+        display: flex;
+        margin: 0 0 1em;
+    }
+
+    .charitable-campaign-stat {
+        flex: auto;
+    }
+
+    .charitable-campaign-stat-figure {
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+}
+
+.charitable-campaign-block-container {
+    .donate-button {
+        width: 100%;
+        margin: 0 0 1em;
+        font-size: 1.2em;
+    }
 }
 
 /* Donate Button */
@@ -88,5 +143,5 @@
     font-size: 1em;
     line-height: 1.5em;
     border: none;
-    color: #fff;   
+    color: #fff;
 }

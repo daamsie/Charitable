@@ -7,14 +7,14 @@ import Block from './block';
 /**
  * Internal block libraries
  */
-const { __ } = wp.i18n;
-const { registerBlockType } = wp.blocks;
+import { __ } from '@wordpress/i18n';
+import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Register block
  */
-registerBlockType( 'charitable/campaign-progress-bar', {
-    title : __( 'Campaign Progress Bar' ),
+registerBlockType( 'charitable/donate-button', {
+    title : __( 'Donate Button' ),
 
     category : 'widgets',
 
@@ -26,11 +26,11 @@ registerBlockType( 'charitable/campaign-progress-bar', {
         __( 'Donation' )
     ],
 
-    edit: props => {
-		return <Block { ... props } />
-	},
+    edit: ( props ) => {
+        return <Block { ... props } />
+    },
 
-    save: props => {
-        return null;
+    save: () => {
+		return null
     }
 } );

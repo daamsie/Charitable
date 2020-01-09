@@ -2,7 +2,8 @@
  * Block dependencies
  */
 import icon from './icon';
-import CharitableCampaignSummaryBlock from './block';
+import Block from './block';
+import View from './view';
 
 /**
  * Internal block libraries
@@ -13,8 +14,8 @@ const { registerBlockType } = wp.blocks;
 /**
  * Register block
  */
-registerBlockType( 'charitable/campaign-summary', {
-    title : __( 'Campaign Summary' ),
+registerBlockType( 'charitable/campaign-stats', {
+    title : __( 'Campaign Stats' ),
 
     category : 'widgets',
 
@@ -26,9 +27,11 @@ registerBlockType( 'charitable/campaign-summary', {
         __( 'Donation' )
     ],
 
-    edit: CharitableCampaignSummaryBlock,
+    edit: props => {
+		return <Block { ... props } />
+	},
 
-    save() {
+    save: props => {
         return null;
     }
 } );

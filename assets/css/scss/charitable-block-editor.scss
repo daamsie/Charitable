@@ -340,3 +340,48 @@
         margin-bottom: 24px;
     }
 }
+
+
+.charitable-block-inline-editor {
+    position: absolute;
+    z-index: 1000;
+    background-color: #f8f9f9;
+    width: 100%;
+    padding: 20px 28px;
+    box-sizing: content-box;
+    left: -28px;
+    border: 1px solid #b5bcc2;
+
+    .components-base-control {
+        label {
+            font-size: 1em;
+            margin-right: 20px;
+        }
+
+        input[type="text"],
+        input[type="search"],
+        input[type="radio"],
+        input[type="tel"],
+        input[type="time"],
+        input[type="url"],
+        input[type="week"],
+        input[type="password"],
+        input[type="checkbox"],
+        input[type="color"],
+        input[type="date"],
+        input[type="datetime"],
+        input[type="datetime-local"],
+        input[type="email"],
+        input[type="month"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+        }
+    }
+}
+
+.charitable-block-inactive {
+    color: rgb(22, 36, 53);
+    color: rgba(22, 36, 53, 0.55); // Matches title field
+}
