@@ -1,3 +1,10 @@
+# 1.6.42
+* NEW: Built-in support for WP Debugging plugin, which will automatically added `CHARITABLE_DEBUG` constant to your wp-config.php file if you enable debugging. [#793](https://github.com/Charitable/Charitable/issues/793)
+* FIX: When using Polylang, Charitable will now pick up the current language version of Charitable pages including the profile, login, registration, donation receipt, privacy policy and terms and conditions pages. [#790](https://github.com/Charitable/Charitable/issues/790)
+* FIX: On sites using the User Dashboard menu, Charitable now does a better job of picking up whether you're on a dashboard page. This also includes tweaks to ensure that Polylang language versions of the dashboard menu are picked up automatically.
+* FIX: Prevent Charitable from opening the donation form in a new window. [#789](https://github.com/Charitable/Charitable/issues/789)
+* FIX: Provide the ability to prevent scrolling to the top of the donation form when there is an error, to allow for situations where inline error messaging can provide more clarity. [#791](https://github.com/Charitable/Charitable/issues/791)
+
 # 1.6.41
 * NEW: Add the site currency, country code and test mode setting to the Javascript variables to allow scripts to take that into account. This was specifically required by the new Braintree extension (coming soon!). [#784](https://github.com/Charitable/Charitable/issues/784)
 * FIX: Improved styling for the campaign meta boxes and admin donation form fields.
@@ -165,7 +172,7 @@
 * NEW: Added option to force HTTPS for the IPN/Webhook listener URL. This is off by default but can be enabled by returning `true` to the `charitable_webhook_listener_endpoint_force_https` filter.
 * NEW: Added ability for Charitable to check whether an extension update has minimum requirements (i.e. minimum PHP or Charitable version) and prevent update if those minimum requirements are not met.
 * NEW: Added filter to set whether a campaign can be saved with custom donations disabled and no suggested donations. [#669](https://github.com/Charitable/Charitable/issues/669)
-* NEW: Added `charitable_is_localhost` function to return whether installation is localhost. This also introduces the `charitable_localhost_ips` filter to filter the set of whitelisted IP addresses that will result in `charitable_is_localhost` returning `true`.
+* NEW: Added `charitable_is_localhost` function to return whether installation is localhost. This also introduces the `charitable_localhost_ips` filter to filter the set of permitted IP addresses that will result in `charitable_is_localhost` returning `true`.
 * NEW: Improved support for Comet Cache and Litespeed Cache. [#673](https://github.com/Charitable/Charitable/issues/673) and [#674](https://github.com/Charitable/Charitable/issues/674)
 * FIX: Ensure that $0 donations work if `charitable_permit_0_donation` is returning `true`. [#668](https://github.com/Charitable/Charitable/issues/668)
 * FIX: Numerous small errors fixed.
