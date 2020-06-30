@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.6.42\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2020-06-25 02:23:01+00:00\n"
+"POT-Creation-Date: 2020-06-30 23:09:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5919,18 +5919,20 @@ msgstr ""
 
 #: includes/admin/views/campaigns-page/export-form.php:45
 #: includes/admin/views/campaigns-page/filter-form.php:28
+#: includes/campaigns/class-charitable-campaign.php:669
 #: includes/donations/charitable-donation-functions.php:338
 msgid "Pending"
 msgstr ""
 
 #: includes/admin/views/campaigns-page/export-form.php:46
 #: includes/admin/views/campaigns-page/filter-form.php:29
+#: includes/campaigns/class-charitable-campaign.php:673
 msgid "Draft"
 msgstr ""
 
 #: includes/admin/views/campaigns-page/export-form.php:47
 #: includes/admin/views/campaigns-page/filter-form.php:30
-#: includes/campaigns/class-charitable-campaign.php:658
+#: includes/campaigns/class-charitable-campaign.php:665
 msgid "Active"
 msgstr ""
 
@@ -6545,21 +6547,21 @@ msgstr ""
 msgid "The campaign did not reach its fundraising goal."
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:642
-#: includes/campaigns/class-charitable-campaign.php:646
-#: includes/campaigns/class-charitable-campaign.php:650
+#: includes/campaigns/class-charitable-campaign.php:648
+#: includes/campaigns/class-charitable-campaign.php:652
+#: includes/campaigns/class-charitable-campaign.php:656
 msgid "Ended"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:646
+#: includes/campaigns/class-charitable-campaign.php:652
 msgid "Successful"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:650
+#: includes/campaigns/class-charitable-campaign.php:656
 msgid "Unsuccessful"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:654
+#: includes/campaigns/class-charitable-campaign.php:660
 msgid "Ending Soon"
 msgstr ""
 
@@ -8819,7 +8821,7 @@ msgstr ""
 msgid "No donors yet. Be the first!"
 msgstr ""
 
-#: templates/form-fields/picture-preview.php:27
+#: templates/form-fields/picture-preview.php:20
 msgid "Remove"
 msgstr ""
 
@@ -8922,12 +8924,12 @@ msgctxt "error message when non-existent class is called"
 msgid "Class %s does not exist."
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:788
+#: includes/campaigns/class-charitable-campaign.php:803
 msgctxt "amount donated of goal"
 msgid "%1$s donated of %2$s goal"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:794
+#: includes/campaigns/class-charitable-campaign.php:809
 msgctxt "amount donated"
 msgid "%s donated"
 msgstr ""

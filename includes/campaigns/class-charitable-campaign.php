@@ -669,6 +669,10 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 					$tag = __( 'Pending', 'charitable' );
 					break;
 
+				case 'draft':
+					$tag = __( 'Draft', 'charitable' );
+					break;
+
 				default:
 					$tag = '';
 
