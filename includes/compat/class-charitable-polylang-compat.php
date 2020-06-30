@@ -25,15 +25,6 @@ if ( ! class_exists( 'Charitable_Polylang_Compat' ) ) :
 	class Charitable_Polylang_Compat {
 
 		/**
-		 * Endpoints that can have Polylang variants.
-		 *
-		 * @since 1.6.42
-		 *
-		 * @var   array
-		 */
-		private $endpoints;
-
-		/**
 		 * Create class object.
 		 *
 		 * @since 1.6.42
