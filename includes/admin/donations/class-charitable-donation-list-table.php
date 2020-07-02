@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.39
+ * @version   1.7.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -747,6 +747,24 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 			}
 
 			return $clauses;
+		}
+
+		/**
+		 * Get distinct results.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @param  string $distinct The current value for the distinct clause.
+		 * @return string
+		 */
+		public function distinct_clause( $distinct ) {
+			global $typenow, $wpdb;
+
+			if ( Charitable::DONATION_POST_TYPE != $typenow ) {
+				return $distinct;
+			}
+
+			return 'DISTINCT';
 		}
 
 		/**
