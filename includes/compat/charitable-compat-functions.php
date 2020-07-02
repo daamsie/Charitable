@@ -69,11 +69,6 @@ function charitable_load_compat_functions() {
 		require_once( $includes_path . 'compat/charitable-woocommerce-compat-functions.php' );
 	}
 
-<<<<<<< HEAD
-	if ( defined( 'POLYLANG_VERSION' ) ) {
-		require_once( $includes_path . 'compat/charitable-polylang-compat-functions.php' );
-	}
-=======
 	/* Polylang */
 	if ( defined( 'POLYLANG_VERSION' ) ) {
 		new Charitable_Polylang_Compat();
@@ -83,7 +78,6 @@ function charitable_load_compat_functions() {
 	if ( defined( 'PERMALINK_MANAGER_PLUGIN_NAME' ) ) {
 		require_once( $includes_path . 'compat/charitable-permalink-manager-compat-functions.php' );
 	}
->>>>>>> stable
 }
 
 /**

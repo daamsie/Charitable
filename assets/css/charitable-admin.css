@@ -100,14 +100,8 @@
     margin-top: 0;
     padding: 0; }
 .charitable-metabox .postbox-title {
-<<<<<<< HEAD
-  padding: 0 0 6px 0; }
-.charitable-metabox .handlediv {
-=======
   padding: 0 0 8px 0; }
-.charitable-metabox .handlediv,
-.charitable-metabox .hndle {
->>>>>>> stable
+.charitable-metabox .handlediv {
   display: none; }
 .charitable-metabox .hndle {
   padding-left: 0; }
