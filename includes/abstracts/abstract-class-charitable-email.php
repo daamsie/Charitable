@@ -408,6 +408,13 @@ if ( ! class_exists( 'Charitable_Email' ) ) :
 		 * @return boolean
 		 */
 		public function send() {
+			/**
+			 * Do something before sending the email.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param Charitable_Email $email The email object.
+			 */
 			do_action( 'charitable_before_send_email', $this );
 
 			$sent = wp_mail(
@@ -417,6 +424,13 @@ if ( ! class_exists( 'Charitable_Email' ) ) :
 				$this->get_headers()
 			);
 
+			/**
+			 * Do something after sending the email.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param Charitable_Email $email The email object.
+			 */
 			do_action( 'charitable_after_send_email', $this, $sent );
 
 			return $sent;

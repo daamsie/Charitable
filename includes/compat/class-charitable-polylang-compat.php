@@ -33,6 +33,12 @@ if ( ! class_exists( 'Charitable_Polylang_Compat' ) ) :
 			/* Load Donation & Campaign field translations late */
 			add_action( 'wp', array( $this, 'load_late_translations' ) );
 
+			/* Filter the amount donated to include any translations of the campaign. */
+			add_filter( 'charitable_campaign_donated_amount', array( $this, 'get_donated_amount' ), 5, 3 );
+
+			/* Filter the donor count to include any translations of the campaign. */
+			add_filter( 'charitable_campaign_donor_count', array( $this, 'get_donor_count' ), 5, 2 );
+
 			/* Handle Polylang translation of user dashboard menu */
 			add_action( 'wp_update_nav_menu', array( $this, 'flush_menu_object_cache' ) );
 			add_action( 'wp_update_nav_menu_item', array( $this, 'flush_menu_object_cache' ) );
@@ -144,6 +150,64 @@ if ( ! class_exists( 'Charitable_Polylang_Compat' ) ) :
 					}
 				}
 			}
+		}
+
+		/**
+		 * Return a list of campaign IDs that are translations of the
+		 * given campaign.
+		 *
+		 * @since  1.6.43
+		 *
+		 * @param  Charitable_Campaign $campaign
+		 * @return array
+		 */
+		public function get_campaign_translations( Charitable_Campaign $campaign ) {
+			return array_values( pll_get_post_translations( $campaign->ID ) );
+		}
+
+		/**
+		 * Filter the amount donated to a campaign to include any translations of the same campaign.
+		 *
+		 * @since  1.6.43
+		 *
+		 * @param  string              $amount   The default amount donated.
+		 * @param  Charitable_Campaign $campaign The campaign to get the donated amount for.
+		 * @param  boolean             $sanitize Whether to sanitize the amount. False by default.
+		 * @return string
+		 */
+		public function get_donated_amount( $amount, Charitable_Campaign $campaign, $sanitize = false ) {
+			$campaigns = $this->get_campaign_translations( $campaign );
+
+			if ( empty( $campaigns ) ) {
+				return $amount;
+			}
+
+			$amount = charitable_get_table( 'campaign_donations' )->get_campaign_donated_amount( $campaigns );
+
+			if ( $sanitize ) {
+				$amount = charitable_sanitize_amount( $amount );
+			}
+
+			return $amount;
+		}
+
+		/**
+		 * Return the number of donors, including any donations to campaign locale variations.
+		 *
+		 * @since  1.6.43
+		 *
+		 * @param  int                 $count    The default number of donors.
+		 * @param  Charitable_Campaign $campaign The campaign object.
+		 * @return int
+		 */
+		public function get_donor_count( $count, Charitable_Campaign $campaign ) {
+			$campaigns = $this->get_campaign_translations( $campaign );
+
+			if ( empty( $campaigns ) ) {
+				return $count;
+			}
+
+			return charitable_get_table( 'campaign_donations' )->count_campaign_donors( $campaigns );
 		}
 
 		/**

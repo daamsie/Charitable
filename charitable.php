@@ -266,6 +266,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 
 				$this->registry->register_object( new Charitable_Privacy );
 				$this->registry->register_object( new Charitable_Debugging );
+				$this->registry->register_object( new Charitable_Locale );
 			}
 
 			return $this->registry;
