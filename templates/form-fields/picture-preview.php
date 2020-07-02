@@ -5,7 +5,7 @@
  * @author  Studio 164a
  * @package Charitable/Templates/Form Fields
  * @since   1.4.0
- * @version 1.4.0
+ * @version 1.6.43
  */
 
 if ( ! isset( $view_args['image'] ) || ! isset( $view_args['field'] ) ) {

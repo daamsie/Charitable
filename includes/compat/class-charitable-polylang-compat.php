@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2019, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.6.42
- * @version   1.6.42
+ * @version   1.6.43
  */
 
 // Exit if accessed directly.
