@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.6.42\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2020-06-30 23:09:53+00:00\n"
+"POT-Creation-Date: 2020-07-01 02:29:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5919,14 +5919,14 @@ msgstr ""
 
 #: includes/admin/views/campaigns-page/export-form.php:45
 #: includes/admin/views/campaigns-page/filter-form.php:28
-#: includes/campaigns/class-charitable-campaign.php:669
+#: includes/campaigns/class-charitable-campaign.php:671
 #: includes/donations/charitable-donation-functions.php:338
 msgid "Pending"
 msgstr ""
 
 #: includes/admin/views/campaigns-page/export-form.php:46
 #: includes/admin/views/campaigns-page/filter-form.php:29
-#: includes/campaigns/class-charitable-campaign.php:673
+#: includes/campaigns/class-charitable-campaign.php:675
 msgid "Draft"
 msgstr ""
 
@@ -6563,6 +6563,10 @@ msgstr ""
 
 #: includes/campaigns/class-charitable-campaign.php:660
 msgid "Ending Soon"
+msgstr ""
+
+#: includes/campaigns/class-charitable-campaign.php:679
+msgid "Scheduled"
 msgstr ""
 
 #: includes/currency/class-charitable-currency.php:124
@@ -8924,12 +8928,12 @@ msgctxt "error message when non-existent class is called"
 msgid "Class %s does not exist."
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:803
+#: includes/campaigns/class-charitable-campaign.php:814
 msgctxt "amount donated of goal"
 msgid "%1$s donated of %2$s goal"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:809
+#: includes/campaigns/class-charitable-campaign.php:820
 msgctxt "amount donated"
 msgid "%s donated"
 msgstr ""
