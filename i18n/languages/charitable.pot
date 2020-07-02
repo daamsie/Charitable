@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Charitable package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Charitable 1.6.42\n"
+"Project-Id-Version: Charitable 1.6.43\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2020-07-01 02:29:34+00:00\n"
+"POT-Creation-Date: 2020-07-02 06:00:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,11 +24,11 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "X-Generator: grunt-wp-i18n 1.0.3\n"
 
-#: charitable.php:810
+#: charitable.php:811
 msgid "Cloning this object is forbidden."
 msgstr ""
 
-#: charitable.php:825
+#: charitable.php:826
 msgid "Unserializing instances of this class is forbidden."
 msgstr ""
 
@@ -4789,23 +4789,23 @@ msgstr ""
 msgid "A comma-separated list of email address that will receive this email."
 msgstr ""
 
-#: includes/abstracts/abstract-class-charitable-email.php:437
+#: includes/abstracts/abstract-class-charitable-email.php:451
 msgid "A `resend` method has not been defined for this class."
 msgstr ""
 
-#: includes/abstracts/abstract-class-charitable-email.php:456
+#: includes/abstracts/abstract-class-charitable-email.php:470
 msgid "A `can_be_resent` method has not been defined for this class."
 msgstr ""
 
-#: includes/abstracts/abstract-class-charitable-email.php:609
+#: includes/abstracts/abstract-class-charitable-email.php:623
 msgid "You cannot send this email without a donation!"
 msgstr ""
 
-#: includes/abstracts/abstract-class-charitable-email.php:629
+#: includes/abstracts/abstract-class-charitable-email.php:643
 msgid "You cannot send this email without a campaign!"
 msgstr ""
 
-#: includes/abstracts/abstract-class-charitable-email.php:747
+#: includes/abstracts/abstract-class-charitable-email.php:761
 msgid ""
 "The following options are available with the "
 "<code>[charitable_email]</code> shortcode:"
@@ -8348,6 +8348,14 @@ msgstr ""
 #: includes/upgrades/class-charitable-upgrade.php:675
 #: includes/upgrades/class-charitable-upgrade.php:1153
 msgid "Error"
+msgstr ""
+
+#: includes/locale/class-charitable-locale.php:92
+msgid "Donor Locale"
+msgstr ""
+
+#: includes/locale/class-charitable-locale.php:114
+msgid "Campaign Creator Locale"
 msgstr ""
 
 #: includes/privacy/charitable-privacy-functions.php:101

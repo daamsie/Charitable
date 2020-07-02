@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypa
 Tags: donate, wordpress donation plugin, wpcharitable, peer to peer fundraising, recurring donations, donation plugin, donation form, paypal donations, stripe donations, give, fundraise, fundraising
 Requires at least: 4.1
 Tested up to: 5.4.2
-Stable tag: 1.6.42
+Stable tag: 1.6.43
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -228,6 +228,12 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 6. Setting up Charitable: The Email settings area.
 
 == Changelog ==
+
+= 1.6.43 =
+* NEW: When using Polylang, the total funds raised by a campaign will now include both the campaign itself and any translations of the same campaign. [#798](https://github.com/Charitable/Charitable/issues/798)
+* NEW: Made the picture form field a little more flexible, allowing the remove button to be always shown and to have its text customized. This change was required for updates in Ambassadors 2.0.9. [#796](https://github.com/Charitable/Charitable/issues/796)
+* FIX: Changed the campaign status tags, allowing them to be translated. [#797](https://github.com/Charitable/Charitable/issues/797)
+* FIX: When using TranslatePress, Charitable will record the locale used by the donor when making their donation and will use that locale when sending them donation-specific emails, like their donation receipt. [#795](https://github.com/Charitable/Charitable/issues/795)
 
 = 1.6.42 =
 * NEW: Built-in support for WP Debugging plugin, which will automatically added `CHARITABLE_DEBUG` constant to your wp-config.php file if you enable debugging. [#793](https://github.com/Charitable/Charitable/issues/793)
