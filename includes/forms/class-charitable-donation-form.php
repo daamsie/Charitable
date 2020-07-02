@@ -649,11 +649,11 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 			$ret = true;
 
 			if ( ! $this->validate_nonce() || ! $this->validate_honeypot() ) {
-
-				charitable_get_notices()->add_error( __( 'There was an error with processing your form submission. Please reload the page and try again.', 'charitable' ) );
+				charitable_get_notices()->add_error(
+					__( 'There was an error with processing your form submission. Please reload the page and try again.', 'charitable' )
+				);
 
 				$ret = false;
-
 			}
 
 			/**
