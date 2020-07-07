@@ -38,32 +38,44 @@
 	}
 
 	@include bp( 768, false ) {
-		border: none !important;
+		&.charitable-responsive-table {
+			border: none !important;
 
-		thead {
-			display: none;
+			thead {
+				display: none;
+			}
+
+			tr {
+				display: block;
+				padding: 1em 0;
+				margin-bottom: 1em;
+
+				td {
+					display: block;
+					padding: .25em 0.5em !important;
+					border: none !important;
+					line-height: 1.3;
+					&::before {
+						content: attr(data-title) ": ";
+						font-weight: 700;
+						width: 100%;
+					}
+
+					.actions {
+						text-align: right;
+					}
+				}
+			}
 		}
 
-		tr {
-			display: block;
-			padding: 1em 0;
-			margin-bottom: 1em;
-
-			td {
-				display: block;
-				padding: .25em 0.5em!important;
+		&.charitable-donation-summary,
+		&.charitable-donation-details {
+			tr {
+				display: flex;
+				justify-content: space-between;
+			}
+			td, th {
 				border: none !important;
-				line-height: 1.3;
-
-				&::before {
-					content: attr(data-title) ": ";
-					font-weight: 700;
-					width: 100%;
-				}
-
-				.actions {
-					text-align: right;
-				}
 			}
 		}
 	}

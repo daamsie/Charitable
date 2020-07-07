@@ -28,7 +28,7 @@ do_action( 'charitable_my_donations_before', $donations, $view_args );
 
 if ( $donations instanceof Charitable_Donations_Query && $donations->count() ) :
 	?>
-	<table class="charitable-my-donations charitable-table">
+	<table class="charitable-my-donations charitable-table charitable-responsive-table">
 		<thead>
 			<tr>
 				<th scope="col"><?php _e( 'Date', 'charitable' ); ?></th>
