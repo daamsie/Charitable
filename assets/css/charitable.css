@@ -326,22 +326,25 @@
     .charitable-table tbody tr:nth-child(2n+1) {
       background: #f4f4f4; }
   @media (max-width: 48em) {
-    .charitable-table thead {
-      display: none; }
-    .charitable-table tr {
-      display: block;
-      padding: 1em 0;
-      margin-bottom: 1em; }
-      .charitable-table tr td {
+    .charitable-table {
+      border: none !important; }
+      .charitable-table thead {
+        display: none; }
+      .charitable-table tr {
         display: block;
-        padding: 0.25em 0.5em !important;
-        line-height: 1.3; }
-        .charitable-table tr td::before {
-          content: attr(data-title) ": ";
-          font-weight: 700;
-          width: 100%; }
-        .charitable-table tr td .actions {
-          text-align: right; } }
+        padding: 1em 0;
+        margin-bottom: 1em; }
+        .charitable-table tr td {
+          display: block;
+          padding: 0.25em 0.5em !important;
+          border: none !important;
+          line-height: 1.3; }
+          .charitable-table tr td::before {
+            content: attr(data-title) ": ";
+            font-weight: 700;
+            width: 100%; }
+          .charitable-table tr td .actions {
+            text-align: right; } }
 
 /* Campaigns grid */
 .campaign-loop.campaign-list,
