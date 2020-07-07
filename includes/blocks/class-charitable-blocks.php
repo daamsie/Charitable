@@ -67,6 +67,10 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 							'type'    => 'boolean',
 							'default' => false,
 						),
+						'buttonSize'       => array(
+							'type'    => 'string',
+							'default' => 'small',
+						),
 						'highlightColour'  => array(
 							'type'    => 'string',
 							'default' => charitable_get_highlight_colour(),

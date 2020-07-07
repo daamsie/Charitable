@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Component } from '@wordpress/element';
-import { PanelBody, ToggleControl, TextControl, ColorPicker } from '@wordpress/components';
+import { PanelBody, ToggleControl, TextControl, ColorPicker, SelectControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 
 export default class Inspector extends Component {
@@ -15,7 +15,7 @@ export default class Inspector extends Component {
 	 */
 	render() {
 		const { attributes, setAttributes } = this.props;
-		const { highlightColour, buttonOpensModal, buttonHasAmount, buttonText } = attributes;
+		const { highlightColour, buttonOpensModal, buttonHasAmount, buttonText, buttonSize } = attributes;
 
 		return (
 			<InspectorControls
@@ -32,8 +32,29 @@ export default class Inspector extends Component {
 						checked={ buttonHasAmount }
 						onChange={ (checked) => setAttributes( { buttonHasAmount: checked } ) }
 					/>
+					<SelectControl
+						label={ __( 'Button size', 'charitable' ) }
+						value={ buttonSize }
+						options={
+							[
+								{
+									label: __( 'Small' ),
+									value: 'small',
+								},
+								{
+									label: __( 'Medium' ),
+									value: 'medium',
+								},
+								{
+									label: __( 'Large' ),
+									value: 'large',
+								},
+							]
+						}
+						onChange={ (size) => setAttributes( { buttonSize: size } ) }
+					/>
 					<TextControl
-						label={ __( 'Button Text', 'charitable' ) }
+						label={ __( 'Button text', 'charitable' ) }
 						value={ buttonText }
 						onChange={ (text) => setAttributes( { buttonText: text } ) }
 					/>

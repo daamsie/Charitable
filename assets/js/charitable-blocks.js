@@ -29469,7 +29469,8 @@ function (_Component) {
       var highlightColour = attributes.highlightColour,
           buttonOpensModal = attributes.buttonOpensModal,
           buttonHasAmount = attributes.buttonHasAmount,
-          buttonText = attributes.buttonText;
+          buttonText = attributes.buttonText,
+          buttonSize = attributes.buttonSize;
       return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_8__["InspectorControls"], {
         key: "donate-block-inspector",
         description: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__["__"])('Configure', 'charitable')
@@ -29491,8 +29492,26 @@ function (_Component) {
             buttonHasAmount: checked
           });
         }
+      }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__["SelectControl"], {
+        label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__["__"])('Button size', 'charitable'),
+        value: buttonSize,
+        options: [{
+          label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__["__"])('Small'),
+          value: 'small'
+        }, {
+          label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__["__"])('Medium'),
+          value: 'medium'
+        }, {
+          label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__["__"])('Large'),
+          value: 'large'
+        }],
+        onChange: function onChange(size) {
+          return setAttributes({
+            buttonSize: size
+          });
+        }
       }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__["TextControl"], {
-        label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__["__"])('Button Text', 'charitable'),
+        label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__["__"])('Button text', 'charitable'),
         value: buttonText,
         onChange: function onChange(text) {
           return setAttributes({

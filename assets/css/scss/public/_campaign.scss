@@ -137,11 +137,42 @@
 }
 
 /* Donate Button */
+.campaign-donation {
+    display: inline-block;
+    border-radius: 4px;
 
-.donate-button {
-    padding: 6px 24px;
-    font-size: 1em;
-    line-height: 1.5em;
-    border: none;
-    color: #fff;
+    &.has-amount-field {
+        .charitable-custom-amount-field {
+            display: inline-block;
+            margin: 0 !important;
+            width: 50% !important;
+            height: 100% !important;
+            background-color: #fff;
+        }
+
+        .donate-button {
+            display: inline-block;
+            margin-left: 0 !important;
+            width: 50%;
+        }
+    }
+
+    .donate-button {
+        padding: 6px 24px;
+        font-size: 1em;
+        line-height: 1.5em;
+        border: none;
+        color: #fff;
+        text-align: center;
+
+        &.medium-size {
+            font-size: 1.5em;
+            padding: 1em 24px;
+        }
+
+        &.large-size {
+            font-size: 3em;
+            padding: 1em 24px;
+        }
+    }
 }

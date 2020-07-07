@@ -18,6 +18,9 @@ $button_text  = array_key_exists( 'button_text', $view_args ) ? $view_args['butt
 	<?php wp_nonce_field( 'charitable-donate', 'charitable-donate-now' ); ?>
 	<input type="hidden" name="charitable_action" value="start_donation" />
 	<input type="hidden" name="campaign_id" value="<?php echo $campaign->ID; ?>" />
+	<?php if ( $show_amount_field ) : ?>
+		<input type="text" name="donation-amount" placeholder="<?php echo charitable_get_currency_helper()->get_currency_symbol(); ?>" />
+	<?php endif; ?>
 	<button type="submit" name="charitable_submit" class="<?php echo esc_attr( charitable_get_button_class( 'donate' ) ); ?>" <?php echo $button_style; ?>>
 		<?php echo $button_text; ?>
 	</button>

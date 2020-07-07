@@ -26,6 +26,7 @@ charitable_template(
 		'campaign'          => $campaign,
 		'button_colour'     => $view_args['highlightColour'],
 		'button_text'       => $view_args['buttonText'],
+		'button_size'       => $view_args['buttonSize'],
 		'show_amount_field' => $view_args['buttonHasAmount'],
 	)
 );

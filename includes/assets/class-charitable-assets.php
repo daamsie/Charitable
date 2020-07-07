@@ -470,6 +470,9 @@ if ( ! class_exists( 'Charitable_Assets' ) ) :
 				array(
 					'ajaxurl'                      => admin_url( 'admin-ajax.php' ),
 					'loading_gif'                  => $this->assets_dir . '/images/charitable-loading.gif',
+					'country'                      => charitable_get_option( 'country' ),
+					'currency'                     => charitable_get_currency(),
+					'currency_symbol'              => $currency->get_currency_symbol(),
 					'currency_format_num_decimals' => esc_attr( $currency->get_decimals() ),
 					'currency_format_decimal_sep'  => esc_attr( $currency->get_decimal_separator() ),
 					'currency_format_thousand_sep' => esc_attr( $currency->get_thousands_separator() ),
@@ -480,6 +483,8 @@ if ( ! class_exists( 'Charitable_Assets' ) ) :
 					'error_unknown'                => __( 'Your donation could not be processed. Please reload the page and try again.', 'charitable' ),
 					'error_invalid_cc_number'      => __( 'The credit card passed is not valid.', 'charitable' ),
 					'error_invalid_cc_expiry'      => __( 'The credit card expiry date is not valid.', 'charitable' ),
+					'version'                      => charitable()->get_version(),
+					'test_mode'                    => (int) charitable_get_option( 'test_mode' ),
 				)
 			);
 		}

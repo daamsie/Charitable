@@ -16,18 +16,27 @@ $label    = sprintf(
 	esc_attr_x( 'Make a donation to %s', 'make a donation to campaign', 'charitable' ),
 	get_the_title( $campaign->ID )
 );
-$button_style      = array_key_exists( 'button_colour', $view_args ) ? 'style="background-color:' . $view_args['button_colour'] . ';"' : '';
+
+if ( ! array_key_exists( 'button_colour', $view_args ) ) {
+	$view_args['button_colour'] = charitable_get_highlight_colour();
+}
+
+$button_style      = 'style="background-color:' . $view_args['button_colour'] . ';"';
 $button_text       = array_key_exists( 'button_text', $view_args ) ? $view_args['button_text'] : __( 'Donate', 'charitable' );
 $show_amount_field = array_key_exists( 'show_amount_field', $view_args ) && $view_args['show_amount_field'];
+
 ?>
-<div class="campaign-donation">
+<div class="campaign-donation <?php echo $show_amount_field ? 'has-amount-field' : ''; ?>" style="background-color:<?php echo $view_args['button_colour']; ?>;">
 	<?php if ( $show_amount_field ) : ?>
-		<input type="text" name="donation-amount" />
-	<?php endif; ?>
-	<a data-trigger-modal="charitable-donation-form-modal"
+		<input type="text"
+			name="donation-amount"
+			placeholder="<?php echo charitable_get_currency_helper()->get_currency_symbol(); ?>"
+			class="charitable-custom-amount-field"
+			style="border-color:<?php echo $view_args['button_colour']; ?>;"
+		/><?php endif; ?><a data-trigger-modal="charitable-donation-form-modal"
 		class="<?php echo esc_attr( charitable_get_button_class( 'donate' ) ); ?>"
 		href="<?php echo charitable_get_permalink( 'campaign_donation_page', array( 'campaign_id' => $campaign->ID ) ); ?>"
 		aria-label="<?php echo $label; ?>"
-		<?php echo $button_style; ?>
+		style="background-color:<?php echo $view_args['button_colour']; ?>;"
 	><?php echo $button_text; ?></a>
 </div>
