@@ -6,10 +6,10 @@
  *
  * @package   Charitable/Functions/Templates
  * @author    Eric Daams
- * @copyright Copyright (c) 2019, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.6.29
+ * @version   1.6.34
  */
 
 // Exit if accessed directly.
@@ -207,7 +207,8 @@ function charitable_campaign_loop_class( $view_args = array() ) {
 	 *
 	 * @since 1.5.7
 	 *
-	 * @param array $classes Array of classes.
+	 * @param array $classes   Array of classes.
+	 * @param array $view_args View args.
 	 */
 	$classes = apply_filters( 'charitable_campaign_loop_classes', $classes, $view_args );
 
@@ -235,12 +236,16 @@ function charitable_get_arbitrary_attributes( $field ) {
 			continue;
 		}
 
-		/* Skip required attribute unless it's true. */
-		if ( 'required' == $attr && ! $field['required'] ) {
-			continue;
-		}
+		if ( 'required' == $attr ) {
+			/* Skip required attribute if it's not true. */
+			if ( ! $field['required'] ) {
+				continue;
+			}
 
-		$field['attrs'][ $attr ] = $field[ $attr ];
+			$field['attrs'][ $attr ] = 'required';
+		} else {
+			$field['attrs'][ $attr ] = $field[ $attr ];
+		}
 	}
 
 	$output = '';
@@ -328,17 +333,21 @@ function charitable_table_template( array $columns, array $data, $args = array()
  * Return the email verification link.
  *
  * @since  1.5.0
+ * @since  1.6.32 Added $force_send argument.
  *
  * @param  WP_User      $user         An instance of `WP_User`.
  * @param  string|false $redirect_url The URL to redirect to after verification.
+ * @param  boolean      $force_send   Whether the link should include an argument to force
+ *                                    resending the email, even if it was sent recently.
  * @return string
  */
-function charitable_get_email_verification_link( WP_User $user, $redirect_url = false ) {
+function charitable_get_email_verification_link( WP_User $user, $redirect_url = false, $force_send = false ) {
 	return add_query_arg(
 		array(
 			'charitable_action' => 'verify_email',
 			'user'              => $user->ID,
 			'redirect_url'      => $redirect_url,
+			'force_send'        => (int) $force_send,
 		)
 	);
 }

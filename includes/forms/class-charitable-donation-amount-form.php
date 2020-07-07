@@ -4,14 +4,16 @@
  *
  * @package   Charitable/Classes/Charitable_Donation_Amount_Form
  * @author    Eric Daams
- * @copyright Copyright (c) 2019, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
  * @version   1.5.0
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Donation_Amount_Form' ) ) :
 
@@ -147,11 +149,14 @@ if ( ! class_exists( 'Charitable_Donation_Amount_Form' ) ) :
 				Charitable_Public::get_instance()->enqueue_donation_form_scripts();
 			}
 
-			charitable_template( 'donation-form/form-donation.php', array(
-				'campaign' => $this->get_campaign(),
-				'form'     => $this,
-				'form_id'  => 'charitable-donation-amount-form',
-			) );
+			charitable_template(
+				'donation-form/form-donation.php',
+				array(
+					'campaign' => $this->get_campaign(),
+					'form'     => $this,
+					'form_id'  => 'charitable-donation-amount-form',
+				)
+			);
 		}
 	}
 

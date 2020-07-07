@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_Donation_Report
  * @author    Eric Daams
- * @copyright Copyright (c) 2019, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.6.0
  * @version   1.6.0
@@ -116,6 +116,10 @@ if ( ! class_exists( 'Charitable_Donation_Report' ) ) :
 		 * @return mixed
 		 */
 		private function run_report_query( $type ) {
+			if ( false === $this->args['campaigns'] ) {
+				return 0;
+			}
+
 			switch ( $type ) {
 				case 'amount':
 					return $this->run_amount_query();
@@ -170,11 +174,13 @@ if ( ! class_exists( 'Charitable_Donation_Report' ) ) :
 		 * @return int
 		 */
 		private function run_donor_query() {
-			$query = new Charitable_Donor_Query( array(
-				'output'   => 'count',
-				'campaign' => $this->args['campaigns'],
-				'status'   => $this->args['status'],
-			) );
+			$query = new Charitable_Donor_Query(
+				array(
+					'output'   => 'count',
+					'campaign' => $this->args['campaigns'],
+					'status'   => $this->args['status'],
+				)
+			);
 
 			return $query->count();
 		}
@@ -189,33 +195,81 @@ if ( ! class_exists( 'Charitable_Donation_Report' ) ) :
 		 */
 		private function parse_args( $args ) {
 			$defaults = array(
-				'report_type' => 'all',
-				'campaigns'   => array(),
-				'status'      => array( 'charitable-completed', 'charitable-preapproved' ),
+				'report_type'      => 'all',
+				'campaigns'        => array(),
+				'status'           => array( 'charitable-completed', 'charitable-preapproved' ),
+				'category'         => null,
+				'tag'              => null,
+				'include_children' => true,
 			);
 
 			$args                = array_merge( $defaults, $args );
-			$args['campaigns']   = $this->parse_campaigns( $args['campaigns'] );
-			$args['report_type'] = $this->parse_report_type( $args['report_type'] );
+			$args['campaigns']   = $this->parse_campaigns( $args );
+			$args['report_type'] = $this->parse_report_type( $args );
 
 			return $args;
 		}
-
 
 		/**
 		 * Parse campaigns argument.
 		 *
 		 * @since  1.6.0
 		 *
-		 * @param  mixed $campaigns An array of campaigns.
-		 * @return array
+		 * @param  array $args The passed report arguments.
+		 * @return array|false
 		 */
-		private function parse_campaigns( $campaigns ) {
-			if ( empty( $campaigns ) ) {
+		private function parse_campaigns( $args ) {
+			if ( ! is_array( $args['campaigns'] ) ) {
+				$args['campaigns'] = array();
+			}
+
+			$campaigns = array_map( 'intval', $args['campaigns'] );
+
+			$query_args = array(
+				'post_type'      => Charitable::CAMPAIGN_POST_TYPE,
+				'posts_per_page' => -1,
+				'post__in'       => $campaigns,
+				'tax_query'      => array(),
+				'fields'         => 'ids',
+			);
+
+			if ( ! is_null( $args['category'] ) ) {
+				$query_args['tax_query'][] = array(
+					'taxonomy' => 'campaign_category',
+					'field'    => 'slug',
+					'terms'    => $args['category'],
+				);
+			}
+
+			if ( ! is_null( $args['tag'] ) ) {
+				$query_args['tax_query'][] = array(
+					'taxonomy' => 'campaign_tag',
+					'field'    => 'slug',
+					'terms'    => $args['tag'],
+				);
+			}
+
+			if ( $args['include_children'] ) {
+				$query_args['post_parent__in'] = $campaigns;
+
+				unset( $query_args['post__in'] );
+			}
+
+			if ( empty( $campaigns ) && empty( $query_args['tax_query'] ) && ! $args['include_children'] ) {
 				return array();
 			}
 
-			return array_filter( $campaigns, 'intval' );
+			$campaigns = array_merge(
+				$campaigns,
+				get_posts( $query_args )
+			);
+
+			/* Return false if there are no campaigns matching the query. */
+			if ( empty( $campaigns ) ) {
+				return false;
+			}
+
+			return $campaigns;
 		}
 
 		/**
@@ -223,10 +277,12 @@ if ( ! class_exists( 'Charitable_Donation_Report' ) ) :
 		 *
 		 * @since  1.6.0
 		 *
-		 * @param  string|array $report_type The type of report to get. May be a string or an array of strings.
+		 * @param  array $args The passed report arguments.
 		 * @return array|false
 		 */
-		private function parse_report_type( $report_type ) {
+		private function parse_report_type( $args ) {
+			$report_type = $args['report_type'];
+
 			if ( 'all' == $report_type ) {
 				return $this->types;
 			}

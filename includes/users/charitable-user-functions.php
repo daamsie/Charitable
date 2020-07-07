@@ -6,7 +6,7 @@
  *
  * @package     Charitable/Functions/User
  * @author      Eric Daams
- * @copyright   Copyright (c) 2019, Studio 164a
+ * @copyright   Copyright (c) 2020, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.0.0
  * @version     1.6.0
@@ -32,6 +32,7 @@ function charitable_get_user( $user_id, $force = false ) {
 	if ( is_a( $user_id, 'WP_User' ) ) {
 		$user_id = $user_id->ID;
 	}
+
 	$user = wp_cache_get( $user_id, 'charitable_user', $force );
 
 	if ( ! $user ) {

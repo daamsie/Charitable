@@ -4,10 +4,10 @@
  *
  * @package   Charitable/Classes/Charitable_Endpoints
  * @author    Eric Daams
- * @copyright Copyright (c) 2019, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.29
+ * @version   1.6.41
  */
 
 // Exit if accessed directly.
@@ -34,6 +34,15 @@ if ( ! class_exists( 'Charitable_Endpoints' ) ) :
 		protected $endpoints;
 
 		/**
+		 * Endpoints ordered by priority.
+		 *
+		 * @since 1.6.37
+		 *
+		 * @var   array
+		 */
+		protected $endpoints_prioritized = array();
+
+		/**
 		 * Current endpoint.
 		 *
 		 * @since 1.5.0
@@ -51,12 +60,15 @@ if ( ! class_exists( 'Charitable_Endpoints' ) ) :
 			$this->endpoints = array();
 
 			add_action( 'wp', array( $this, 'disable_endpoint_cache' ) );
+			add_filter( 'pre_handle_404', array( $this, 'block_404_on_endpoints' ) );
 			add_action( 'init', array( $this, 'setup_rewrite_rules' ) );
 			add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
 			add_action( 'template_redirect', array( $this, 'maybe_redirect' ) );
 			add_filter( 'template_include', array( $this, 'template_loader' ), 12 );
 			add_filter( 'the_content', array( $this, 'get_content' ) );
 			add_filter( 'body_class', array( $this, 'add_body_classes' ) );
+			add_filter( 'comments_open', array( $this, 'maybe_disable_comments' ) );
+			add_filter( 'comments_template', array( $this, 'maybe_remove_comments_template' ) );
 			add_filter( 'nav_menu_meta_box_object', array( $this, 'add_endpoints_menu_meta_box' ) );
 			add_filter( 'customize_nav_menu_available_item_types', array( $this, 'add_endpoints_menu_meta_box_to_customizer' ) );
 			add_filter( 'customize_nav_menu_available_items', array( $this, 'add_endpoints_menu_meta_box_items_to_customizer' ), 10, 4 );
@@ -87,6 +99,13 @@ if ( ! class_exists( 'Charitable_Endpoints' ) ) :
 			}
 
 			$this->endpoints[ $endpoint_id ] = $endpoint;
+
+			/* Record the endpoint by priority. */
+			if ( ! array_key_exists( $endpoint::PRIORITY, $this->endpoints_prioritized ) ) {
+				$this->endpoints_prioritized[ $endpoint::PRIORITY ] = array();
+			}
+
+			$this->endpoints_prioritized[ $endpoint::PRIORITY ][] = $endpoint_id;
 
 			return true;
 		}
@@ -174,7 +193,8 @@ if ( ! class_exists( 'Charitable_Endpoints' ) ) :
 					__METHOD__,
 					sprintf(
 						/* translators: %s: endpoint id */
-						__( 'Endpoint %s has not been registered.', 'charitable' ), $endpoint
+						__( 'Endpoint %s has not been registered.', 'charitable' ),
+						$endpoint
 					),
 					'1.5.0'
 				);
@@ -215,6 +235,31 @@ if ( ! class_exists( 'Charitable_Endpoints' ) ) :
 			 * @since 1.6.14
 			 */
 			do_action( 'charitable_do_not_cache' );
+		}
+
+		/**
+		 * If we're viewing a Charitable endpoint, we're not on a 404, even
+		 * though WordPress interprets some pages (like the Forgot Password)
+		 * as a 404 in certain cases.
+		 *
+		 * @since  1.6.41
+		 *
+		 * @param  boolean $not_a_404 Whether to preempt WordPress and instruct
+		 *                            it that this is not a 404 request.
+		 * @return boolean
+		 */
+		public function block_404_on_endpoints( $not_a_404 ) {
+			if ( false !== $this->get_current_endpoint() ) {
+				$not_a_404 = true;
+			} else {
+				/* Some endpoints will return false at this point since
+				 * it's so early, so we unset the class property to make
+				 * sure they are tested again later on.
+				 */
+				unset( $this->current_endpoint );
+			}
+
+			return $not_a_404;
 		}
 
 		/**
@@ -369,11 +414,53 @@ if ( ! class_exists( 'Charitable_Endpoints' ) ) :
 		}
 
 		/**
+		 * If we're on an endpoint where comments should be disabled, do so.
+		 *
+		 * @since  1.6.36
+		 *
+		 * @param  boolean $open Whether comments are open.
+		 * @return boolean
+		 */
+		public function maybe_disable_comments( $open ) {
+			if ( ! $open ) {
+				return $open;
+			}
+
+			$endpoint = $this->get_current_endpoint();
+
+			if ( ! $endpoint ) {
+				return $open;
+			}
+
+			return ! $this->endpoints[ $endpoint ]->comments_disabled();
+		}
+
+		/**
+		 * If we are on an endpoint where comments are disabled, return an
+		 * empty string for the template, so WordPress will not display
+		 * anything.
+		 *
+		 * @since  1.6.36
+		 *
+		 * @param  string $template The path to the theme template file.
+		 * @return string
+		 */
+		public function maybe_remove_comments_template( $template ) {
+			$endpoint = $this->get_current_endpoint();
+
+			if ( $endpoint && $this->endpoints[ $endpoint ]->comments_disabled() ) {
+				$template = charitable_get_template_path( 'comments/disabled-comments.php' );
+			}
+
+			return $template;
+		}
+
+		/**
 		 * Add a "Charitable" menus meta box.
 		 *
 		 * @since  1.6.29
 		 *
-		 * @param  object $object The meta box object
+		 * @param  object $object The meta box object.
 		 * @return object
 		 */
 		public function add_endpoints_menu_meta_box( $object ) {
@@ -410,7 +497,12 @@ if ( ! class_exists( 'Charitable_Endpoints' ) ) :
 			<div id="charitable" class="categorydiv">
 				<ul id="charitable-tabs" class="charitable-tabs add-menu-item-tabs">
 					<li <?php echo ( 'all' == $current_tab ? ' class="tabs"' : '' ); ?>>
-						<a class="nav-tab-link" data-type="tabs-panel-charitable-all" href="<?php if ( $nav_menu_selected_id ) echo esc_url( add_query_arg( 'charitable-tab', 'all', remove_query_arg( $removed_args ) ) ); ?>#tabs-panel-charitable-all">
+						<a class="nav-tab-link" data-type="tabs-panel-charitable-all" href="
+						<?php
+						if ( $nav_menu_selected_id ) {
+							echo esc_url( add_query_arg( 'charitable-tab', 'all', remove_query_arg( $removed_args ) ) );}
+						?>
+						#tabs-panel-charitable-all">
 							<?php _e( 'View All', 'charitable' ); ?>
 						</a>
 					</li><!-- /.tabs -->
@@ -424,7 +516,19 @@ if ( ! class_exists( 'Charitable_Endpoints' ) ) :
 				</div><!-- /.tabs-panel -->
 				<p class="button-controls wp-clearfix">
 					<span class="list-controls">
-						<a href="<?php echo esc_url( add_query_arg( array( 'charitable-tab' => 'all', 'selectall' => 1, ), remove_query_arg( $removed_args ) ) ); ?>#charitable" class="select-all"><?php _e( 'Select All', 'charitable' ); ?></a>
+						<a href="
+						<?php
+						echo esc_url(
+							add_query_arg(
+								array(
+									'charitable-tab' => 'all',
+									'selectall'      => 1,
+								),
+								remove_query_arg( $removed_args )
+							)
+						);
+						?>
+									#charitable" class="select-all"><?php _e( 'Select All', 'charitable' ); ?></a>
 					</span>
 					<span class="add-to-menu">
 						<input type="submit"<?php wp_nav_menu_disabled_check( $nav_menu_selected_id ); ?> class="button-secondary submit-add-to-menu right" value="<?php esc_attr_e( 'Add to Menu', 'charitable' ); ?>" name="add-charitable-menu-item" id="submit-charitable" />
@@ -514,11 +618,28 @@ if ( ! class_exists( 'Charitable_Endpoints' ) ) :
 		public function get_current_endpoint() {
 			if ( ! isset( $this->current_endpoint ) ) {
 
-				foreach ( $this->endpoints as $endpoint_id => $endpoint ) {
-					if ( $this->is_page( $endpoint_id, array( 'strict' => true ) ) ) {
-						$this->current_endpoint = $endpoint_id;
+				ksort( $this->endpoints_prioritized, SORT_NUMERIC );
 
-						return $this->current_endpoint;
+				foreach ( $this->endpoints_prioritized as $priority => $endpoint_ids ) {
+					foreach ( $endpoint_ids as $endpoint_id ) {
+
+						/* Sanity check to ensure the endpoint was properly registered. */
+						if ( ! isset( $this->endpoints[ $endpoint_id ] ) ) {
+							error_log(
+								sprintf(
+									/* translators: %s: endpoint id */
+									__( 'Endpoint %s was incorrectly registered.', 'charitable' ),
+									$endpoint_id
+								)
+							);
+
+							continue;
+						}
+
+						if ( $this->is_page( $endpoint_id, array( 'strict' => true ) ) ) {
+							$this->current_endpoint = $endpoint_id;
+							return $this->current_endpoint;
+						}
 					}
 				}
 

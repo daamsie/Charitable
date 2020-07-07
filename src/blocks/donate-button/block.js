@@ -2,6 +2,7 @@
  * Block dependencies
  */
 import { Inspector } from './inspector.js';
+import { CampaignSelect } from './../../components/campaign-select/index.js';
 
 /**
  * WordPress dependencies
@@ -14,7 +15,7 @@ class Block extends Component {
         super( ...arguments );
 
         this.state = {
-            edit_mode: false
+			edit_mode: ! this.props.attributes.campaign,
 		};
 
         this.updateCampaignId = this.updateCampaignId.bind( this );
@@ -40,11 +41,57 @@ class Block extends Component {
     }
 
     /**
+	 * Get the components for the sidebar settings area that is rendered while focused on a Donate Button block.
+	 *
+	 * @return Component
+	 */
+	getInspectorControls() {
+		return '';
+	}
+
+    /**
+	 * Get the components for the toolbar area that appears on top of the block when focused.
+	 *
+	 * @return Component
+	 */
+	getToolbarControls() {
+		const { edit_mode } = this.state;
+		const { attributes } = this.props;
+		const { campaign } = attributes;
+
+		const editButton = [
+			{
+				icon: 'edit',
+				title: __( 'Edit' ),
+				onClick: ! campaign ? function(){} : () => this.setState( { edit_mode: ! edit_mode } ),
+				isActive: this.state.edit_mode,
+			},
+		];
+
+		return (
+			<BlockControls key="controls">
+				<Toolbar controls={ editButton } />
+			</BlockControls>
+		);
+    }
+
+    /**
      * Update the campaign ID.
      */
     updateCampaignId( campaignId ) {
         this.props.setAttributes( { campaign: campaignId } );
     }
+
+    /**
+	 * Render the block UI.
+	 */
+	render() {
+		return [
+			this.getInspectorControls(),
+			this.getToolbarControls(),
+			this.state.edit_mode ? this.getSettingsEditor() : this.getPreview(),
+		];
+	}
 
     render() {
         if ( ! this.state.ready ) {

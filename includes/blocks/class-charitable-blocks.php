@@ -51,9 +51,29 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 				array(
 					'editor_script'   => 'charitable-blocks',
 					'attributes'      => array(
-						'campaign'  => array(
+						'campaign'         => array(
 							'type'    => 'number',
 							'default' => 0,
+						),
+						'displayMode'      => array(
+							'type'    => 'string',
+							'default' => 'form',
+						),
+						'buttonOpensModal' => array(
+							'type'    => 'boolean',
+							'default' => true,
+						),
+						'buttonHasAmount'  => array(
+							'type'    => 'boolean',
+							'default' => false,
+						),
+						'highlightColour'  => array(
+							'type'    => 'string',
+							'default' => charitable_get_highlight_colour(),
+						),
+						'buttonText'       => array(
+							'type'    => 'string',
+							'default' => __( 'Donate', 'charitable' ),
 						),
 					),
 					'render_callback' => array( $this, 'render_donation_form' ),
@@ -271,7 +291,11 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 		public function render_donation_form( $attributes ) {
 			ob_start();
 
-			charitable_template_donation_form( $attributes['campaign'] );
+			if ( 'form' === $attributes['displayMode'] ) {
+				charitable_template_donation_form( $attributes['campaign'] );
+			} else {
+				charitable_template( 'blocks/donate-button/index.php', $attributes );
+			}
 
 			return ob_get_clean();
 		}

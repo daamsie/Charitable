@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_Assets
  * @author    Eric Daams
- * @copyright Copyright (c) 2018, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.7.0
  * @version   1.7.0
@@ -271,15 +271,12 @@ if ( ! class_exists( 'Charitable_Assets' ) ) :
 					'deps'    => array(),
 					'version' => $this->version,
 				),
-			);
-
-			if ( 'modal' == charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
-				$stylesheets['lean-modal-css'] = array(
+				'lean-modal-css'         => array(
 					'src'     => 'css/modal' . $this->suffix . '.css',
 					'deps'    => array(),
 					'version' => $this->version,
-				);
-			}
+				),
+			);
 
 			array_walk( $stylesheets, array( $this, 'register_stylesheet' ) );
 
@@ -312,15 +309,12 @@ if ( ! class_exists( 'Charitable_Assets' ) ) :
 					'deps'    => array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ),
 					'version' => $this->version,
 				),
-			);
-
-			if ( 'modal' == charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
-				$scripts['lean-modal'] = array(
+				'lean-modal'             => array(
 					'src'     => 'js/libraries/leanModal' . $this->suffix . '.js',
 					'deps'    => array( 'jquery-core' ),
 					'version' => $this->version,
-				);
-			}
+				),
+			);
 
 			array_walk( $scripts, array( $this, 'register_script' ) );
 

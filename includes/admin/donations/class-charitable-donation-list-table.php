@@ -4,13 +4,15 @@
  *
  * @package   Charitable/Classes/Charitable_Donation_List_Table
  * @author    Eric Daams
- * @copyright Copyright (c) 2019, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.5.0
+ * @version   1.7.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 
@@ -316,8 +318,7 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 		 * @since   1.5.0
 		 */
 		public function bulk_action_handler( $redirect_to, $action, $post_ids ) {
-
-			// Bail out if this is not a status-changing action
+			/* Bail out if this is not a status-changing action. */
 			if ( strpos( $action, 'set-' ) === false ) {
 				$sendback = remove_query_arg( array( 'trashed', 'untrashed', 'deleted', 'locked', 'ids' ), wp_get_referer() );
 				wp_redirect( esc_url_raw( $sendback ) );
@@ -328,11 +329,12 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 			$donation_statuses = charitable_get_valid_donation_statuses();
 
 			$new_status    = str_replace( 'set-', '', $action ); // get the status name from action
-
 			$report_action = 'bulk_' . Charitable::DONATION_POST_TYPE . '_status_update';
 
-			// Sanity check: bail out if this is actually not a status, or is
-			// not a registered status
+			/**
+			 * Sanity check: bail out if this is actually not a status, or is
+			 * not a registered status.
+			 */
 			if ( ! isset( $donation_statuses[ $new_status ] ) ) {
 				return $redirect_to;
 			}
@@ -340,6 +342,7 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 			foreach ( $post_ids as $post_id ) {
 				$donation = charitable_get_donation( $post_id );
 				$donation->update_status( $new_status );
+
 				do_action( 'charitable_donations_table_do_bulk_action', $post_id, $new_status );
 			}
 
@@ -352,9 +355,10 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 		/**
 		 * Remove edit from the bulk actions.
 		 *
-		 * @param   array $actions
-		 * @return  array
-		 * @since   1.5.0
+		 * @since  1.5.0
+		 *
+		 * @param  array $actions List of bulk actions.
+		 * @return array
 		 */
 		public function remove_bulk_actions( $actions ) {
 			if ( isset( $actions['edit'] ) ) {
@@ -591,6 +595,10 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 		public function add_export( $which ) {
 			global $typenow;
 
+			if ( ! current_user_can( 'export_charitable_reports' ) ) {
+				return;
+			}
+
 			/* Add the export button. */
 			if ( 'top' == $which && in_array( $typenow, array( Charitable::DONATION_POST_TYPE ) ) ) {
 				charitable_admin_view( 'donations-page/export' );
@@ -615,7 +623,6 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 				charitable_admin_view( 'donations-page/export-form' );
 				charitable_admin_view( 'donations-page/filter-form' );
 			}
-
 		}
 
 		/**
@@ -695,6 +702,11 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 				$vars['post__in'] = charitable_get_table( 'campaign_donations' )->get_donation_ids_for_campaign( $_GET['campaign_id'] );
 			}
 
+			/* If the user cannot view/edit others donations, filter by author. */
+			if ( ! current_user_can( 'edit_others_donations' ) ) {
+				$vars['author'] = get_current_user_id();
+			}
+
 			return $vars;
 		}
 
@@ -702,13 +714,10 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 		 * Column sorting handler.
 		 *
 		 * @since  1.5.0
-         * @update 1.7.0
 		 *
 		 * @global string $typenow The current post type.
 		 * @global WPDB $wpdb The WPDB object.
-		 *
 		 * @param  array $clauses Array of SQL query clauses.
-		 *
 		 * @return array
 		 */
 		public function sort_donations( $clauses ) {
@@ -731,13 +740,31 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 				$order = isset( $_GET['order'] ) && strtoupper( $_GET['order'] ) == 'ASC' ? 'ASC' : 'DESC';
 
 				switch ( $_GET['orderby'] ) {
-					case 'amount' :
+					case 'amount':
 						$clauses['orderby'] = 'cd.amount ' . $order;
 						break;
 				}
 			}
 
 			return $clauses;
+		}
+
+		/**
+		 * Get distinct results.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @param  string $distinct The current value for the distinct clause.
+		 * @return string
+		 */
+		public function distinct_clause( $distinct ) {
+			global $typenow, $wpdb;
+
+			if ( Charitable::DONATION_POST_TYPE != $typenow ) {
+				return $distinct;
+			}
+
+			return 'DISTINCT';
 		}
 
 		/**
@@ -762,6 +789,11 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 
 				if ( isset( $_GET['end_date'] ) && strlen( $_GET['end_date'] ) ) {
 					$args['end_date'] = $this->get_parsed_date( $_GET['end_date'] );
+				}
+
+				/* If the user cannot view/edit others donations, filter by author. */
+				if ( ! current_user_can( 'edit_others_donations' ) ) {
+					$args['author'] = get_current_user_id();
 				}
 
 				$status_counts = Charitable_Donations::count_by_status( $args );

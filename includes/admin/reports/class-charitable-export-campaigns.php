@@ -4,10 +4,10 @@
  *
  * @package   Charitable/Classes/Charitable_Export_Campaigns
  * @author    Eric Daams
- * @copyright Copyright (c) 2019, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.6.0
- * @version   1.6.25
+ * @version   1.6.39
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -79,15 +79,27 @@ if ( ! class_exists( 'Charitable_Export_Campaigns' ) ) :
 		 * @param mixed[] $args Arguments for the report.
 		 */
 		public function __construct( $args ) {
-			$this->defaults = array(
-				'start_date' => '',
-				'end_date'   => '',
-				'status'     => '',
+			/**
+			 * Filter the default campaign export arguments.
+			 *
+			 * @since 1.6.36
+			 *
+			 * @param array $defaults Default arguments.
+			 */
+			$this->defaults = apply_filters(
+				'charitable_export_campaigns_default_args',
+				array(
+					'start_date_from' => '',
+					'start_date_to'   => '',
+					'end_date_from'   => '',
+					'end_date_to'     => '',
+					'status'          => '',
+					'start_date'      => '', // Kept for backwards compatibility, @since 1.6.36.
+					'end_date'        => '', // Kept for backwards compatibility, @since 1.6.36.
+				)
 			);
 
 			$this->fields = array_map( array( $this, 'get_field_label' ), charitable()->campaign_fields()->get_export_fields() );
-
-			add_filter( 'charitable_export_data_key_value', array( $this, 'set_custom_field_data' ), 10, 3 );
 
 			parent::__construct( $args );
 		}
@@ -97,17 +109,45 @@ if ( ! class_exists( 'Charitable_Export_Campaigns' ) ) :
 		 *
 		 * @since  1.6.0
 		 *
-		 * @param  mixed  $value       The value to set.
-		 * @param  string $key         The key to set.
-		 * @param  int    $campaign_id The campaign ID.
+		 * @param  mixed  $value The value to set.
+		 * @param  string $key   The key to set.
+		 * @param  array  $data  The data array, which just contains the campaign ID.
 		 * @return mixed
 		 */
-		public function set_custom_field_data( $value, $key, $campaign_id ) {
+		public function set_custom_field_data( $value, $key, $data ) {
+			$campaign_id = current( $data );
+
 			if ( array_key_exists( $key, $this->fields ) ) {
 				$value = $this->get_campaign( $campaign_id )->get( $key );
 			}
 
 			return $value;
+		}
+
+		/**
+		 * Parse the arguments.
+		 *
+		 * @since  1.6.36
+		 *
+		 * @return array
+		 */
+		protected function parse_args( $args ) {
+			$parsed = wp_parse_args( $args, $this->defaults );
+
+			if ( empty( $parsed['start_date_from'] ) && strlen( $parsed['start_date'] ) ) {
+				$parsed['start_date_from'] = $parsed['start_date'];
+			}
+
+			if ( empty( $parsed['start_date_to'] ) && strlen( $parsed['end_date'] ) ) {
+				$parsed['start_date_to'] = $parsed['end_date'];
+			}
+
+			unset(
+				$parsed['start_date'],
+				$parsed['end_date']
+			);
+
+			return $parsed;
 		}
 
 		/**
@@ -197,26 +237,47 @@ if ( ! class_exists( 'Charitable_Export_Campaigns' ) ) :
 			$query_args = array(
 				'fields'         => 'ids',
 				'posts_per_page' => -1,
+				'meta_query'     => array(),
+				'date_query'     => array(),
+				'perm'           => 'readable',
 			);
 
-			if ( strlen( $this->args['start_date'] ) || strlen( $this->args['end_date'] ) ) {
-				$date_query = array(
-					'inclusive' => true,
+			if ( strlen( $this->args['start_date_from'] ) || strlen( $this->args['start_date_to'] ) ) {
+				$query_args['date_query']['inclusive'] = true;
+
+				if ( strlen( $this->args['start_date_from'] ) ) {
+					$query_args['date_query']['after'] = charitable_sanitize_date( $this->args['start_date_from'], 'Y-m-d' );
+				}
+
+				if ( strlen( $this->args['start_date_to'] ) ) {
+					$query_args['date_query']['before'] = charitable_sanitize_date( $this->args['start_date_to'], 'Y-m-d' );
+				}
+			}
+
+			if ( strlen( $this->args['end_date_from'] ) ) {
+				$query_args['meta_query'][] = array(
+					'key'     => '_campaign_end_date',
+					'value'   => charitable_sanitize_date( $this->args['end_date_from'], 'Y-m-d 00:00:00' ),
+					'compare' => '>=',
+					'type'    => 'datetime',
 				);
+			}
 
-				if ( strlen( $this->args['start_date'] ) ) {
-					$date_query['after'] = charitable_sanitize_date( $this->args['start_date'], 'Y-m-d' );
-				}
-
-				if ( strlen( $this->args['end_date'] ) ) {
-					$date_query['before'] = charitable_sanitize_date( $this->args['end_date'], 'Y-m-d' );
-				}
-
-				$query_args['date_query'] = $date_query;
+			if ( strlen( $this->args['end_date_to'] ) ) {
+				$query_args['meta_query'][] = array(
+					'key'     => '_campaign_end_date',
+					'value'   => charitable_sanitize_date( $this->args['end_date_to'], 'Y-m-d 00:00:00' ),
+					'compare' => '<=',
+					'type'    => 'datetime',
+				);
 			}
 
 			if ( ! empty( $this->args['status'] ) ) {
 				switch ( $this->args['status'] ) {
+					case 'any':
+						$query_args['post_status'] = array( 'draft', 'pending', 'private', 'publish' );
+						break;
+
 					case 'active':
 						$query_args['post_status'] = 'publish';
 						$query_args['meta_query']  = array(
@@ -252,6 +313,10 @@ if ( ! class_exists( 'Charitable_Export_Campaigns' ) ) :
 				}
 			}
 
+			if ( ! current_user_can( 'edit_others_campaigns' ) ) {
+				$query_args['author'] = get_current_user_id();
+			}
+
 			/**
 			 * Filter the campaigns export query arguments.
 			 *
@@ -262,27 +327,9 @@ if ( ! class_exists( 'Charitable_Export_Campaigns' ) ) :
 			 */
 			$query_args = apply_filters( 'charitable_export_campaigns_query_args', $query_args, $this->args );
 
+			error_log( var_export( $query_args, true ) );
+
 			return Charitable_Campaigns::query( $query_args )->posts;
-		}
-
-		/**
-		 * Receives a row of data and maps it to the keys defined in the columns.
-		 *
-		 * @since  1.6.0
-		 *
-		 * @param  int $data The campaign ID.
-		 * @return mixed
-		 */
-		protected function map_data( $data ) {
-			$row = array();
-
-			foreach ( $this->columns as $key => $label ) {
-				$value = isset( $data[ $key ] ) ? $data[ $key ] : '';
-				$value = apply_filters( 'charitable_export_data_key_value', $value, $key, $data );
-				$row[] = $value;
-			}
-
-			return $row;
 		}
 
 		/**

@@ -10,11 +10,22 @@
  * @version 1.7.0
  */
 
+$campaign = charitable_get_campaign( $view_args['campaign'] );
+
+if ( $view_args['buttonOpensModal'] ) {
+	$template = 'campaign/donate-modal.php';
+
+	charitable_template( 'campaign/donate-modal-window.php', array( 'campaign' => $campaign ) );
+} else {
+	$template = 'campaign/donate-button.php';
+}
+
 charitable_template(
-	'campaign/donate-button.php',
+	$template,
 	array(
-		'campaign'      => charitable_get_campaign( $view_args['campaign'] ),
-		'button_colour' => $view_args['highlightColour'],
-		'button_text'   => $view_args['buttonText'],
+		'campaign'          => $campaign,
+		'button_colour'     => $view_args['highlightColour'],
+		'button_text'       => $view_args['buttonText'],
+		'show_amount_field' => $view_args['buttonHasAmount'],
 	)
 );

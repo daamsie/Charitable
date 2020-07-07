@@ -4,10 +4,10 @@
  *
  * @package   Charitable/Classes/Charitable_Campaign
  * @author    Eric Daams
- * @copyright Copyright (c) 2019, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.6.18
+ * @version   1.6.35
  */
 
 // Exit if accessed directly.
@@ -16,7 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'Charitable_Campaign' ) ) :
-
 	/**
 	 * Campaign Model
 	 *
@@ -378,22 +377,18 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 			if ( 0 === $seconds_left ) {
 
 				/* Condition 1: The campaign has finished. */
-
 				$time_left = apply_filters( 'charitable_campaign_ended', __( 'Campaign has ended', 'charitable' ), $this );
 
 			} elseif ( $seconds_left <= $hour ) {
 
 				/* Condition 2: There is less than an hour left. */
-
 				$minutes_remaining = ceil( $seconds_left / 60 );
-				$class            .= ' minutes-left';
-
-				$time_left = apply_filters(
+				$time_left         = apply_filters(
 					'charitabile_campaign_minutes_left',
 					sprintf(
 						/* translators: %s: minutes left in span */
 						_n( '%s Minute Left', '%s Minutes Left', $minutes_remaining, 'charitable' ),
-						'<span class="' . esc_attr( $class ) . '">' . $minutes_remaining . '</span>'
+						'<span class="' . esc_attr( $classes ) . '">' . $minutes_remaining . '</span>'
 					),
 					$this
 				);
@@ -401,11 +396,8 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 			} elseif ( $seconds_left <= $day ) {
 
 				/* Condition 3: There is less than a day left. */
-
 				$hours_remaining = floor( $seconds_left / 3600 );
-				$classes        .= ' hours-left';
-
-				$time_left = apply_filters(
+				$time_left       = apply_filters(
 					'charitabile_campaign_hours_left',
 					sprintf(
 						/* translators: %s: hours left in span */
@@ -419,9 +411,7 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 
 				/* Condition 4: There is more than a day left. */
 				$days_remaining = floor( $seconds_left / 86400 );
-				$classes       .= ' days-left';
-
-				$time_left = apply_filters(
+				$time_left      = apply_filters(
 					'charitabile_campaign_days_left',
 					sprintf(
 						/* translators: %s: days left in span */
@@ -433,6 +423,14 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 
 			}//end if
 
+			/**
+			 * Filter the text describing how much time is left in the campaign.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param string              $time_left The text describing how much time is left.
+			 * @param Charitable_Campaign $campaign  The campaign object.
+			 */
 			return apply_filters( 'charitable_campaign_time_left', $time_left, $this );
 		}
 
@@ -826,12 +824,14 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 			$goal            = $this->get_meta( '_campaign_goal' );
 
 			if ( $goal ) {
-				$ret = sprintf( _x( '%s donated of %s goal', 'amount donated of goal', 'charitable' ),
+				$ret = sprintf(
+					_x( '%1$s donated of %2$s goal', 'amount donated of goal', 'charitable' ),
 					'<span class="amount">' . $currency_helper->get_monetary_amount( $amount ) . '</span>',
 					'<span class="goal-amount">' . $currency_helper->get_monetary_amount( $goal ) . '</span>'
 				);
 			} else {
-				$ret = sprintf( _x( '%s donated', 'amount donated', 'charitable' ),
+				$ret = sprintf(
+					_x( '%s donated', 'amount donated', 'charitable' ),
 					'<span class="amount">' . $currency_helper->get_monetary_amount( $amount ) . '</span>'
 				);
 			}
@@ -1003,6 +1003,55 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		}
 
 		/**
+		 * Return the initial/default donation period when
+		 *
+		 * @since  1.6.32
+		 *
+		 * @return string
+		 */
+		public function get_initial_donation_period() {
+			$period = $this->get_donation_period_in_session();
+
+			if ( false !== $period ) {
+				return $period;
+			}
+
+			if ( ! class_exists( 'Charitable_Recurring' ) ) {
+				return 'once';
+			}
+
+			switch ( $this->get( 'recurring_donation_mode' ) ) {
+				case 'advanced':
+					$period = 'one-time' === $this->get( 'recurring_default_tab' ) ? 'once' : 'recurring';
+					break;
+
+				default:
+					$period = 'once';
+			}
+
+			return $period;
+		}
+
+		/**
+		 * Get the default donation amount for this campaign.
+		 *
+		 * @since  1.6.32
+		 *
+		 * @return int
+		 */
+		public function get_default_donation_amount() {
+			/**
+			 * Filter the default donation amount.
+			 *
+			 * @since 1.5.6
+			 *
+			 * @param float|int           $amount   The amount to be filtered. $0 by default.
+			 * @param Charitable_Campaign $campaign The instance of `Charitable_Campaign`.
+			 */
+			return apply_filters( 'charitable_default_donation_amount', 0, $this );
+		}
+
+		/**
 		 * Renders the donate button template.
 		 *
 		 * @since  1.0.0
@@ -1119,7 +1168,7 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		 *
 		 * We use WP_Locale to parse the month that the user has set.
 		 *
-		 * @global 	WP_Locale $wp_locale
+		 * @global  WP_Locale $wp_locale
 		 *
 		 * @since  1.0.0
 		 *
@@ -1129,7 +1178,12 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		 */
 		public static function sanitize_campaign_end_date( $value, $submitted = array() ) {
 			$end_time = array_key_exists( '_campaign_end_time', $submitted ) ? $submitted['_campaign_end_time'] : '23:59:59';
-			$end_date = charitable_sanitize_date( $value, 'Y-m-d ' . $end_time );
+
+			if ( charitable()->registry()->get( 'i18n' )->decline_months() ) {
+				$end_date = $value . ' ' . $end_time;
+			} else {
+				$end_date = charitable_sanitize_date( $value, 'Y-m-d ' . $end_time );
+			}
 
 			if ( ! $end_date ) {
 				$end_date = 0;

@@ -5,12 +5,14 @@
  * @package     Charitable/Classes/Charitable_Licenses
  * @version     1.4.20
  * @author      Eric Daams
- * @copyright   Copyright (c) 2019, Studio 164a
+ * @copyright   Copyright (c) 2020, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Licenses' ) ) :
 
@@ -632,11 +634,14 @@ if ( ! class_exists( 'Charitable_Licenses' ) ) :
 			);
 
 			/* Call the custom API */
-			$response = wp_remote_post( $product_details['url'], array(
-				'timeout'   => 15,
-				'sslverify' => false,
-				'body'      => $api_params,
-			) );
+			$response = wp_remote_post(
+				$product_details['url'],
+				array(
+					'timeout'   => 15,
+					'sslverify' => false,
+					'body'      => $api_params,
+				)
+			);
 
 			/* Make sure the response came back okay */
 			if ( is_wp_error( $response ) ) {

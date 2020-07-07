@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_Email_Verification_Endpoint
  * @author    Eric Daams
- * @copyright Copyright (c) 2019, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
  * @version   1.6.26
@@ -25,6 +25,9 @@ if ( ! class_exists( 'Charitable_Email_Verification_Endpoint' ) ) :
 
 		/** Endpoint ID. */
 		const ID = 'email_verification';
+
+		/** Set priority */
+		const PRIORITY = 9;
 
 		/**
 		 * The verification result.
@@ -206,6 +209,11 @@ if ( ! class_exists( 'Charitable_Email_Verification_Endpoint' ) ) :
 					$this->verification_result = false;
 				} else {
 					$this->verification_result = check_password_reset_key( wp_unslash( $_GET['key'] ), wp_unslash( $_GET['login'] ) );
+				}
+
+				/* The user is logged in but the verification was for a different user. */
+				if ( is_user_logged_in() && get_current_user_id() !== $this->verification_result->ID ) {
+					$this->verification_result = false;
 				}
 
 				/* If everything checks out, mark the user as verified. */

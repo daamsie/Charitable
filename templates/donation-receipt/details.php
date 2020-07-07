@@ -11,7 +11,9 @@
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /* @var Charitable_Donation */
 $donation = $view_args['donation'];
@@ -19,7 +21,7 @@ $amount   = $donation->get_total_donation_amount();
 
 ?>
 <h3 class="charitable-header"><?php _e( 'Your Donation', 'charitable' ); ?></h3>
-<table class="donation-details charitable-table">
+<table class="charitable-donation-details donation-details charitable-table">
 	<thead>
 		<tr>
 			<th><?php _e( 'Campaign', 'charitable' ); ?></th>

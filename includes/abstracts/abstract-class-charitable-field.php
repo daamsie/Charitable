@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_Field
  * @author    Eric Daams
- * @copyright Copyright (c) 2019, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
  * @version   1.6.0
@@ -97,8 +97,12 @@ if ( ! class_exists( 'Charitable_Field' ) ) :
 			if ( ! is_array( $arg ) ) {
 				charitable_get_deprecated()->doing_it_wrong(
 					__METHOD__,
-					/* translators: %s: argument key */
-					sprintf( _x( 'Attempting to set an argument setting for a non-array argument. Argument: %s', 'argument key', 'charitable' ), $key ),
+					/* translators: %1$s: argument key; %2$s: setting */
+					sprintf(
+						_x( 'Attempting to set an argument setting for a non-array argument. Argument: %1$s; Setting: %2$s', 'argument key', 'charitable' ),
+						$key,
+						$setting
+					),
 					'1.6.0'
 				);
 

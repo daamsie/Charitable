@@ -3,18 +3,18 @@
  * Plugin Name:       Charitable
  * Plugin URI:        https://www.wpcharitable.com
  * Description:       The WordPress fundraising alternative for non-profits, created to help non-profits raise money on their own website.
- * Version:           1.6.30
+ * Version:           1.6.42
  * Author:            WP Charitable
  * Author URI:        https://wpcharitable.com
  * Requires at least: 4.1
- * Tested up to:      5.3
+ * Tested up to:      5.4.2
  *
  * Text Domain:       charitable
  * Domain Path:       /i18n/languages/
  *
  * @package           Charitable
  * @author            Eric Daams
- * @copyright         Copyright (c) 2019, Studio 164a
+ * @copyright         Copyright (c) 2020, Studio 164a
  * @license           http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -31,7 +31,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 	class Charitable {
 
 		/* Plugin version. */
-		const VERSION = '1.6.30';
+		const VERSION = '1.6.42';
 
 		/* Version of database schema. */
 		const DB_VERSION = '20180522';
@@ -261,14 +261,15 @@ if ( ! class_exists( 'Charitable' ) ) :
 				$this->registry->register_object( Charitable_Licenses::get_instance() );
 				$this->registry->register_object( Charitable_User_Dashboard::get_instance() );
 				$this->registry->register_object( Charitable_Locations::get_instance() );
+				$this->registry->register_object( Charitable_Currency::get_instance() );
 				$this->registry->register_object( new Charitable_Privacy );
+				$this->registry->register_object( new Charitable_Debugging );
+				$this->registry->register_object( new Charitable_Assets );
+				$this->registry->register_object( new Charitable_API );
 
 				if ( function_exists( 'register_block_type' ) ) {
 					$this->registry->register_object( new Charitable_Blocks );
 				}
-
-				$this->registry->register_object( new Charitable_Assets );
-				$this->registry->register_object( new Charitable_API );
 			}
 
 			return $this->registry;
@@ -286,8 +287,8 @@ if ( ! class_exists( 'Charitable' ) ) :
 			add_action( 'plugins_loaded', array( $this, 'charitable_install' ), 100 );
 			add_action( 'plugins_loaded', array( $this, 'charitable_start' ), 100 );
 			add_action( 'plugins_loaded', array( $this, 'endpoints' ), 100 );
-			add_action( 'plugins_loaded', array( $this, 'donation_fields' ), 100 );
-			add_action( 'plugins_loaded', array( $this, 'campaign_fields' ), 100 );
+			add_action( 'init', array( $this, 'donation_fields' ), -1 );
+			add_action( 'init', array( $this, 'campaign_fields' ), -1 );
 			add_action( 'plugins_loaded', array( $this, 'register_donormeta_table' ) );
 			add_action( 'plugins_loaded', 'charitable_load_compat_functions' );
 			add_action( 'setup_theme', array( 'Charitable_Customizer', 'start' ) );
@@ -426,7 +427,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 				return;
 			}
 
-			require_once( $this->get_path( 'includes' ) . 'class-charitable-install.php' );
+			require_once( $this->get_path( 'includes' ) . 'plugin/class-charitable-install.php' );
 
 			Charitable_Install::finish_installing();
 
@@ -747,18 +748,18 @@ if ( ! class_exists( 'Charitable' ) ) :
 		 * @return void
 		 */
 		public function activate( $network_wide = false ) {
-			require_once( $this->get_path( 'includes' ) . 'class-charitable-install.php' );
+			require_once( $this->get_path( 'includes' ) . 'plugin/class-charitable-install.php' );
 
 			if ( is_multisite() && $network_wide ) {
 				global $wpdb;
 
 				foreach ( $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" ) as $blog_id ) {
 					switch_to_blog( $blog_id );
-					new Charitable_Install();
+					new Charitable_Install( $this->includes_path );
 					restore_current_blog();
 				}
 			} else {
-				new Charitable_Install();
+				new Charitable_Install( $this->includes_path );
 			}
 		}
 
@@ -772,7 +773,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 		 * @return void
 		 */
 		public function deactivate() {
-			require_once( $this->get_path( 'includes' ) . 'class-charitable-uninstall.php' );
+			require_once( $this->get_path( 'includes' ) . 'plugin/class-charitable-uninstall.php' );
 			new Charitable_Uninstall();
 		}
 
@@ -787,8 +788,6 @@ if ( ! class_exists( 'Charitable' ) ) :
 			if ( isset( $_REQUEST['charitable_action'] ) ) {
 
 				$action = $_REQUEST['charitable_action'];
-
-				error_log( var_export( 'charitable_' . $action, true ) );
 
 				/**
 				 * Handle Charitable action.

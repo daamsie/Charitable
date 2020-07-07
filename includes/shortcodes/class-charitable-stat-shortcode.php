@@ -4,7 +4,7 @@
  *
  * @package   Charitable_Stat/Classes/Charitable_Stat_Shortcode
  * @author    Eric Daams
- * @copyright Copyright (c) 2019, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.6.0
  * @version   1.6.0
@@ -110,13 +110,19 @@ if ( ! class_exists( 'Charitable_Stat_Shortcode' ) ) :
 		 */
 		private function parse_args( $atts ) {
 			$defaults = array(
-				'display'   => 'total',
-				'campaigns' => '',
-				'goal'      => false,
+				'display'          => 'total',
+				'campaigns'        => '',
+				'goal'             => false,
+				'category'         => '',
+				'tag'              => '',
+				'include_children' => true,
 			);
 
-			$args              = shortcode_atts( $defaults, $atts, 'charitable_stat' );
-			$args['campaigns'] = strlen( $args['campaigns'] ) ? explode( ',', $args['campaigns'] ) : array();
+			$args                     = shortcode_atts( $defaults, $atts, 'charitable_stat' );
+			$args['campaigns']        = strlen( $args['campaigns'] ) ? explode( ',', $args['campaigns'] ) : array();
+			$args['category']         = strlen( $args['category'] ) ? explode( ',', $args['category'] ) : null;
+			$args['tag']              = strlen( $args['tag'] ) ? explode( ',', $args['tag'] ) : null;
+			$args['include_children'] = (bool) $args['include_children'];
 
 			return $args;
 		}
@@ -140,9 +146,8 @@ if ( ! class_exists( 'Charitable_Stat_Shortcode' ) ) :
 		 * @return array
 		 */
 		private function get_report_args() {
-			$args                = array();
+			$args = $this->args;
 			$args['report_type'] = in_array( $this->type, array( 'progress', 'total' ) ) ? 'amount' : $this->type;
-			$args['campaigns']   = $this->args['campaigns'];
 
 			return $args;
 		}

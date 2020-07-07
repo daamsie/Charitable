@@ -6,10 +6,10 @@
  *
  * @package   Charitable/Functions/Admin
  * @author    Eric Daams
- * @copyright Copyright (c) 2019, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.0
+ * @version   1.7.0
  */
 
 // Exit if accessed directly.
@@ -46,8 +46,8 @@ add_action( 'save_post_' . Charitable::DONATION_POST_TYPE, array( Charitable_Don
  * @see Charitable_Donation_Meta_Boxes::maybe_block_new_donation_email()
  * @see Charitable_Donation_Meta_Boxes::maybe_block_donation_receipt_email()
  */
-add_filter( 'charitable_send_' . Charitable_Email_New_Donation::get_email_id(), array( Charitable_Donation_Meta_Boxes::get_instance(), 'maybe_block_new_donation_email' ) );
-add_filter( 'charitable_send_' . Charitable_Email_Donation_Receipt::get_email_id(), array( Charitable_Donation_Meta_Boxes::get_instance(), 'maybe_block_donation_receipt_email' ) );
+add_filter( 'charitable_send_' . Charitable_Email_New_Donation::get_email_id(), array( Charitable_Donation_Meta_Boxes::get_instance(), 'maybe_block_new_donation_email' ), 10, 2 );
+add_filter( 'charitable_send_' . Charitable_Email_Donation_Receipt::get_email_id(), array( Charitable_Donation_Meta_Boxes::get_instance(), 'maybe_block_donation_receipt_email' ), 10, 2 );
 
 /**
  * Save the donation.
@@ -174,6 +174,12 @@ add_filter( 'request', array( Charitable_Donation_List_Table::get_instance(), 'f
 /**
  * Set up sorting for query results.
  *
+ * The distinct clause is required since it is possible (with Charitable EDD)
+ * to have multiple campaign donations for a single campaign, which results in
+ * copies of the same row being returned because of the left join.
+ *
  * @see Charitable_Donation_List_Table::sort_donations()
+ * @see Charitable_Donation_List_Table::distinct_clause()
  */
 add_filter( 'posts_clauses', array( Charitable_Donation_List_Table::get_instance(), 'sort_donations' ) );
+add_filter( 'posts_distinct', array( Charitable_Donation_List_Table::get_instance(), 'distinct_clause' ) );

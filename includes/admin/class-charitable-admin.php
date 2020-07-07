@@ -4,14 +4,16 @@
  *
  * @package   Charitable/Classes/Charitable_Admin
  * @author    Eric Daams
- * @copyright Copyright (c) 2019, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
  * @version   1.5.0
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Admin' ) ) :
 
@@ -305,13 +307,16 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 			 *
 			 * @param array $args Export arguments.
 			 */
-			$export_args = apply_filters( 'charitable_donations_export_args', array(
-				'start_date'  => $_GET['start_date'],
-				'end_date'    => $_GET['end_date'],
-				'status'      => $_GET['post_status'],
-				'campaign_id' => $_GET['campaign_id'],
-				'report_type' => $_GET['report_type'],
-			) );
+			$export_args = apply_filters(
+				'charitable_donations_export_args',
+				array(
+					'start_date'  => $_GET['start_date'],
+					'end_date'    => $_GET['end_date'],
+					'status'      => $_GET['post_status'],
+					'campaign_id' => $_GET['campaign_id'],
+					'report_type' => $_GET['report_type'],
+				)
+			);
 
 			/**
 			 * Filter the export class name.
@@ -341,18 +346,23 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 			}
 
 			/**
-			 * Filter the donation export arguments.
+			 * Filter the campaign export arguments.
 			 *
 			 * @since 1.6.0
 			 *
 			 * @param array $args Export arguments.
 			 */
-			$export_args = apply_filters( 'charitable_campaigns_export_args', array(
-				'start_date'  => $_GET['start_date'],
-				'end_date'    => $_GET['end_date'],
-				'status'      => $_GET['status'],
-				'report_type' => $_GET['report_type'],
-			) );
+			$export_args = apply_filters(
+				'charitable_campaigns_export_args',
+				array(
+					'start_date_from' => $_GET['start_date_from'],
+					'start_date_to'   => $_GET['start_date_to'],
+					'end_date_from'   => $_GET['end_date_from'],
+					'end_date_to'     => $_GET['end_date_to'],
+					'status'          => $_GET['status'],
+					'report_type'     => $_GET['report_type'],
+				)
+			);
 
 			/**
 			 * Filter the export class name.

@@ -6,14 +6,16 @@
  *
  * @package   Charitable/Classes/Charitable_Donation_Factory
  * @author    Eric Daams
- * @copyright Copyright (c) 2019, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.4.0
  * @version   1.4.0
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Donation_Factory' ) ) :
 
@@ -29,8 +31,8 @@ if ( ! class_exists( 'Charitable_Donation_Factory' ) ) :
 		 *
 		 * @since  1.4.0
 		 *
-		 * @param  mixed $donation The donation.
-		 * @return Charitable_Donation|bool
+		 * @param  boolean|int|Charitable_Donation $donation A donation object, ID or false.
+		 * @return Charitable_Donation|boolean
 		 */
 		public function get_donation( $donation = false ) {
 			global $post;
@@ -47,7 +49,19 @@ if ( ! class_exists( 'Charitable_Donation_Factory' ) ) :
 				return false;
 			}
 
-			$valid_post_types = apply_filters( 'charitable_valid_donation_types', array( Charitable::DONATION_POST_TYPE ) );
+			/**
+			 * Filter the list of valid donation types.
+			 *
+			 * @since 1.4.7
+			 *
+			 * @param string[] $post_types List of post types that qualify as donations.
+			 */
+			$valid_post_types = apply_filters(
+				'charitable_valid_donation_types',
+				array(
+					Charitable::DONATION_POST_TYPE,
+				)
+			);
 
 			if ( ! in_array( $donation->post_type, $valid_post_types ) ) {
 				return false;
@@ -76,21 +90,26 @@ if ( ! class_exists( 'Charitable_Donation_Factory' ) ) :
 		}
 
 		/**
-		 * Get the product class name.
+		 * Get the donation class name.
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
 		 *
-		 * @param  	WP_Post $the_donation
-		 * @return 	string
+		 * @param  WP_Post $donation The post object for the donation.
+		 * @return string
 		 */
-		private function get_donation_class( $the_donation ) {
-			$donation_id = absint( $the_donation->ID );
-			$donation_type  = $the_donation->post_type;
+		private function get_donation_class( $donation ) {
+			$classname = $this->get_classname_from_donation_type( $donation->post_type );
 
-			$classname = $this->get_classname_from_donation_type( $donation_type );
-
-			// Filter classname so that the class can be overridden if extended.
-			return apply_filters( 'charitable_donation_class', $classname, $donation_type, $donation_id );
+			/**
+			 * Filter classname so that the class can be overridden if extended.
+			 *
+			 * @since 1.4.0
+			 *
+			 * @param string $classname   The name of the class to use for this donation.
+			 * @param string $post_type   The post type of the donation.
+			 * @param int    $donation_id The donation ID.
+			 */
+			return apply_filters( 'charitable_donation_class', $classname, $donation->post_type, absint( $donation->ID ) );
 		}
 	}
 

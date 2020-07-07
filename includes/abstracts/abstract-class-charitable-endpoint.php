@@ -4,10 +4,10 @@
  *
  * @package   Charitable/Classes/Charitable_Endpoint
  * @author    Eric Daams
- * @copyright Copyright (c) 2019, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.29
+ * @version   1.6.37
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -23,8 +23,11 @@ if ( ! class_exists( 'Charitable_Endpoint' ) ) :
 	 */
 	abstract class Charitable_Endpoint implements Charitable_Endpoint_Interface {
 
-		/* @var string The endpoint's unique identifier. */
+		/** The endpoint's unique identifier. */
 		const ID = '';
+
+		/** The endpoint's priority in terms of when it should be loaded. */
+		const PRIORITY = 10;
 
 		/**
 		 * Whether the endpoint can be cached.
@@ -34,6 +37,15 @@ if ( ! class_exists( 'Charitable_Endpoint' ) ) :
 		 * @var   boolean
 		 */
 		protected $cacheable = true;
+
+		/**
+		 * Whether comments are disabled on this endpoint.
+		 *
+		 * @since 1.6.36
+		 *
+		 * @var   boolean
+		 */
+		protected $comments_disabled = true;
 
 		/**
 		 * Add rewrite rules for the endpoint.
@@ -123,6 +135,17 @@ if ( ! class_exists( 'Charitable_Endpoint' ) ) :
 		 */
 		public function is_cacheable() {
 			return $this->cacheable;
+		}
+
+		/**
+		 * Whether comments are disabled for this endpoint.
+		 *
+		 * @since  1.6.36
+		 *
+		 * @return boolean
+		 */
+		public function comments_disabled() {
+			return $this->comments_disabled;
 		}
 
 		/**

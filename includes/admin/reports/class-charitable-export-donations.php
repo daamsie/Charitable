@@ -4,7 +4,7 @@
  *
  * @package   Charitable/Classes/Charitable_Export_Donations
  * @author    Eric Daams
- * @copyright Copyright (c) 2019, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
  * @version   1.6.25
@@ -80,8 +80,6 @@ if ( ! class_exists( 'Charitable_Export_Donations' ) ) :
 
 			$this->statuses = charitable_get_valid_donation_statuses();
 			$this->fields   = array_map( array( $this, 'get_field_label' ), charitable()->donation_fields()->get_export_fields() );
-
-			add_filter( 'charitable_export_data_key_value', array( $this, 'set_custom_field_data' ), 10, 3 );
 
 			parent::__construct( $args );
 		}

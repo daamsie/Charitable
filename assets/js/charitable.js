@@ -55,6 +55,13 @@ CHARITABLE = window.CHARITABLE || {};
         this.total = 0;
 
         /**
+         * Whether to scroll to the top of the form after a submission with errors.
+         *
+         * @access private
+         */
+        this.prevent_scroll_to_top = true;
+
+        /**
          * Reference to this object.
          *
          * @access private
@@ -736,6 +743,11 @@ CHARITABLE = window.CHARITABLE || {};
      * Scroll to the top of the form.
      */
     Donation_Form.prototype.scroll_to_top = function() {
+        if ( this.prevent_scroll_to_top ) {
+            this.prevent_scroll_to_top = false;
+            return;
+        }
+
         var $modal = this.form.parents( '.charitable-modal' );
 
         if ( $modal.length ) {
@@ -974,18 +986,23 @@ CHARITABLE = window.CHARITABLE || {};
                 if ( $form.length ) {
                     $form.append( '<input type="hidden" id="charitable-submit-button-value" />' );
 
-                    $('body').one( 'submit', $form, function( event ) {
-                        var name = document.activeElement.name,
-                            value = document.activeElement.value;
+                    $form.find( '[type=submit]' ).on( 'click', function( event ) {
+                        /* If the form submission isn't valid, proceed no further. */
+                        if ( ! $form[0].checkValidity() ) {
+                            return;
+                        }
+
+                        var name = event.currentTarget.name,
+                            value = event.currentTarget.value;
 
                         $form.find( '#charitable-submit-button-value' )
                             .attr( 'name', name )
                             .attr( 'value', value );
 
-                        $form.find( 'input[type=submit], button[type=submit]' )
+                        $form.find( '[type=submit]' )
                             .attr( 'disabled', 'disabled' );
 
-                        return true;
+                        return $form.submit();
                     } );
                 }
             } );

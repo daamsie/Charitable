@@ -4,7 +4,7 @@
  *
  * @author    Eric Daams
  * @package   Charitable/Admin Views/Metaboxes
- * @copyright Copyright (c) 2019, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @since     1.2.0
  * @version   1.6.24
  */
@@ -14,6 +14,7 @@ if ( ! array_key_exists( 'form_view', $view_args ) || ! $view_args['form_view']-
 }
 
 $is_required = array_key_exists( 'required', $view_args ) && $view_args['required'];
+$field_attrs = array_key_exists( 'field_attrs', $view_args ) ? $view_args['field_attrs'] : array();
 
 ?>
 <div id="<?php echo esc_attr( $view_args['wrapper_id'] ); ?>" class="<?php echo esc_attr( $view_args['wrapper_class'] ); ?>" <?php echo charitable_get_arbitrary_attributes( $view_args ); ?>>
@@ -32,6 +33,7 @@ $is_required = array_key_exists( 'required', $view_args ) && $view_args['require
 	<textarea id="<?php echo esc_attr( $view_args['id'] ); ?>"
 		name="<?php echo esc_attr( $view_args['key'] ); ?>"
 		tabindex="<?php echo esc_attr( $view_args['tabindex'] ); ?>"
+		<?php echo charitable_get_arbitrary_attributes( $field_attrs ); ?>
 		<?php echo $is_required ? 'required' : ''; ?>
 	><?php echo esc_textarea( $view_args['value'] ); ?></textarea>
 	<?php if ( isset( $view_args['description'] ) ) : ?>

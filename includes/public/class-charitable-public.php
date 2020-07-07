@@ -4,10 +4,10 @@
  *
  * @package   Charitable/Classes/Charitable_Public
  * @author    Eric Daams
- * @copyright Copyright (c) 2019, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.2.0
+ * @version   1.6.41
  */
 
 // Exit if accessed directly.
@@ -57,7 +57,6 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 			add_action( 'wp_enqueue_scripts', array( $this, 'maybe_enqueue_donation_form_scripts' ), 11 );
 			add_action( 'charitable_campaign_loop_before', array( $this, 'maybe_enqueue_donation_form_scripts' ) );
 			add_filter( 'post_class', array( $this, 'campaign_post_class' ) );
-			add_filter( 'comments_open', array( $this, 'disable_comments_on_application_pages' ) );
 
 			do_action( 'charitable_public_start', $this );
 		}
@@ -65,9 +64,9 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 		/**
 		 * Conditionally load the donation form scripts if we're viewing the donation form.
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
 		 *
-		 * @return  boolean True if scripts were loaded. False otherwise.
+		 * @return boolean True if scripts were loaded. False otherwise.
 		 */
 		public function maybe_enqueue_donation_form_scripts() {
 			$load = charitable_is_page( 'campaign_donation_page' );
@@ -86,9 +85,9 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 		/**
 		 * Enqueues the donation form scripts.
 		 *
-		 * @since   1.4.6
+		 * @since  1.4.6
 		 *
-		 * @return  void
+		 * @return void
 		 */
 		public function enqueue_donation_form_scripts() {
 			wp_enqueue_script( 'charitable-script' );
@@ -101,10 +100,10 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 		/**
 		 * Adds custom post classes when viewing campaign.
 		 *
-		 * @since   1.0.0
+		 * @since  1.0.0
 		 *
-		 * @param 	string[] $classes List of classes to be added with post_class().
-		 * @return  string[]
+		 * @param  string[] $classes List of classes to be added with post_class().
+		 * @return string[]
 		 */
 		public function campaign_post_class( $classes ) {
 			$campaign = charitable_get_current_campaign();
@@ -113,18 +112,33 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 				return $classes;
 			}
 
-			$classes[] = $campaign->has_goal() ? 'campaign-has-goal' : 'campaign-has-no-goal';
-			$classes[] = $campaign->is_endless() ? 'campaign-is-endless' : 'campaign-has-end-date';
+			if ( $campaign->has_goal() ) {
+				$classes[] = 'campaign-has-goal';
+				$classes[] = $campaign->has_achieved_goal() ? 'campaign-has-achieved-goal' : 'campaign-has-not-achieved-goal';
+			} else {
+				$classes[] = 'campaign-has-no-goal';
+			}
+
+			if ( $campaign->is_endless() ) {
+				$classes[] = 'campaign-is-endless';
+			} else {
+				$classes[] = 'campaign-has-end-date';
+				$classes[] = $campaign->has_ended() ? 'campaign-has-ended' : 'campaign-has-not-ended';
+			}
+
 			return $classes;
 		}
 
 		/**
 		 * Disable comments on application pages like the donation page.
 		 *
-		 * @since   1.3.0
+		 * @deprecated 2.2.0
 		 *
-		 * @param   boolean $open Whether comments are open.
-		 * @return  boolean
+		 * @since  1.3.0
+		 * @since  1.6.36 Deprecated. This is now handled in Charitable_Endpoints.
+		 *
+		 * @param  boolean $open Whether comments are open.
+		 * @return boolean
 		 */
 		public function disable_comments_on_application_pages( $open ) {
 			/* If open is already false, just hit return. */

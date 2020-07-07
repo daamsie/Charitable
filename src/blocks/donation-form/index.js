@@ -30,23 +30,9 @@ registerBlockType( 'charitable/donation-form', {
 	 */
 	keywords: [
 		__( 'Donate', 'charitable' ),
-		__( 'Charitable' ),
+		__( 'Charitable', 'charitable' ),
 	],
 
-	/**
-	 * Block attributes.
-	 */
-	attributes: {
-
-		/**
-		 * The campaign for the donation form.
-		 */
-		campaign : {
-			type: 'number',
-			default: 0,
-		},
-	},
-	
 	/**
 	 * Transform between the block & a shortcode.
 	 */
@@ -73,17 +59,11 @@ registerBlockType( 'charitable/donation-form', {
 		]
 	},
 
-	/**
-	 * Define the block UI.
-	 */
 	edit: props => {
 		return <CharitableDonationFormBlock { ... props } />
 	},
 
-	/**
-	 * How the block is saved to the database.
-	 */
-	save: function( props ) {
-		return null;
-	},
+    save: props => {
+        return null;
+    }
 });

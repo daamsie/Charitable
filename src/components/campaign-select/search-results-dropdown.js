@@ -26,7 +26,7 @@ export class CampaignSearchResultsDropdown extends Component {
 	/**
 	 * Set the state of the dropdown to closed.
 	 */
-	componentDidUnmount() {
+	componentWillUnmount() {
 		this.props.is_dropdown_open_callback( false );
 	}
 
@@ -42,6 +42,7 @@ export class CampaignSearchResultsDropdown extends Component {
 		for ( let campaign of campaigns ) {
 			campaignElements.push(
 				<CampaignSearchResultsDropdownElement
+					key={ "campaign-" + index }
 					index= { index }
 					campaign={ campaign }
 					add_or_remove_campaign_callback={ add_or_remove_campaign_callback }

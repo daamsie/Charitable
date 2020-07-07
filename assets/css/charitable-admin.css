@@ -100,7 +100,7 @@
     margin-top: 0;
     padding: 0; }
 .charitable-metabox .postbox-title {
-  padding: 0 0 6px 0; }
+  padding: 0 0 8px 0; }
 .charitable-metabox .handlediv {
   display: none; }
 .charitable-metabox .hndle {
@@ -119,7 +119,7 @@
 .charitable-metabox .charitable-metabox-title {
   font-size: 14px;
   margin-top: 0;
-  margin-bottom: 6px; }
+  margin-bottom: 8px; }
 .charitable-metabox .widefat th {
   font-size: 13px; }
 .charitable-metabox .widefat tbody th {
@@ -171,12 +171,13 @@
   /* Select2 styling */ }
   .charitable-metabox-wrap .charitable-helper {
     display: block;
-    padding-top: 6px;
+    padding-top: 8px;
     font-style: italic; }
   .charitable-metabox-wrap label,
   .charitable-metabox-wrap legend {
     display: block;
-    margin-bottom: 6px; }
+    margin-bottom: 8px;
+    font-weight: bold; }
   .charitable-metabox-wrap th label {
     margin-bottom: 0; }
   .charitable-metabox-wrap input,
@@ -193,10 +194,27 @@
     width: auto; }
   .charitable-metabox-wrap.charitable-radio-wrap, .charitable-metabox-wrap.charitable-multi-checkbox-wrap {
     margin-bottom: 14px; }
-  .charitable-metabox-wrap .charitable-radio-list li {
-    display: block; }
-  .charitable-metabox-wrap .charitable-radio-list label {
-    vertical-align: baseline; }
+  .charitable-metabox-wrap .charitable-radio-fieldset legend,
+  .charitable-metabox-wrap .charitable-checkbox-fieldset legend {
+    margin-bottom: 0; }
+  .charitable-metabox-wrap .charitable-radio-fieldset .charitable-helper,
+  .charitable-metabox-wrap .charitable-checkbox-fieldset .charitable-helper {
+    padding: 0; }
+  .charitable-metabox-wrap .charitable-radio-fieldset .charitable-radio-list,
+  .charitable-metabox-wrap .charitable-radio-fieldset .charitable-checkbox-list,
+  .charitable-metabox-wrap .charitable-checkbox-fieldset .charitable-radio-list,
+  .charitable-metabox-wrap .charitable-checkbox-fieldset .charitable-checkbox-list {
+    margin-top: 8px; }
+    .charitable-metabox-wrap .charitable-radio-fieldset .charitable-radio-list li,
+    .charitable-metabox-wrap .charitable-radio-fieldset .charitable-checkbox-list li,
+    .charitable-metabox-wrap .charitable-checkbox-fieldset .charitable-radio-list li,
+    .charitable-metabox-wrap .charitable-checkbox-fieldset .charitable-checkbox-list li {
+      display: block; }
+    .charitable-metabox-wrap .charitable-radio-fieldset .charitable-radio-list label,
+    .charitable-metabox-wrap .charitable-radio-fieldset .charitable-checkbox-list label,
+    .charitable-metabox-wrap .charitable-checkbox-fieldset .charitable-radio-list label,
+    .charitable-metabox-wrap .charitable-checkbox-fieldset .charitable-checkbox-list label {
+      vertical-align: baseline; }
   .charitable-metabox-wrap .select2-selection.select2-selection--single {
     height: 46px;
     font-size: 14px; }
@@ -208,14 +226,16 @@
     margin-bottom: 0; }
 
 .charitable-checkbox-wrap label {
-  display: inline; }
+  display: inline;
+  font-weight: normal; }
 
 .charitable-checkbox-list label,
 .charitable-radio-list label {
-  display: inline-block; }
+  display: inline-block;
+  font-weight: normal; }
 .charitable-checkbox-list li,
 .charitable-radio-list li {
-  margin-bottom: 10px; }
+  margin-bottom: 8px; }
 
 .charitable-radio-list label {
   margin-bottom: 0;
@@ -267,7 +287,7 @@ body.post-type-campaign .postbox-container .empty-container {
 #campaign-goal .postbox-title,
 #campaign-end-date .postbox-title,
 #campaign-description .postbox-title {
-  padding: 0 0 6px 0; }
+  padding: 0 0 8px 0; }
 #campaign-title .handlediv,
 #campaign-goal .handlediv,
 #campaign-end-date .handlediv,
@@ -316,7 +336,7 @@ body.post-type-campaign .postbox-container .empty-container {
 #campaign-description .charitable-metabox-title {
   font-size: 14px;
   margin-top: 0;
-  margin-bottom: 6px; }
+  margin-bottom: 8px; }
 #campaign-title .widefat th,
 #campaign-goal .widefat th,
 #campaign-end-date .widefat th,
@@ -440,7 +460,7 @@ body.post-type-campaign .postbox-container .empty-container {
     right: 0;
     top: 2px;
     width: 80px;
-    padding: 21px 10px;
+    padding: 20px 10px;
     border-left: 1px solid rgba(0, 0, 0, 0.07);
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
     background: #f5f5f5;
@@ -448,7 +468,7 @@ body.post-type-campaign .postbox-container .empty-container {
     border-radius: 0 4px 4px 0; }
     @media (min-width: 48.875em) {
       #charitable-campaign-end-date-metabox-wrap .charitable-end-time {
-        padding: 19px 10px; } }
+        padding: 18px 10px; } }
 
 #campaign-end-date.postbox #charitable-campaign-end-date-metabox-wrap label {
   border: 0;

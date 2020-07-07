@@ -4,10 +4,10 @@
  *
  * @package   Charitable/Classes/Charitable_Export
  * @author    Eric Daams
- * @copyright Copyright (c) 2019, Studio 164a
+ * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.6.0
+ * @version   1.6.40
  */
 
 // Exit if accessed directly.
@@ -63,7 +63,7 @@ if ( ! class_exists( 'Charitable_Export' ) ) :
 		 */
 		public function __construct( $args = array() ) {
 			$this->columns = $this->get_csv_columns();
-			$this->args    = wp_parse_args( $args, $this->defaults );
+			$this->args    = $this->parse_args( $args );
 
 			$this->export();
 		}
@@ -77,6 +77,33 @@ if ( ! class_exists( 'Charitable_Export' ) ) :
 		 */
 		public function can_export() {
 			return (bool) apply_filters( 'charitable_export_capability', current_user_can( 'export_charitable_reports' ), $this );
+		}
+
+		/**
+		 * Filter a specific field.
+		 *
+		 * By default, this will simply return the value.
+		 *
+		 * @since  1.6.36
+		 *
+		 * @param  mixed  $value The value to set.
+		 * @param  string $key   The key to set.
+		 * @param  array  $data  The set of data.
+		 * @return mixed
+		 */
+		public function set_custom_field_data( $value, $key, $data ) {
+			return $value;
+		}
+
+		/**
+		 * Parse the arguments.
+		 *
+		 * @since  1.6.36
+		 *
+		 * @return array
+		 */
+		protected function parse_args( $args ) {
+			return wp_parse_args( $args, $this->defaults );
 		}
 
 		/**
@@ -125,7 +152,37 @@ if ( ! class_exists( 'Charitable_Export' ) ) :
 
 			foreach ( $this->columns as $key => $label ) {
 				$value = isset( $data[ $key ] ) ? $data[ $key ] : '';
-				$value = apply_filters( 'charitable_export_data_key_value', $value, $key, $data );
+
+				/**
+				 * Filter the value to be exported for a specific cell.
+				 *
+				 * Note that this filter applies to all Charitable exports
+				 * (both campaigns and donations).
+				 *
+				 * @since 1.0.0
+				 *
+				 * @param mixed  $value The default value.
+				 * @param string $key   The field/column we are getting a value for.
+				 * @param mixed  $data  The raw input data.
+				 */
+				$value = apply_filters( 'charitable_export_data_key_value', $this->set_custom_field_data( $value, $key, $data ), $key, $data );
+
+				if ( version_compare( PHP_VERSION, '5.3.0', '>=' ) ) {
+					/**
+					 * Filter the value to be exported for a specific cell.
+					 *
+					 * Use this filter if you only want to change a specific
+					 * type of export.
+					 *
+					 * @since 1.6.40
+					 *
+					 * @param mixed  $value The default value.
+					 * @param string $key   The field/column we are getting a value for.
+					 * @param mixed  $data  The raw input data.
+					 */
+					$value = apply_filters( 'charitable_export_' . static::EXPORT_TYPE . '_data_key_value', $value, $key, $data );
+				}
+
 				$row[] = $value;
 			}
 

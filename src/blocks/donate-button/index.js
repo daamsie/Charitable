@@ -26,6 +26,14 @@ registerBlockType( 'charitable/donate-button', {
         __( 'Donation' )
     ],
 
+    /**
+     * The campaign for the donation button.
+     */
+    campaign : {
+        type: 'number',
+        default: 0,
+    },
+
     edit: ( props ) => {
         return <Block { ... props } />
     },

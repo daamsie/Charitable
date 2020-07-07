@@ -7,11 +7,10 @@
  * @author  Studio 164a
  * @package Charitable/Templates/Campaign Page
  * @since   1.3.0
- * @version 1.6.29
+ * @version 1.6.42
  */
 
-$campaign = $view_args['campaign'];
-
+$campaign     = $view_args['campaign'];
 $button_style = array_key_exists( 'button_colour', $view_args ) ? 'style="background-color:' . $view_args['button_colour'] . ';"' : '';
 $button_text  = array_key_exists( 'button_text', $view_args ) ? $view_args['button_text'] : __( 'Donate', 'charitable' );
 ?>

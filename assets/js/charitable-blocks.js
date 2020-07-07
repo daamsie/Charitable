@@ -28785,8 +28785,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _inspector_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./inspector.js */ "./src/blocks/donate-button/inspector.js");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _components_campaign_select_index_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./../../components/campaign-select/index.js */ "./src/components/campaign-select/index.js");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__);
 
 
 
@@ -28798,6 +28799,7 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * Block dependencies
  */
+
 
 /**
  * WordPress dependencies
@@ -28818,7 +28820,7 @@ function (_Component) {
 
     _this = _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2___default()(this, _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3___default()(Block).apply(this, arguments));
     _this.state = {
-      edit_mode: false
+      edit_mode: !_this.props.attributes.campaign
     };
     _this.updateCampaignId = _this.updateCampaignId.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
     return _this;
@@ -28844,6 +28846,47 @@ function (_Component) {
       });
     }
     /**
+    * Get the components for the sidebar settings area that is rendered while focused on a Donate Button block.
+    *
+    * @return Component
+    */
+
+  }, {
+    key: "getInspectorControls",
+    value: function getInspectorControls() {
+      return '';
+    }
+    /**
+    * Get the components for the toolbar area that appears on top of the block when focused.
+    *
+    * @return Component
+    */
+
+  }, {
+    key: "getToolbarControls",
+    value: function getToolbarControls() {
+      var _this2 = this;
+
+      var edit_mode = this.state.edit_mode;
+      var attributes = this.props.attributes;
+      var campaign = attributes.campaign;
+      var editButton = [{
+        icon: 'edit',
+        title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__["__"])('Edit'),
+        onClick: !campaign ? function () {} : function () {
+          return _this2.setState({
+            edit_mode: !edit_mode
+          });
+        },
+        isActive: this.state.edit_mode
+      }];
+      return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createElement"])(BlockControls, {
+        key: "controls"
+      }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createElement"])(Toolbar, {
+        controls: editButton
+      }));
+    }
+    /**
      * Update the campaign ID.
      */
 
@@ -28853,6 +28896,15 @@ function (_Component) {
       this.props.setAttributes({
         campaign: campaignId
       });
+    }
+    /**
+    * Render the block UI.
+    */
+
+  }, {
+    key: "render",
+    value: function render() {
+      return [this.getInspectorControls(), this.getToolbarControls(), this.state.edit_mode ? this.getSettingsEditor() : this.getPreview()];
     }
   }, {
     key: "render",
@@ -28964,6 +29016,14 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_4__["registerBlockType"])('cha
   category: 'widgets',
   icon: _icon__WEBPACK_IMPORTED_MODULE_1__["default"],
   keywords: [Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Fundraisers'), Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Charitable'), Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Donation')],
+
+  /**
+   * The campaign for the donation button.
+   */
+  campaign: {
+    type: 'number',
+    default: 0
+  },
   edit: function edit(props) {
     return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_block__WEBPACK_IMPORTED_MODULE_2__["default"], props);
   },
@@ -29065,6 +29125,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _components_campaign_select_index_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./../../components/campaign-select/index.js */ "./src/components/campaign-select/index.js");
+/* harmony import */ var _view_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./view.js */ "./src/blocks/donation-form/view.js");
+/* harmony import */ var _inspector_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./inspector.js */ "./src/blocks/donation-form/inspector.js");
+
+
 
 
 
@@ -29081,8 +29145,8 @@ var __ = wp.i18n.__;
 var Component = wp.element.Component;
 var _wp$components = wp.components,
     Toolbar = _wp$components.Toolbar,
-    ServerSideRender = _wp$components.ServerSideRender;
-var BlockControls = wp.editor.BlockControls;
+    RadioControl = _wp$components.RadioControl;
+var BlockControls = wp.blockEditor.BlockControls;
 /**
  * The main donation form block UI.
  */
@@ -29117,7 +29181,7 @@ function (_Component) {
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(CharitableDonationFormBlock, [{
     key: "getInspectorControls",
     value: function getInspectorControls() {
-      return '';
+      return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createElement"])(_inspector_js__WEBPACK_IMPORTED_MODULE_9__["default"], this.props);
     }
     /**
      * Get the components for the toolbar area that appears on top of the block when focused.
@@ -29164,10 +29228,11 @@ function (_Component) {
       var _this$props2 = this.props,
           attributes = _this$props2.attributes,
           setAttributes = _this$props2.setAttributes;
-      var campaign = attributes.campaign;
+      var campaign = attributes.campaign,
+          displayMode = attributes.displayMode;
       var selected_campaigns = !!campaign ? [campaign] : [];
       return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createElement"])("div", {
-        class: "charitable-block-donation-form charitable-block-settings"
+        className: "charitable-block-donation-form charitable-block-settings"
       }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createElement"])(_components_campaign_select_index_js__WEBPACK_IMPORTED_MODULE_7__["CampaignSelect"], {
         attributes: attributes,
         selected_campaigns: selected_campaigns,
@@ -29181,6 +29246,22 @@ function (_Component) {
         },
         multiple: false,
         campaign_active_status: "active"
+      }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createElement"])(RadioControl, {
+        key: "displaymode-radio",
+        label: __('Display mode'),
+        value: displayMode,
+        options: [{
+          label: __('Form'),
+          value: 'form'
+        }, {
+          label: __('Button'),
+          value: 'button'
+        }],
+        onChange: function onChange(value) {
+          return setAttributes({
+            displayMode: value
+          });
+        }
       }));
     }
     /**
@@ -29192,14 +29273,7 @@ function (_Component) {
   }, {
     key: "getPreview",
     value: function getPreview() {
-      return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createElement"])("div", {
-        class: "charitable-block-donation-form has-preview"
-      }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createElement"])("div", {
-        class: "charitable-block-overlay"
-      }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createElement"])(ServerSideRender, {
-        block: "charitable/donation-form",
-        attributes: this.props.attributes
-      }));
+      return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createElement"])(_view_js__WEBPACK_IMPORTED_MODULE_8__["default"], this.props);
     }
     /**
      * Render the block UI.
@@ -29289,20 +29363,7 @@ registerBlockType('charitable/donation-form', {
   /**
    * Keywords used to find the block.
    */
-  keywords: [__('Donate', 'charitable'), __('Charitable')],
-
-  /**
-   * Block attributes.
-   */
-  attributes: {
-    /**
-     * The campaign for the donation form.
-     */
-    campaign: {
-      type: 'number',
-      default: 0
-    }
-  },
+  keywords: [__('Donate', 'charitable'), __('Charitable', 'charitable')],
 
   /**
    * Transform between the block & a shortcode.
@@ -29329,21 +29390,250 @@ registerBlockType('charitable/donation-form', {
       }
     }]
   },
-
-  /**
-   * Define the block UI.
-   */
   edit: function edit(props) {
     return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_block__WEBPACK_IMPORTED_MODULE_1__["default"], props);
   },
-
-  /**
-   * How the block is saved to the database.
-   */
   save: function save(props) {
     return null;
   }
 });
+
+/***/ }),
+
+/***/ "./src/blocks/donation-form/inspector.js":
+/*!***********************************************!*\
+  !*** ./src/blocks/donation-form/inspector.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Inspector; });
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_8__);
+
+
+
+
+
+
+
+/**
+ * Block dependencies.
+ */
+
+
+
+
+
+var Inspector =
+/*#__PURE__*/
+function (_Component) {
+  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default()(Inspector, _Component);
+
+  function Inspector() {
+    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, Inspector);
+
+    return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2___default()(this, _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3___default()(Inspector).apply(this, arguments));
+  }
+
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Inspector, [{
+    key: "render",
+
+    /**
+     * Get the block view.
+     *
+     * @return Component
+     */
+    value: function render() {
+      var _this$props = this.props,
+          attributes = _this$props.attributes,
+          setAttributes = _this$props.setAttributes;
+      var highlightColour = attributes.highlightColour,
+          buttonOpensModal = attributes.buttonOpensModal,
+          buttonHasAmount = attributes.buttonHasAmount,
+          buttonText = attributes.buttonText;
+      return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_8__["InspectorControls"], {
+        key: "donate-block-inspector",
+        description: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__["__"])('Configure', 'charitable')
+      }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__["PanelBody"], {
+        title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__["__"])('Button Settings', 'charitable')
+      }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__["ToggleControl"], {
+        label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__["__"])('Open form in modal', 'charitable'),
+        checked: buttonOpensModal,
+        onChange: function onChange(checked) {
+          return setAttributes({
+            buttonOpensModal: checked
+          });
+        }
+      }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__["ToggleControl"], {
+        label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__["__"])('Show amount field', 'charitable'),
+        checked: buttonHasAmount,
+        onChange: function onChange(checked) {
+          return setAttributes({
+            buttonHasAmount: checked
+          });
+        }
+      }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__["TextControl"], {
+        label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__["__"])('Button Text', 'charitable'),
+        value: buttonText,
+        onChange: function onChange(text) {
+          return setAttributes({
+            buttonText: text
+          });
+        }
+      })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__["PanelBody"], {
+        title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__["__"])('Design Settings', 'charitable')
+      }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__["ColorPicker"], {
+        label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__["__"])('Highlight Colour', 'charitable'),
+        color: highlightColour,
+        onChangeComplete: function onChangeComplete(value) {
+          return setAttributes({
+            highlightColour: value.hex
+          });
+        },
+        disableAlpha: true
+      })));
+    }
+  }]);
+
+  return Inspector;
+}(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["Component"]);
+
+
+
+/***/ }),
+
+/***/ "./src/blocks/donation-form/view.js":
+/*!******************************************!*\
+  !*** ./src/blocks/donation-form/view.js ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return View; });
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__);
+
+
+
+
+
+
+
+/**
+ * Block dependencies.
+ */
+
+
+
+var View =
+/*#__PURE__*/
+function (_Component) {
+  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default()(View, _Component);
+
+  function View() {
+    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, View);
+
+    return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2___default()(this, _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3___default()(View).apply(this, arguments));
+  }
+
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(View, [{
+    key: "getButton",
+
+    /**
+     * Get the button view.
+     */
+    value: function getButton() {
+      var _this$props$attribute = this.props.attributes,
+          campaign = _this$props$attribute.campaign,
+          buttonText = _this$props$attribute.buttonText,
+          highlightColour = _this$props$attribute.highlightColour;
+      var button_style = {
+        backgroundColor: highlightColour
+      };
+      return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])("div", {
+        className: "charitable-block-donation-form"
+      }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])("form", {
+        className: "campaign-donation",
+        method: "post"
+      }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])("input", {
+        type: "hidden",
+        name: "charitable_action",
+        value: "start_donation"
+      }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])("input", {
+        type: "hidden",
+        name: "campaign_id",
+        value: campaign
+      }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])("button", {
+        type: "submit",
+        name: "charitable_submit",
+        className: CHARITABLE_BLOCK_VARS.donate_button_classes,
+        style: button_style
+      }, buttonText)));
+    }
+    /**
+     * Get the form view.
+     */
+
+  }, {
+    key: "getForm",
+    value: function getForm() {
+      return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])("div", {
+        className: "charitable-block-donation-form has-preview"
+      }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])("div", {
+        className: "charitable-block-overlay"
+      }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])("form", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])("p", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__["__"])('This is a form'))));
+    }
+    /**
+     * Get the block view.
+     *
+     * @return Component
+     */
+
+  }, {
+    key: "render",
+    value: function render() {
+      var displayMode = this.props.attributes.displayMode;
+      return 'form' === displayMode ? this.getForm() : this.getButton();
+    }
+  }]);
+
+  return View;
+}(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["Component"]);
+
+
 
 /***/ }),
 
@@ -30176,7 +30466,6 @@ function (_Component) {
         className: getCardClass(campaign),
         onClick: this.handleClick,
         onKeyDown: this.handleKeyDown,
-        isDefault: true,
         tabIndex: this.props.index
       }, Object(_functions__WEBPACK_IMPORTED_MODULE_7__["getCampaignThumbnail"])(campaign), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_6__["createElement"])("span", {
         className: "charitable-campaigns-list-card__content-item-name"
@@ -30262,8 +30551,8 @@ function (_Component) {
      */
 
   }, {
-    key: "componentDidUnmount",
-    value: function componentDidUnmount() {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
       this.props.is_dropdown_open_callback(false);
     }
     /**
@@ -30287,6 +30576,7 @@ function (_Component) {
         for (var _iterator = campaigns[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var campaign = _step.value;
           campaignElements.push(Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_5__["createElement"])(_search_results_dropdown_element__WEBPACK_IMPORTED_MODULE_6__["CampaignSearchResultsDropdownElement"], {
+            key: "campaign-" + index,
             index: index,
             campaign: campaign,
             add_or_remove_campaign_callback: add_or_remove_campaign_callback,

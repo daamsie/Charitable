@@ -63,7 +63,7 @@ export class CampaignSearchResultsDropdownElement extends Component {
 		let isDefault = this.props.index === 0 ? isDefault : '';
 
 		return (
-			<div className={ getCardClass( campaign ) } onClick={ this.handleClick } onKeyDown={ this.handleKeyDown } isDefault tabIndex={ this.props.index } >
+			<div className={ getCardClass( campaign ) } onClick={ this.handleClick } onKeyDown={ this.handleKeyDown } tabIndex={ this.props.index } >
 				{ getCampaignThumbnail( campaign ) }
 				<span className="charitable-campaigns-list-card__content-item-name">{ campaign.title.rendered }</span>
 				{ icon }

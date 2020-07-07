@@ -7,12 +7,14 @@
  * @version     1.0.0
  * @package     Charitable/Classes/Charitable_Ghost_Page
  * @author      Eric Daams
- * @copyright   Copyright (c) 2019, Studio 164a
+ * @copyright   Copyright (c) 2020, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
 // Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! class_exists( 'Charitable_Ghost_Page' ) ) :
 
@@ -143,6 +145,8 @@ if ( ! class_exists( 'Charitable_Ghost_Page' ) ) :
 			$wp_query->is_post_type_archive = false;
 
 			$GLOBALS['wp_query'] = $wp_query;
+
+			set_query_var( 'do_not_redirect', 1 );
 		}
 
 		/**

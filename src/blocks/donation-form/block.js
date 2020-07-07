@@ -1,4 +1,6 @@
 import { CampaignSelect } from './../../components/campaign-select/index.js';
+import View from './view.js';
+import Inspector from './inspector.js';
 
 /**
  * WP dependencies.
@@ -7,11 +9,11 @@ const { __ } = wp.i18n;
 const { Component } = wp.element;
 const {
 	Toolbar,
-	ServerSideRender
+	RadioControl
 } = wp.components;
 const {
-	BlockControls,
-} = wp.editor;
+	BlockControls
+} = wp.blockEditor;
 
 /**
  * The main donation form block UI.
@@ -36,9 +38,11 @@ export default class CharitableDonationFormBlock extends Component {
 	 * @return Component
 	 */
 	getInspectorControls() {
-		return '';
+		return <Inspector
+            { ...this.props }
+        />
 	}
-	
+
 	/**
 	 * Get the components for the toolbar area that appears on top of the block when focused.
 	 *
@@ -47,7 +51,7 @@ export default class CharitableDonationFormBlock extends Component {
 	getToolbarControls() {
 		const { edit_mode } = this.state;
 		const { attributes, setAttributes } = this.props;
-		const { campaign } = attributes;		
+		const { campaign } = attributes;
 
 		const editButton = [
 			{
@@ -64,7 +68,7 @@ export default class CharitableDonationFormBlock extends Component {
 			</BlockControls>
 		);
 	}
-	
+
 	/**
 	 * Get the block settings editor UI.
 	 *
@@ -73,12 +77,12 @@ export default class CharitableDonationFormBlock extends Component {
 	getSettingsEditor() {
 		const self = this;
 		const { attributes, setAttributes } = this.props;
-		const { campaign } = attributes;
+		const { campaign, displayMode } = attributes;
 
 		let selected_campaigns = !! campaign ? [ campaign ] : [];
-		
+
 		return (
-			<div class="charitable-block-donation-form charitable-block-settings">
+			<div className="charitable-block-donation-form charitable-block-settings">
 				<CampaignSelect
 					attributes={ attributes }
 					selected_campaigns={ selected_campaigns }
@@ -94,6 +98,22 @@ export default class CharitableDonationFormBlock extends Component {
 					multiple={ false }
 					campaign_active_status="active"
 				/>
+				<RadioControl
+					key="displaymode-radio"
+					label={ __( 'Display mode' ) }
+					value={ displayMode }
+					options={ [
+						{
+							label: __( 'Form' ),
+							value: 'form',
+						},
+						{
+							label: __( 'Button' ),
+							value: 'button',
+						},
+					] }
+					onChange={ ( value ) => setAttributes( { displayMode: value } ) }
+				/>
 			</div>
 		);
 	}
@@ -104,17 +124,9 @@ export default class CharitableDonationFormBlock extends Component {
 	 * @return Component
 	 */
 	getPreview() {
-		return (
-			<div class="charitable-block-donation-form has-preview">
-				<div class="charitable-block-overlay"></div>
-				<ServerSideRender
-					block="charitable/donation-form"
-					attributes={ this.props.attributes }
-				/>
-			</div>
-		);
+		return <View { ...this.props } />;
 	}
-	
+
 	/**
 	 * Render the block UI.
 	 */

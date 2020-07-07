@@ -7,7 +7,7 @@
  * @author  Studio 164a
  * @package Charitable/Templates/Donation Form
  * @since   1.5.0
- * @version 1.6.25
+ * @version 1.6.38
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -19,23 +19,15 @@ if ( ! array_key_exists( 'form_id', $view_args ) || ! array_key_exists( 'campaig
 }
 
 /* @var Charitable_Campaign */
-$campaign  = $view_args['campaign'];
-$form_id   = $view_args['form_id'];
-$suggested = $campaign->get_suggested_donations();
-$custom    = $campaign->get( 'allow_custom_donations' );
-$amount    = $campaign->get_donation_amount_in_session();
-$one_time  = 'once' == $campaign->get_donation_period_in_session();
+$campaign      = $view_args['campaign'];
+$form_id       = $view_args['form_id'];
+$suggested     = $campaign->get_suggested_donations();
+$custom        = $campaign->get( 'allow_custom_donations' );
+$amount        = $campaign->get_donation_amount_in_session();
+$active_period = 'once' == $campaign->get_initial_donation_period() || 'variable' == $campaign->get( 'recurring_donation_mode' );
 
 if ( 0 == $amount ) {
-	/**
-	 * Filter the default donation amount.
-	 *
-	 * @since 1.5.6
-	 *
-	 * @param float|int           $amount   The amount to be filtered. $0 by default.
-	 * @param Charitable_Campaign $campaign The instance of `Charitable_Campaign`.
-	 */
-	$amount = apply_filters( 'charitable_default_donation_amount', $amount, $campaign );
+	$amount = $campaign->get_default_donation_amount();
 }
 
 if ( empty( $suggested ) && ! $custom ) {
@@ -49,7 +41,7 @@ if ( count( $suggested ) ) :
 	<ul class="donation-amounts">
 		<?php
 		foreach ( $suggested as $suggestion ) :
-			$checked  = $one_time ? checked( $suggestion['amount'], $amount, false ) : '';
+			$checked  = $active_period ? checked( $suggestion['amount'], $amount, false ) : '';
 			$field_id = esc_attr(
 				sprintf(
 					'form-%s-field-%s',
@@ -62,7 +54,7 @@ if ( count( $suggested ) ) :
 				$amount_is_suggestion = true;
 			endif;
 			?>
-			<li class="donation-amount suggested-donation-amount">
+			<li class="donation-amount suggested-donation-amount <?php echo strlen( $checked ) ? 'selected' : ''; ?>">
 				<label for="<?php echo $field_id; ?>">
 					<input
 						id="<?php echo $field_id; ?>"
@@ -83,7 +75,7 @@ if ( count( $suggested ) ) :
 		endforeach;
 
 		if ( $custom ) :
-			$has_custom_donation_amount = $one_time && ( ! $amount_is_suggestion && $amount );
+			$has_custom_donation_amount = $active_period && ( ! $amount_is_suggestion && $amount );
 			?>
 			<li class="donation-amount custom-donation-amount">
 				<span class="custom-donation-amount-wrapper">
