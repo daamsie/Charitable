@@ -217,7 +217,7 @@ if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 			$form = new Charitable_Registration_Form();
 
 			if ( ! $form->validate_nonce() || ! $form->validate_honeypot() ) {
-				charitable_get_notices()->add_error( __( 'There was an error with processing your form submission. Please reload the page and try again.', 'charitable' ) );
+				charitable_get_notices()->add_error( __( 'Unfortunately, we were unable to verify your form submission. Please reload the page and try again.', 'charitable' ) );
 				return;
 			}
 

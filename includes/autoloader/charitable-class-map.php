@@ -127,6 +127,7 @@ return array(
 	'Charitable_Licenses' => 'licensing/class-charitable-licenses.php',
 	'Charitable_Plugin_Updater' => 'licensing/class-charitable-plugin-updater.php',
 	'Charitable_i18n' => 'locale/class-charitable-i18n.php',
+	'Charitable_Locale' => 'locale/class-charitable-locale.php',
 	'Charitable_Locations' => 'locale/class-charitable-locations.php',
 	'Charitable_Install' => 'plugin/class-charitable-install.php',
 	'Charitable_Uninstall' => 'plugin/class-charitable-uninstall.php',

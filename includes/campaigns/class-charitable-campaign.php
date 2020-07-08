@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.6.35
+ * @version   1.6.43
  */
 
 // Exit if accessed directly.
@@ -631,10 +631,16 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		 *
 		 * @return string
 		 */
-		public function get_status_tag() {
-			$key              = $this->get_status_key();
-			$show_achievement = apply_filters( 'charitable_campaign_show_achievement_status_tag', true );
-			$show_active_tag  = apply_filters( 'charitable_campaign_show_active_status_tag', false );
+		public function get_status_tag( $show_achievement = null, $show_active_tag = null ) {
+			$key = $this->get_status_key();
+
+			if ( is_null( $show_achievement ) ) {
+				$show_achievement = apply_filters( 'charitable_campaign_show_achievement_status_tag', true );
+			}
+
+			if ( is_null( $show_active_tag ) ) {
+				$show_active_tag = apply_filters( 'charitable_campaign_show_active_status_tag', false );
+			}
 
 			switch ( $key ) {
 				case 'ended':
@@ -654,7 +660,27 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 					break;
 
 				case 'active':
+				case 'publish':
 					$tag = $show_active_tag ? __( 'Active', 'charitable' ) : '';
+					break;
+
+				case 'inactive':
+					switch ( $this->post->post_status ) {
+						case 'pending':
+							$tag = __( 'Pending', 'charitable' );
+							break;
+
+						case 'draft':
+							$tag = __( 'Draft', 'charitable' );
+							break;
+
+						case 'future':
+							$tag = __( 'Scheduled', 'charitable' );
+							break;
+
+						default:
+							$tag = '';
+					}
 					break;
 
 				default:
