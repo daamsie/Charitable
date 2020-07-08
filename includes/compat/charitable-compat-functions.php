@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.42
+ * @version   1.6.43
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -147,3 +147,32 @@ function charitable_compat_button_classes( $classes, $button ) {
 }
 
 add_filter( 'charitable_button_class', 'charitable_compat_button_classes', 10, 2 );
+
+/**
+ * Enable locale functions in Charitable based on presence of other plugins.
+ *
+ * @since  1.6.43
+ *
+ * @param  boolean $locale_enabled Whether to enable locale functions.
+ * @return boolean
+ */
+function charitable_compat_load_locale_functions( $locale_enabled ) {
+	/* We've already enabled locale functions. */
+	if ( $locale_enabled ) {
+		return $locale_enabled;
+	}
+
+	/* Polylang */
+	if ( defined( 'POLYLANG_VERSION' ) ) {
+		return true;
+	}
+
+	/* TranslatePress */
+	if ( class_exists( 'TRP_Translate_Press' ) ) {
+		return true;
+	}
+
+	return $locale_enabled;
+}
+
+add_filter( 'charitable_enable_locale_functions', 'charitable_compat_load_locale_functions' );
