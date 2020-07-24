@@ -24,7 +24,7 @@ $form_id       = $view_args['form_id'];
 $suggested     = $campaign->get_suggested_donations();
 $custom        = $campaign->get( 'allow_custom_donations' );
 $amount        = $campaign->get_donation_amount_in_session();
-$active_period = 'once' == $campaign->get_initial_donation_period() || 'variable' == $campaign->get( 'recurring_donation_mode' );
+$active_period = 'once' == $campaign->get_initial_donation_period() || in_array( $campaign->get( 'recurring_donation_mode' ), array( 'variable', 'simple' ) );
 
 if ( 0 == $amount ) {
 	$amount = $campaign->get_default_donation_amount();
