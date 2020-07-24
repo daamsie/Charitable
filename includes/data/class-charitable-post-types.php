@@ -113,7 +113,12 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
 						'with_front' => true,
 					),
 					'query_var'             => true,
-					'supports'              => array( 'title', 'thumbnail', 'comments' ),
+					'supports'              => array(
+						'title',
+						'thumbnail',
+						'comments',
+						'editor',
+					),
 					'has_archive'           => false,
 					'show_in_nav_menus'     => true,
 					'show_in_menu'          => false,

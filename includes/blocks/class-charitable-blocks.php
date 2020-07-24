@@ -266,14 +266,14 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 					'editor_script'   => 'charitable-blocks',
 					'render_callback' => array( $this, 'render_donate_button' ),
 					'attributes'      => array(
-						'campaign'          => array(
+						'campaign'        => array(
 							'type' => 'int',
 						),
-						'highlightColour'   => array(
+						'highlightColour' => array(
 							'type'    => 'string',
 							'default' => charitable_get_highlight_colour(),
 						),
-						'buttonText'        => array(
+						'buttonText'      => array(
 							'type'    => 'string',
 							'default' => __( 'Donate', 'charitable' ),
 						),
@@ -314,17 +314,19 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 		 * @return string Returns the donors block content.
 		 */
 		public function render_donors( $attributes ) {
-			return Charitable_Donors_Shortcode::display( array(
-				'number'          => $attributes['number'],
-				'campaign'        => $attributes['campaign'],
-				'orderby'         => $attributes['orderBy'],
-				'distinct_donors' => $attributes['distinctDonors'],
-				'orientation'     => $attributes['orientation'],
-				'show_amount'     => $attributes['displayDonorAmount'],
-				'show_avatar'     => $attributes['displayDonorAvatar'],
-				'show_name'       => $attributes['displayDonorName'],
-				'show_location'   => $attributes['displayDonorLocation'],
-			) );
+			return Charitable_Donors_Shortcode::display(
+				array(
+					'number'          => $attributes['number'],
+					'campaign'        => $attributes['campaign'],
+					'orderby'         => $attributes['orderBy'],
+					'distinct_donors' => $attributes['distinctDonors'],
+					'orientation'     => $attributes['orientation'],
+					'show_amount'     => $attributes['displayDonorAmount'],
+					'show_avatar'     => $attributes['displayDonorAvatar'],
+					'show_name'       => $attributes['displayDonorName'],
+					'show_location'   => $attributes['displayDonorLocation'],
+				)
+			);
 		}
 
 		/**

@@ -1,4 +1,4 @@
-/**
+	/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
@@ -28,7 +28,7 @@ export let SettingsEditor = (props) => {
 					onChange={ (event) => onGoalChange( event.target.value ) }
 				/>
 			</BaseControl>
-			<label for=""></label>
+			<label htmlFor=""></label>
 			<DatePicker
 				currentDate={ end_date }
 				onChange={ (value) => onEndDateChange( value ) }
