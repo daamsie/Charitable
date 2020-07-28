@@ -46,43 +46,43 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 		public function register_blocks() {
 			$highlight_colour = charitable_get_highlight_colour();
 
-			register_block_type(
-				'charitable/donation-form',
-				array(
-					'editor_script'   => 'charitable-blocks',
-					'attributes'      => array(
-						'campaign'         => array(
-							'type'    => 'number',
-							'default' => 0,
-						),
-						'displayMode'      => array(
-							'type'    => 'string',
-							'default' => 'form',
-						),
-						'buttonOpensModal' => array(
-							'type'    => 'boolean',
-							'default' => true,
-						),
-						'buttonHasAmount'  => array(
-							'type'    => 'boolean',
-							'default' => false,
-						),
-						'buttonSize'       => array(
-							'type'    => 'string',
-							'default' => 'small',
-						),
-						'highlightColour'  => array(
-							'type'    => 'string',
-							'default' => charitable_get_highlight_colour(),
-						),
-						'buttonText'       => array(
-							'type'    => 'string',
-							'default' => __( 'Donate', 'charitable' ),
-						),
-					),
-					'render_callback' => array( $this, 'render_donation_form' ),
-				)
-			);
+			// register_block_type(
+			// 	'charitable/donation-form',
+			// 	array(
+			// 		'editor_script'   => 'charitable-blocks',
+			// 		'attributes'      => array(
+			// 			'campaign'         => array(
+			// 				'type'    => 'number',
+			// 				'default' => 0,
+			// 			),
+			// 			'displayMode'      => array(
+			// 				'type'    => 'string',
+			// 				'default' => 'form',
+			// 			),
+			// 			'buttonOpensModal' => array(
+			// 				'type'    => 'boolean',
+			// 				'default' => true,
+			// 			),
+			// 			'buttonHasAmount'  => array(
+			// 				'type'    => 'boolean',
+			// 				'default' => false,
+			// 			),
+			// 			'buttonSize'       => array(
+			// 				'type'    => 'string',
+			// 				'default' => 'small',
+			// 			),
+			// 			'highlightColour'  => array(
+			// 				'type'    => 'string',
+			// 				'default' => charitable_get_highlight_colour(),
+			// 			),
+			// 			'buttonText'       => array(
+			// 				'type'    => 'string',
+			// 				'default' => __( 'Donate', 'charitable' ),
+			// 			),
+			// 		),
+			// 		'render_callback' => array( $this, 'render_donation_form' ),
+			// 	)
+			// );
 
 			// register_block_type( 'charitable/donors', array(
 			// 	'editor_script' => 'charitable-blocks',
@@ -260,27 +260,26 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 				)
 			);
 
-			register_block_type(
-				'charitable/donate-button',
-				array(
-					'editor_script'   => 'charitable-blocks',
-					'render_callback' => array( $this, 'render_donate_button' ),
-					'attributes'      => array(
-						'campaign'        => array(
-							'type' => 'int',
-						),
-						'highlightColour' => array(
-							'type'    => 'string',
-							'default' => charitable_get_highlight_colour(),
-						),
-						'buttonText'      => array(
-							'type'    => 'string',
-							'default' => __( 'Donate', 'charitable' ),
-						),
-					),
-				)
-			);
-
+			// register_block_type(
+			// 	'charitable/donate-button',
+			// 	array(
+			// 		'editor_script'   => 'charitable-blocks',
+			// 		'render_callback' => array( $this, 'render_donate_button' ),
+			// 		'attributes'      => array(
+			// 			'campaign'        => array(
+			// 				'type' => 'int',
+			// 			),
+			// 			'highlightColour' => array(
+			// 				'type'    => 'string',
+			// 				'default' => charitable_get_highlight_colour(),
+			// 			),
+			// 			'buttonText'      => array(
+			// 				'type'    => 'string',
+			// 				'default' => __( 'Donate', 'charitable' ),
+			// 			),
+			// 		),
+			// 	)
+			// );
 		}
 
 		/**
