@@ -172,7 +172,6 @@ if ( ! class_exists( 'Charitable' ) ) :
 
 			/* Load files with hooks & functions. Classes are autoloaded. */
 			require_once( $includes_path . 'charitable-core-functions.php' );
-			require_once( $includes_path . 'api/charitable-api-functions.php' );
 			require_once( $includes_path . 'campaigns/charitable-campaign-functions.php' );
 			require_once( $includes_path . 'campaigns/charitable-campaign-hooks.php' );
 			require_once( $includes_path . 'compat/charitable-compat-functions.php' );
@@ -263,10 +262,15 @@ if ( ! class_exists( 'Charitable' ) ) :
 				$this->registry->register_object( Charitable_User_Dashboard::get_instance() );
 				$this->registry->register_object( Charitable_Locations::get_instance() );
 				$this->registry->register_object( Charitable_Currency::get_instance() );
-
 				$this->registry->register_object( new Charitable_Privacy );
 				$this->registry->register_object( new Charitable_Debugging );
+				$this->registry->register_object( new Charitable_Assets );
+				$this->registry->register_object( new Charitable_API );
 				$this->registry->register_object( new Charitable_Locale );
+
+				if ( function_exists( 'register_block_type' ) ) {
+					$this->registry->register_object( new Charitable_Blocks );
+				}
 			}
 
 			return $this->registry;
@@ -291,7 +295,6 @@ if ( ! class_exists( 'Charitable' ) ) :
 			add_action( 'setup_theme', array( 'Charitable_Customizer', 'start' ) );
 			add_action( 'after_setup_theme', array( $this, 'load_template_files' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'maybe_start_qunit' ), 100 );
-			add_action( 'rest_api_init', 'charitable_register_api_routes' );
 
 			/**
 			 * We do this on priority 20 so that any functionality that is loaded on init (such
@@ -583,9 +586,6 @@ if ( ! class_exists( 'Charitable' ) ) :
 		 * @return Charitable_Donation_Field_Registry
 		 */
 		public function donation_fields() {
-
-			// throw new Exception();
-			// die;
 			if ( ! $this->registry->has( 'donation_field_registry' ) ) {
 				$donation_fields = new Charitable_Donation_Field_Registry();
 

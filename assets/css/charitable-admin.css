@@ -658,6 +658,16 @@ body.post-type-campaign .postbox-container .empty-container {
   margin-top: 12px;
   border-top: 1px solid #e1e1e1; }
 
+/* --- Gutenberg Editor --- */
+.gutenberg #campaign-settings input,
+.gutenberg #campaign-settings textarea {
+  box-sizing: border-box; }
+.gutenberg #charitable-campaign-end-date-metabox-wrap .charitable-end-time {
+  top: 26px; }
+  @media (min-width: 48.875em) {
+    .gutenberg #charitable-campaign-end-date-metabox-wrap .charitable-end-time {
+      padding-bottom: 12px; } }
+
 body.post-type-donation #post-body-content,
 body.post-type-donation #titlediv {
   display: none; }

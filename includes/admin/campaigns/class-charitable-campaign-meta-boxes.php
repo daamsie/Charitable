@@ -97,6 +97,7 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 						'context'  => 'normal',
 						'priority' => 'high',
 						'view'     => 'metaboxes/campaign-settings',
+						'__block_editor_compatible_meta_box' => true,
 					),
 				)
 			);
@@ -136,8 +137,6 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 				do_meta_boxes( Charitable::CAMPAIGN_POST_TYPE, 'campaign-top', $post );
 			}
 		}
-
-
 
 		/**
 		 * Return campaign settings panels.
@@ -245,26 +244,6 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 		}
 
 		/**
-		 * Set default post content when the extended description is left empty.
-		 *
-		 * @since  1.4.0
-		 *
-		 * @param  array $data    Submitted data.
-		 * @return array
-		 */
-		public function set_default_post_content( $data ) {
-			if ( Charitable::CAMPAIGN_POST_TYPE != $data['post_type'] ) {
-				return $data;
-			}
-
-			if ( 0 === strlen( $data['post_content'] ) ) {
-				$data['post_content'] = '<!-- Code is poetry -->';
-			}
-
-			return $data;
-		}
-
-		/**
 		 * Sets the placeholder text of the campaign title field.
 		 *
 		 * @since  1.0.0
@@ -316,7 +295,7 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 				),
 				9 => sprintf(
 					__( 'Campaign scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview Campaign</a>', 'charitable' ),
-					date_i18n( __( 'M j, Y @ G:i', 'charitable' ),strtotime( $post->post_date ) ),
+					date_i18n( __( 'M j, Y @ G:i', 'charitable' ), strtotime( $post->post_date ) ),
 					esc_url( get_permalink( $post_ID ) )
 				),
 				10 => sprintf(
@@ -481,6 +460,30 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 		 */
 		private function panel_has_fields( $panel ) {
 			return array_key_exists( 'view', $panel ) || count( $panel['fields'] );
+		}
+
+
+		/**
+		 * Set default post content when the extended description is left empty.
+		 *
+		 * @deprecated 2.1.0
+		 *
+		 * @since  1.4.0
+		 * @since  1.7.0 Deprecated.
+		 *
+		 * @param  array $data    Submitted data.
+		 * @return array
+		 */
+		public function set_default_post_content( $data ) {
+			if ( Charitable::CAMPAIGN_POST_TYPE != $data['post_type'] ) {
+				return $data;
+			}
+
+			if ( 0 === strlen( $data['post_content'] ) ) {
+				$data['post_content'] = '<!-- Code is poetry -->';
+			}
+
+			return $data;
 		}
 	}
 

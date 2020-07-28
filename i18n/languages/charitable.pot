@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Charitable 1.6.43\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2020-07-08 05:18:05+00:00\n"
+"POT-Creation-Date: 2020-07-28 02:59:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4883,7 +4883,7 @@ msgstr ""
 
 #: includes/admin/campaigns/class-charitable-campaign-list-table.php:72
 #: includes/admin/reports/class-charitable-export-campaigns.php:165
-#: includes/fields/default-fields/campaign-fields.php:118
+#: includes/fields/default-fields/campaign-fields.php:154
 #: includes/widgets/class-charitable-donors-widget.php:74
 msgid "Title"
 msgstr ""
@@ -4895,14 +4895,15 @@ msgstr ""
 #: includes/admin/campaigns/class-charitable-campaign-list-table.php:74
 #: includes/admin/donor/class-charitable-donor-list-table.php:176
 #: includes/admin/views/donations-page/export-form.php:35
-#: includes/data/class-charitable-post-types.php:139
+#: includes/data/class-charitable-post-types.php:153
 #: includes/gateways/class-charitable-gateway-paypal.php:79
 msgid "Donations"
 msgstr ""
 
 #: includes/admin/campaigns/class-charitable-campaign-list-table.php:75
 #: includes/admin/reports/class-charitable-export-campaigns.php:167
-#: includes/fields/default-fields/campaign-fields.php:78
+#: includes/fields/class-charitable-campaign-field-registry.php:199
+#: includes/fields/default-fields/campaign-fields.php:94
 msgid "End Date"
 msgstr ""
 
@@ -4915,7 +4916,7 @@ msgstr ""
 
 #: includes/admin/campaigns/class-charitable-campaign-list-table.php:77
 #: includes/admin/reports/class-charitable-export-campaigns.php:166
-#: includes/fields/default-fields/campaign-fields.php:130
+#: includes/fields/default-fields/campaign-fields.php:166
 msgid "Date Created"
 msgstr ""
 
@@ -4957,59 +4958,59 @@ msgstr[1] ""
 msgid "Campaign Settings"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:278
+#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:257
 msgid "Enter campaign title"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:299
+#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:278
 msgid "Campaign updated. <a href=\"%s\">View Campaign</a>"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:302
+#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:281
 #: includes/admin/donations/class-charitable-donation-list-table.php:502
 #: includes/admin/donations/class-charitable-donation-meta-boxes.php:414
 msgid "Custom field updated."
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:303
+#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:282
 #: includes/admin/donations/class-charitable-donation-list-table.php:503
 #: includes/admin/donations/class-charitable-donation-meta-boxes.php:415
 msgid "Custom field deleted."
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:304
+#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:283
 msgid "Campaign updated."
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:306
+#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:285
 msgid "Campaign restored to revision from %s"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:309
+#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:288
 msgid "Campaign published. <a href=\"%s\">View Campaign</a>"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:312
+#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:291
 msgid "Campaign saved."
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:314
+#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:293
 msgid "Campaign submitted. <a target=\"_blank\" href=\"%s\">Preview Campaign</a>"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:318
+#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:297
 msgid ""
 "Campaign scheduled for: <strong>%1$s</strong>. <a target=\"_blank\" "
 "href=\"%2$s\">Preview Campaign</a>"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:319
+#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:298
 #: includes/admin/donations/class-charitable-donation-list-table.php:514
 #: includes/admin/donations/class-charitable-donation-meta-boxes.php:438
 msgid "M j, Y @ G:i"
 msgstr ""
 
-#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:323
+#: includes/admin/campaigns/class-charitable-campaign-meta-boxes.php:302
 msgid ""
 "Campaign draft updated. <a target=\"_blank\" href=\"%s\">Preview "
 "Campaign</a>"
@@ -5034,8 +5035,8 @@ msgid "Campaign Categories"
 msgstr ""
 
 #: includes/admin/class-charitable-admin-pages.php:169
-#: includes/data/class-charitable-post-types.php:272
-#: includes/fields/default-fields/campaign-fields.php:291
+#: includes/data/class-charitable-post-types.php:286
+#: includes/fields/default-fields/campaign-fields.php:369
 #: includes/widgets/class-charitable-campaign-terms-widget.php:80
 msgid "Categories"
 msgstr ""
@@ -5045,8 +5046,8 @@ msgid "Campaign Tags"
 msgstr ""
 
 #: includes/admin/class-charitable-admin-pages.php:175
-#: includes/data/class-charitable-post-types.php:310
-#: includes/fields/default-fields/campaign-fields.php:302
+#: includes/data/class-charitable-post-types.php:327
+#: includes/fields/default-fields/campaign-fields.php:380
 #: includes/widgets/class-charitable-campaign-terms-widget.php:81
 msgid "Tags"
 msgstr ""
@@ -5061,7 +5062,7 @@ msgid "Charitable Settings"
 msgstr ""
 
 #: includes/admin/class-charitable-admin-pages.php:187
-#: includes/admin/class-charitable-admin.php:399
+#: includes/admin/class-charitable-admin.php:244
 msgid "Settings"
 msgstr ""
 
@@ -5083,35 +5084,21 @@ msgstr ""
 msgid "Action from an unknown action type executed."
 msgstr ""
 
-#: includes/admin/class-charitable-admin.php:181
-#: includes/admin/views/metaboxes/campaign-donation-options/suggested-amounts.php:23
-#: includes/admin/views/metaboxes/campaign-donation-options/suggested-amounts.php:24
-#: includes/admin/views/metaboxes/field-types/campaign-donations.php:45
-#: templates/shortcodes/my-donations.php:46
-#: templates/shortcodes/my-donations.php:108
-msgid "Amount"
-msgstr ""
-
-#: includes/admin/class-charitable-admin.php:182
-#: includes/admin/views/metaboxes/campaign-donation-options/suggested-amounts.php:28
-msgid "Optional Description"
-msgstr ""
-
-#: includes/admin/class-charitable-admin.php:331
+#: includes/admin/class-charitable-admin.php:176
 #. translators: %s: link
 msgid ""
 "Charitable 1.5 is packed with new features and improvements. <a href='%s' "
 "target='_blank'>Find out what's new</a>."
 msgstr ""
 
-#: includes/admin/class-charitable-admin.php:335
+#: includes/admin/class-charitable-admin.php:180
 #. translators: %s: link
 msgid ""
 "Charitable 1.6 introduces important new user privacy features and other "
 "improvements. <a href=\"%s\" target=\"_blank\">Find out what's new</a>."
 msgstr ""
 
-#: includes/admin/class-charitable-admin.php:428
+#: includes/admin/class-charitable-admin.php:273
 #: includes/admin/settings/class-charitable-settings.php:135
 msgid "Extensions"
 msgstr ""
@@ -5245,15 +5232,15 @@ msgstr ""
 #: includes/admin/donations/class-charitable-donation-list-table.php:84
 #: includes/admin/views/metaboxes/donation/donation-form.php:21
 #: includes/admin/views/metaboxes/donation/donation-overview.php:46
-#: includes/data/class-charitable-post-types.php:140
+#: includes/data/class-charitable-post-types.php:154
 #: includes/gateways/class-charitable-gateway-paypal.php:714
 msgid "Donation"
 msgstr ""
 
 #: includes/admin/donations/class-charitable-donation-list-table.php:85
 #: includes/admin/reports/class-charitable-export-campaigns.php:169
-#: includes/fields/default-fields/campaign-fields.php:207
-#: includes/fields/default-fields/campaign-fields.php:215
+#: includes/fields/default-fields/campaign-fields.php:243
+#: includes/fields/default-fields/campaign-fields.php:261
 msgid "Amount Donated"
 msgstr ""
 
@@ -5279,8 +5266,8 @@ msgstr ""
 
 #: includes/admin/donations/class-charitable-donation-list-table.php:243
 #: includes/admin/views/metaboxes/campaign-benefactors/summary.php:27
-#: includes/data/class-charitable-post-types.php:91
-#: includes/data/class-charitable-post-types.php:144
+#: includes/data/class-charitable-post-types.php:92
+#: includes/data/class-charitable-post-types.php:158
 msgid "Edit"
 msgstr ""
 
@@ -5412,7 +5399,7 @@ msgid "Donation Actions"
 msgstr ""
 
 #: includes/admin/donations/class-charitable-donation-meta-boxes.php:201
-#: includes/data/class-charitable-post-types.php:145
+#: includes/data/class-charitable-post-types.php:159
 msgid "Donation Details"
 msgstr ""
 
@@ -5519,7 +5506,7 @@ msgstr ""
 msgid "Existing Donors"
 msgstr ""
 
-#: includes/admin/forms/views/class-charitable-admin-form-view.php:136
+#: includes/admin/forms/views/class-charitable-admin-form-view.php:137
 #: includes/forms/views/class-charitable-public-form-view.php:208
 msgid "There are no fields to render."
 msgstr ""
@@ -5531,6 +5518,7 @@ msgid "Campaign ID"
 msgstr ""
 
 #: includes/admin/reports/class-charitable-export-campaigns.php:168
+#: includes/fields/class-charitable-campaign-field-registry.php:198
 #: includes/fields/default-fields/campaign-fields.php:53
 msgid "Goal"
 msgstr ""
@@ -5540,18 +5528,18 @@ msgid "Percentage of Goal Raised"
 msgstr ""
 
 #: includes/admin/reports/class-charitable-export-campaigns.php:172
-#: includes/fields/class-charitable-campaign-field-registry.php:75
-#: includes/fields/default-fields/campaign-fields.php:172
+#: includes/fields/class-charitable-campaign-field-registry.php:84
+#: includes/fields/default-fields/campaign-fields.php:208
 msgid "Campaign Creator"
 msgstr ""
 
 #: includes/admin/reports/class-charitable-export-campaigns.php:173
-#: includes/fields/default-fields/campaign-fields.php:138
+#: includes/fields/default-fields/campaign-fields.php:174
 msgid "Campaign Creator ID"
 msgstr ""
 
 #: includes/admin/reports/class-charitable-export-campaigns.php:174
-#: includes/fields/default-fields/campaign-fields.php:184
+#: includes/fields/default-fields/campaign-fields.php:220
 msgid "Campaign Creator Email"
 msgstr ""
 
@@ -5913,6 +5901,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/settings/class-charitable-settings.php:95
+#: includes/blocks/class-charitable-blocks.php:422
 msgid "General"
 msgstr ""
 
@@ -5937,7 +5926,7 @@ msgid "Settings saved"
 msgstr ""
 
 #: includes/admin/views/campaigns-page/export-form.php:39
-#: includes/data/class-charitable-post-types.php:86
+#: includes/data/class-charitable-post-types.php:87
 #: includes/fields/default-fields/donation-fields.php:239
 #: includes/widgets/class-charitable-campaigns-widget.php:34
 #: templates/donation-stats.php:17
@@ -5946,20 +5935,20 @@ msgstr ""
 
 #: includes/admin/views/campaigns-page/export-form.php:45
 #: includes/admin/views/campaigns-page/filter-form.php:28
-#: includes/campaigns/class-charitable-campaign.php:670
+#: includes/campaigns/class-charitable-campaign.php:722
 #: includes/donations/charitable-donation-functions.php:338
 msgid "Pending"
 msgstr ""
 
 #: includes/admin/views/campaigns-page/export-form.php:46
 #: includes/admin/views/campaigns-page/filter-form.php:29
-#: includes/campaigns/class-charitable-campaign.php:674
+#: includes/campaigns/class-charitable-campaign.php:726
 msgid "Draft"
 msgstr ""
 
 #: includes/admin/views/campaigns-page/export-form.php:47
 #: includes/admin/views/campaigns-page/filter-form.php:30
-#: includes/campaigns/class-charitable-campaign.php:664
+#: includes/campaigns/class-charitable-campaign.php:716
 msgid "Active"
 msgstr ""
 
@@ -6180,8 +6169,22 @@ msgstr ""
 msgid "Enter a short description of your campaign"
 msgstr ""
 
+#: includes/admin/views/metaboxes/campaign-donation-options/suggested-amounts.php:23
+#: includes/admin/views/metaboxes/campaign-donation-options/suggested-amounts.php:24
+#: includes/admin/views/metaboxes/field-types/campaign-donations.php:45
+#: includes/assets/class-charitable-assets.php:519
+#: templates/shortcodes/my-donations.php:46
+#: templates/shortcodes/my-donations.php:108
+msgid "Amount"
+msgstr ""
+
 #: includes/admin/views/metaboxes/campaign-donation-options/suggested-amounts.php:27
 msgid "Description (optional)"
+msgstr ""
+
+#: includes/admin/views/metaboxes/campaign-donation-options/suggested-amounts.php:28
+#: includes/assets/class-charitable-assets.php:518
+msgid "Optional Description"
 msgstr ""
 
 #: includes/admin/views/metaboxes/campaign-donation-options/suggested-amounts.php:60
@@ -6223,7 +6226,7 @@ msgstr ""
 
 #: includes/admin/views/metaboxes/donation/donation-overview.php:111
 #: includes/admin/views/metaboxes/field-types/campaign-donations.php:44
-#: includes/data/class-charitable-post-types.php:87
+#: includes/data/class-charitable-post-types.php:88
 #: templates/donation-receipt/details.php:27 templates/donation-stats.php:17
 #: templates/shortcodes/my-donations.php:58
 #: templates/shortcodes/my-donations.php:132
@@ -6522,13 +6525,70 @@ msgstr ""
 msgid "List of donation reports."
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign-processor.php:484
+#: includes/api/class-charitable-api.php:60
+msgid "Limit result set to campaigns that are active or inactive."
+msgstr ""
+
+#: includes/assets/class-charitable-assets.php:458
+msgid "You must donate at least %s."
+msgstr ""
+
+#: includes/assets/class-charitable-assets.php:459
+#: includes/forms/class-charitable-donation-form.php:750
+#: includes/forms/class-charitable-donation-form.php:758
+msgid "You must donate more than %s."
+msgstr ""
+
+#: includes/assets/class-charitable-assets.php:482
+msgid "Please fill out all required fields."
+msgstr ""
+
+#: includes/assets/class-charitable-assets.php:483
+msgid "Your donation could not be processed. Please reload the page and try again."
+msgstr ""
+
+#: includes/assets/class-charitable-assets.php:484
+msgid "The credit card passed is not valid."
+msgstr ""
+
+#: includes/assets/class-charitable-assets.php:485
+msgid "The credit card expiry date is not valid."
+msgstr ""
+
+#: includes/assets/class-charitable-assets.php:502
+msgid "You can only upload %d file"
+msgstr ""
+
+#: includes/assets/class-charitable-assets.php:503
+msgid "You can only upload a maximum of %d files"
+msgstr ""
+
+#: includes/assets/class-charitable-assets.php:504
+msgid "%1$s exceeds the max upload size of %2$s"
+msgstr ""
+
+#: includes/assets/class-charitable-assets.php:505
+msgid "%s failed to upload. Please try again."
+msgstr ""
+
+#: includes/blocks/class-charitable-blocks.php:80
+#: includes/blocks/class-charitable-blocks.php:278
+#: templates/campaign/donate-button.php:15
+#: templates/campaign/donate-link.php:35 templates/campaign/donate-modal.php:25
+#: templates/campaign-loop/donate-link.php:31
+#: templates/campaign-loop/donate-modal.php:22
+#: templates/donation-form/form-donation.php:59
+msgid "Donate"
+msgstr ""
+
+#: includes/campaigns/class-charitable-campaign-processor.php:491
+#. translators: %s: date
 msgid ""
 "Campaign processor requires date in YYYY-MM-DD format. Date passed as %s. "
 "This message was added in Charitable version 1.5.9."
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign-processor.php:644
+#: includes/campaigns/class-charitable-campaign-processor.php:657
 #. translators: %1$s: PHP class method; %2$s: hook name; %3$s: key
 msgid ""
 "%1$s is deprecated as a sanitizer on the %2$s hook. To prevent "
@@ -6537,71 +6597,74 @@ msgid ""
 "instead."
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:346
+#: includes/campaigns/class-charitable-campaign.php:380
 #: includes/emails/class-charitable-email-campaign-end.php:173
 msgid "Campaign has ended"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:355
+#: includes/campaigns/class-charitable-campaign.php:390
+#. translators: %s: minutes left in span
 msgid "%s Minute Left"
 msgid_plural "%s Minutes Left"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/campaigns/class-charitable-campaign.php:366
+#: includes/campaigns/class-charitable-campaign.php:404
+#. translators: %s: hours left in span
 msgid "%s Hour Left"
 msgid_plural "%s Hours Left"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/campaigns/class-charitable-campaign.php:376
+#: includes/campaigns/class-charitable-campaign.php:418
+#. translators: %s: days left in span
 msgid "%s Day Left"
 msgid_plural "%s Days Left"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/campaigns/class-charitable-campaign.php:430
+#: includes/campaigns/class-charitable-campaign.php:482
 msgid "This campaign ended %s ago"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:432
+#: includes/campaigns/class-charitable-campaign.php:484
 msgid "This campaign successfully reached its funding goal and ended %s ago"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:434
+#: includes/campaigns/class-charitable-campaign.php:486
 msgid "This campaign failed to reach its funding goal %s ago"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:531
+#: includes/campaigns/class-charitable-campaign.php:583
 #: includes/emails/class-charitable-email-campaign-end.php:197
-#: includes/fields/default-fields/campaign-fields.php:202
+#: includes/fields/default-fields/campaign-fields.php:238
 msgid "The campaign achieved its fundraising goal."
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:546
+#: includes/campaigns/class-charitable-campaign.php:598
 #: includes/emails/class-charitable-email-campaign-end.php:197
 msgid "The campaign did not reach its fundraising goal."
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:647
-#: includes/campaigns/class-charitable-campaign.php:651
-#: includes/campaigns/class-charitable-campaign.php:655
+#: includes/campaigns/class-charitable-campaign.php:699
+#: includes/campaigns/class-charitable-campaign.php:703
+#: includes/campaigns/class-charitable-campaign.php:707
 msgid "Ended"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:651
+#: includes/campaigns/class-charitable-campaign.php:703
 msgid "Successful"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:655
+#: includes/campaigns/class-charitable-campaign.php:707
 msgid "Unsuccessful"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:659
+#: includes/campaigns/class-charitable-campaign.php:711
 msgid "Ending Soon"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:678
+#: includes/campaigns/class-charitable-campaign.php:730
 msgid "Scheduled"
 msgstr ""
 
@@ -6883,226 +6946,226 @@ msgstr ""
 msgid "Unable to update donor. This email address is already in use."
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:89
+#: includes/data/class-charitable-post-types.php:90
 msgid "Add Campaign"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:90
+#: includes/data/class-charitable-post-types.php:91
 msgid "Add New Campaign"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:92
+#: includes/data/class-charitable-post-types.php:93
 msgid "Edit Campaign"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:93
+#: includes/data/class-charitable-post-types.php:94
 msgid "New Campaign"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:94
 #: includes/data/class-charitable-post-types.php:95
+#: includes/data/class-charitable-post-types.php:96
 msgid "View Campaign"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:96
+#: includes/data/class-charitable-post-types.php:97
 msgid "Search Campaigns"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:97
+#: includes/data/class-charitable-post-types.php:98
 msgid "No Campaigns found"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:98
+#: includes/data/class-charitable-post-types.php:99
 msgid "No Campaigns found in trash"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:99
+#: includes/data/class-charitable-post-types.php:100
 msgid "Parent Campaign"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:101
+#: includes/data/class-charitable-post-types.php:102
 msgid "This is where you can create new campaigns for people to support."
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:142
+#: includes/data/class-charitable-post-types.php:156
 msgid "Add Donation"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:143
+#: includes/data/class-charitable-post-types.php:157
 msgid "Add New Donation"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:146
+#: includes/data/class-charitable-post-types.php:160
 #: includes/emails/class-charitable-email-new-donation.php:223
 msgid "New Donation"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:147
-#: includes/data/class-charitable-post-types.php:148
+#: includes/data/class-charitable-post-types.php:161
+#: includes/data/class-charitable-post-types.php:162
 msgid "View Donation"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:149
+#: includes/data/class-charitable-post-types.php:163
 msgid "Search Donations"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:150
+#: includes/data/class-charitable-post-types.php:164
 msgid "No Donations found"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:151
+#: includes/data/class-charitable-post-types.php:165
 msgid "No Donations found in trash"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:152
+#: includes/data/class-charitable-post-types.php:166
 msgid "Parent Donation"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:187
+#: includes/data/class-charitable-post-types.php:201
 #. translators: %s: count
 msgid "Pending (%s)"
 msgid_plural "Pending (%s)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/data/class-charitable-post-types.php:200
+#: includes/data/class-charitable-post-types.php:214
 #. translators: %s: count
 msgid "Paid (%s)"
 msgid_plural "Paid (%s)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/data/class-charitable-post-types.php:213
+#: includes/data/class-charitable-post-types.php:227
 #. translators: %s: count
 msgid "Failed (%s)"
 msgid_plural "Failed (%s)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/data/class-charitable-post-types.php:226
+#: includes/data/class-charitable-post-types.php:240
 #. translators: %s: count
 msgid "Canceled (%s)"
 msgid_plural "Canceled (%s)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/data/class-charitable-post-types.php:239
+#: includes/data/class-charitable-post-types.php:253
 #. translators: %s: count
 msgid "Refunded (%s)"
 msgid_plural "Refunded (%s)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/data/class-charitable-post-types.php:252
+#: includes/data/class-charitable-post-types.php:266
 #. translators: %s: count
 msgid "Pre Approved (%s)"
 msgid_plural "Pre Approved (%s)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/data/class-charitable-post-types.php:273
+#: includes/data/class-charitable-post-types.php:287
 msgid "All Campaign Categories"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:274
+#: includes/data/class-charitable-post-types.php:288
 msgid "Parent Campaign Category"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:275
+#: includes/data/class-charitable-post-types.php:289
 msgid "Parent Campaign Category:"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:276
+#: includes/data/class-charitable-post-types.php:290
 msgid "New Campaign Category Name"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:277
+#: includes/data/class-charitable-post-types.php:291
 msgid "Add New Campaign Category"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:278
+#: includes/data/class-charitable-post-types.php:292
 msgid "Edit Campaign Category"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:279
+#: includes/data/class-charitable-post-types.php:293
 msgid "Update Campaign Category"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:280
+#: includes/data/class-charitable-post-types.php:294
 msgid "View Campaign Category"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:281
+#: includes/data/class-charitable-post-types.php:295
 msgid "Separate campaign categories with commas"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:282
+#: includes/data/class-charitable-post-types.php:296
 msgid "Add or remove campaign categories"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:283
-#: includes/data/class-charitable-post-types.php:321
+#: includes/data/class-charitable-post-types.php:297
+#: includes/data/class-charitable-post-types.php:338
 msgid "Choose from the most used"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:284
+#: includes/data/class-charitable-post-types.php:298
 msgid "Popular Campaign Categories"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:285
+#: includes/data/class-charitable-post-types.php:299
 msgid "Search Campaign Categories"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:286
-#: includes/data/class-charitable-post-types.php:324
+#: includes/data/class-charitable-post-types.php:300
+#: includes/data/class-charitable-post-types.php:341
 msgid "Not Found"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:311
+#: includes/data/class-charitable-post-types.php:328
 msgid "All Campaign Tags"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:312
+#: includes/data/class-charitable-post-types.php:329
 msgid "Parent Campaign Tag"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:313
+#: includes/data/class-charitable-post-types.php:330
 msgid "Parent Campaign Tag:"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:314
+#: includes/data/class-charitable-post-types.php:331
 msgid "New Campaign Tag Name"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:315
+#: includes/data/class-charitable-post-types.php:332
 msgid "Add New Campaign Tag"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:316
+#: includes/data/class-charitable-post-types.php:333
 msgid "Edit Campaign Tag"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:317
+#: includes/data/class-charitable-post-types.php:334
 msgid "Update Campaign Tag"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:318
+#: includes/data/class-charitable-post-types.php:335
 msgid "View Campaign Tag"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:319
+#: includes/data/class-charitable-post-types.php:336
 msgid "Separate campaign tags with commas"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:320
+#: includes/data/class-charitable-post-types.php:337
 msgid "Add or remove campaign tags"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:322
+#: includes/data/class-charitable-post-types.php:339
 msgid "Popular Campaign Tags"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:323
+#: includes/data/class-charitable-post-types.php:340
 msgid "Search Campaign Tags"
 msgstr ""
 
@@ -7541,16 +7604,16 @@ msgstr ""
 msgid "Reset Password"
 msgstr ""
 
-#: includes/fields/class-charitable-campaign-field-registry.php:73
+#: includes/fields/class-charitable-campaign-field-registry.php:82
 msgid "Donation Options"
 msgstr ""
 
-#: includes/fields/class-charitable-campaign-field-registry.php:74
-#: includes/fields/default-fields/campaign-fields.php:151
+#: includes/fields/class-charitable-campaign-field-registry.php:83
+#: includes/fields/default-fields/campaign-fields.php:187
 msgid "Extended Description"
 msgstr ""
 
-#: includes/fields/class-charitable-campaign-field-registry.php:76
+#: includes/fields/class-charitable-campaign-field-registry.php:85
 msgid "Extended Settings"
 msgstr ""
 
@@ -7573,108 +7636,124 @@ msgstr ""
 msgid "Leave empty for campaigns without a fundraising goal."
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:66
+#: includes/fields/default-fields/campaign-fields.php:75
+msgid "Campaign has a goal"
+msgstr ""
+
+#: includes/fields/default-fields/campaign-fields.php:81
 msgid "Goal ($)"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:72
+#: includes/fields/default-fields/campaign-fields.php:88
 msgid "Display the campaign's fundraising goal"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:85
+#: includes/fields/default-fields/campaign-fields.php:101
 msgid "Leave empty for ongoing campaigns."
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:89
+#: includes/fields/default-fields/campaign-fields.php:105
 msgid "The end date of the campaign"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:95
+#: includes/fields/default-fields/campaign-fields.php:125
+msgid "Campaign has an end date"
+msgstr ""
+
+#: includes/fields/default-fields/campaign-fields.php:131
 msgid "Suggested Donation Amounts"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:107
+#: includes/fields/default-fields/campaign-fields.php:143
 msgid "Allow Custom Donations"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:124
+#: includes/fields/default-fields/campaign-fields.php:160
 msgid "The title of the campaign"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:125
+#: includes/fields/default-fields/campaign-fields.php:161
 #: includes/fields/default-fields/donation-fields.php:246
 msgid "Fake Campaign"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:164
+#: includes/fields/default-fields/campaign-fields.php:200
 msgid "Featured Image"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:178
+#: includes/fields/default-fields/campaign-fields.php:214
 msgid "The name of the campaign creator"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:189
+#: includes/fields/default-fields/campaign-fields.php:225
 msgid "The email address of the campaign creator"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:195
+#: includes/fields/default-fields/campaign-fields.php:231
 msgid "Achieved Goal?"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:201
+#: includes/fields/default-fields/campaign-fields.php:237
 msgid ""
 "Display whether the campaign reached its goal. Add a `success` parameter as "
 "the message when the campaign was successful, and a `failure` parameter as "
 "the message when the campaign is not successful"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:221
+#: includes/fields/default-fields/campaign-fields.php:267
 msgid "Display the total amount donated to the campaign"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:227
-#: includes/fields/default-fields/campaign-fields.php:239
+#: includes/fields/default-fields/campaign-fields.php:273
+#: includes/fields/default-fields/campaign-fields.php:285
 msgid "Percent Donated"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:233
+#: includes/fields/default-fields/campaign-fields.php:279
 msgid "Display the percentage donated to the campaign"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:247
+#: includes/fields/default-fields/campaign-fields.php:293
 msgid "Number of Donors"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:253
+#: includes/fields/default-fields/campaign-fields.php:299
 msgid "Display the number of campaign donors"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:259
+#: includes/fields/default-fields/campaign-fields.php:315
+msgid "Number of Donations"
+msgstr ""
+
+#: includes/fields/default-fields/campaign-fields.php:321
+msgid "Display the number of donations to the campaign"
+msgstr ""
+
+#: includes/fields/default-fields/campaign-fields.php:337
 msgid "Campaign Status"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:267
+#: includes/fields/default-fields/campaign-fields.php:345
 msgid "Campaign Permalink"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:273
+#: includes/fields/default-fields/campaign-fields.php:351
 msgid "Display the campaign's URL"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:279
+#: includes/fields/default-fields/campaign-fields.php:357
 msgid "Campaign Edit Link"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:285
+#: includes/fields/default-fields/campaign-fields.php:363
 msgid "Display a link to the campaign in the dashboard"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:296
+#: includes/fields/default-fields/campaign-fields.php:374
 msgid "Display a comma-separated list of campaign categories"
 msgstr ""
 
-#: includes/fields/default-fields/campaign-fields.php:307
+#: includes/fields/default-fields/campaign-fields.php:385
 msgid "Display a comma-separated list of campaign tags"
 msgstr ""
 
@@ -7812,13 +7891,6 @@ msgstr ""
 
 #: includes/forms/class-charitable-donation-form.php:715
 msgid "The gateway submitted is not valid."
-msgstr ""
-
-#: includes/forms/class-charitable-donation-form.php:750
-#: includes/forms/class-charitable-donation-form.php:758
-#: includes/public/class-charitable-public.php:93
-#. Translators: %s: minimum donatino amount
-msgid "You must donate more than %s."
 msgstr ""
 
 #: includes/forms/class-charitable-donation-form.php:993
@@ -8463,53 +8535,13 @@ msgstr ""
 msgid "Personal data erased."
 msgstr ""
 
-#: includes/public/charitable-template-functions.php:860
+#: includes/public/charitable-template-functions.php:926
 #. translators: %s: donation amount
 msgid "Your Donation Amount: %s."
 msgstr ""
 
-#: includes/public/charitable-template-functions.php:861
+#: includes/public/charitable-template-functions.php:927
 msgid "Change"
-msgstr ""
-
-#: includes/public/class-charitable-public.php:88
-#. Translators: %s: minimum donatino amount
-msgid "You must donate at least %s."
-msgstr ""
-
-#: includes/public/class-charitable-public.php:132
-msgid "Please fill out all required fields."
-msgstr ""
-
-#: includes/public/class-charitable-public.php:133
-msgid "Your donation could not be processed. Please reload the page and try again."
-msgstr ""
-
-#: includes/public/class-charitable-public.php:134
-msgid "The credit card passed is not valid."
-msgstr ""
-
-#: includes/public/class-charitable-public.php:135
-msgid "The credit card expiry date is not valid."
-msgstr ""
-
-#: includes/public/class-charitable-public.php:218
-#. translators: %d: number of files
-msgid "You can only upload %d file"
-msgstr ""
-
-#: includes/public/class-charitable-public.php:219
-msgid "You can only upload a maximum of %d files"
-msgstr ""
-
-#: includes/public/class-charitable-public.php:220
-#. translators: %1$s: file name; %2$s: max upload size
-msgid "%1$s exceeds the max upload size of %2$s"
-msgstr ""
-
-#: includes/public/class-charitable-public.php:221
-#. translators: %s: file name
-msgid "%s failed to upload. Please try again."
 msgstr ""
 
 #: includes/public/class-charitable-user-dashboard.php:81
@@ -8767,12 +8799,30 @@ msgstr ""
 msgid "Return home"
 msgstr ""
 
-#: templates/campaign/donate-button.php:20
-#: templates/campaign/donate-link.php:35 templates/campaign/donate-modal.php:27
-#: templates/campaign-loop/donate-link.php:31
-#: templates/campaign-loop/donate-modal.php:22
-#: templates/donation-form/form-donation.php:59
-msgid "Donate"
+#: templates/blocks/campaign-progress-bar/index.php:34
+#: templates/blocks/campaign-stats/index.php:38
+#. translators: %s: amount raised in span
+msgid "%s Raised"
+msgstr ""
+
+#: templates/blocks/campaign-progress-bar/index.php:43
+#. translators: %s: goal amount
+msgid "%s Goal"
+msgstr ""
+
+#: templates/blocks/campaign-stats/index.php:24
+#. translators: %s: amount
+msgid "%s Donated"
+msgstr ""
+
+#: templates/blocks/campaign-stats/index.php:52
+#. translators: %s: number of donors in span
+msgid "%s Donors"
+msgstr ""
+
+#: templates/blocks/campaign-stats/index.php:66
+#. translators: %s: number of donations in span
+msgid "%s Donations"
 msgstr ""
 
 #: templates/campaign-loop/donate-modal-window.php:64
@@ -8858,7 +8908,7 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: templates/form-fields/picture.php:101
+#: templates/form-fields/picture.php:103
 msgid "Uploading..."
 msgstr ""
 
@@ -8947,78 +8997,83 @@ msgctxt "extension banner"
 msgid "%s banner"
 msgstr ""
 
+#: includes/assets/class-charitable-assets.php:501
+msgctxt "remove image button text"
+msgid "Remove"
+msgstr ""
+
 #: includes/autoloader/class-charitable-registry.php:135
 #. translators: %s: class name
 msgctxt "error message when non-existent class is called"
 msgid "Class %s does not exist."
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:813
+#: includes/campaigns/class-charitable-campaign.php:854
 msgctxt "amount donated of goal"
 msgid "%1$s donated of %2$s goal"
 msgstr ""
 
-#: includes/campaigns/class-charitable-campaign.php:819
+#: includes/campaigns/class-charitable-campaign.php:860
 msgctxt "amount donated"
 msgid "%s donated"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:88
+#: includes/data/class-charitable-post-types.php:89
 msgctxt "Admin menu name"
 msgid "Campaigns"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:141
+#: includes/data/class-charitable-post-types.php:155
 msgctxt "Admin menu name"
 msgid "Donations"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:185
+#: includes/data/class-charitable-post-types.php:199
 msgctxt "Pending Donation Status"
 msgid "Pending"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:198
+#: includes/data/class-charitable-post-types.php:212
 msgctxt "Paid Donation Status"
 msgid "Paid"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:211
+#: includes/data/class-charitable-post-types.php:225
 msgctxt "Failed Donation Status"
 msgid "Failed"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:224
+#: includes/data/class-charitable-post-types.php:238
 msgctxt "Canceled Donation Status"
 msgid "Canceled"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:237
+#: includes/data/class-charitable-post-types.php:251
 msgctxt "Refunded Donation Status"
 msgid "Refunded"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:250
+#: includes/data/class-charitable-post-types.php:264
 msgctxt "Pre Approved Donation Status"
 msgid "Pre Approved"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:270
+#: includes/data/class-charitable-post-types.php:284
 msgctxt "Taxonomy General Name"
 msgid "Campaign Categories"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:308
+#: includes/data/class-charitable-post-types.php:325
 msgctxt "Taxonomy General Name"
 msgid "Campaign Tags"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:271
+#: includes/data/class-charitable-post-types.php:285
 msgctxt "Taxonomy Singular Name"
 msgid "Campaign Category"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:309
+#: includes/data/class-charitable-post-types.php:326
 msgctxt "Taxonomy Singular Name"
 msgid "Campaign Tag"
 msgstr ""
@@ -9041,11 +9096,6 @@ msgstr ""
 #: includes/locale/class-charitable-i18n.php:146
 msgctxt "decline months names: on or off"
 msgid "off"
-msgstr ""
-
-#: includes/public/class-charitable-public.php:217
-msgctxt "remove image button text"
-msgid "Remove"
 msgstr ""
 
 #: includes/utilities/charitable-utility-functions.php:209
@@ -9081,27 +9131,27 @@ msgctxt "Continue reading about campaign"
 msgid "Continue reading about %s"
 msgstr ""
 
-#: templates/form-fields/picture.php:58
+#: templates/form-fields/picture.php:60
 msgctxt "image upload"
 msgid "Allowed Image Files"
 msgstr ""
 
-#: templates/form-fields/picture.php:94
+#: templates/form-fields/picture.php:96
 msgctxt "image upload"
 msgid "Drop image here"
 msgstr ""
 
-#: templates/form-fields/picture.php:95
+#: templates/form-fields/picture.php:97
 msgctxt "image upload"
 msgid "or"
 msgstr ""
 
-#: templates/form-fields/picture.php:97
+#: templates/form-fields/picture.php:99
 msgctxt "image upload"
 msgid "Select Files"
 msgstr ""
 
-#: templates/form-fields/picture.php:94
+#: templates/form-fields/picture.php:96
 msgctxt "image upload plural"
 msgid "Drop images here"
 msgstr ""

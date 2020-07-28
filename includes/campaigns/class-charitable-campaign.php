@@ -16,7 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'Charitable_Campaign' ) ) :
-
 	/**
 	 * Campaign Model
 	 *
@@ -200,6 +199,41 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		}
 
 		/**
+		 * Update data for this campaign.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @param  array $data Data to be updated.
+		 * @return int
+		 */
+		public function update_data( $data ) {
+			if ( ! current_user_can( 'edit_campaign', $this->post->ID ) ) {
+				return $data;
+			}
+
+			if ( ! array_key_exists( 'ID', $data ) ) {
+				$data['ID'] = $this->post->ID;
+			}
+
+			$processor = new Charitable_Campaign_Processor( $data );
+
+			return $processor->save();
+		}
+
+		/**
+		 * Update a field for this campaign.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @param  string $field The field to be updated.
+		 * @param  mixed  $value The new field value.
+		 * @return int
+		 */
+		public function update( $field, $value ) {
+			return $this->update_data( array( $field => $value ) );
+		}
+
+		/**
 		 * Return the Charitable_Object_Fields instance.
 		 *
 		 * @since  1.6.0
@@ -327,9 +361,10 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		 *
 		 * @since  1.0.0
 		 *
+		 * @param  string $classes Classes to add to time left figure.
 		 * @return string
 		 */
-		public function get_time_left() {
+		public function get_time_left( $classes = 'amount time-left' ) {
 			if ( $this->is_endless() ) {
 				return '';
 			}
@@ -342,28 +377,33 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 			if ( 0 === $seconds_left ) {
 
 				/* Condition 1: The campaign has finished. */
-
 				$time_left = apply_filters( 'charitable_campaign_ended', __( 'Campaign has ended', 'charitable' ), $this );
 
 			} elseif ( $seconds_left <= $hour ) {
 
 				/* Condition 2: There is less than an hour left. */
-
 				$minutes_remaining = ceil( $seconds_left / 60 );
 				$time_left         = apply_filters(
 					'charitabile_campaign_minutes_left',
-					sprintf( _n( '%s Minute Left', '%s Minutes Left', $minutes_remaining, 'charitable' ), '<span class="amount time-left minutes-left">' . $minutes_remaining . '</span>' ),
+					sprintf(
+						/* translators: %s: minutes left in span */
+						_n( '%s Minute Left', '%s Minutes Left', $minutes_remaining, 'charitable' ),
+						'<span class="' . esc_attr( $classes ) . '">' . $minutes_remaining . '</span>'
+					),
 					$this
 				);
 
 			} elseif ( $seconds_left <= $day ) {
 
 				/* Condition 3: There is less than a day left. */
-
 				$hours_remaining = floor( $seconds_left / 3600 );
 				$time_left       = apply_filters(
 					'charitabile_campaign_hours_left',
-					sprintf( _n( '%s Hour Left', '%s Hours Left', $hours_remaining, 'charitable' ), '<span class="amount time-left hours-left">' . $hours_remaining . '</span>' ),
+					sprintf(
+						/* translators: %s: hours left in span */
+						_n( '%s Hour Left', '%s Hours Left', $hours_remaining, 'charitable' ),
+						'<span class="' . esc_attr( $classes ) . '">' . $hours_remaining . '</span>'
+					),
 					$this
 				);
 
@@ -373,12 +413,24 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 				$days_remaining = floor( $seconds_left / 86400 );
 				$time_left      = apply_filters(
 					'charitabile_campaign_days_left',
-					sprintf( _n( '%s Day Left', '%s Days Left', $days_remaining, 'charitable' ), '<span class="amount time-left days-left">' . $days_remaining . '</span>' ),
+					sprintf(
+						/* translators: %s: days left in span */
+						_n( '%s Day Left', '%s Days Left', $days_remaining, 'charitable' ),
+						'<span class="' . esc_attr( $classes ) . '">' . $days_remaining . '</span>'
+					),
 					$this
 				);
 
 			}//end if
 
+			/**
+			 * Filter the text describing how much time is left in the campaign.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param string              $time_left The text describing how much time is left.
+			 * @param Charitable_Campaign $campaign  The campaign object.
+			 */
 			return apply_filters( 'charitable_campaign_time_left', $time_left, $this );
 		}
 
@@ -707,17 +759,6 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		 *
 		 * @return string|false The permalink URL or false if post does not exist.
 		 */
-		public function get_permalink() {
-			return get_permalink( $this->ID );
-		}
-
-		/**
-		 * Return the admin edit link for this campaign.
-		 *
-		 * @since  1.6.0
-		 *
-		 * @return string
-		 */
 		public function get_admin_edit_link() {
 			$post_type_object = get_post_type_object( Charitable::CAMPAIGN_POST_TYPE );
 
@@ -887,6 +928,36 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 			 * @param Charitable_Campaign $this  This campaign object.
 			 */
 			return apply_filters( 'charitable_campaign_donor_count', charitable_get_table( 'campaign_donations' )->count_campaign_donors( $this->ID ), $this );
+		}
+
+		/**
+		 * Return the total number of donations to this campaign.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @param  boolean $include_all Whether to include all donations, including ones that have not been completed.
+		 * @return int
+		 */
+		public function get_donation_count( $include_all = false ) {
+			$statuses = $include_all ? array() : charitable_get_approval_statuses();
+			$query    = new Charitable_Donations_Query(
+				array(
+					'output'   => 'count',
+					'campaign' => $this->ID,
+					'status'   => $statuses,
+				)
+			);
+
+			/**
+			 * Set the number of donations who have donated to this campaign.
+			 *
+			 * @since 1.7.0
+			 *
+			 * @param int                 $count       Number of donations.
+			 * @param Charitable_Campaign $this        This campaign object.
+			 * @param boolean             $include_all Whether to include all donations, including ones that have not been completed.
+			 */
+			return apply_filters( 'charitable_campaign_donor_count', $query->count(), $this, $include_all );
 		}
 
 		/**

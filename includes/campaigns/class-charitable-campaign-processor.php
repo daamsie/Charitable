@@ -188,6 +188,10 @@ if ( ! class_exists( 'Charitable_Campaign_Processor' ) ) :
 			 * Update or insert the campaign.
 			 */
 			if ( $data['ID'] ) {
+				if ( 1 === count( $data ) ) {
+					return $data['ID'];
+				}
+
 				return wp_update_post( $data );
 			}
 
@@ -474,18 +478,27 @@ if ( ! class_exists( 'Charitable_Campaign_Processor' ) ) :
 		 * @return string
 		 */
 		protected function sanitize_end_date( $value ) {
-			if ( 0 == $value ) {
+			error_log( var_export( $value, true ) );
+			if ( 0 == $value || is_null( $value ) ) {
 				return 0;
 			}
 
 			if ( ! $this->is_mysql_date_format( $value ) ) {
 				charitable_get_deprecated()->doing_it_wrong(
 					__METHOD__,
-					sprintf( __( 'Campaign processor requires date in YYYY-MM-DD format. Date passed as %s. This message was added in Charitable version 1.5.9.', 'charitable' ), $value ),
+					sprintf(
+						/* translators: %s: date */
+						__( 'Campaign processor requires date in YYYY-MM-DD format. Date passed as %s. This message was added in Charitable version 1.5.9.', 'charitable' ),
+						$value
+					),
 					null
 				);
 
 				return 0;
+			}
+
+			if ( 'T' === substr( $value, 10, 1 ) ) {
+				$value = str_replace( 'T', ' ', $value );
 			}
 
 			if ( false === strpos( $value, ' ' ) ) {

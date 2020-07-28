@@ -109,7 +109,7 @@ function charitable_compat_theme_highlight_colour( $colour ) {
 	$colours    = include( 'styles/highlight-colours.php' );
 	$stylesheet = strtolower( wp_get_theme()->stylesheet );
 
-	if ( 'twentytwenty' === $stylesheet ) {
+	if ( function_exists( 'twentytwenty_get_color_for_area' ) ) {
 		return sanitize_hex_color( twentytwenty_get_color_for_area( 'content', 'accent' ) );
 	}
 

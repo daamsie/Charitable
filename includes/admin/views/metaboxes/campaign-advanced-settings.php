@@ -2,10 +2,11 @@
 /**
  * Loops over the meta boxes inside the advanced settings area of the Campaign post type.
  *
- * @author 		Studio 164a
- * @package     Charitable/Admin Views/Metaboxes
- * @copyright 	Copyright (c) 2020, Studio 164a
- * @since 		1.0.0
+ * @author    Studio 164a
+ * @package   Charitable/Admin Views/Metaboxes
+ * @copyright Copyright (c) 2020, Studio 164a
+ * @since     1.0.0
+ * @version   1.6.0
  */
 
 global $post;
@@ -26,7 +27,7 @@ if ( ! isset( $view_args['meta_boxes'] ) || empty( $view_args['meta_boxes'] ) ) 
 				<?php call_user_func( $meta_box['callback'], $post, $meta_box ); ?>
 			</div>
 		</div>
-	<?php
+		<?php
 	endforeach;
 	?>
 </div>

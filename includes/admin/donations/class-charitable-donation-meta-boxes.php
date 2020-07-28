@@ -339,8 +339,8 @@ if ( ! class_exists( 'Charitable_Donation_Meta_Boxes' ) ) :
 		 *
 		 * @since  1.5.0
 		 *
-		 * @param  int     $donation_id
-		 * @param  WP_Post $post
+		 * @param  int     $donation_id The donation ID.
+		 * @param  WP_Post $post        The WordPress Post object.
 		 * @return void
 		 */
 		public function save_donation( $donation_id, WP_Post $post ) {

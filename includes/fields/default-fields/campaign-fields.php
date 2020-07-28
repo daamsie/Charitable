@@ -61,13 +61,29 @@ return apply_filters(
 			),
 			'email_tag'      => false,
 			'show_in_export' => true,
+			'rest_api'       => array(
+				'schema' => array(
+					'type'              => 'number',
+					'minimum'           => 0,
+					'sanitize_callback' => function( $value ) {
+						return (int) $value;
+					},
+				),
+				'editor' => array(
+					'section'         => 'campaign-goal',
+					'toggle'          => true,
+					'toggle_label'    => __( 'Campaign has a goal', 'charitable' ),
+					'toggle_fallback' => 500,
+				),
+			),
 		),
 		'monetary_goal'            => array(
-			'label'          => __( 'Goal ($)', 'charitable' ),
-			'data_type'      => 'core',
-			'value_callback' => false,
-			'admin_form'     => false,
-			'email_tag'      => array(
+			'label'           => __( 'Goal ($)', 'charitable' ),
+			'data_type'       => 'core',
+			'value_callback'  => false,
+			'update_callback' => false,
+			'admin_form'      => false,
+			'email_tag'       => array(
 				'tag'         => 'campaign_goal',
 				'description' => __( 'Display the campaign\'s fundraising goal', 'charitable' ),
 				'preview'     => '$15,000',
@@ -90,6 +106,26 @@ return apply_filters(
 				'preview'     => date( get_option( 'date_format', 'd/m/Y' ) ),
 			),
 			'show_in_export' => true,
+			'rest_api'       => array(
+				'get_callback' => function( $object ) {
+					$end_date = charitable_get_campaign( $object['id'] )->get_meta( '_campaign_end_date' );
+
+					if ( '0' === $end_date ) {
+						$end_date = null;
+					}
+
+					return $end_date;
+				},
+				'schema'       => array(
+					'type' => 'text',
+				),
+				'editor'       => array(
+					'section'         => 'campaign-end-date',
+					'toggle'          => true,
+					'toggle_label'    => __( 'Campaign has an end date', 'charitable' ),
+					'toggle_fallback' => date( 'Y-m-d h:i:s' ),
+				),
+			),
 		),
 		'suggested_donations'      => array(
 			'label'          => __( 'Suggested Donation Amounts', 'charitable' ),
@@ -210,6 +246,16 @@ return apply_filters(
 			'admin_form'     => false,
 			'email_tag'      => false,
 			'show_in_export' => true,
+			'rest_api'       => array(
+				'update_callback' => false,
+				'schema'          => array(
+					'type'              => 'number',
+					'minimum'           => 0,
+					'sanitize_callback' => function( $value, $request, $param ) {
+						return (int) $value;
+					},
+				),
+			),
 		),
 		'donated_amount_formatted' => array(
 			'label'          => __( 'Amount Donated', 'charitable' ),
@@ -254,6 +300,38 @@ return apply_filters(
 				'preview'     => 23,
 			),
 			'show_in_export' => true,
+			'rest_api'       => array(
+				'update_callback' => false,
+				'schema'          => array(
+					'type'              => 'number',
+					'minimum'           => 0,
+					'sanitize_callback' => function( $value, $request, $param ) {
+						return (int) $value;
+					},
+				),
+			),
+		),
+		'donation_count'           => array(
+			'label'          => __( 'Number of Donations', 'charitable' ),
+			'data_type'      => 'core',
+			'value_callback' => false,
+			'admin_form'     => false,
+			'email_tag'      => array(
+				'tag'         => 'campaign_donation_count',
+				'description' => __( 'Display the number of donations to the campaign', 'charitable' ),
+				'preview'     => 23,
+			),
+			'show_in_export' => true,
+			'rest_api'       => array(
+				'update_callback' => false,
+				'schema'          => array(
+					'type'              => 'number',
+					'minimum'           => 0,
+					'sanitize_callback' => function( $value, $request, $param ) {
+						return (int) $value;
+					},
+				),
+			),
 		),
 		'status'                   => array(
 			'label'          => __( 'Campaign Status', 'charitable' ),

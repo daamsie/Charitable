@@ -43,6 +43,15 @@ if ( ! class_exists( 'Charitable_Campaign_Field_Registry' ) ) :
 		protected $campaign_form_fields;
 
 		/**
+		 * Block editor fields.
+		 *
+		 * @since 1.7.0
+		 *
+		 * @var   array
+		 */
+		protected $block_editor_fields;
+
+		/**
 		 * Instantiate registry.
 		 *
 		 * @since  1.6.0
@@ -139,6 +148,68 @@ if ( ! class_exists( 'Charitable_Campaign_Field_Registry' ) ) :
 		 */
 		public function get_export_fields() {
 			return array_filter( $this->fields, array( new Charitable_Field_Filter( 'show_in_export' ), 'is_true' ) );
+		}
+
+		/**
+		 * Return the fields to be included in the REST API.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @return array
+		 */
+		public function get_rest_api_fields() {
+			return array_filter( $this->fields, array( new Charitable_Field_Filter( 'rest_api' ), 'is_array' ) );
+		}
+
+		/**
+		 * Return a structured array of all fields to include in the Block Editor sidebar.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @return array
+		 */
+		public function get_block_editor_fields() {
+			if ( ! isset( $this->block_editor_fields ) ) {
+				$this->block_editor_fields = array();
+
+				foreach ( $this->get_rest_api_fields() as $field ) {
+					/* Only updateable fields can be included. */
+					if ( ! $field->rest_api['update_callback'] ) {
+						continue;
+					}
+
+					$this->block_editor_fields[ $field->field ] = $field->rest_api['editor'];
+				}
+			}
+
+			return $this->block_editor_fields;
+		}
+
+		/**
+		 * Return the list of block editor sections.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @return array
+		 */
+		public function get_block_editor_sections() {
+			$sections                          = array();
+			$all_sections                      = $this->get_sections( 'admin' );
+			$all_sections['campaign-goal']     = __( 'Goal', 'charitable' );
+			$all_sections['campaign-end-date'] = __( 'End Date', 'charitable' );
+
+			foreach ( $this->get_block_editor_fields() as $field ) {
+				if ( array_key_exists( $field['section'], $sections ) ) {
+					continue;
+				}
+
+				$sections[ $field['section'] ] = array(
+					'key'   => $field['section'],
+					'label' => $all_sections[ $field['section'] ],
+				);
+			}
+
+			return $sections;
 		}
 
 		/**
