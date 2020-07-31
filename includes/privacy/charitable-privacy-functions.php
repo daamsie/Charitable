@@ -96,7 +96,8 @@ function charitable_get_terms_and_conditions_field_label() {
 	}
 
 	$text    = charitable_get_option( 'terms_conditions', __( 'I have read and agree to the website [terms].', 'charitable' ) );
-	$replace = sprintf( '<a href="%s" target="_blank" class="charitable-terms-link">%s</a>',
+	$replace = sprintf(
+		'<a href="%s" target="_blank" class="charitable-terms-link">%s</a>',
 		$url,
 		__( 'terms and conditions', 'charitable' )
 	);
@@ -119,7 +120,8 @@ function charitable_get_privacy_policy_field_text() {
 	}
 
 	$text    = charitable_get_option( 'privacy_policy', __( 'Your personal data will be used to process your donation, support your experience throughout this website, and for other purposes described in our [privacy_policy].', 'charitable' ) );
-	$replace = sprintf( '<a href="%s" target="_blank" class="charitable-privacy-policy-link">%s</a>',
+	$replace = sprintf(
+		'<a href="%s" target="_blank" class="charitable-privacy-policy-link">%s</a>',
 		$url,
 		__( 'privacy policy', 'charitable' )
 	);
