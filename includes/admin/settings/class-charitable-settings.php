@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.0.0
+ * @version   1.7.0
  */
 
 // Exit if accessed directly.
@@ -620,25 +620,6 @@ if ( ! class_exists( 'Charitable_Settings' ) ) :
 		 */
 		private function is_dynamic_group( $composite_key ) {
 			return array_key_exists( $composite_key, $this->get_dynamic_groups() );
-		}
-
-		/* DEPRECATED FUNCTIONS */
-
-		/**
-		 * Get the update messages.
-		 *
-		 * @deprecated 1.7.0
-		 *
-		 * @since 1.4.13 Deprecated.
-		 */
-		public function get_update_messages() {
-			charitable_get_deprecated()->deprecated_function(
-				__METHOD__,
-				'1.4.13',
-				'Charitable_Admin_Notices::get_notices()'
-			);
-
-			return charitable_get_admin_notices()->get_notices();
 		}
 	}
 

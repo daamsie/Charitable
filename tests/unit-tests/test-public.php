@@ -134,7 +134,7 @@ class Test_Charitable_Public extends Charitable_UnitTestCase {
 
 		$this->set_charitable_option( 'donation_form_display', 'separate_page' );
 
-		$page = charitable_get_donation_receipt_page_permalink( false, array( 'donation_id' => self::$donation_id ) );
+		$page = charitable_get_permalink( 'donation_receipt', array( 'donation_id' => self::$donation_id ) );
 
 		$this->go_to( $page );
 
@@ -153,7 +153,7 @@ class Test_Charitable_Public extends Charitable_UnitTestCase {
 
 		$this->set_charitable_option( 'donation_form_display', 'separate_page' );
 
-		$page = charitable_get_donation_processing_page_permalink( false, array( 'donation_id' => self::$donation_id ) );
+		$page = charitable_get_permalink( 'donation_processing', array( 'donation_id' => self::$donation_id ) );
 
 		$this->go_to( $page );
 

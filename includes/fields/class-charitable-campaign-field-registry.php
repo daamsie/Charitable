@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.6.0
- * @version   1.6.0
+ * @version   1.7.0
  */
 
 // Exit if accessed directly.
@@ -354,7 +354,7 @@ if ( ! class_exists( 'Charitable_Campaign_Field_Registry' ) ) :
 		/**
 		 * Return the Ambassadors form fields.
 		 *
-		 * @deprecated 1.9.0
+		 * @deprecated 2.1.0
 		 *
 		 * @since  1.6.0
 		 * @since  1.6.25 Deprecated. Use Charitable_Campaign_Field_Registry::get_campaign_form_fields() instead.
@@ -376,7 +376,7 @@ if ( ! class_exists( 'Charitable_Campaign_Field_Registry' ) ) :
 		 * Return a parsed array of settings for the field, or false if it should not appear
 		 * in the donation form.
 		 *
-		 * @deprecated 1.9.0
+		 * @deprecated 2.1.0
 		 *
 		 * @since  1.6.0
 		 * @since  1.6.25 Deprecated. Use Charitable_Campaign_Field_Registry::get_campaign_form_fields() instead.
