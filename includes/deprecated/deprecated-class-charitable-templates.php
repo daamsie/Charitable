@@ -19,7 +19,10 @@ if ( ! class_exists( 'Charitable_Templates' ) ) :
 	/**
 	 * Charitable_Templates
 	 *
-	 * @since   1.0.0
+	 * @deprecated 2.0.0
+	 *
+	 * @since 1.0.0
+	 * @since 1.5.0 Deprecated
 	 */
 	class Charitable_Templates {
 
