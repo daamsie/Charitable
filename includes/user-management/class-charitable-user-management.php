@@ -3,11 +3,11 @@
  * Class that manages the hook functions for the forgot password form.
  *
  * @package     Charitable/User Management/User Management
- * @author      Rafe Colton
+ * @author      Rafe Colton, Eric Daams
  * @copyright   Copyright (c) 2020, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since       1.4.0
- * @version     1.6.32
+ * @since      1.4.0
+ * @version     1.6.44
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -19,24 +19,25 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 	/**
 	 * Charitable_User_Management class
 	 *
-	 * @since   1.4.0
+	 * @since 1.4.0
 	 */
 	class Charitable_User_Management {
 
 		/**
 		 * The class instance.
 		 *
-		 * @var     Charitable_User_Management
-		 * @since   1.4.0
+		 * @var   Charitable_User_Management
+		 *
+		 * @since 1.4.0
 		 */
 		private static $instance;
 
 		/**
 		 * Returns and/or create the single instance of this class.
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
 		 *
-		 * @return  Charitable_User_Management
+		 * @return Charitable_User_Management
 		 */
 		public static function get_instance() {
 			if ( is_null( self::$instance ) ) {
@@ -49,7 +50,7 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 		/**
 		 * Set up the class.
 		 *
-		 * @since   1.4.0
+		 * @since 1.4.0
 		 */
 		private function __construct() {
 		}
@@ -59,12 +60,11 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 		 *
 		 * If so, redirect to the password reset page without the query string.
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
 		 *
-		 * @return  false|void False if no redirect takes place.
+		 * @return false|void False if no redirect takes place.
 		 */
 		public function maybe_redirect_to_password_reset() {
-
 			if ( ! charitable_is_page( 'reset_password_page' ) ) {
 				return false;
 			}
@@ -80,7 +80,6 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 			wp_safe_redirect( esc_url_raw( charitable_get_permalink( 'reset_password_page' ) ) );
 
 			exit();
-
 		}
 
 		/**
@@ -88,12 +87,11 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 		 *
 		 * If so, and charitable_disable_wp_login is set, redirect them to the custom reset password page
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
 		 *
-		 * @return  void
+		 * @return void
 		 */
 		public function maybe_redirect_to_custom_password_reset_page() {
-
 			if ( ! apply_filters( 'charitable_disable_wp_login', false ) ) {
 				return;
 			}
@@ -116,11 +114,11 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 		 *
 		 * If so redirect user to Charitable login page.
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
 		 *
-		 * @param   WP_User|WP_Error $user_or_error
-		 * @param   string           $username
-		 * @return  WP_User|void
+		 * @param  WP_User|WP_Error $user_or_error
+		 * @param  string           $username
+		 * @return WP_User|void
 		 */
 		public function maybe_redirect_at_authenticate( $user_or_error, $username ) {
 			if ( 'POST' != $_SERVER['REQUEST_METHOD'] ) {
@@ -183,12 +181,11 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 		 *
 		 * If so, and charitable_disable_wp_login is set, redirect them to the custom forgot password page
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
 		 *
-		 * @return  void
+		 * @return void
 		 */
 		public function maybe_redirect_to_custom_lostpassword() {
-
 			/**
 			 * Set whether the WP login should be disabled.
 			 *
@@ -220,10 +217,10 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 		 * method in WooCommerce, which in turn is based on the core implementation
 		 * in wp-login.php.
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
 		 *
-		 * @param   string $value
-		 * @return  void
+		 * @param  string $value
+		 * @return void
 		 */
 		public function set_reset_cookie( $value = '' ) {
 			$rp_cookie = 'wp-resetpass-' . COOKIEHASH;
@@ -234,7 +231,6 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 			} else {
 				setcookie( $rp_cookie, ' ', time() - YEAR_IN_SECONDS, $rp_path, COOKIE_DOMAIN, is_ssl(), true );
 			}
-
 		}
 
 		/**
@@ -244,10 +240,9 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 		 *
 		 * @see     show_admin_bar()
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
 		 */
 		public function maybe_remove_admin_bar() {
-
 			/**
 			 * To enable the admin bar for users without admin bar access,
 			 * you can use this one-liner:
@@ -261,16 +256,14 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 			if ( ! $this->user_has_admin_access() ) {
 				show_admin_bar( false );
 			}
-
 		}
 
 		/**
 		 * Redirects the user away from /wp-admin if they are not authorized to access it.
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
 		 */
 		public function maybe_redirect_away_from_admin() {
-
 			/* Leave AJAX requests alone. */
 			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 				return;
@@ -301,10 +294,9 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 			$redirect_url = apply_filters( 'charitable_admin_redirect_url', false );
 
 			if ( ! $redirect_url ) {
-
 				$redirect_url = charitable_get_permalink( 'profile_page' );
 
-				if ( false === $redirect_url ) {
+				if ( ! $redirect_url ) {
 					$redirect_url = home_url();
 				}
 			}
@@ -312,15 +304,14 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 			wp_safe_redirect( esc_url_raw( $redirect_url ) );
 
 			exit();
-
 		}
 
 		/**
 		 * Redirect the user to the Charitable login page.
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
 		 *
-		 * @return  void
+		 * @return void
 		 */
 		public function maybe_redirect_to_charitable_login() {
 			if ( ! apply_filters( 'charitable_disable_wp_login', false ) ) {
@@ -395,9 +386,9 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 		/**
 		 * Check whether the user has admin access.
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
 		 *
-		 * @return  boolean
+		 * @return boolean
 		 */
 		private function user_has_admin_access() {
 			if ( ! is_user_logged_in() ) {
