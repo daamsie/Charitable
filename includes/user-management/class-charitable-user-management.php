@@ -397,7 +397,8 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 
 			$has_access = current_user_can( 'edit_posts' )
 				|| current_user_can( 'manage_charitable_settings' )
-				|| current_user_can( 'edit_products' );
+				|| current_user_can( 'edit_products' )
+				|| current_user_can( 'translate' );
 
 			/**
 			 * Filter whether the user should have access to the WordPress dashboard.
