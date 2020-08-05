@@ -7,7 +7,6 @@
     <taxonomy translate="1" display-as-translated="1">campaign_tag</taxonomy>
   </taxonomies>
   <custom-fields>
-    <custom-field action="translate">with_attributes</custom-field>
     <custom-field action="translate">with_deep_attributes</custom-field>
     <custom-field action="translate">_campaign_description</custom-field>
     <custom-field action="translate">_campaign_updates</custom-field>
@@ -41,11 +40,6 @@
             <key name="description"></key>
         </key>
       </key>
-      <key name="_campaign_newsletter">
-        <key name="label"></key>
-      </key>
-    </key>
-    <key name="with_attributes">
       <key name="_campaign_newsletter">
         <key name="label"></key>
       </key>
