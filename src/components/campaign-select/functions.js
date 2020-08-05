@@ -5,7 +5,9 @@
  * @return boolean
  */
 export const hasCampaignThumbnail = ( campaign ) => {
-	return campaign.hasOwnProperty( '_embedded' ) && campaign._embedded.hasOwnProperty( 'wp:featuredmedia' );
+	return campaign.hasOwnProperty( '_embedded' ) 
+					&& campaign._embedded.hasOwnProperty( 'wp:featuredmedia' )
+					&& campaign._embedded['wp:featuredmedia'][0].media_details.sizes.hasOwnProperty('thumbnail');
 }
 
 /**
