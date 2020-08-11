@@ -299,7 +299,7 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 			$result   = $processor->process_donation();
 			$response = is_array( $result ) ? $result : array();
 
-			if ( false !== $result ) {
+			if ( $processor->donation_processed_successfully( $result ) ) {
 				$response['success']     = true;
 				$response['redirect_to'] = $processor->get_redirection_after_gateway_processing( $result );
 			} else {
@@ -366,6 +366,22 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 
 			wp_safe_redirect( $redirect_url );
 			die();
+		}
+
+		/**
+		 * Checks whether a donation has been processed successfully.
+		 *
+		 * @since  1.6.44
+		 *
+		 * @param  boolean|array $result The result returned from process_donation.
+		 * @return boolean
+		 */
+		public function donation_processed_successfully( $result ) {
+			if ( is_array( $result ) ) {
+				return array_key_exists( 'success', $result ) ? $result['success'] : true;
+			}
+
+			return $result;
 		}
 
 		/**
