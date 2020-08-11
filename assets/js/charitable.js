@@ -57,7 +57,7 @@ CHARITABLE = window.CHARITABLE || {};
          *
          * @access private
          */
-        this.prevent_scroll_to_top = true;
+        this.prevent_scroll_to_top = false;
 
         /**
          * Reference to this object.
@@ -188,9 +188,7 @@ CHARITABLE = window.CHARITABLE || {};
 
             /* Validate the form submission before going further. */
             if ( false === helper.validate() ) {
-                helper.hide_processing();
-                helper.print_errors();
-                helper.scroll_to_top();
+                helper.cancel_processing();
                 return false;
             }
 
@@ -221,11 +219,7 @@ CHARITABLE = window.CHARITABLE || {};
             if ( ! helper.waiting() ) {
                 /* Double-check that there are still no errors. */
                 if ( helper.get_errors().length > 0 ) {
-                    helper.hide_processing();
-
-                    helper.print_errors();
-
-                    helper.scroll_to_top();
+                    helper.cancel_processing();
                 } else {
                     callback();
                 }
@@ -272,9 +266,7 @@ CHARITABLE = window.CHARITABLE || {};
                         } );
                     }
                     else {
-                        helper.hide_processing();
-                        helper.print_errors( response.errors );
-                        helper.scroll_to_top();
+                        helper.cancel_processing( response.errors );
 
                         if ( response.donation_id ) {
                             helper.set_donation_id( response.donation_id );
@@ -282,17 +274,11 @@ CHARITABLE = window.CHARITABLE || {};
                     }
                 }
             }).fail(function (response, textStatus, errorThrown) {
-
                 if ( window.console && window.console.log ) {
                     console.log( response );
                 }
 
-                helper.hide_processing();
-
-                helper.print_errors( [ CHARITABLE_VARS.error_unknown ] );
-
-                helper.scroll_to_top();
-
+                helper.cancel_processing( [ CHARITABLE_VARS.error_unknown ] );
             });
 
             return false;
@@ -630,7 +616,7 @@ CHARITABLE = window.CHARITABLE || {};
     /**
      * Print the errors at the top of the form.
      *
-     * @param   array
+     * @param array
      */
     Donation_Form.prototype.print_errors = function( errors ) {
         var e = errors || this.errors,
@@ -752,6 +738,19 @@ CHARITABLE = window.CHARITABLE || {};
     };
 
     /**
+     * Cancel donation processing.
+     *
+     * @param array errors Error messages to show.
+     */
+    Donation_Form.prototype.cancel_processing = function( errors ) {
+        this.hide_processing();
+        this.print_errors( errors );
+        this.scroll_to_top();
+
+        this.form.trigger( 'charitable:form:cancelled', this );
+    };
+
+    /**
      * Set the donation ID.
      */
     Donation_Form.prototype.set_donation_id = function( donation_id ) {
@@ -764,7 +763,6 @@ CHARITABLE = window.CHARITABLE || {};
      * @return  object
      */
     Donation_Form.prototype.get_data = function() {
-
         return this.form.serializeArray().reduce( function( obj, item ) {
             if ( '[]' === item.name.slice( -2 ) ) {
                 var name = item.name.slice( 0, -2 );
