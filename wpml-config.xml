@@ -7,8 +7,10 @@
     <taxonomy translate="1" display-as-translated="1">campaign_tag</taxonomy>
   </taxonomies>
   <custom-fields>
-    <custom-field action="translate">with_deep_attributes</custom-field>
-    <custom-field action="translate">_campaign_description</custom-field>
+    <custom-field action="translate">_campaign_suggested_donations</custom-field>
+    <custom-field action="translate">_campaign_suggested_recurring_donations</custom-field>
+    <custom-field action="translate" label="Description" group="Description">_campaign_description</custom-field>
+    <custom-field action="translate">_campaign_newsletter</custom-field>
     <custom-field action="translate">_campaign_updates</custom-field>
     <custom-field action="copy">_campaign_goal</custom-field>
     <custom-field action="copy">_campaign_end_date</custom-field>
@@ -29,20 +31,18 @@
     <custom-field action="copy-once">_campaign_video_id</custom-field>
   </custom-fields>
   <custom-fields-texts>
-    <key name="with_deep_attributes">
-      <key name="_campaign_suggested_donations">
-        <key name="*">
-            <key name="description"></key>
-        </key>
+    <key name="_campaign_suggested_donations">
+      <key name="*">
+          <key name="description"></key>
       </key>
-      <key name="_campaign_suggested_recurring_donations">
-        <key name="*">
-            <key name="description"></key>
-        </key>
+    </key>
+    <key name="_campaign_suggested_recurring_donations">
+      <key name="*">
+          <key name="description"></key>
       </key>
-      <key name="_campaign_newsletter">
-        <key name="label"></key>
-      </key>
+    </key>
+    <key name="_campaign_newsletter">
+      <key name="label"></key>
     </key>
   </custom-fields-texts>
   <admin-texts>

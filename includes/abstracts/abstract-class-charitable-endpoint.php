@@ -184,6 +184,30 @@ if ( ! class_exists( 'Charitable_Endpoint' ) ) :
 
 			return $menu_object;
 		}
+
+		/**
+		 * Given a base URL and a slug to append, return an
+		 * updated endpoint URL.
+		 *
+		 * @since  1.6.44
+		 *
+		 * @param  string $base_url The base URL.
+		 * @param  string $slug     The slug to append.
+		 * @return string
+		 */
+		public function sanitize_endpoint_url( $base_url, $slug ) {
+			$url_parts = parse_url( $base_url );
+
+			if ( ! array_key_exists( 'query', $url_parts ) ) {
+				return trailingslashit( $base_url ) . trailingslashit( $slug );
+			}
+
+			/* Strip out the query string. */
+			$base_url = str_replace( '?' . $url_parts['query'], '', $base_url );
+
+			/* Append our slug, then the query string. */
+			return trailingslashit( $base_url ) . trailingslashit( $slug ) . '?' . $url_parts['query'];
+		}
 	}
 
 endif;
