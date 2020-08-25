@@ -143,6 +143,47 @@ registerBlockType( 'charitable/campaigns', {
 			type    : 'boolean',
 			default : true,
 		},
+
+		/**
+		 * The image size to use.
+		 */
+		imageSize : {
+			type    : 'string',
+			default : 'medium',
+		},
+
+		/**
+		 * Whether to show the image
+		 */
+		showImage : {
+			type    : 'boolean',
+			default : true,
+		},
+
+		/**
+		 * Whether to show the description
+		 */
+		showDescription : {
+			type    : 'boolean',
+			default : true,
+		},
+
+		/*
+		 * Whether to show the amount donated
+		 */
+		showAmountDonated : {
+			type    : 'boolean',
+			default : true,
+		},
+
+		/*
+		 * Whether to show the progress bar
+		 */
+		showProgressBar : {
+			type    : 'boolean',
+			default : true,
+		},
+
 	},
 
 	/**

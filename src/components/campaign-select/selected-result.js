@@ -3,6 +3,7 @@
  */
 import { getCampaignThumbnail } from './functions';
 import { CAMPAIGN_DATA } from './campaign-data';
+import { HorizontalRule } from '@wordpress/components';
 
 /**
  * WordPress dependencies
@@ -134,22 +135,26 @@ export class CampaignSelectedResults extends Component {
 
 		if ( selected_campaigns.length > 0 ) {
 			campaigns = <ul className="charitable-campaigns-list-card__selected-results-list">{ campaignElements.length ? campaignElements : __( 'Loading...', 'charitable' ) }</ul>
-
+		
 			if ( 1 === selected_campaigns.length ) {
-				header = <h4>{ __( 'Selected campaign', 'charitable' ) }</h4>
+				header = __( 'campaign selected', 'charitable' ) 
 			} else {
-				header = <h4>{ __( 'Selected campaigns', 'charitable' ) }</h4>
+				header = __( 'campaigns selected', 'charitable' ) 
 			}
-		}
 
-		return (
-			<div className="charitable-campaigns-list-card__selected-results-wrapper">
-				<div role="menu" className="charitable-campaigns-list-card__selected-results" aria-orientation="vertical" aria-label={ __( 'Selected campaigns', 'charitable' ) }>
-					{ header }
-					{ campaigns }
+			return (
+				<div className="charitable-campaigns-list-card__selected-results-wrapper">
+					<div role="menu" className="charitable-campaigns-list-card__selected-results" aria-orientation="vertical" aria-label={ __( 'Selected campaigns', 'charitable' ) }>
+						<strong>{ selected_campaigns.length + ' ' + header }</strong>
+						{ campaigns }
+					</div>
+					<HorizontalRule />
 				</div>
-			</div>
-		);
+			);
+		}
+		else {
+			return ("");
+		}
 	}
 }
 

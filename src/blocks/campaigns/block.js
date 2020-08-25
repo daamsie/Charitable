@@ -1,11 +1,7 @@
 /**
  * Block dependencies
  */
-import icon from './icon';
 import { SettingsEditor } from './settings-editor.js';
-import { CampaignSelect } from './../../components/campaign-select/index.js';
-import { CampaignCategorySelect } from './../../components/category-select/index.js';
-import { Filter } from './../../components/filter/index.js';
 
 /**
  * WordPress dependencies
@@ -20,7 +16,6 @@ const {
 	SelectControl,
 	ToggleControl,
 	RangeControl,
-	Dashicon
 } = wp.components;
 const {
 	InspectorControls,
@@ -41,6 +36,10 @@ class CharitableCampaignsBlock extends Component {
 		this.updateEditMode         = this.updateEditMode.bind( this );
 		this.toggleMasonryLayout    = this.toggleMasonryLayout.bind( this );
 		this.toggleResponsiveLayout = this.toggleResponsiveLayout.bind( this );
+		this.toggleImage    				= this.toggleImage.bind( this );
+		this.toggleDescription    	= this.toggleDescription.bind( this );
+		this.toggleProgressBar    	= this.toggleProgressBar.bind( this );
+		this.toggleAmountDonated    = this.toggleAmountDonated.bind( this );
 		this.getInspectorControls   = this.getInspectorControls.bind( this );
 		this.getToolbarControls     = this.getToolbarControls.bind( this );
 		this.getSettingsEditor      = this.getSettingsEditor.bind( this );
@@ -77,13 +76,56 @@ class CharitableCampaignsBlock extends Component {
 	}
 
 	/**
+	 * Turn the Image on/off.
+	 */
+	toggleImage() {
+		const { showImage } = this.props.attributes;
+		const { setAttributes } = this.props;
+
+		setAttributes( { showImage: ! showImage } );
+	}
+
+	/**
+	 * Turn the Description on/off.
+	 */
+	toggleDescription() {
+		const { showDescription } = this.props.attributes;
+		const { setAttributes } = this.props;
+
+		setAttributes( { showDescription: ! showDescription } );
+	}
+
+	/**
+	 * Turn the Amount Donated on/off.
+	 */
+	toggleAmountDonated() {
+		const { showAmountDonated } = this.props.attributes;
+		const { setAttributes } = this.props;
+
+		setAttributes( { showAmountDonated: ! showAmountDonated } );
+	}
+
+	/**
+	 * Turn the Progress Bar on/off.
+	 */
+	toggleProgressBar() {
+		const { showProgressBar } = this.props.attributes;
+		const { setAttributes } = this.props;
+
+		setAttributes( { showProgressBar: ! showProgressBar } );
+	}
+
+
+	/**
 	 * Get the components for the sidebar settings area that is rendered while focused on a Donation Form block.
 	 *
 	 * @return Component
 	 */
 	getInspectorControls() {
 		const { attributes, setAttributes } = this.props;
-		const { number, orderBy, order, columns, masonryLayout, responsiveLayout } = attributes;
+		const { number, 
+			orderBy, order, columns, masonryLayout, responsiveLayout, 
+			imageSize, showImage, showDescription, showAmountDonated, showProgressBar } = attributes;
 
 		const fullOrderBy = orderBy + '/' + order;
 
@@ -152,6 +194,58 @@ class CharitableCampaignsBlock extends Component {
 					</PanelRow>
 					<PanelRow>
 						<ToggleControl
+							label={ __( 'Show Image', 'charitable' ) }
+							checked={ showImage }
+							onChange={ this.toggleImage }
+						/>
+					</PanelRow>
+					<PanelRow>
+						<SelectControl
+							key="image-size-select"
+							label={ __( 'Thumbnail Size', 'charitable' ) }
+							value={ imageSize }
+							options={ [
+								{
+									label: __( 'Thumbnail', 'charitable' ),
+									value: 'thumbnail',
+								},
+								{
+									label: __( 'Medium', 'charitable' ),
+									value: 'medium',
+								},
+								{
+									label: __( 'Large', 'charitable' ),
+									value: 'large',
+								}
+							] }
+							onChange={ ( value ) => {
+								setAttributes( { imageSize: value } );
+							} }
+						/>
+					</PanelRow>
+					<PanelRow>
+						<ToggleControl
+							label={ __( 'Show Description', 'charitable' ) }
+							checked={ showDescription }
+							onChange={ this.toggleDescription }
+						/>
+					</PanelRow>
+					<PanelRow>
+						<ToggleControl
+							label={ __( 'Show Amount Donated', 'charitable' ) }
+							checked={ showAmountDonated }
+							onChange={ this.toggleAmountDonated }
+						/>
+					</PanelRow>
+					<PanelRow>
+						<ToggleControl
+							label={ __( 'Show Progress Bar', 'charitable' ) }
+							checked={ showProgressBar }
+							onChange={ this.toggleProgressBar }
+						/>
+					</PanelRow>
+					<PanelRow>
+						<ToggleControl
 							label={ __( 'Masonry layout', 'charitable' ) }
 							checked={ masonryLayout }
 							onChange={ this.toggleMasonryLayout }
@@ -198,7 +292,7 @@ class CharitableCampaignsBlock extends Component {
 	 */
 	getSettingsEditor() {
 		return (
-			<SettingsEditor { ...this.props } />
+			<SettingsEditor { ...this.props } update_edit_mode={this.updateEditMode} />
 		);
 	}
 
@@ -209,7 +303,7 @@ class CharitableCampaignsBlock extends Component {
 	 */
 	getPreview() {
 		return (
-			<div class="charitable-block-campaigns has-preview">
+			<div className="charitable-block-campaigns has-preview">
 				<ServerSideRender
 					block="charitable/campaigns"
 					attributes={ this.props.attributes }

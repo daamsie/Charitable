@@ -184,6 +184,26 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 							'type'    => 'boolean',
 							'default' => true,
 						),
+						'showDescription'    => array(
+							'type'    => 'boolean',
+							'default' => true,
+						),
+						'showProgressBar'    => array(
+							'type'    => 'boolean',
+							'default' => true,
+						),
+						'showAmountDonated'  => array(
+							'type'    => 'boolean',
+							'default' => true,
+						),
+						'showImage'      		 => array(
+							'type'    => 'boolean',
+							'default' => true,
+						),
+						'imageSize'      		 => array(
+							'type'    => 'string',
+							'default' => 'medium',
+						),
 						'editMode'           => array(
 							'type'    => 'boolean',
 							'default' => false,
@@ -297,7 +317,7 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 			if ( 'form' === $attributes['displayMode'] ) {
 				charitable_template_donation_form( $attributes['campaign'] );
 			} else {
-				charitable_template( 'blocks/donate-button/index.php', $attributes );
+				// charitable_template( 'blocks/donate-button/index.php', $attributes );
 			}
 
 			return ob_get_clean();
@@ -338,19 +358,25 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 		 * @return string Returns the campaigns block content.
 		 */
 		public function render_campaigns( $attributes ) {
+
 			return Charitable_Campaigns_Shortcode::display(
 				array(
-					'category'         => implode( ',', $attributes['categories'] ),
-					'id'               => implode( ',', $attributes['campaigns'] ),
-					'exclude'          => implode( ',', $attributes['campaignsToExclude'] ),
-					'creator'          => $attributes['creator'],
-					'include_inactive' => $attributes['includeInactive'],
-					'number'           => $attributes['number'],
-					'orderby'          => $attributes['orderBy'],
-					'order'            => $attributes['order'],
-					'columns'          => $attributes['columns'],
-					'masonry'          => $attributes['masonryLayout'],
-					'responsive'       => $attributes['responsiveLayout'],
+					'category'            => implode( ',', $attributes['categories'] ),
+					'id'                  => implode( ',', $attributes['campaigns'] ),
+					'exclude'             => implode( ',', $attributes['campaignsToExclude'] ),
+					'creator'             => $attributes['creator'],
+					'include_inactive'    => $attributes['includeInactive'],
+					'number'              => $attributes['number'],
+					'orderby'             => $attributes['orderBy'],
+					'order'               => $attributes['order'],
+					'columns'             => $attributes['columns'],
+					'masonry'             => $attributes['masonryLayout'],
+					'responsive'          => $attributes['responsiveLayout'],
+					'show_description'    => $attributes['showDescription'],
+					'show_amount_donated' => $attributes['showAmountDonated'],
+					'show_progress_bar'   => $attributes['showProgressBar'],
+					'show_image'          => $attributes['showImage'],
+					'image_size'					=> $attributes['imageSize'],
 				)
 			);
 		}

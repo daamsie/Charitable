@@ -18,15 +18,15 @@ const ALLOWED_BLOCKS = [
     'core/image',
     'core/paragraph',
     'charitable/campaign-progress-bar',
-    'charitable/campaign-stats',
-    'charitable/donate-button'
+    'charitable/campaign-stats'
+    // , 'charitable/donate-button'
 ];
 
 const TEMPLATE = [
     // [ 'core/paragraph', { placeholder: __( 'A short, catchy description of your campaign' ) } ],
     [ 'charitable/campaign-progress-bar' ],
     [ 'charitable/campaign-stats' ],
-    [ 'charitable/donate-button' ]
+    // [ 'charitable/donate-button' ]
 ];
 
 /**
@@ -44,6 +44,8 @@ registerBlockType( 'charitable/campaign-block-container', {
         __( 'Charitable' ),
         __( 'Donation' )
     ],
+
+    attributes: {},
 
     edit: (props) => {
         const {
