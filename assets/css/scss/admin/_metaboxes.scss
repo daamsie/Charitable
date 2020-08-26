@@ -17,6 +17,10 @@
         padding: 0 0 8px 0;
     }
 
+    .postbox-header {
+        border-bottom: none;
+    }
+
     .handlediv,
     .hndle {
         display: none;
@@ -115,6 +119,10 @@
 
 .charitable-metabox {
     @include charitable_metabox();
+}
+
+#side-sortables .charitable-metabox-wrap {
+    float: none;
 }
 
 .charitable-metabox-header {

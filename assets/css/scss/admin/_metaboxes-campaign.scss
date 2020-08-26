@@ -14,13 +14,19 @@
 #campaign-top-sortables {
     padding-top: 20px;
 
-    #campaign-goal,
-    #campaign-end-date {
+    > .postbox:nth-child(2),
+    > .postbox:nth-child(3) {
         float: left;
         width: 48%;
     }
 
-    #campaign-goal {
+    // #campaign-goal,
+    // #campaign-end-date {
+    //     float: left;
+    //     width: 48%;
+    // }
+
+    > .postbox:nth-child(2) {
         padding-right: 4%;
     }
 
@@ -29,8 +35,8 @@
     }
 
     @include bp(600, false) {
-        #campaign-goal,
-        #campaign-end-date {
+        > .postbox:nth-child(2),
+        > .postbox:nth-child(3) {
             width: 100%;
             padding: 0 0 24px;
         }
@@ -82,7 +88,7 @@
 
 #campaign-settings {
     .postbox-title {
-        border-bottom-color: #dedede;
+        border: none;
     }
 
     .inside {

@@ -101,6 +101,8 @@
     padding: 0; }
 .charitable-metabox .postbox-title {
   padding: 0 0 8px 0; }
+.charitable-metabox .postbox-header {
+  border-bottom: none; }
 .charitable-metabox .handlediv,
 .charitable-metabox .hndle {
   display: none; }
@@ -158,6 +160,9 @@
   margin: 24px 0; }
 .charitable-metabox .inside > .charitable-metabox-header:first-child {
   margin-top: 0; }
+
+#side-sortables .charitable-metabox-wrap {
+  float: none; }
 
 .charitable-metabox-header {
   float: left;
@@ -287,6 +292,11 @@ body.post-type-campaign .postbox-container .empty-container {
 #campaign-end-date .postbox-title,
 #campaign-description .postbox-title {
   padding: 0 0 8px 0; }
+#campaign-title .postbox-header,
+#campaign-goal .postbox-header,
+#campaign-end-date .postbox-header,
+#campaign-description .postbox-header {
+  border-bottom: none; }
 #campaign-title .handlediv,
 #campaign-title .hndle,
 #campaign-goal .handlediv,
@@ -429,17 +439,17 @@ body.post-type-campaign .postbox-container .empty-container {
 /* --- Top campaign meta boxes --- */
 #campaign-top-sortables {
   padding-top: 20px; }
-  #campaign-top-sortables #campaign-goal,
-  #campaign-top-sortables #campaign-end-date {
+  #campaign-top-sortables > .postbox:nth-child(2),
+  #campaign-top-sortables > .postbox:nth-child(3) {
     float: left;
     width: 48%; }
-  #campaign-top-sortables #campaign-goal {
+  #campaign-top-sortables > .postbox:nth-child(2) {
     padding-right: 4%; }
   #campaign-top-sortables #campaign-description {
     clear: both; }
   @media (max-width: 37.5em) {
-    #campaign-top-sortables #campaign-goal,
-    #campaign-top-sortables #campaign-end-date {
+    #campaign-top-sortables > .postbox:nth-child(2),
+    #campaign-top-sortables > .postbox:nth-child(3) {
       width: 100%;
       padding: 0 0 24px; } }
 
@@ -476,7 +486,7 @@ body.post-type-campaign .postbox-container .empty-container {
 
 /* --- Advanced Metabox --- */
 #campaign-settings .postbox-title {
-  border-bottom-color: #dedede; }
+  border: none; }
 #campaign-settings .inside {
   margin: 0;
   padding: 0; }

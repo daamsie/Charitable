@@ -25,42 +25,58 @@ if ( ! class_exists( 'Charitable_WPML_Compat' ) ) :
 	class Charitable_WPML_Compat {
 
 		/**
+		 * The global sitepress object.
+		 *
+		 * @since 1.6.44
+		 *
+		 * @var   SitePress
+		 */
+		private $sitepress;
+
+		/**
 		 * Create class object.
 		 *
 		 * @since 1.6.44
 		 */
 		public function __construct() {
+			global $sitepress;
+
+			$this->sitepress = $sitepress;
+
 			/* Filter the amount donated to include any translations of the campaign. */
 			add_filter( 'charitable_campaign_donated_amount', array( $this, 'get_donated_amount' ), 5, 3 );
 
 			/* Filter the donor count to include any translations of the campaign. */
 			add_filter( 'charitable_campaign_donor_count', array( $this, 'get_donor_count' ), 5, 2 );
 
-			// /* Handle WPML translation of user dashboard menu */
-			// add_action( 'wp_update_nav_menu', array( $this, 'flush_menu_object_cache' ) );
-			// add_action( 'wp_update_nav_menu_item', array( $this, 'flush_menu_object_cache' ) );
-			// add_filter( 'transient_charitable_user_dashboard_objects', array( $this, 'get_user_dashboard_objects' ) );
-			// add_filter( 'pre_set_transient_charitable_user_dashboard_objects', array( $this, 'set_user_dashboard_objects' ) );
+			/* Handle WPML translation of user dashboard menu */
+			add_action( 'wp_update_nav_menu', array( $this, 'flush_menu_object_cache' ) );
+			add_action( 'wp_update_nav_menu_item', array( $this, 'flush_menu_object_cache' ) );
+			add_filter( 'transient_charitable_user_dashboard_objects', array( $this, 'get_user_dashboard_objects' ) );
+			add_filter( 'pre_set_transient_charitable_user_dashboard_objects', array( $this, 'set_user_dashboard_objects' ) );
 
-			// /* Profile Page */
-			// add_filter( 'charitable_permalink_profile_page', array( $this, 'get_profile_page_url' ), 10, 2 );
-			// add_filter( 'charitable_is_page_profile_page', array( $this, 'is_profile_page' ), 10, 2 );
+			/* Profile Page */
+			add_filter( 'charitable_permalink_profile_page', array( $this, 'get_profile_page_url' ), 10, 2 );
+			add_filter( 'charitable_is_page_profile_page', array( $this, 'is_profile_page' ), 10, 2 );
 
-			// /* Login Page */
-			// add_filter( 'charitable_permalink_login_page', array( $this, 'get_login_page_url' ), 10, 2 );
-			// add_filter( 'charitable_is_page_login_page', array( $this, 'is_login_page' ), 10, 2 );
+			/* Login Page */
+			add_filter( 'charitable_permalink_login_page', array( $this, 'get_login_page_url' ), 10, 2 );
+			add_filter( 'charitable_is_page_login_page', array( $this, 'is_login_page' ), 10, 2 );
 
-			// /* Registration Page */
-			// add_filter( 'charitable_permalink_registration_page', array( $this, 'get_registration_page_url' ), 10, 2 );
-			// add_filter( 'charitable_is_page_registration_page', array( $this, 'is_registration_page' ), 10, 2 );
+			/* Registration Page */
+			add_filter( 'charitable_permalink_registration_page', array( $this, 'get_registration_page_url' ), 10, 2 );
+			add_filter( 'charitable_is_page_registration_page', array( $this, 'is_registration_page' ), 10, 2 );
 
-			// /* Donation Receipt Page */
-			// add_filter( 'charitable_permalink_donation_receipt_page', array( $this, 'get_donation_receipt_page_url' ), 10, 2 );
-			// add_filter( 'charitable_is_page_donation_receipt_page', array( $this, 'is_donation_receipt_page' ), 10, 2 );
+			/* Donation Receipt Page */
+			add_filter( 'charitable_permalink_donation_receipt_page', array( $this, 'get_donation_receipt_page_url' ), 10, 2 );
+			add_filter( 'charitable_is_page_donation_receipt_page', array( $this, 'is_donation_receipt_page' ), 10, 2 );
 
-			// /* Terms & Conditions and Privacy Policy */
-			// add_filter( 'charitable_option_terms_conditions_page', array( $this, 'get_wpml_page_id' ) );
-			// add_filter( 'charitable_option_privacy_policy_page', array( $this, 'get_wpml_page_id' ) );
+			/* Terms & Conditions and Privacy Policy */
+			add_filter( 'charitable_option_terms_conditions_page', array( $this, 'get_wpml_page_id' ) );
+			add_filter( 'charitable_option_privacy_policy_page', array( $this, 'get_wpml_page_id' ) );
+
+			/* Add language code to AJAX request. */
+			add_filter( 'charitable_javascript_vars', array( $this, 'add_language_code_to_ajaxurl' ) );
 
 			/**
 			 * Do something with this class instance.
@@ -82,7 +98,15 @@ if ( ! class_exists( 'Charitable_WPML_Compat' ) ) :
 		 * @return array
 		 */
 		public function get_campaign_translations( Charitable_Campaign $campaign ) {
-			return array_values( pll_get_post_translations( $campaign->ID ) );
+			/* Get the WPML translation ID. */
+			$trid = $this->sitepress->get_element_trid( $campaign->ID, 'post_campaign' );
+
+			return array_values(
+				wp_list_pluck(
+					$this->sitepress->get_element_translations( $trid, 'post_campaign' ),
+					'element_id'
+				)
+			 );
 		}
 
 		/**
@@ -139,15 +163,18 @@ if ( ! class_exists( 'Charitable_WPML_Compat' ) ) :
 		 * @return array
 		 */
 		public function get_user_dashboard_menus() {
-			$dashboard_menus = array();
-
 			/* Get all nav menu locations. */
 			$locations = get_nav_menu_locations();
 
-			foreach ( $locations as $location => $assigned_menu ) {
-				if ( 'charitable-dashboard' === substr( $location, 0, 20 ) ) {
-					$dashboard_menus[] = wp_get_nav_menu_object( $assigned_menu );
-				}
+			if ( ! array_key_exists( 'charitable-dashboard', $locations ) ) {
+				return $dashboard_menus;
+			}
+
+			/* Get the WPML translation ID for the menu. */
+			$trid = $this->sitepress->get_element_trid( $locations['charitable-dashboard'], 'tax_nav_menu' );
+
+			foreach ( $this->sitepress->get_element_translations( $trid, 'tax_nav_menu' ) as $menu_translation ) {
+				$dashboard_menus[] = wp_get_nav_menu_object( $menu_translation->element_id );
 			}
 
 			return $dashboard_menus;
@@ -182,7 +209,7 @@ if ( ! class_exists( 'Charitable_WPML_Compat' ) ) :
 		 * @return array
 		 */
 		public function get_user_dashboard_objects( $objects ) {
-			$language = pll_current_language();
+			$language = $this->sitepress->get_current_language();
 
 			if ( false === $objects ) {
 				return false;
@@ -204,7 +231,7 @@ if ( ! class_exists( 'Charitable_WPML_Compat' ) ) :
 		 * @return array
 		 */
 		public function set_user_dashboard_objects( $menu_items ) {
-			$language = pll_current_language();
+			$language = $this->sitepress->get_current_language();
 
 			/* Temporarily switch off our filter. */
 			remove_filter( 'transient_charitable_user_dashboard_objects', array( $this, 'get_user_dashboard_objects' ) );
@@ -252,7 +279,7 @@ if ( ! class_exists( 'Charitable_WPML_Compat' ) ) :
 				return $default;
 			}
 
-			return get_permalink( pll_get_post( $page_id ) );
+			return get_permalink( wpml_object_id_filter( $page_id, 'page' ) );
 		}
 
 		/**
@@ -288,9 +315,9 @@ if ( ! class_exists( 'Charitable_WPML_Compat' ) ) :
 				return $is_page;
 			}
 
-			$pll_page = pll_get_post( $page_id );
+			$wpml_page = wpml_object_id_filter( $page_id );
 
-			return $pll_page && $pll_page === $post->ID;
+			return $wpml_page && $wpml_page === $post->ID;
 		}
 
 		/**
@@ -381,14 +408,14 @@ if ( ! class_exists( 'Charitable_WPML_Compat' ) ) :
 		 * @return string
 		 */
 		public function get_donation_receipt_page_url( $default, $args ) {
-			$pll_url = $this->get_wpml_page_url( 'donation_receipt_page', $default, $args );
+			$wpml_url = $this->get_wpml_page_url( 'donation_receipt_page', $default, $args );
 
-			if ( $pll_url !== $default ) {
+			if ( $wpml_url !== $default ) {
 				$donation_id = isset( $args['donation_id'] ) ? $args['donation_id'] : get_the_ID();
-				$pll_url     = esc_url_raw( add_query_arg( array( 'donation_id' => $donation_id ), $pll_url ) );
+				$wpml_url     = esc_url_raw( add_query_arg( array( 'donation_id' => $donation_id ), $wpml_url ) );
 			}
 
-			return $pll_url;
+			return $wpml_url;
 		}
 
 		/**
@@ -418,7 +445,20 @@ if ( ! class_exists( 'Charitable_WPML_Compat' ) ) :
 				return $page_id;
 			}
 
-			return pll_get_post( $page_id );
+			return wpml_object_id_filter( $page_id, 'page' );
+		}
+
+		/**
+		 * Add the current language code to the ajax url.
+		 *
+		 * @since  1.6.44
+		 *
+		 * @param  array $vars Javascript vars.
+		 * @return array
+		 */
+		public function add_language_code_to_ajaxurl( $vars ) {
+			$vars['ajaxurl'] = add_query_arg( 'lang', $this->sitepress->get_current_language(), $vars['ajaxurl'] );
+			return $vars;
 		}
 	}
 
