@@ -425,6 +425,7 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 				'stripe'        => __( 'Stripe', 'charitable' ),
 				'authorize_net' => __( 'Authorize.Net', 'charitable' ),
 				'windcave'      => __( 'Windcave', 'charitable' ),
+				'braintree'     => __( 'Braintree', 'charitable' ),
 			);
 
 			/* If the user has already enabled one of these, leave them alone. :) */

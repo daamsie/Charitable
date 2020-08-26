@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.43
+ * @version   1.6.44
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -72,6 +72,11 @@ function charitable_load_compat_functions() {
 	/* Polylang */
 	if ( defined( 'POLYLANG_VERSION' ) ) {
 		new Charitable_Polylang_Compat();
+	}
+
+	/* WPML */
+	if ( defined( 'ICL_SITEPRESS_VERSION' ) ) {
+		new Charitable_WPML_Compat();
 	}
 
 	/* Permalink Manager */

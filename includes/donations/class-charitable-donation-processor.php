@@ -844,18 +844,12 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 		 */
 		private function get_redirection_after_gateway_processing( $gateway_processing ) {
 			if ( false == $gateway_processing ) {
-
 				$redirect_url = esc_url( add_query_arg( array( 'donation_id' => $this->donation_id ), wp_get_referer() ) );
-
 			} elseif ( is_array( $gateway_processing ) && isset( $gateway_processing['redirect'] ) ) {
-
 				$redirect_url = $gateway_processing['redirect'];
-
 			} else {
-
 				/* Fall back to returning the donation receipt URL. */
 				$redirect_url = charitable_get_permalink( 'donation_receipt_page', array( 'donation_id' => $this->donation_id ) );
-
 			}
 
 			return $redirect_url;
