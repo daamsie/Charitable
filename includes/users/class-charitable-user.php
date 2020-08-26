@@ -401,14 +401,17 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 * @return array
 		 */
 		public function get_address_fields() {
-			return apply_filters( 'charitable_user_address_fields', array(
-				'donor_address',
-				'donor_address_2',
-				'donor_city',
-				'donor_state',
-				'donor_postcode',
-				'donor_country',
-			) );
+			return apply_filters(
+				'charitable_user_address_fields',
+				array(
+					'donor_address',
+					'donor_address_2',
+					'donor_city',
+					'donor_state',
+					'donor_postcode',
+					'donor_country',
+				)
+			);
 		}
 
 		/**

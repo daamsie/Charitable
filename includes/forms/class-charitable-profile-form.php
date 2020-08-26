@@ -195,58 +195,70 @@ if ( ! class_exists( 'Charitable_Profile_Form' ) ) :
 		 * @return array
 		 */
 		public function get_address_fields() {
-			$address_fields = apply_filters( 'charitable_user_address_fields', array(
-				'address'   => array(
-					'label'    => __( 'Address', 'charitable' ),
-					'type'     => 'text',
-					'priority' => 22,
-					'required' => false,
-					'value'    => $this->get_user_value( 'donor_address' ),
+			/**
+			 * Filter the list of user address fields.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param array                   $fields The fields in the form.
+			 * @param Charitable_Profile_Form $form   The profile form.
+			 */
+			$address_fields = apply_filters(
+				'charitable_user_address_fields',
+				array(
+					'address'   => array(
+						'label'    => __( 'Address', 'charitable' ),
+						'type'     => 'text',
+						'priority' => 22,
+						'required' => false,
+						'value'    => $this->get_user_value( 'donor_address' ),
+					),
+					'address_2' => array(
+						'label'    => __( 'Address 2', 'charitable' ),
+						'type'     => 'text',
+						'priority' => 24,
+						'required' => false,
+						'value'    => $this->get_user_value( 'donor_address_2' ),
+					),
+					'city'      => array(
+						'label'    => __( 'City', 'charitable' ),
+						'type'     => 'text',
+						'priority' => 26,
+						'required' => false,
+						'value'    => $this->get_user_value( 'donor_city' ),
+					),
+					'state'     => array(
+						'label'    => __( 'State', 'charitable' ),
+						'type'     => 'text',
+						'priority' => 28,
+						'required' => false,
+						'value'    => $this->get_user_value( 'donor_state' ),
+					),
+					'postcode'  => array(
+						'label'    => __( 'Postcode / ZIP code', 'charitable' ),
+						'type'     => 'text',
+						'priority' => 30,
+						'required' => false,
+						'value'    => $this->get_user_value( 'donor_postcode' ),
+					),
+					'country'   => array(
+						'label'    => __( 'Country', 'charitable' ),
+						'type'     => 'select',
+						'options'  => charitable_get_location_helper()->get_countries(),
+						'priority' => 32,
+						'required' => false,
+						'value'    => $this->get_user_value( 'donor_country', charitable_get_option( 'country' ) ),
+					),
+					'phone'     => array(
+						'label'    => __( 'Phone', 'charitable' ),
+						'type'     => 'text',
+						'priority' => 34,
+						'required' => false,
+						'value'    => $this->get_user_value( 'donor_phone' ),
+					),
 				),
-				'address_2' => array(
-					'label'    => __( 'Address 2', 'charitable' ),
-					'type'     => 'text',
-					'priority' => 24,
-					'required' => false,
-					'value'    => $this->get_user_value( 'donor_address_2' ),
-				),
-				'city'      => array(
-					'label'    => __( 'City', 'charitable' ),
-					'type'     => 'text',
-					'priority' => 26,
-					'required' => false,
-					'value'    => $this->get_user_value( 'donor_city' ),
-				),
-				'state'     => array(
-					'label'    => __( 'State', 'charitable' ),
-					'type'     => 'text',
-					'priority' => 28,
-					'required' => false,
-					'value'    => $this->get_user_value( 'donor_state' ),
-				),
-				'postcode'  => array(
-					'label'    => __( 'Postcode / ZIP code', 'charitable' ),
-					'type'     => 'text',
-					'priority' => 30,
-					'required' => false,
-					'value'    => $this->get_user_value( 'donor_postcode' ),
-				),
-				'country'   => array(
-					'label'    => __( 'Country', 'charitable' ),
-					'type'     => 'select',
-					'options'  => charitable_get_location_helper()->get_countries(),
-					'priority' => 32,
-					'required' => false,
-					'value'    => $this->get_user_value( 'donor_country', charitable_get_option( 'country' ) ),
-				),
-				'phone'     => array(
-					'label'    => __( 'Phone', 'charitable' ),
-					'type'     => 'text',
-					'priority' => 34,
-					'required' => false,
-					'value'    => $this->get_user_value( 'donor_phone' ),
-				),
-			), $this );
+				$this
+			);
 
 			uasort( $address_fields, 'charitable_priority_sort' );
 
