@@ -7,7 +7,7 @@
  * @author  Studio 164a
  * @package Charitable/Templates/Donation Form
  * @since   1.5.0
- * @version 1.6.38
+ * @version 1.6.44
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

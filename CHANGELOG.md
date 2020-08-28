@@ -7,7 +7,8 @@
 * FIX: Allow users with the 'translator' role in WPML to access the WordPress dashboard. [#801](https://github.com/Charitable/Charitable/issues/801)
 * FIX: Use `jquery` as the dependency for Charitable scripts, instead of `jquery-core`. [#817](https://github.com/Charitable/Charitable/issues/817)
 * FIX: Split some parts of the charitable.js file into small, single-purpose Javascript files to be loaded when needed. [#815](https://github.com/Charitable/Charitable/issues/815)
-* FIX: Avoided clash of `charitable_user_address_fields` filter name. This was used in three separate places in different ways. The one most commonly used was in the context of loading fields to show in the Profile Form, and this is where the filter is still used. [#816](https://github.com/Charitable/Charitable/issues/816)
+* FIX: Avoided clash of `charitable_user_address_fields` filter name. This was used in three separate places in different ways. The one most commonly used was in the context of loading fields to show in the Profile Form, and this is where the filter is still used unchanged. In `Charitable_User::get_address()`, the filter name has changed to `charitable_user_address_details`. [#816](https://github.com/Charitable/Charitable/issues/816)
+* DEPRECATED: `Charitable_User::get_address_fields()` function is deprecated and will be removed. It was previously unused anywhere by Charitable or its extensions. [#816](https://github.com/Charitable/Charitable/issues/816)
 
 # 1.6.43
 * NEW: When using Polylang, the total funds raised by a campaign will now include both the campaign itself and any translations of the same campaign. [#798](https://github.com/Charitable/Charitable/issues/798)
