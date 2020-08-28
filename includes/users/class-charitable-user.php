@@ -394,27 +394,6 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		}
 
 		/**
-		 * Return an array of fields used for the address.
-		 *
-		 * @since  1.0.0
-		 *
-		 * @return array
-		 */
-		public function get_address_fields() {
-			return apply_filters(
-				'charitable_user_address_fields',
-				array(
-					'donor_address',
-					'donor_address_2',
-					'donor_city',
-					'donor_state',
-					'donor_postcode',
-					'donor_country',
-				)
-			);
-		}
-
-		/**
 		 * Returns printable address of donor.
 		 *
 		 * @since  1.0.0
@@ -423,18 +402,16 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 * @return string
 		 */
 		public function get_address( $donation_id = '' ) {
-			$address_fields = false;
+			$address_details = false;
 
 			if ( $donation_id ) {
-
-				$address_fields = get_post_meta( $donation_id, 'donor', true );
-
+				$address_details = get_post_meta( $donation_id, 'donor', true );
 			}
 
 			/* If the address fields were not set by the check above, get them from the user meta. */
-			if ( ! is_array( $address_fields ) ) {
+			if ( ! is_array( $address_details ) ) {
 
-				$address_fields = array(
+				$address_details = array(
 					'first_name' => $this->get( 'first_name' ),
 					'last_name'  => $this->get( 'last_name' ),
 					'company'    => $this->get( 'donor_company' ),
@@ -448,9 +425,21 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 
 			}
 
-			$address_fields = apply_filters( 'charitable_user_address_fields', $address_fields, $this, $donation_id );
+			/**
+			 * Filter the address details for the current user.
+			 *
+			 * Please note that prior to 1.6.44, the hook used here was `charitable_user_address_fields`,
+			 * which is used elsewhere in a different context and thus resulted in unexpected results.
+			 *
+			 * @since 1.6.44
+			 *
+			 * @param array           $address_details The address details.
+			 * @param Charitable_User $user            The user object.
+			 * @param int             $donation_id     The donation ID.
+			 */
+			$address_details = apply_filters( 'charitable_user_address_details', $address_details, $this, $donation_id );
 
-			return charitable_get_location_helper()->get_formatted_address( $address_fields );
+			return charitable_get_location_helper()->get_formatted_address( $address_details );
 		}
 
 		/**
@@ -1074,6 +1063,49 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 
 			return $this->core_keys;
 		}
+
+		/**
+		 * Deprecated function.
+		 *
+		 * Return an array of fields used for the address.
+		 *
+		 * @deprecated 2.2.0
+		 *
+		 * @since  1.0.0
+		 * @since  1.6.44 Deprecated.
+		 *
+		 * @return array
+		 */
+		public function get_address_fields() {
+			charitable_get_deprecated()->deprecated_function(
+				__METHOD__,
+				'1.6.44',
+				''
+			);
+
+			/**
+			 * Deprecated filter in deprecated method.
+			 *
+			 * Please note that prior to 1.6.44, the hook used here was `charitable_user_address_fields`,
+			 * which is used elsewhere in a different context and thus resulted in unexpected results.
+			 *
+			 * @since 1.6.44
+			 *
+			 * @param array $address_fields The address fields.
+			 */
+			return apply_filters(
+				'charitable_user_address_fields_deprecated',
+				array(
+					'donor_address',
+					'donor_address_2',
+					'donor_city',
+					'donor_state',
+					'donor_postcode',
+					'donor_country',
+				)
+			);
+		}
+
 	}
 
 endif;
