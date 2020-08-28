@@ -1,3 +1,14 @@
+# 1.6.44
+* NEW: When using WPML, the total funds raised by a campaign will now include both the campaign itself and any translations of the same campaign. [#811](https://github.com/Charitable/Charitable/issues/811)
+* FIX: Ensure that the selected recurring donation amount is picked up when you reach a donation form via the Donate widget. [#804](https://github.com/Charitable/Charitable/issues/804)
+* FIX: Improved display of checkboxes in TwentyTwenty theme. [#812](https://github.com/Charitable/Charitable/issues/812)
+* FIX: When using WPML, clicking Donate button on the non-primary language version of a campaign results leads back to the primary language version of the campaign, instead of the donation form. [#810](https://github.com/Charitable/Charitable/issues/810)
+* FIX: Prevent users with only subscriber access from reaching the WordPress dashboard. [#807](https://github.com/Charitable/Charitable/issues/807)
+* FIX: Allow users with the 'translator' role in WPML to access the WordPress dashboard. [#801](https://github.com/Charitable/Charitable/issues/801)
+* FIX: Use `jquery` as the dependency for Charitable scripts, instead of `jquery-core`. [#817](https://github.com/Charitable/Charitable/issues/817)
+* FIX: Split some parts of the charitable.js file into small, single-purpose Javascript files to be loaded when needed. [#815](https://github.com/Charitable/Charitable/issues/815)
+* FIX: Avoided clash of `charitable_user_address_fields` filter name. This was used in three separate places in different ways. The one most commonly used was in the context of loading fields to show in the Profile Form, and this is where the filter is still used. [#816](https://github.com/Charitable/Charitable/issues/816)
+
 # 1.6.43
 * NEW: When using Polylang, the total funds raised by a campaign will now include both the campaign itself and any translations of the same campaign. [#798](https://github.com/Charitable/Charitable/issues/798)
 * NEW: Made the picture form field a little more flexible, allowing the remove button to be always shown and to have its text customized. This change was required for updates in Ambassadors 2.0.9. [#796](https://github.com/Charitable/Charitable/issues/796)
