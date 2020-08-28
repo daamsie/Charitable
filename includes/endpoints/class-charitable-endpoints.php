@@ -642,6 +642,7 @@ if ( ! class_exists( 'Charitable_Endpoints' ) ) :
 
 						if ( $this->is_page( $endpoint_id, array( 'strict' => true ) ) ) {
 							$this->current_endpoint = $endpoint_id;
+
 							return $this->current_endpoint;
 						}
 					}

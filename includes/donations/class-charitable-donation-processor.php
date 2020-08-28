@@ -2,11 +2,12 @@
 /**
  * The class that is responsible for responding to donation events.
  *
- * @version     1.0.0
- * @package     Charitable/Classes/Charitable_Donation_Processor
- * @author      Eric Daams
- * @copyright   Copyright (c) 2020, Studio 164a
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @package   Charitable/Classes/Charitable_Donation_Processor
+ * @author    Eric Daams
+ * @copyright Copyright (c) 2020, Studio 164a
+ * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since     1.0.0
+ * @version   1.6.44
  */
 
 // Exit if accessed directly.
@@ -299,7 +300,7 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 			$result   = $processor->process_donation();
 			$response = is_array( $result ) ? $result : array();
 
-			if ( false !== $result ) {
+			if ( $processor->donation_processed_successfully( $result ) ) {
 				$response['success']     = true;
 				$response['redirect_to'] = $processor->get_redirection_after_gateway_processing( $result );
 			} else {
@@ -366,6 +367,22 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 
 			wp_safe_redirect( $redirect_url );
 			die();
+		}
+
+		/**
+		 * Checks whether a donation has been processed successfully.
+		 *
+		 * @since  1.6.44
+		 *
+		 * @param  boolean|array $result The result returned from process_donation.
+		 * @return boolean
+		 */
+		public function donation_processed_successfully( $result ) {
+			if ( is_array( $result ) ) {
+				return array_key_exists( 'success', $result ) ? $result['success'] : true;
+			}
+
+			return $result;
 		}
 
 		/**
@@ -828,18 +845,12 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 		 */
 		private function get_redirection_after_gateway_processing( $gateway_processing ) {
 			if ( false == $gateway_processing ) {
-
 				$redirect_url = esc_url( add_query_arg( array( 'donation_id' => $this->donation_id ), wp_get_referer() ) );
-
 			} elseif ( is_array( $gateway_processing ) && isset( $gateway_processing['redirect'] ) ) {
-
 				$redirect_url = $gateway_processing['redirect'];
-
 			} else {
-
 				/* Fall back to returning the donation receipt URL. */
 				$redirect_url = charitable_get_permalink( 'donation_receipt_page', array( 'donation_id' => $this->donation_id ) );
-
 			}
 
 			return $redirect_url;

@@ -199,6 +199,14 @@ if ( ! class_exists( 'Charitable_Profile_Form' ) ) :
 		 * @return array
 		 */
 		public function get_address_fields() {
+			/**
+			 * Filter the list of user address fields.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param array                   $fields The fields in the form.
+			 * @param Charitable_Profile_Form $form   The profile form.
+			 */
 			$address_fields = apply_filters(
 				'charitable_user_address_fields',
 				array(

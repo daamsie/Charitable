@@ -646,7 +646,7 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 			/* Enqueue the scripts for donation page */
 			if ( in_array( $typenow, array( Charitable::DONATION_POST_TYPE ) ) ) {
 				wp_enqueue_style( 'lean-modal-css' );
-				wp_enqueue_script( 'jquery-core' );
+				wp_enqueue_script( 'jquery' );
 				wp_enqueue_script( 'lean-modal' );
 				wp_enqueue_script( 'charitable-admin-tables' );
 			}
