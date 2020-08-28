@@ -426,7 +426,7 @@ if ( ! class_exists( 'Charitable_Customizer' ) ) :
 			wp_register_script(
 				'charitable-customizer',
 				charitable()->get_path( 'assets', false ) . 'js/charitable-customizer' . $suffix . '.js',
-				array( 'jquery-core', 'customize-preview' ),
+				array( 'jquery', 'customize-preview' ),
 				'1.2.0-beta5',
 				true
 			);

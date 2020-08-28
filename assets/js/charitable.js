@@ -948,65 +948,6 @@ CHARITABLE = window.CHARITABLE || {};
 
 })( CHARITABLE, jQuery );
 
-/**
- * Set up Charitable helper functions.
- */
-( function( exports, $ ) {
-    exports.Helpers = {
-        /**
-         * Sanitize URLs.
-         */
-        sanitize_url : function( input ) {
-            var url = input.value.toLowerCase();
-
-            if ( !/^https?:\/\//i.test( url ) && url.length > 0 ) {
-                url = 'http://' + url;
-                input.value = url;
-            }
-        },
-
-        /**
-         * Disable forms after submission.
-         */
-        disable_forms_after_submission : function( forms ) {
-            forms.forEach( function(form) {
-                var $form = $(form);
-
-                if ( $form.length ) {
-                    $form.append( '<input type="hidden" id="charitable-submit-button-value" />' );
-
-                    $form.find( '[type=submit]' ).on( 'click', function( event ) {
-                        /* If the form submission isn't valid, proceed no further. */
-                        if ( ! $form[0].checkValidity() ) {
-                            return;
-                        }
-
-                        var name = event.currentTarget.name,
-                            value = event.currentTarget.value;
-
-                        $form.find( '#charitable-submit-button-value' )
-                            .attr( 'name', name )
-                            .attr( 'value', value );
-
-                        $form.find( '[type=submit]' )
-                            .attr( 'disabled', 'disabled' );
-
-                        return $form.submit();
-                    } );
-                }
-            } );
-        }
-    };
-})( CHARITABLE, jQuery );
-
-/**
- * URL sanitization.
- *
- * This is provided for backwards compatibility.
- */
-CHARITABLE.SanitizeURL = function( input ) {
-    CHARITABLE.Helpers.sanitize_url( input );
-};
 
 /**
  * Do a version check.
@@ -1058,15 +999,6 @@ CHARITABLE.VersionCompare = function( version, compare ) {
         });
 
         CHARITABLE.Toggle();
-
-        CHARITABLE.Helpers.disable_forms_after_submission(
-            [
-                '#charitable-registration-form',
-                '#charitable-profile-form',
-                '#charitable-campaign-submission-form'
-            ]
-        );
-
     });
 
 })( jQuery );

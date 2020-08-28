@@ -186,7 +186,7 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 					wp_register_script(
 						'accounting',
 						$assets_dir . 'js/libraries/accounting'. $suffix . '.js',
-						array( 'jquery-core' ),
+						array( 'jquery' ),
 						$version,
 						true
 					);
@@ -229,7 +229,7 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 			wp_register_script(
 				'charitable-admin-notice',
 				$assets_dir . 'js/charitable-admin-notice' . $suffix . '.js',
-				array( 'jquery-core' ),
+				array( 'jquery' ),
 				$version,
 				false
 			);
@@ -237,7 +237,7 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 			wp_register_script(
 				'charitable-admin-media',
 				$assets_dir . 'js/charitable-admin-media' . $suffix . '.js',
-				array( 'jquery-core' ),
+				array( 'jquery' ),
 				$version,
 				false
 			);
@@ -245,7 +245,7 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 			wp_register_script(
 				'lean-modal',
 				$assets_dir . 'js/libraries/leanModal' . $suffix . '.js',
-				array( 'jquery-core' ),
+				array( 'jquery' ),
 				$version,
 				true
 			);
@@ -260,7 +260,7 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 			wp_register_script(
 				'charitable-admin-tables',
 				$assets_dir . 'js/charitable-admin-tables' . $suffix . '.js',
-				array( 'jquery-core', 'lean-modal' ),
+				array( 'jquery', 'lean-modal' ),
 				$version,
 				true
 			);
@@ -268,7 +268,7 @@ if ( ! class_exists( 'Charitable_Admin' ) ) :
 			wp_register_script(
 				'select2',
 				$assets_dir . 'js/libraries/select2' . $suffix . '.js',
-				array( 'jquery-core' ),
+				array( 'jquery' ),
 				'4.0.12',
 				true
 			);

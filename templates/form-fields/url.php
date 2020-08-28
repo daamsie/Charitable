@@ -28,6 +28,10 @@ if ( ! isset( $field['attrs']['onblur'] ) ) {
 	$field['attrs']['onblur'] = 'CHARITABLE.SanitizeURL(this)';
 }
 
+if ( ! wp_script_is( 'charitable-url-sanitizer', 'enqueued' ) ) {
+	wp_enqueue_script( 'charitable-url-sanitizer' );
+}
+
 ?>
 <div id="charitable_field_<?php echo $field['key'] ?>" class="<?php echo $classes ?>">
 	<?php if ( isset( $field['label'] ) ) : ?>

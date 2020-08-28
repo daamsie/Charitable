@@ -363,7 +363,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 
 			wp_register_script( 'qunit', 'https://code.jquery.com/qunit/qunit-2.3.3.js', array(), '2.3.3', true );
 			/* Version: '20170615-15:44' */
-			wp_register_script( 'qunit-tests', $this->get_path( 'directory', false ) . 'tests/qunit/tests.js', array( 'jquery-core', 'qunit' ), time(), true );
+			wp_register_script( 'qunit-tests', $this->get_path( 'directory', false ) . 'tests/qunit/tests.js', array( 'jquery', 'qunit' ), time(), true );
 			wp_enqueue_script( 'qunit-tests' );
 
 			wp_register_style( 'qunit', 'https://code.jquery.com/qunit/qunit-2.3.3.css', array(), '2.3.3', 'all' );

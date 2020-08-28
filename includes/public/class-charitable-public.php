@@ -142,12 +142,12 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 			wp_register_script(
 				'accounting',
 				$assets_dir . 'js/libraries/accounting' . $suffix . '.js',
-				array( 'jquery-core' ),
+				array( 'jquery' ),
 				$version,
 				true
 			);
 
-			$deps = array( 'accounting', 'jquery-core' );
+			$deps = array( 'accounting', 'jquery' );
 
 			if ( wp_script_is( 'charitable-sessions', 'enqueued' ) ) {
 				array_unshift( $deps, 'charitable-sessions' );
@@ -176,6 +176,24 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 				true
 			);
 
+			/* URL sanitizer. */
+			wp_register_script(
+				'charitable-url-sanitizer',
+				$assets_dir . 'js/charitable-url-sanitizer' . $suffix . '.js',
+				array( 'jquery' ),
+				$version,
+				true
+			);
+
+			/* General forms scripts. */
+			wp_register_script(
+				'charitable-forms',
+				$assets_dir . 'js/charitable-forms' . $suffix . '.js',
+				array( 'jquery' ),
+				$version,
+				true
+			);
+
 			/* Main styles */
 			wp_register_style(
 				'charitable-styles',
@@ -192,7 +210,7 @@ if ( ! class_exists( 'Charitable_Public' ) ) :
 				wp_register_script(
 					'lean-modal',
 					$assets_dir . 'js/libraries/leanModal' . $suffix . '.js',
-					array( 'jquery-core' ),
+					array( 'jquery' ),
 					$version
 				);
 

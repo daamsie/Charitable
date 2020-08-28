@@ -223,7 +223,7 @@ if ( ! class_exists( 'Charitable_Campaign_List_Table' ) ) :
 
 			if ( $this->is_campaigns_page() ) {
 				wp_enqueue_style( 'lean-modal-css' );
-				wp_enqueue_script( 'jquery-core' );
+				wp_enqueue_script( 'jquery' );
 				wp_enqueue_script( 'lean-modal' );
 				wp_enqueue_script( 'charitable-admin-tables' );
 			}

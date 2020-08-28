@@ -127,10 +127,24 @@ if ( ! class_exists( 'Charitable_Public_Form_View' ) ) :
 		 * @return void
 		 */
 		public function render() {
+			$this->enqueue_script();
 			$this->render_notices();
 			$this->render_honeypot();
 			$this->render_hidden_fields();
 			$this->render_fields();
+		}
+
+		/**
+		 * Enqueue the forms script.
+		 *
+		 * @since  1.6.44
+		 *
+		 * @return void
+		 */
+		public function enqueue_script() {
+			if ( ! wp_script_is( 'charitable-forms', 'enqueued' ) ) {
+				wp_enqueue_script( 'charitable-forms' );
+			}
 		}
 
 		/**
