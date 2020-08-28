@@ -22,7 +22,8 @@ return [
 							. '.supports-drag-drop .charitable-drag-drop-dropzone,.campaign-summary,.campaign-loop .campaign,.charitable-donation-form .donation-amounts .donation-amount{background-color:#fff;color:#000;}'
 							. '.charitable-form-fields .charitable-fieldset{border:none;padding:0;margin-bottom:2em;}'
 							. '#charitable-donor-fields .charitable-form-header,#charitable-user-fields,#charitable-meta-fields{padding-left:0;padding-right:0;}'
-							. '.campaign-loop.campaign-grid{margin:0 auto 1em;}',
+							. '.campaign-loop.campaign-grid{margin:0 auto 1em;}'
+							. '.charitable-form-field.charitable-form-field-checkbox input[type="checkbox"] {height:1.5rem;width:1.5rem;display:inline-block;}',
 	'hello-elementor'    => '.donate-button{color: #fff;}',
 	'divi-style'         => '.donate-button.button{color:' . $highlight_colour . ';background:#fff;border-color:' . $highlight_colour . ';}'
 							. '#left-area .donation-amounts{padding: 0;}'
