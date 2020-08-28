@@ -22,7 +22,7 @@ wp_print_scripts( 'lean-modal' );
 wp_enqueue_style( 'lean-modal-css' );
 
 ?>
-<div id="charitable-donation-form-modal" style="display: none;" class="<?php echo esc_attr( $modal_class ); ?>">
+<div id="charitable-donation-form-modal-<?php echo $campaign->ID; ?>" style="display: none;" class="<?php echo esc_attr( $modal_class ); ?>">
 	<a class="modal-close"></a>
 	<?php $campaign->get_donation_form()->render(); ?>
 </div>

@@ -258,7 +258,7 @@ CHARITABLE_ADMIN = window.CHARITABLE_ADMIN || {};
 	var setup_advanced_meta_box = function() {
 		var $meta_box = $('#charitable-campaign-advanced-metabox');
 
-		$meta_box.tabs();
+		// $meta_box.tabs();
 
 		var min_height = $meta_box.find('.charitable-tabs').height();
 
