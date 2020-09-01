@@ -56,7 +56,14 @@ $post_status = isset( $_GET['post_status'] ) ? $_GET['post_status'] : 'all';
 				<option value="<?php echo $campaign->ID; ?>" <?php selected( $campaign_id, $campaign->ID ); ?>><?php echo get_the_title( $campaign->ID ); ?></option>
 			<?php endforeach ?>
 		</select>
-		<?php do_action( 'charitable_filter_donations_form' ); ?>
+		<?php
+		/**
+		 * Add additional fields to the end of the donations filter form.
+		 *
+		 * @since 1.4.0
+		 */
+		do_action( 'charitable_filter_donations_form' );
+		?>
 		<button type="submit" class="button button-primary"><?php _e( 'Filter', 'charitable' ); ?></button>
 	</form>
 </div>
