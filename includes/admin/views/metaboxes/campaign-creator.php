@@ -42,9 +42,9 @@ $authors    = get_users(
 		</div><!--#campaign-creator-->
 	<?php endif; ?>
 	<div id="charitable-post-author-wrap" class="charitable-metabox charitable-select-wrap">
-		<label for="post_author"><?php _e( 'Change the campaign creator' ); ?></label>
-		<select name="post_author">
-			<option value="0" <?php selected( $creator_id, 0 ); ?>><?php _e( 'Select a user', 'charitable' ); ?></option>
+		<label for="post_author_override"><?php _e( 'Change the campaign creator' ); ?></label>
+		<select name="post_author_override">
+			<option value="-" <?php selected( $creator_id, 0 ); ?>><?php _e( 'Select a user', 'charitable' ); ?></option>
 			<?php foreach ( $authors as $author ) : ?>
 			<option value="<?php echo esc_attr( $author->ID ); ?>" <?php selected( $creator_id, $author->ID ); ?>><?php echo $author->display_name; ?></option>
 			<?php endforeach; ?>
