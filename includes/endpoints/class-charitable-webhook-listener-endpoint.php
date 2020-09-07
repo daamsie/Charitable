@@ -134,18 +134,11 @@ if ( ! class_exists( 'Charitable_Webhook_Listener_Endpoint' ) ) :
 			 */
 			remove_action( 'parse_query', array( $this, 'process_incoming_webhook' ) );
 
-			$gateway = get_query_var( 'charitable-listener', false );
+			$source = get_query_var( 'charitable-listener', false );
 
-			if ( $gateway ) {
-
-				/**
-				 * Handle a gateway's IPN.
-				 *
-				 * @since 1.0.0
-				 */
-				do_action( 'charitable_process_ipn_' . $gateway );
-
-				return true;
+			if ( $source ) {
+				$listener = new Charitable_Webhook_Handler( $source );
+				return $listener->process();
 			}
 
 			return false;
