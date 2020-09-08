@@ -310,12 +310,12 @@ if ( ! class_exists( 'Charitable_Assets' ) ) :
 					'version' => $this->version,
 				),
 				'charitable-url-sanitizer' => array(
-					'src'     => 'js/charitable-url-sanitizer' . $suffix . '.js',
+					'src'     => 'js/charitable-url-sanitizer' . $this->suffix . '.js',
 					'deps'    => array( 'jquery' ),
 					'version' => $this->version,
 				),
 				'charitable-forms'         => array(
-					'src'     => 'js/charitable-forms' . $suffix . '.js',
+					'src'     => 'js/charitable-forms' . $this->suffix . '.js',
 					'deps'    => array( 'jquery' ),
 					'version' => $this->version,
 				),

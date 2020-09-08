@@ -52,13 +52,6 @@ add_action( 'charitable_login_form_before', 'charitable_template_notices', 10, 0
 add_action( 'charitable_my_donations_before', 'charitable_template_notices', 10, 0 );
 
 /**
- * Add support for deprecated `charitable_user_profile_after_fields` hook.
- *
- * @see Charitable_Profile_Form::add_deprecated_charitable_user_profile_after_fields_hook()
- */
-add_action( 'charitable_form_after_fields', array( 'Charitable_Profile_Form', 'add_deprecated_charitable_user_profile_after_fields_hook' ) );
-
-/**
  * Redirect the user to the password reset page with the query string removed.
  *
  * @see Charitable_User_Management::maybe_redirect_to_password_reset()
