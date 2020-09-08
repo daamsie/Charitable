@@ -22,7 +22,7 @@ if ( ! class_exists( 'Charitable_Paypal_Webhook_Interpreter' ) ) :
 	 *
 	 * @since 1.7.0
 	 */
-	class Charitable_Paypal_Webhook_Interpreter implements Charitable_Webhook_Intepreter_Interface {
+	class Charitable_Paypal_Webhook_Interpreter implements Charitable_Webhook_Interpreter_Interface {
 
 		/**
 		 * Valid webhook.
@@ -217,6 +217,9 @@ if ( ! class_exists( 'Charitable_Paypal_Webhook_Interpreter' ) ) :
 			if ( ! $this->donation_id ) {
 				$this->set_invalid_request( __( 'Missing Donation ID', 'charitable' ) );
 			}
+
+			/* If we've made it this far, we treat this as a valid request. */
+			$this->valid = true;
 
 			$txn_type = $this->get_txn_type();
 

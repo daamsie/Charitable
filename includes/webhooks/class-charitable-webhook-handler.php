@@ -64,7 +64,21 @@ if ( ! class_exists( 'Charitable_Webhook_Handler' ) ) :
 		 */
 		public function has_interpreter() {
 			$class = $this->get_interpreter_class();
-			return class_exists( $class ) && $class instanceof Charitable_Webhook_Interpreter_Interface;
+
+			return class_exists( $class ) && in_array( 'Charitable_Webhook_Interpreter_Interface', class_implements( $class ) );
+		}
+
+		/**
+		 * Return the interpreter object.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @return Charitable_Webhook_Interpreter_Interface
+		 */
+		public function get_interpreter() {
+			$class = $this->get_interpreter_class();
+
+			return new $class;
 		}
 
 		/**
@@ -86,7 +100,7 @@ if ( ! class_exists( 'Charitable_Webhook_Handler' ) ) :
 				return false;
 			}
 
-			$interpreter = new $this->get_interpreter_class();
+			$interpreter = $this->get_interpreter();
 
 			if ( ! $interpreter->is_valid_webhook() ) {
 				status_header( 500 );
@@ -123,10 +137,22 @@ if ( ! class_exists( 'Charitable_Webhook_Handler' ) ) :
 				}
 			}
 
+			error_log( var_export( $processor, true ) );
+			error_log( var_export( $processor->response_status, true ) );
+			error_log( var_export( $processor->response_message, true ) );
+
 			if ( ! $processor ) {
-				return false;
+				status_header( 500 );
+				die(
+					sprintf(
+						/* translators: %s: source of webhook */
+						__( 'Missing webhook processor for %s.', 'charitable' ),
+						$source
+					)
+				);
 			}
 
+			/* Process the webhook. */
 			$processor->process();
 
 			/* Set the status header. */

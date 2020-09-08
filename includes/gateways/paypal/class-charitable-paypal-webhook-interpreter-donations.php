@@ -22,7 +22,7 @@ if ( ! class_exists( 'Charitable_Paypal_Webhook_Interpreter_Donations' ) ) :
 	 *
 	 * @since 1.7.0
 	 */
-	class Charitable_Paypal_Webhook_Interpreter_Donations implements Charitable_Webhook_Intepreter_Donations_Interface {
+	class Charitable_Paypal_Webhook_Interpreter_Donations implements Charitable_Webhook_Interpreter_Donations_Interface {
 
 		/**
 		 * The general PayPal webhook interpreter.
@@ -123,13 +123,12 @@ if ( ! class_exists( 'Charitable_Paypal_Webhook_Interpreter_Donations' ) ) :
 		 */
 		public function get_donation() {
 			if ( ! isset( $this->donation ) ) {
-
 				/* The donation ID needs to match a donation post type. */
-				if ( Charitable::DONATION_POST_TYPE !== get_post_type( $this->donation_id ) ) {
+				if ( Charitable::DONATION_POST_TYPE !== get_post_type( $this->interpreter->donation_id ) ) {
 					return false;
 				}
 
-				$this->donation = charitable_get_donation( $this->donation_id );
+				$this->donation = charitable_get_donation( $this->interpreter->donation_id );
 
 				if ( 'paypal' !== $this->donation->get_gateway() ) {
 					$this->set_response( __( 'Incorrect Gateway', 'charitable' ) );
@@ -213,7 +212,7 @@ if ( ! class_exists( 'Charitable_Paypal_Webhook_Interpreter_Donations' ) ) :
 		 * @return float|false The amount to be refunded, or false if this is not a refund.
 		 */
 		public function get_refund_amount() {
-			if ( 'refund' !== $this->get_event_type() ) {
+			if ( ! in_array( $this->get_payment_status(), array( 'refunded', 'reversed', 'partially_refunded' ) ) ) {
 				return false;
 			}
 
@@ -228,7 +227,7 @@ if ( ! class_exists( 'Charitable_Paypal_Webhook_Interpreter_Donations' ) ) :
 		 * @return string|false
 		 */
 		public function get_refund_log_message() {
-			if ( 'refund' !== $this->get_event_type() ) {
+			if ( ! in_array( $this->get_payment_status(), array( 'refunded', 'reversed', 'partially_refunded' ) ) ) {
 				return false;
 			}
 
@@ -340,7 +339,7 @@ if ( ! class_exists( 'Charitable_Paypal_Webhook_Interpreter_Donations' ) ) :
 		}
 
 		/**
-		 * Parse the data.
+		 * Parse the request.
 		 *
 		 * @since  1.7.0
 		 *
@@ -420,6 +419,7 @@ if ( ! class_exists( 'Charitable_Paypal_Webhook_Interpreter_Donations' ) ) :
 					break;
 
 				case 'completed':
+				case 'partially_refunded':
 					if ( 'charitable-completed' !== $this->donation->get_status() ) {
 						$this->event_type = 'completed_payment';
 						$this->logs[]     = sprintf(
@@ -457,7 +457,7 @@ if ( ! class_exists( 'Charitable_Paypal_Webhook_Interpreter_Donations' ) ) :
 			$this->logs[] = sprintf(
 				/* translators: %s: IPN data */
 				__( 'Donation key in the IPN response does not match the donation. IPN data: %s', 'charitable' ),
-				json_encode( $this->data )
+				json_encode( $this->interpreter->data )
 			);
 
 			$this->set_response( __( 'Invalid Donation Key', 'charitable' ) );
@@ -494,7 +494,7 @@ if ( ! class_exists( 'Charitable_Paypal_Webhook_Interpreter_Donations' ) ) :
 			$this->logs[] = sprintf(
 				/* translators: %s: IPN data */
 				__( 'Invalid Business email in the IPN response. IPN data: %s', 'charitable' ),
-				json_encode( $this->data )
+				json_encode( $this->interpreter->data )
 			);
 
 			$this->set_response( __( 'Incorrect Business Email', 'charitable' ) );
@@ -530,7 +530,7 @@ if ( ! class_exists( 'Charitable_Paypal_Webhook_Interpreter_Donations' ) ) :
 			$this->logs[] = sprintf(
 				/* translators: %s: IPN data */
 				__( 'The currency in the IPN response does not match the site currency. IPN data: %s', 'charitable' ),
-				json_encode( $this->data )
+				json_encode( $this->interpreter->data )
 			);
 
 			$this->set_response( __( 'Incorrect Currency', 'charitable' ) );
@@ -558,7 +558,7 @@ if ( ! class_exists( 'Charitable_Paypal_Webhook_Interpreter_Donations' ) ) :
 			}
 
 			/* Amount matches. */
-			if ( $this->get( 'mc_gross' ) === $this->donation->get_total_donation_amount( true ) ) {
+			if ( charitable_sanitize_amount( $this->get( 'mc_gross' ), false ) === $this->donation->get_total_donation_amount( true ) ) {
 				return true;
 			}
 
@@ -572,7 +572,7 @@ if ( ! class_exists( 'Charitable_Paypal_Webhook_Interpreter_Donations' ) ) :
 			$this->logs[] = sprintf(
 				/* translators: %s: IPN data */
 				__( 'The amount in the IPN response does not match the expected donation amount. IPN data: %s', 'charitable' ),
-				json_encode( $this->data )
+				json_encode( $this->interpreter->data )
 			);
 
 			$this->set_response( __( 'Incorrect Amount', 'charitable' ) );

@@ -101,8 +101,8 @@ add_action( 'template_redirect', 'charitable_cancel_donation' );
  */
 add_filter( 'charitable_validate_donation_form_submission_gateway', array( 'Charitable_Gateway_Paypal', 'validate_donation' ), 10, 3 );
 add_filter( 'charitable_process_donation_paypal', array( 'Charitable_Gateway_Paypal', 'process_donation' ), 10, 3 );
-add_action( 'charitable_process_ipn_paypal', array( 'Charitable_Gateway_Paypal', 'process_ipn' ) );
-add_action( 'charitable_paypal_web_accept', array( 'Charitable_Gateway_Paypal', 'process_web_accept' ), 10, 2 );
+// add_action( 'charitable_process_ipn_paypal', array( 'Charitable_Gateway_Paypal', 'process_ipn' ) );
+// add_action( 'charitable_paypal_web_accept', array( 'Charitable_Gateway_Paypal', 'process_web_accept' ), 10, 2 );
 
 /**
  * Handle PayPal refund.

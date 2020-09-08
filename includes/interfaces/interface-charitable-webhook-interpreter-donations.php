@@ -2,7 +2,7 @@
 /**
  * Webhook interpreter interface for webhooks related to donations.
  *
- * @package   Charitable/Interfaces/Charitable_Webhook_Intepreter_Donations_Interface
+ * @package   Charitable/Interfaces/Charitable_Webhook_Interpreter_Donations_Interface
  * @author    Eric Daams
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -15,14 +15,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! interface_exists( 'Charitable_Webhook_Intepreter_Donations_Interface' ) ) :
+if ( ! interface_exists( 'Charitable_Webhook_Interpreter_Donations_Interface' ) ) :
 
 	/**
-	 * Charitable_Webhook_Intepreter_Donations_Interface
+	 * Charitable_Webhook_Interpreter_Donations_Interface
 	 *
 	 * @since 1.5.0
 	 */
-	interface Charitable_Webhook_Intepreter_Donations_Interface {
+	interface Charitable_Webhook_Interpreter_Donations_Interface {
 
 		/**
 		 * Get the donation object.

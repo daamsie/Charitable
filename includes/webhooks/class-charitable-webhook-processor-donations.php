@@ -25,6 +25,15 @@ if ( ! class_exists( 'Charitable_Webhook_Processor_Donations' ) ) :
 	class Charitable_Webhook_Processor_Donations {
 
 		/**
+		 * Interpreter.
+		 *
+		 * @since 1.7.0
+		 *
+		 * @var   Charitable_Webhook_Interpreter_Donations_Interface
+		 */
+		protected $interpreter;
+
+		/**
 		 * The donation object.
 		 *
 		 * @since 1.7.0
@@ -40,7 +49,7 @@ if ( ! class_exists( 'Charitable_Webhook_Processor_Donations' ) ) :
 		 *
 		 * @var   string
 		 */
-		private $response_message;
+		protected $response_message;
 
 		/**
 		 * HTTP status to use for response message.
@@ -49,7 +58,18 @@ if ( ! class_exists( 'Charitable_Webhook_Processor_Donations' ) ) :
 		 *
 		 * @var   int
 		 */
-		private $response_status;
+		protected $response_status;
+
+		/**
+		 * Set up the processor.
+		 *
+		 * @since 1.7.0
+		 *
+		 * @param Charitable_Webhook_Interpreter_Donations_Interface
+		 */
+		public function __construct( Charitable_Webhook_Interpreter_Donations_Interface $interpreter ) {
+			$this->interpreter = $interpreter;
+		}
 
 		/**
 		 * Get class properties.
