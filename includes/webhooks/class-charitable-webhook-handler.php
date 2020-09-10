@@ -137,10 +137,6 @@ if ( ! class_exists( 'Charitable_Webhook_Handler' ) ) :
 				}
 			}
 
-			error_log( var_export( $processor, true ) );
-			error_log( var_export( $processor->response_status, true ) );
-			error_log( var_export( $processor->response_message, true ) );
-
 			if ( ! $processor ) {
 				status_header( 500 );
 				die(
