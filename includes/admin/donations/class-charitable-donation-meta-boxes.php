@@ -317,7 +317,7 @@ if ( ! class_exists( 'Charitable_Donation_Meta_Boxes' ) ) :
 		public function get_donation_status_change_fields( $object_id, $action ) {
 			$statuses = charitable_get_valid_donation_statuses();
 
-			if ( $statuses['charitable-refunded'] != $action['label'] ) {
+			if ( $statuses['charitable-refunded'] !== $action['label'] ) {
 				return;
 			}
 
