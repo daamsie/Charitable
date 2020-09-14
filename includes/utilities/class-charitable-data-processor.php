@@ -326,9 +326,10 @@ if ( ! class_exists( 'Charitable_Data_Processor' ) ) :
 		 *
 		 * @param  string $file_key  Key of the file input.
 		 * @param  int    $post_id   Post ID.
+		 * @param  array  $overrides Optional array of overrides.
 		 * @return int|WP_Error ID of the attachment or a WP_Error object on failure.
 		 */
-		public function upload_attachment( $file_key, $post_id = 0 ) {
+		public function upload_attachment( $file_key, $post_id = 0, $overrides = array() ) {
 			require_once( ABSPATH . 'wp-admin/includes/image.php' );
 			require_once( ABSPATH . 'wp-admin/includes/file.php' );
 			require_once( ABSPATH . 'wp-admin/includes/media.php' );

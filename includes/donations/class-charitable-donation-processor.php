@@ -194,28 +194,33 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 				return false;
 			}
 
-			$values  = $form->get_donation_values();
-			$gateway = $values['gateway'];
+			$values     = $form->get_donation_values();
+			$gateway_id = $values['gateway'];
 
 			/**
 			 * Validate the gateway values.
 			 *
 			 * @since 1.0.0
 			 *
-			 * @param boolean $valid   Whether the submission passes validation.
-			 * @param string  $gateway The gateway ID.
-			 * @param array   $values  The values submitted by the user.
+			 * @param boolean $valid      Whether the submission passes validation.
+			 * @param string  $gateway_id The gateway ID.
+			 * @param array   $values     The values submitted by the user.
 			 */
-			if ( ! apply_filters( 'charitable_validate_donation_form_submission_gateway', true, $gateway, $values ) ) {
+			if ( ! apply_filters( 'charitable_validate_donation_form_submission_gateway', true, $gateway_id, $values ) ) {
 				return false;
 			}
 
 			$this->donation_id = $processor->save_donation( $values );
 
-			/**
-			 * Set a transient to allow plugins to act on this donation on the next page load.
-			 */
+			/* Set a transient to allow plugins to act on this donation on the next page load. */
 			set_transient( 'charitable_donation_' . charitable_get_session()->get_session_id(), $this );
+
+			/* Get the gateway object. */
+			$response = $this->process_donation_payment();
+
+			if ( ! is_null( $response ) ) {
+				return $response;
+			}
 
 			/**
 			 * We check whether the gateway is compatible with version 1.3, since Charitable 1.3
@@ -267,6 +272,70 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 				die();
 
 			}//end if
+		}
+
+		/**
+		 * Process the payment for the donation.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @return boolean|null|array
+		 */
+		public function process_donation_payment() {
+			$gateway = charitable()->registry()->get( 'gateways' )->get_gateway_object( 'mollie' );
+
+			if ( is_null( $gateway ) || ! $gateway instanceof Charitable_Gateway_Payment_Request_API_Interface ) {
+				return null;
+			}
+
+			$donation = new Charitable_Donation( $this->donation_id );
+			$request  = $gateway->get_payment_request( $donation );
+
+			if ( $request->prepare_request() ) {
+				$request->make_request();
+
+				$response = $request->get_response();
+
+				/* Save the gateway transaction ID */
+				$donation->set_gateway_transaction_id( $response->get_gateway_transaction_id() );
+
+				foreach ( $response->get_logs() as $log ) {
+					$donation->log()->add( $log );
+				}
+
+				foreach ( $response->get_meta() as $key => $value ) {
+					update_post_meta( $this->donation_id, $key, $value );
+				}
+
+				if ( $response->payment_requires_redirect() ) {
+					return array(
+						'success'  => true,
+						'redirect' => $response->get_redirect(),
+					);
+				}
+
+				if ( $response->payment_requires_action() ) {
+					return array_merge( array( 'requires_action' => true ), $response->get_required_action_data() );
+				}
+
+				if ( $response->payment_failed() ) {
+					/** @todo Handle failed payment */
+					$donation->update_status( 'charitable-failed' );
+					return false;
+				}
+
+				if ( $response->payment_completed() ) {
+					/** @todo Handle completed payment */
+					$donation->update_status( 'charitable-completed' );
+					return true;
+				}
+
+				if ( $response->payment_cancelled() ) {
+					/** @todo Handle cancelled payment */
+					$donation->update_status( 'charitable-cancelled' );
+					return false;
+				}
+			}
 		}
 
 		/**

@@ -138,7 +138,7 @@ if ( ! class_exists( 'Charitable_Webhook_Listener_Endpoint' ) ) :
 
 			if ( $source ) {
 				$listener = new Charitable_Webhook_Handler( $source );
-				return $listener->process();
+				return $listener->handle();
 			}
 
 			return false;

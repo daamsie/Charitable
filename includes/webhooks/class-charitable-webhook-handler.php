@@ -52,7 +52,16 @@ if ( ! class_exists( 'Charitable_Webhook_Handler' ) ) :
 		 * @return string
 		 */
 		public function get_interpreter_class() {
-			return 'Charitable_' . ucfirst( strtolower( $this->source ) ) . '_Webhook_Interpreter';
+			$class = 'Charitable_' . ucfirst( strtolower( $this->source ) ) . '_Webhook_Interpreter';
+
+			/**
+			 * Filter the webhook interpreter class name for a particular source.
+			 *
+			 * @since 1.7.0
+			 *
+			 * @param string $class The default class name.
+			 */
+			return apply_filters( 'charitable_webhook_interpreter_class_' . strtolower( $this->source ), $class );
 		}
 
 		/**
@@ -81,13 +90,13 @@ if ( ! class_exists( 'Charitable_Webhook_Handler' ) ) :
 			 * @since 1.0.0
 			 */
 			do_action( 'charitable_process_ipn_' . $this->source );
-
+			error_log( var_export( __METHOD__, true ) );
 			if ( ! $this->has_interpreter() ) {
 				return false;
 			}
 
 			$interpreter = new $this->get_interpreter_class();
-
+			error_log( var_export( $interpreter, true ) );
 			if ( ! $interpreter->is_valid_webhook() ) {
 				status_header( 500 );
 				die( __( 'Invalid webhook event.', 'charitable' ) );
