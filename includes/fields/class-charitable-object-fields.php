@@ -61,16 +61,17 @@ if ( ! class_exists( 'Charitable_Object_Fields' ) ) :
 		 * @since  1.6.0
 		 *
 		 * @param  string $field_key The field to get a value for.
+		 * @param  string $context   The context in which we need the field value.
 		 * @return mixed
 		 */
-		public function get( $field_key ) {
+		public function get( $field_key, $context ) {
 			$field = $this->registry->get_field( $field_key );
 
 			if ( ! $field ) {
 				return null;
 			}
 
-			return call_user_func( $field->value_callback, $this->object, $field_key );
+			return call_user_func( $field->value_callback, $this->object, $field_key, $context );
 		}
 
 		/**

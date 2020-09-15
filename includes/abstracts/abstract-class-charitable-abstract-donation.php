@@ -103,6 +103,15 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		protected $gateway_transaction_id;
 
 		/**
+		 * Gateway transaction URL.
+		 *
+		 * @since 1.7.0
+		 *
+		 * @var   string
+		 */
+		protected $gateway_transaction_url;
+
+		/**
 		 * The campaign donations made as part of this donation.
 		 *
 		 * @var Object
@@ -172,18 +181,20 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 *
 		 * @since  1.5.0
 		 *
-		 * @param  string $key The key of the field we're looking for.
+		 * @param  string $key     The key of the field we're looking for.
+		 * @param  string $context The context in which we are getting the data.
+		 *                         Defaults to 'display'.
 		 * @return mixed
 		 */
-		public function get( $key ) {
+		public function get( $key, $context = 'display' ) {
 			if ( $this->fields()->has_value_callback( $key ) ) {
-				return $this->fields()->get( $key );
+				return $this->fields()->get( $key, $context );
 			}
 
 			/* Look for a local method. */
 			if ( method_exists( $this, 'get_' . $key ) ) {
 				$method = 'get_' . $key;
-				return $this->$method();
+				return $this->$method( $context );
 			}
 
 			return $this->__get( $key );
@@ -1012,17 +1023,61 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		}
 
 		/**
-		 * Save the gateway's transaction ID
+		 * Save the gateway's transaction ID.
 		 *
 		 * @since  1.4.6
 		 *
-		 * @param  string $value The transaction ID.
-		 * @return bool
+		 * @param  string|false $value The transaction ID.
+		 * @return boolean
 		 */
 		public function set_gateway_transaction_id( $value ) {
+			if ( ! $value ) {
+				return false;
+			}
+
 			$key   = '_gateway_transaction_id';
 			$value = charitable_sanitize_donation_meta( $value, $key );
 			return update_post_meta( $this->donation_id, $key, $value );
+		}
+
+		/**
+		 * Save the gateway's transaction URL.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @param  string|false $url The URL of the transaction in the gateway account.
+		 * @return boolean
+		 */
+		public function set_gateway_transaction_url( $url ) {
+			if ( ! $url ) {
+				return false;
+			}
+
+			$key = '_gateway_transaction_url';
+			$url = charitable_sanitize_donation_meta( $url, $key );
+			return update_post_meta( $this->donation_id, $key, $url );
+		}
+
+		/**
+		 * Get the gateway's transaction ID.
+		 *
+		 * @since  1.4.6
+		 * @since  1.7.0 Added $context parameter.
+		 *
+		 * @param  string $context The context in which we are displaying the value.
+		 * @return mixed
+		 */
+		public function get_gateway_transaction_id( $context = 'display' ) {
+			if ( ! isset( $this->gateway_transaction_id ) ) {
+				$this->gateway_transaction_id = get_post_meta( $this->donation_id, '_gateway_transaction_id', true );
+			}
+
+			/* If we are getting this for the meta, return it as a link. */
+			if ( 'meta' === $context && $this->get_gateway_transaction_url() ) {
+				return '<a href="' . esc_url( $this->get_gateway_transaction_url() ) . '" target="_blank">' . $this->gateway_transaction_id . '</a>';
+			}
+
+			return $this->gateway_transaction_id;
 		}
 
 		/**
@@ -1032,12 +1087,12 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 *
 		 * @return mixed
 		 */
-		public function get_gateway_transaction_id() {
-			if ( ! isset( $this->gateway_transaction_id ) ) {
-				$this->gateway_transaction_id = get_post_meta( $this->donation_id, '_gateway_transaction_id', true );
+		public function get_gateway_transaction_url() {
+			if ( ! isset( $this->gateway_transaction_url ) ) {
+				$this->gateway_transaction_url = get_post_meta( $this->donation_id, '_gateway_transaction_url', true );
 			}
 
-			return $this->gateway_transaction_id;
+			return $this->gateway_transaction_url;
 		}
 
 		/**
@@ -1071,7 +1126,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 * @return array
 		 */
 		protected function parse_donation_meta_field( Charitable_Donation_Field $field ) {
-			$value = charitable_get_sanitized_donation_field_value( $this->get( $field->field ), $field->field );
+			$value = charitable_get_sanitized_donation_field_value( $this->get( $field->field, 'meta' ), $field->field );
 
 			if ( empty( $value ) ) {
 				$value = '-';

@@ -298,6 +298,7 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 
 				/* Save the gateway transaction ID */
 				$donation->set_gateway_transaction_id( $response->get_gateway_transaction_id() );
+				$donation->set_gateway_transaction_url( $response->get_gateway_transaction_url() );
 
 				foreach ( $response->get_logs() as $log ) {
 					$donation->log()->add( $log );

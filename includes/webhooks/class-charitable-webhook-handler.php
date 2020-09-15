@@ -74,7 +74,7 @@ if ( ! class_exists( 'Charitable_Webhook_Handler' ) ) :
 		public function has_interpreter() {
 			$class = $this->get_interpreter_class();
 
-			return class_exists( $class ) && in_array( 'Charitable_Webhook_Interpreter_Interface', class_implements( $class ) );
+			return class_exists( $class ) && in_array( 'Charitable_Webhook_Interpreter_Interface', class_implements( $class ), true );
 		}
 
 		/**
@@ -104,7 +104,7 @@ if ( ! class_exists( 'Charitable_Webhook_Handler' ) ) :
 			 * @since 1.0.0
 			 */
 			do_action( 'charitable_process_ipn_' . $this->source );
-			error_log( var_export( __METHOD__, true ) );
+
 			if ( ! $this->has_interpreter() ) {
 				return false;
 			}
@@ -112,8 +112,11 @@ if ( ! class_exists( 'Charitable_Webhook_Handler' ) ) :
 			$interpreter = $this->get_interpreter();
 
 			if ( ! $interpreter->is_valid_webhook() ) {
-				status_header( 500 );
-				die( __( 'Invalid webhook event.', 'charitable' ) );
+				$message = isset( $interpreter->response ) ? $interpreter->response : __( 'Invalid webhook event.', 'charitable' );
+				$status  = isset( $interpreter->status ) ? $interpreter->status : 500;
+
+				status_header( $status );
+				die( $message );
 			}
 
 			/* If the source interpreter has its own processor, delegate to that. */
@@ -145,10 +148,6 @@ if ( ! class_exists( 'Charitable_Webhook_Handler' ) ) :
 						$processor = apply_filters( 'charitable_webhook_processor_' . $event_subject, false, $interpreter );
 				}
 			}
-
-			error_log( var_export( $processor, true ) );
-			error_log( var_export( $processor->response_status, true ) );
-			error_log( var_export( $processor->response_message, true ) );
 
 			if ( ! $processor ) {
 				status_header( 500 );
