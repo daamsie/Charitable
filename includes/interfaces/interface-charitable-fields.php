@@ -16,42 +16,43 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! class_exists( 'Charitable_Fields_Interface' ) ) :
 
-    /**
-     * Charitable_Fields_Interface
-     *
-     * @since 1.5.0
-     */
-    interface Charitable_Fields_Interface {
+	/**
+	 * Charitable_Fields_Interface
+	 *
+	 * @since 1.5.0
+	 */
+	interface Charitable_Fields_Interface {
 
-        /**
-         * Get the set value for a particular field.
-         *
-         * @since  1.5.0
-         *
-         * @param  string $field The field to get a value for.
-         * @return mixed
-         */
-        public function get( $field );
+		/**
+		 * Get the set value for a particular field.
+		 *
+		 * @since  1.5.0
+		 *
+		 * @param  string $field   The field to get a value for.
+		 * @param  string $context The context in which we need the field value.
+		 * @return mixed
+		 */
+		public function get( $field, $context );
 
-        /**
-         * Check whether a particular field is registered.
-         *
-         * @since  1.5.0
-         *
-         * @param  string $field The field to check for.
-         * @return boolean
-         */
-        public function has( $field );
+		/**
+		 * Check whether a particular field is registered.
+		 *
+		 * @since  1.5.0
+		 *
+		 * @param  string $field The field to check for.
+		 * @return boolean
+		 */
+		public function has( $field );
 
-        /**
-         * Check whether a particular field has a callback for getting the value.
-         *
-         * @since  1.5.0
-         *
-         * @param  string $field The field to check for.
-         * @return boolean
-         */
-        public function has_value_callback( $field );
-    }
+		/**
+		 * Check whether a particular field has a callback for getting the value.
+		 *
+		 * @since  1.5.0
+		 *
+		 * @param  string $field The field to check for.
+		 * @return boolean
+		 */
+		public function has_value_callback( $field );
+	}
 
 endif;

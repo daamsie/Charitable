@@ -132,6 +132,7 @@ if ( ! class_exists( 'Charitable_Webhook_Processor_Donations' ) ) :
 				$this->interpreter->get_refund_log_message()
 			);
 
+			$this->save_gateway_transaction_data();
 			$this->update_meta();
 			$this->update_logs();
 
@@ -150,6 +151,7 @@ if ( ! class_exists( 'Charitable_Webhook_Processor_Donations' ) ) :
 		public function process_failed_payment() {
 			$this->donation->update_status( 'charitable-failed' );
 
+			$this->save_gateway_transaction_data();
 			$this->update_meta();
 			$this->update_logs();
 
@@ -168,13 +170,7 @@ if ( ! class_exists( 'Charitable_Webhook_Processor_Donations' ) ) :
 		public function process_completed_payment() {
 			$this->donation->update_status( 'charitable-completed' );
 
-			$transaction_id = $this->interpreter->get_gateway_transaction_id();
-
-			/* Record the gateway transaction ID */
-			if ( $transaction_id ) {
-				$this->donation->set_gateway_transaction_id( $transaction_id );
-			}
-
+			$this->save_gateway_transaction_data();
 			$this->update_meta();
 			$this->update_logs();
 
@@ -192,6 +188,8 @@ if ( ! class_exists( 'Charitable_Webhook_Processor_Donations' ) ) :
 		 */
 		public function process_cancellation() {
 			$this->donation->update_status( 'charitable-cancelled' );
+
+			$this->save_gateway_transaction_data();
 			$this->update_meta();
 			$this->update_logs();
 
@@ -222,6 +220,18 @@ if ( ! class_exists( 'Charitable_Webhook_Processor_Donations' ) ) :
 			$this->set_response( __( 'Donation Webhook: Donation updated.', 'charitable' ) );
 
 			return true;
+		}
+
+		/**
+		 * Save the gateway transaction ID and URL if available.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @return void
+		 */
+		public function save_gateway_transaction_data() {
+			$this->donation->set_gateway_transaction_id( $this->interpreter->get_gateway_transaction_id() );
+			$this->donation->set_gateway_transaction_url( $this->interpreter->get_gateway_transaction_url() );
 		}
 
 		/**
@@ -261,7 +271,7 @@ if ( ! class_exists( 'Charitable_Webhook_Processor_Donations' ) ) :
 		 * @param  int    $http_status HTTP status to send.
 		 * @return void
 		 */
-		private function set_response( $message, $http_status = 200 ) {
+		protected function set_response( $message, $http_status = 200 ) {
 			$this->response_message = $this->interpreter->get_response_message();
 
 			if ( ! $this->response_message ) {

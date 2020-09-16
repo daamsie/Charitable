@@ -48,8 +48,7 @@ if ( ! class_exists( 'Charitable_Donation' ) ) :
 			$refunds_per_campaign = isset( $refund_log['campaign_refunds'] ) ? $refund_log['campaign_refunds'] : array();
 
 			foreach ( $this->get_campaign_donations() as $campaign_donation ) {
-
-				if ( 0 == $refund_amount ) {
+				if ( 0 === $refund_amount ) {
 					break;
 				}
 

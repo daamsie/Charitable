@@ -33,6 +33,15 @@ if ( ! interface_exists( 'Charitable_Gateway_Payment_Response_Interface' ) ) :
 		public function get_gateway_transaction_id();
 
 		/**
+		 * Return the gateway transaction url
+		 *
+		 * @since  1.7.0
+		 *
+		 * @return string|false
+		 */
+		public function get_gateway_transaction_url();
+
+		/**
 		 * Returns whether the payment requires some further action.
 		 *
 		 * @since  1.7.0

@@ -71,6 +71,15 @@ if ( ! interface_exists( 'Charitable_Webhook_Interpreter_Donations_Interface' ) 
 		public function get_gateway_transaction_id();
 
 		/**
+		 * Return the gateway transaction URL.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @return string|false The URL if available, otherwise false.
+		 */
+		public function get_gateway_transaction_url();
+
+		/**
 		 * Return the donation status based on the webhook event.
 		 *
 		 * @since  1.7.0

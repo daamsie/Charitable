@@ -155,20 +155,21 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		 *
 		 * @since  1.0.0
 		 *
-		 * @param  string  $key    The field key.
-		 * @param  boolean $single Whether to return a single value or an array.
+		 * @param  string  $key     The field key.
+		 * @param  boolean $single  Whether to return a single value or an array.
+		 * @param  string  $context The context in which we are using the field value.
 		 * @return mixed This will return an array if single is false. If it's true, the value of the
 		 *               meta_value field will be returned.
 		 */
-		public function get( $key, $single = true ) {
+		public function get( $key, $single = true, $context = 'display' ) {
 			if ( $this->fields()->has_value_callback( $key ) ) {
-				return $this->fields()->get( $key );
+				return $this->fields()->get( $key, $context );
 			}
 
 			/* Look for a local method. */
 			if ( method_exists( $this, 'get_' . $key ) ) {
 				$method = 'get_' . $key;
-				return $this->$method();
+				return $this->$method( $context );
 			}
 
 			return $this->get_meta( '_campaign_' . $key, $single );
