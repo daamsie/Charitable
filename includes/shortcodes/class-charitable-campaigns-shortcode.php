@@ -186,7 +186,7 @@ if ( ! class_exists( 'Charitable_Campaigns_Shortcode' ) ) :
 				if ( ! isset( $query_args['order'] ) ) {
 					$query_args['order'] = 'DESC';
 				}
-			} elseif ( ! in_array( $args['orderby'], array( 'popular', 'ending' ) ) ) {
+			} elseif ( ! in_array( $args['orderby'], array( 'popular', 'ending' ), true ) ) {
 				$query_args['orderby'] = $args['orderby'];
 			}
 
