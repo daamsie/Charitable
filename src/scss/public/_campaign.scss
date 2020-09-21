@@ -81,6 +81,57 @@
     }
 }
 
+
+/* Campaign Progress Circle */
+
+$bg-color: #e6e6e6;
+$default-size: 80px;
+
+@mixin circle-size($width, $height) {
+    height: $height;
+    width: $width;
+}
+
+.campaign-progress-circle-wrapper {
+    @include circle-size($default-size, $default-size);
+    position: relative; /* Enable clipping */
+    clip: rect(0px, 100px, 100px, 50px); /* Hide half of the progress bar */
+    margin-bottom: 1em;
+    
+    .campaign-progress-circle {
+        @include circle-size(100%, 100%);
+        clip: rect(0, $default-size, $default-size, $default-size / 2);
+        left: 0;
+        position: absolute;
+        top: 0;
+        &.campaign-past-halfway {
+            clip: rect(auto, auto, auto, auto);
+        }
+        .campaign-progress-circle-left {
+            transform: var(--campaign-circle-rotation);
+        }
+        .campaign-progress-circle-right {
+            transform: rotate(180deg);
+        }
+    }
+    .campaign-progress-half-circle {
+        @include circle-size(100%, 100%);
+        border-width: ($default-size / 6);
+        border-style: solid;
+        border-radius: 50%;
+        clip: rect(0, $default-size / 2, $default-size, 0);
+        left: 0;
+        position: absolute;
+        top: 0;
+    }
+    .campaign-progress-shadow {
+        height: 100%;
+        width: 100%;
+        border: ($default-size / 6) solid $bg-color;
+        border-radius: 50%;
+    }
+}
+
 .charitable-campaign-progress-bar-block {
     margin: 0 0 1em;
     font-size: 0.9em;

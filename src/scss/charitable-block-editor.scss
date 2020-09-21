@@ -8,10 +8,13 @@
 
 .editor-styles-wrapper {
     div.charitable-block-settings {
-        padding: 14px;
         font-size: 13px;
+        width: 100%;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Oxygen-Sans', Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-        background-color: #f8f9f9;
+        
+        label {
+            font-size: 13px;
+        }
 
         h2 {
             font-size: 18px;
@@ -41,39 +44,40 @@
         }
     }
 
-    .charitable-block-settings .campaign-loop {
-        list-style: none;
-    }
-
-    div.charitable-campaign-categories-list,
-    div.charitable-campaigns-list {
-        ul {
-            list-style: none;
+    .charitable-category-list-card__results, .charitable-campaign-list-card__results {
+        border: 1px solid #e2e4e7;
+        padding: 0;
+        margin-top: 4px;
+        max-height: 17em;
+        overflow-y: auto;
+        border: 1px solid #e2e4e7;
+        .components-menu-group {
+            padding: 0;
         }
-    }
-
-    .charitable-campaigns-field,
-    .charitable-campaign-categories-list {
-        label {
-            margin: 0 0 4px;
-            display: block;
-        }
-    }
-
-    .charitable-category-list-card__results {
-        ul {
-            border: 1px solid #e6eaee;
-            border-bottom-width: 0;
-        }
-
-        li.charitable-category-list-card__item {
-            margin: 0;
-            padding: 8px 15px;
-            border-bottom: 1px solid #e6eaee;
-            background-color: #fff;
-
-            label {
+        .charitable-category-list-card__item, .charitable-campaign-list-card__item {
+            display: flex;
+            width: 100%;
+            height: 40px;
+            align-items: center;
+            margin-bottom: 0;
+            padding: 12px 16px;
+            background: #fff;
+            border-bottom: 1px solid #e2e4e7!important;
+            border-radius: 0;
+            color: #555d66;
+            img {
+                margin-top: 1px;
+            }
+            .components-base-control {
+                width: 100%;
                 margin: 0;
+                height: 40px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+            .components-base-control__field {
+                margin-bottom: 0;
             }
         }
     }
@@ -84,7 +88,7 @@
         height: 21px;
         border: 1px solid #e6eaee;
         border-radius: 4px;
-        line-height: 21px;
+        line-height: 18px;
         font-size: 10px;
         color: #aaa;
         background: #fff;
@@ -127,76 +131,43 @@
     }
 
     .charitable-campaigns-list-card__input-wrapper {
-        border: 1px solid #e6eaee;
-        background: #fff;
         position: relative;
 
-        svg {
+        svg {   
             position: absolute;
-            top: 14px;
-            left: 13px;
+            top: 32px;
+            left: 9px;
         }
 
-        input.charitable-campaigns-list-card__search {
-            width: 99%;
-            width: calc(100% - 1px);
-            padding: 15px 15px 15px 40px;
-            border: none;
-            box-shadow: none;
-            border-radius: 0;
+        .components-text-control__input {
+            padding-left: 30px;
         }
     }
 
-    .charitable-campaigns-list-card__search-results {
-        border-left: 1px solid #e6eaee;
-        border-right: 1px solid #e6eaee;
-
-        .charitable-campaigns-list-card__content {
-            position: relative;
-            padding: 8px 15px;
-            height: 46px;
-            border-bottom: 1px solid #e6eaee;
-            background-color: #fff;
-            cursor: pointer;
-
-            &.charitable-campaigns-list-card__content--added,
-            &:focus,
-            &:hover,
-            &:active {
-                background-color: #fef4e8;
-            }
-
-            .charitable-campaigns-list-card__content-item-name {
-                line-height: 30px;
-            }
-
-            .dashicons-yes {
-                position: absolute;
-                right: 15px;
-                top: 10px;
-            }
-
-            &.charitable-campaigns-list-card__content--has-thumbnail {
-                .charitable-campaigns-list-card__content-item-name {
-                    position: absolute;
-                    left: 53px;
-                }
-            }
-        }
-    }
 
     .charitable-campaigns-list-card__selected-results {
+        
+        min-height: 60px;
+
         .charitable-campaigns-list-card__item {
             display: inline-block;
+            overflow: hidden;
+            vertical-align: middle;
             margin: 0 10px 10px 0;
             padding: 0;
             height: 38px;
             border: 1px solid #11a0d2;
+            border-radius: 3px;
             background: #fff;
+            font-size: 13px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Oxygen-Sans', Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
         }
 
         .charitable-campaigns-list-card__selected-results-list {
             list-style: none;
+            padding: 0;
+            margin-left: 0;
+            margin-bottom: 0;
         }
 
         .charitable-campaigns-list-card__content {
@@ -242,6 +213,7 @@
     }
 
     .charitable-block-settings-campaigns--display-options-wrapper {
+        border-top: 1px solid #333;
         padding: 22px 0;
 
         p.charitable-block-settings-campaigns--display-options-header {
@@ -294,8 +266,6 @@
     }
 
     .charitable-block-settings-view {
-        margin: 22px 0 0;
-
         .components-base-control,
         .charitable-campaigns-field {
             margin-bottom: 22px;
