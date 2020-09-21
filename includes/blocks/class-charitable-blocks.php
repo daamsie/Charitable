@@ -200,6 +200,10 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 							'type'    => 'boolean',
 							'default' => true,
 						),
+						'progressBarStyle'   => array(
+							'type'		=> 'string',
+							'default'	=> 'bar',
+						),
 						'imageSize'      		 => array(
 							'type'    => 'string',
 							'default' => 'medium',
@@ -376,6 +380,7 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 					'show_amount_donated' => $attributes['showAmountDonated'],
 					'show_progress_bar'   => $attributes['showProgressBar'],
 					'show_image'          => $attributes['showImage'],
+					'progress_bar_style'	=> $attributes['progressBarStyle'],
 					'image_size'					=> $attributes['imageSize'],
 				)
 			);

@@ -36,6 +36,7 @@ $highlight_colour = charitable_get_highlight_colour();
 .charitable-donation-form .donation-amount.selected,
 .charitable-donation-amount-form .donation-amount.selected,
 .charitable-notice,
+.campaign-progress-circle .campaign-progress-half-circle,
 .charitable-drag-drop-images li:hover a.remove-image,
 .supports-drag-drop .charitable-drag-drop-dropzone.drag-over { border-color: <?php echo $highlight_colour; ?>; }
 

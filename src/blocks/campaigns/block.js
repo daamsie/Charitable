@@ -125,7 +125,8 @@ class CharitableCampaignsBlock extends Component {
 		const { attributes, setAttributes } = this.props;
 		const { number, 
 			orderBy, order, columns, masonryLayout, responsiveLayout, 
-			imageSize, showImage, showDescription, showAmountDonated, showProgressBar } = attributes;
+			imageSize, showImage, showDescription, showAmountDonated, 
+			showProgressBar, progressBarStyle } = attributes;
 
 		const fullOrderBy = orderBy + '/' + order;
 
@@ -242,6 +243,26 @@ class CharitableCampaignsBlock extends Component {
 							label={ __( 'Show Progress Bar', 'charitable' ) }
 							checked={ showProgressBar }
 							onChange={ this.toggleProgressBar }
+						/>
+					</PanelRow>
+					<PanelRow>
+						<SelectControl
+							key="progress-bar-style-select"
+							label={ __( 'Progress Bar Style', 'charitable' ) }
+							value={ progressBarStyle }
+							options={ [
+								{
+									label: __( 'Bar', 'charitable' ),
+									value: 'bar',
+								},
+								{
+									label: __( 'Circle', 'charitable' ),
+									value: 'circle',
+								}
+							] }
+							onChange={ ( value ) => {
+								setAttributes( { progressBarStyle: value } );
+							} }
 						/>
 					</PanelRow>
 					<PanelRow>

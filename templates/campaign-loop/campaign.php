@@ -17,7 +17,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $campaign = charitable_get_current_campaign();
 
+// Hide a few things if desired
+
+if (!$view_args['show_progress_bar']) {
+	remove_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_progress_bar', 6 );
+}
+if (!$view_args['show_amount_donated']) {
+	remove_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_loop_donation_stats', 8 );
+}
+if (!$view_args['show_description']) {
+	remove_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_description', 4 );
+}
+
 ?>
+
 <li id="campaign-<?php echo get_the_ID() ?>" <?php post_class() ?>>
 <?php
 	/**

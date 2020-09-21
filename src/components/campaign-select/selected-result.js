@@ -1,8 +1,8 @@
 /**
  * Block dependencies
  */
-import { getCampaignThumbnail } from './functions';
-import { CAMPAIGN_DATA } from './campaign-data';
+
+import { getCampaignThumbnail, getCampaignPositionsArray } from './functions';
 import { HorizontalRule } from '@wordpress/components';
 
 /**
@@ -10,7 +10,6 @@ import { HorizontalRule } from '@wordpress/components';
  */
 const { __ } = wp.i18n;
 const { Component } = wp.element;
-const { apiFetch } = wp;
 const { Dashicon } = wp.components;
 
 /**
@@ -25,77 +24,36 @@ export class CampaignSelectedResults extends Component {
 		super( props );
 
 		this.state = {
-			query: '',
-			loaded: false,
+			campaignPositions: {},
 		};
 
-		this.getQuery            = this.getQuery.bind( this );
-		this.updateCampaignCache = this.updateCampaignCache.bind( this );
+		this.updateCampaignPositions = this.updateCampaignPositions.bind( this );
 	}
 
 	/**
 	 * Get the preview when component is first loaded.
 	 */
 	componentDidMount() {
-		this.updateCampaignCache();
+		this.updateCampaignPositions();
 	}
 
 	/**
 	 * Update the preview when component is updated.
 	 */
-	componentDidUpdate() {
-		if ( this.state.loaded && this.getQuery() !== this.state.query ) {
-			this.updateCampaignCache();
+	componentDidUpdate(prevProps) {
+		if ( this.props.available_campaigns !== prevProps.available_campaigns  ) {
+			this.updateCampaignPositions();
 		}
 	}
 
 	/**
-	 * Get the endpoint for the current state of the component.
+	 * Store the current campaign positions for referencing
 	 */
-	getQuery() {
-		if ( ! this.props.selected_campaigns.length ) {
-			return '';
-		}
-
-		// Determine which campaigns are not already in the cache and only fetch uncached campaigns.
-		let uncachedCampaigns = [];
-		for( const campaignId of this.props.selected_campaigns ) {
-			if ( ! CAMPAIGN_DATA.hasOwnProperty( campaignId ) ) {
-				uncachedCampaigns.push( campaignId );
-			}
-		}
-
-		return uncachedCampaigns.length ? '/wp/v2/campaigns?_embed&include=' + uncachedCampaigns.join( ',' ) : '';
-	}
-
-	/**
-	 * Add newly fetched campaigns to the cache.
-	 */
-	updateCampaignCache() {
-		const self = this;
-		const query = this.getQuery();
-
-		self.setState( {
-			query: query,
-			loaded: false,
+	updateCampaignPositions() {
+		const campaignPositions = getCampaignPositionsArray(this.props.available_campaigns);
+		this.setState( {
+			campaignPositions: campaignPositions
 		} );
-
-		// Add new campaigns to cache.
-		if ( query.length ) {
-			apiFetch( { path: query } ).then( campaigns => {
-				if ( campaigns.length ) {
-					for ( const campaign of campaigns ) {
-						CAMPAIGN_DATA[ campaign.id ] = campaign;
-					}
-				}
-
-				console.log( campaigns );
-
-				self.setState( {
-					loaded: true,
-				} );
-			} );
-		}
 	}
 
 	/**
@@ -108,11 +66,11 @@ export class CampaignSelectedResults extends Component {
 		for ( const campaignId of selected_campaigns ) {
 
 			// Skip products that aren't in the cache yet or failed to fetch.
-			if ( ! CAMPAIGN_DATA.hasOwnProperty( campaignId ) ) {
+			if ( ! this.state.campaignPositions.hasOwnProperty( campaignId ) ) {
 				continue;
 			}
 
-			const campaignData = CAMPAIGN_DATA[ campaignId ];
+			const campaignData = this.props.available_campaigns[ this.state.campaignPositions[campaignId] ];
 
 			campaignElements.push(
 				<li className="charitable-campaigns-list-card__item campaign" key={ campaignData.id + '-specific-select-edit' } >

@@ -202,6 +202,8 @@ export class SettingsEditor extends Component {
 				settingsView = <AllSettingsView
 					setAttributes={ setAttributes }
 					attributes={ attributes }
+					available_campaigns = {this.state.available_campaigns}
+					loading_available_campaigns = { this.state.loading_available_campaigns }
 					update_include_inactive_callback={ this.toggleIncludeInactive }
 				/>
 				break;
@@ -211,7 +213,9 @@ export class SettingsEditor extends Component {
 					setAttributes={ setAttributes }
 					attributes={ attributes }
 					loadAvailableCategories = {this.loadAvailableCategories}
+					available_campaigns = {this.state.available_campaigns}
 					available_categories = { this.state.available_categories }
+					loading_available_campaigns = { this.state.loading_available_campaigns }
 					loading_available_categories = { this.state.loading_available_categories }
 					update_include_inactive_callback={ this.toggleIncludeInactive }
 				/>
@@ -221,6 +225,7 @@ export class SettingsEditor extends Component {
 				settingsView = <SpecificSettingsView
 					setAttributes={ setAttributes }
 					available_campaigns = {this.state.available_campaigns}
+					loading_available_campaigns = { this.state.loading_available_campaigns }
 					attributes={ attributes }
 				/>
 				break;
@@ -285,28 +290,6 @@ class DisplayOptions extends Component {
 	}
 }
 
-/**
- * Display a single display option row.
- */
-// class DisplayOption extends Component {
-
-// 	/**
-// 	 * Render the display options.
-// 	 */
-// 	render() {
-// 		const { option, label, selected_display_option, update_display_option_callback } = this.props;
-
-// 		return (
-// 			<li className={ option === selected_display_option ? 'active-option' : '' }  onClick={ () => update_display_option_callback( option ) }>
-// 				{ option === selected_display_option ? <Dashicon icon="yes" /> : '' }
-// 				{ label }
-// 				<button onClick={ () => update_display_option_callback( option ) } className="charitable-block-settings-campaigns--display-options-button" type="button">
-// 					<Dashicon icon="admin-generic" />
-// 				</button>
-// 			</li>
-// 		);
-// 	}
-// }
 
 /**
  * Specific campaign settings view.
@@ -347,7 +330,7 @@ class AllSettingsView extends Component {
 	 * Render the view.
 	 */
 	render() {
-		const { attributes, setAttributes, update_include_inactive_callback } = this.props;
+		const { attributes, setAttributes, available_campaigns, total_campaign_count, update_include_inactive_callback } = this.props;
 		const { campaignsToExclude, includeInactive } = attributes;
 
 		return (
@@ -363,6 +346,8 @@ class AllSettingsView extends Component {
 						label={ __( 'Campaigns to exclude', 'charitable' ) }
 						search_placeholder={ __( 'Search for campaigns to exclude', 'charitable' ) }
 						selected_campaigns={ campaignsToExclude }
+						available_campaigns = { available_campaigns }
+						total_campaign_count = { total_campaign_count }
 						update_campaign_setting_callback={ ( value ) => setAttributes( { campaignsToExclude: value } ) }
 						multiple={ true }
 						campaign_active_status=""
@@ -382,7 +367,7 @@ class FilterSettingsView extends Component {
 	 * Render the view.
 	 */
 	render() {
-		const { attributes, setAttributes, update_include_inactive_callback, loadAvailableCategories, available_categories, loading_available_categories } = this.props;
+		const { attributes, setAttributes, update_include_inactive_callback, loadAvailableCategories, available_campaigns, total_campaign_count, available_categories, loading_available_categories } = this.props;
 		const { categories, campaignsToExclude, includeInactive, columns } = attributes;
 
 		return (
@@ -407,6 +392,8 @@ class FilterSettingsView extends Component {
 						label={ __( 'Campaigns to exclude', 'charitable' ) }
 						search_placeholder={ __( 'Search for campaigns to exclude', 'charitable' ) }
 						selected_campaigns={ campaignsToExclude }
+						available_campaigns = { available_campaigns }
+						total_campaign_count = { total_campaign_count }
 						update_campaign_setting_callback={ ( value ) => setAttributes( { campaignsToExclude: value } ) }
 						multiple={ true }
 						columns={ columns }

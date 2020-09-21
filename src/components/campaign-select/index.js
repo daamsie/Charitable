@@ -34,6 +34,7 @@ export class CampaignSelect extends Component {
 	 * @param id int Campaign ID.
 	 */
 	addOrRemoveCampaign( id ) {
+
 		let selected_campaigns = this.state.selected_campaigns;
 
 		// Add the campaign
@@ -58,7 +59,7 @@ export class CampaignSelect extends Component {
 	 * Render the list of campaigns and the search input.
 	 */
 	render() {
-		const { label, columns, campaign_active_status, available_campaigns, total_campaign_count } = this.props;
+		const { label, columns, campaign_active_status, available_campaigns, loading_available_campaigns, total_campaign_count } = this.props;
 
 		// let fieldLabel = label ? <label>{ label }</label> : null;
 
@@ -66,6 +67,7 @@ export class CampaignSelect extends Component {
 			<div className="charitable-campaigns-field">
 				<CampaignSelectedResults
 					selected_campaigns={ this.state.selected_campaigns }
+					available_campaigns = { available_campaigns }
 					add_or_remove_campaign_callback={ ( campaign ) => this.addOrRemoveCampaign( campaign ) }
 					columns={ columns }
 					campaign_active_status={ campaign_active_status }
@@ -76,6 +78,7 @@ export class CampaignSelect extends Component {
 					selected_campaigns={ this.state.selected_campaigns }
 					campaign_active_status={ campaign_active_status }
 					available_campaigns = { available_campaigns }
+					loading_available_campaigns = { loading_available_campaigns }
 					total_campaign_count = { total_campaign_count }
 				/>
 			</div>

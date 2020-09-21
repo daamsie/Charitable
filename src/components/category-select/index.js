@@ -3,8 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Component } = wp.element;
-const { apiFetch } = wp;
-import { MenuGroup } from '@wordpress/components';
+import { MenuGroup, Spinner } from '@wordpress/components';
 import { CategoryItem } from './category-item';
 
 
@@ -70,13 +69,13 @@ export class CampaignCategorySelect extends Component {
 		return (
 			<div className="charitable-campaign-categories-list">
 				{ label }
-				<CampaignCategoryList
-					selectedCategories={ this.state.selectedCategories }
-					checkboxChange={ this.checkboxChange }
-					available_categories = { available_categories }
-					loading_available_categories = { loading_available_categories }
-					firstLoad={ this.state.firstLoad }
-				/>
+					<CampaignCategoryList
+						selectedCategories={ this.state.selectedCategories }
+						checkboxChange={ this.checkboxChange }
+						available_categories = { available_categories }
+						loading_available_categories = { loading_available_categories }
+						firstLoad={ this.state.firstLoad }
+					/>
 			</div>
 		)
 	}
@@ -108,7 +107,7 @@ class CampaignCategoryList extends Component {
 		const { selectedCategories, checkboxChange, available_categories, loading_available_categories } = this.props;
 
 		if ( loading_available_categories ) {
-			return __( 'Loading categories', 'charitable' );
+			return <Spinner />;
 		}
 
 		if ( 0 === available_categories.length ) {
