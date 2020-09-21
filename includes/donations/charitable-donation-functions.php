@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.6.34
+ * @version   1.7.0
  */
 
 // Exit if accessed directly.
@@ -209,7 +209,7 @@ function charitable_get_ipn_url( $gateway ) {
  *
  * IPNs in Charitable are structured in this way: charitable-listener=gateway
  *
- * @deprecated 1.9.0
+ * @deprecated 2.1.0
  *
  * @since  1.4.0
  * @since  1.6.14 Deprecated. This is now handled by the webhook listener endpoint.

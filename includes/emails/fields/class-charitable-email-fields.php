@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.5.0
+ * @version   1.7.0
  */
 
 // Exit if accessed directly.
@@ -252,9 +252,10 @@ if ( ! class_exists( 'Charitable_Email_Fields' ) ) :
 			 * as preview values can be simply defined when setting up the content
 			 * field.
 			 *
-			 * @deprecated
+			 * @deprecated 2.0.0
 			 *
 			 * @since 1.0.0
+			 * @since 1.5.0 Deprecated.
 			 *
 			 * @param array            $fields Fields with their preview values. Single dimensional key => value array.
 			 * @param Charitable_Email $email  The instance of `Charitable_Email`.

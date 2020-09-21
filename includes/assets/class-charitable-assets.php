@@ -239,7 +239,7 @@ if ( ! class_exists( 'Charitable_Assets' ) ) :
 				),
 				'selectWoo'  => array(
 					'src'     => 'js/libraries/selectWoo/selectWoo.full' . $this->suffix . '.js',
-					'deps'    => array( 'jquery-core' ),
+					'deps'    => array( 'jquery' ),
 					'version' => '1.0.1',
 				),
 			);
@@ -292,26 +292,36 @@ if ( ! class_exists( 'Charitable_Assets' ) ) :
 		 */
 		private function setup_frontend_scripts() {
 			$scripts = array(
-				'charitable-script' => array(
+				'charitable-script'        => array(
 					'src'     => 'js/charitable' . $this->suffix . '.js',
 					'deps'    => wp_script_is( 'charitable-sessions', 'enqueued' )
-						? array( 'charitable-sessions', 'accounting', 'jquery-core' )
-						: array( 'accounting', 'jquery-core' ),
+						? array( 'charitable-sessions', 'accounting', 'jquery' )
+						: array( 'accounting', 'jquery' ),
 					'version' => $this->version,
 				),
-				'charitable-credit-card' => array(
+				'charitable-credit-card'   => array(
 					'src'     => 'js/charitable-credit-card' . $this->suffix . '.js',
 					'deps'    => array( 'charitable-script' ),
 					'version' => $this->version,
 				),
-				'charitable-plup-fields' => array(
+				'charitable-plup-fields'   => array(
 					'src'     => 'js/charitable-plupload-fields' . $this->suffix . '.js',
 					'deps'    => array( 'jquery-ui-sortable', 'wp-ajax-response', 'plupload-all' ),
 					'version' => $this->version,
 				),
-				'lean-modal'             => array(
+				'charitable-url-sanitizer' => array(
+					'src'     => 'js/charitable-url-sanitizer' . $suffix . '.js',
+					'deps'    => array( 'jquery' ),
+					'version' => $this->version,
+				),
+				'charitable-forms'         => array(
+					'src'     => 'js/charitable-forms' . $suffix . '.js',
+					'deps'    => array( 'jquery' ),
+					'version' => $this->version,
+				),
+				'lean-modal'               => array(
 					'src'     => 'js/libraries/leanModal' . $this->suffix . '.js',
-					'deps'    => array( 'jquery-core' ),
+					'deps'    => array( 'jquery' ),
 					'version' => $this->version,
 				),
 			);
@@ -375,17 +385,17 @@ if ( ! class_exists( 'Charitable_Assets' ) ) :
 			$scripts = array(
 				'charitable-admin-notice' => array(
 					'src'     => 'js/charitable-admin-notice' . $this->suffix . '.js',
-					'deps'    => array( 'jquery-core' ),
+					'deps'    => array( 'jquery' ),
 					'version' => $this->version,
 				),
 				'charitable-admin-media'  => array(
 					'src'     => 'js/charitable-admin-media' . $this->suffix . '.js',
-					'deps'    => array( 'jquery-core' ),
+					'deps'    => array( 'jquery' ),
 					'version' => $this->version,
 				),
 				'lean-modal'              => array(
 					'src'     => 'js/libraries/leanModal' . $this->suffix . '.js',
-					'deps'    => array( 'jquery-core' ),
+					'deps'    => array( 'jquery' ),
 					'version' => $this->version,
 				),
 				'charitable-admin-tables' => array(

@@ -292,7 +292,6 @@ module.exports = function(grunt) {
 
             // Ignore function files.
             if( classname != '' ) {
-
                 if ( grunt.file.read(abspath).includes('/* CLASSMAP: IGNORE */') ) {
                     return;
                 }
@@ -306,6 +305,7 @@ module.exports = function(grunt) {
                 classname = classname.replace( '_Api', '_API' );
                 classname = classname.replace( '_Db', '_DB' );
                 classname = classname.replace( '_I18n', '_i18n' );
+                classname = classname.replace( '_Wpml', '_WPML' );
 
                 map = map.concat( "\t'" + classname + "' => '" + filepath + "',\n" );
             }

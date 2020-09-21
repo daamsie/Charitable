@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.6.43
+ * @version   1.7.0
  */
 
 // Exit if accessed directly.
@@ -1365,22 +1365,6 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		 */
 		private static function get_donation_amount_cache_key( $campaign_id ) {
 			return 'charitable_campaign_' . $campaign_id . '_donation_amount';
-		}
-
-		/**
-		 * Deprecated method used to sanitize meta.
-		 *
-		 * @deprecated 1.7.0
-		 *
-		 * @since  1.4.12 Deprecated.
-		 *
-		 * @param  mixed  $value     Value of meta field.
-		 * @param  string $key       Key of meta field.
-		 * @param  array  $submitted Posted values.
-		 */
-		public static function sanitize_meta( $value, $key, $submitted ) {
-			charitable_get_deprecated()->deprecated_function( __METHOD__, '1.4.2' );
-			return apply_filters( 'charitable_sanitize_campaign_meta' . $key, $value, $submitted );
 		}
 	}
 

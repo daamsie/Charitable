@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.0
+ * @version   1.7.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -205,15 +205,6 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 
 			foreach ( $meta_keys as $key ) {
 				$value = isset( $submitted[ $key ] ) ? $submitted[ $key ] : false;
-
-				/**
-				 * This filter is deprecated. Use charitable_sanitize_campaign_meta{$key} instead.
-				 *
-				 * @deprecated 1.7.0
-				 *
-				 * @since 1.4.12 Deprecated.
-				 */
-				$value = apply_filters( 'charitable_sanitize_campaign_meta', $value, $key, $submitted, $campaign_id );
 
 				/**
 				 * Filter this meta value. The filter hook is

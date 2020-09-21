@@ -17,7 +17,12 @@
         padding: 0 0 8px 0;
     }
 
-    .handlediv {
+    .postbox-header {
+        border-bottom: none;
+    }
+
+    .handlediv,
+    .hndle {
         display: none;
     }
 
@@ -118,6 +123,10 @@
 
 .charitable-metabox {
     @include charitable_metabox();
+}
+
+#side-sortables .charitable-metabox-wrap {
+    float: none;
 }
 
 .charitable-metabox-header {
@@ -239,7 +248,7 @@ body.post-type-campaign {
 }
 
 .charitable-actions-form {
-    padding: 0 20px 20px 20px;
+    padding: 12px 12px 18px 12px;
 }
 
 .charitable-actions-submit {

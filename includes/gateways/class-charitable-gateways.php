@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.6.38
+ * @version   1.6.44
  */
 
 // Exit if accessed directly.
@@ -425,6 +425,7 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 				'stripe'        => __( 'Stripe', 'charitable' ),
 				'authorize_net' => __( 'Authorize.Net', 'charitable' ),
 				'windcave'      => __( 'Windcave', 'charitable' ),
+				'braintree'     => __( 'Braintree', 'charitable' ),
 			);
 
 			/* If the user has already enabled one of these, leave them alone. :) */

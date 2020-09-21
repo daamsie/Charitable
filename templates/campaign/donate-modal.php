@@ -33,7 +33,7 @@ $show_amount_field = array_key_exists( 'show_amount_field', $view_args ) && $vie
 			placeholder="<?php echo charitable_get_currency_helper()->get_currency_symbol(); ?>"
 			class="charitable-custom-amount-field"
 			style="border-color:<?php echo $view_args['button_colour']; ?>;"
-		/><?php endif; ?><a data-trigger-modal="charitable-donation-form-modal"
+		/><?php endif; ?><a data-trigger-modal="charitable-donation-form-modal-<?php echo $campaign->ID; ?>"
 		class="<?php echo esc_attr( charitable_get_button_class( 'donate' ) ); ?>"
 		href="<?php echo charitable_get_permalink( 'campaign_donation_page', array( 'campaign_id' => $campaign->ID ) ); ?>"
 		aria-label="<?php echo $label; ?>"

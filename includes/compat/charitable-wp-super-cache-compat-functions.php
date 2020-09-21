@@ -53,7 +53,7 @@ add_action( 'charitable_flush_campaign_cache', 'charitable_compat_wp_super_cache
 /**
  * Prevent caching on certain Charitable pages.
  *
- * @deprecated 1.9.0
+ * @deprecated 2.0.0
  *
  * @since  1.5.4
  * @since  1.6.14 Deprecated.

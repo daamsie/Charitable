@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.6.8
+ * @version   1.7.0
  */
 
 global $post;
@@ -196,7 +196,7 @@ $total = apply_filters( 'charitable_donation_details_table_total', $amount, $don
 			/**
 			 * Add a row before the status. Any output should be wrapped in <tr></tr> with two cells.
 			 *
-			 * @deprecated 1.9.0
+			 * @deprecated 2.0.0
 			 *
 			 * @since 1.5.0
 			 * @since 1.6.0 Deprecated.
@@ -208,7 +208,7 @@ $total = apply_filters( 'charitable_donation_details_table_total', $amount, $don
 			/**
 			 * Add a row after the status. Any output should be wrapped in <tr></tr> with two cells.
 			 *
-			 * @deprecated 1.9.0
+			 * @deprecated 2.0.0
 			 *
 			 * @since 1.5.0
 			 * @since 1.6.0 Deprecated.

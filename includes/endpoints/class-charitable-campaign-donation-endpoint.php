@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.25
+ * @version   1.6.44
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -99,7 +99,10 @@ if ( ! class_exists( 'Charitable_Campaign_Donation_Endpoint' ) ) :
 			if ( $wp_rewrite->using_permalinks()
 				&& ! in_array( get_post_status( $campaign_id ), array( 'pending', 'draft' ) )
 				&& ! isset( $_GET['preview'] ) ) {
-				return trailingslashit( $campaign_url ) . 'donate/';
+
+				$url = parse_url( $campaign_url );
+
+				return $this->sanitize_endpoint_url( $campaign_url, 'donate' );
 			}
 
 			return esc_url_raw( add_query_arg( array( 'donate' => 1 ), $campaign_url ) );

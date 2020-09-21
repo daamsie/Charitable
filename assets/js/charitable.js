@@ -59,7 +59,7 @@ CHARITABLE = window.CHARITABLE || {};
          *
          * @access private
          */
-        this.prevent_scroll_to_top = true;
+        this.prevent_scroll_to_top = false;
 
         /**
          * Reference to this object.
@@ -194,9 +194,7 @@ CHARITABLE = window.CHARITABLE || {};
 
             /* Validate the form submission before going further. */
             if ( false === helper.validate() ) {
-                helper.hide_processing();
-                helper.print_errors();
-                helper.scroll_to_top();
+                helper.cancel_processing();
                 return false;
             }
 
@@ -227,11 +225,7 @@ CHARITABLE = window.CHARITABLE || {};
             if ( ! helper.waiting() ) {
                 /* Double-check that there are still no errors. */
                 if ( helper.get_errors().length > 0 ) {
-                    helper.hide_processing();
-
-                    helper.print_errors();
-
-                    helper.scroll_to_top();
+                    helper.cancel_processing();
                 } else {
                     callback();
                 }
@@ -276,10 +270,9 @@ CHARITABLE = window.CHARITABLE || {};
                         maybe_process( helper, function() {
                             window.location.href = response.redirect_to;
                         } );
-                    } else {
-                        helper.hide_processing();
-                        helper.print_errors( response.errors );
-                        helper.scroll_to_top();
+                    }
+                    else {
+                        helper.cancel_processing( response.errors );
 
                         if ( response.donation_id ) {
                             helper.set_donation_id( response.donation_id );
@@ -287,17 +280,11 @@ CHARITABLE = window.CHARITABLE || {};
                     }
                 }
             }).fail(function (response, textStatus, errorThrown) {
-
                 if ( window.console && window.console.log ) {
                     console.log( response );
                 }
 
-                helper.hide_processing();
-
-                helper.print_errors( [ CHARITABLE_VARS.error_unknown ] );
-
-                helper.scroll_to_top();
-
+                helper.cancel_processing( [ CHARITABLE_VARS.error_unknown ] );
             });
 
             return false;
@@ -637,7 +624,7 @@ CHARITABLE = window.CHARITABLE || {};
     /**
      * Print the errors at the top of the form.
      *
-     * @param   array
+     * @param array
      */
     Donation_Form.prototype.print_errors = function( errors ) {
         var e = errors || this.errors,
@@ -759,6 +746,19 @@ CHARITABLE = window.CHARITABLE || {};
     };
 
     /**
+     * Cancel donation processing.
+     *
+     * @param array errors Error messages to show.
+     */
+    Donation_Form.prototype.cancel_processing = function( errors ) {
+        this.hide_processing();
+        this.print_errors( errors );
+        this.scroll_to_top();
+
+        this.form.trigger( 'charitable:form:cancelled', this );
+    };
+
+    /**
      * Set the donation ID.
      */
     Donation_Form.prototype.set_donation_id = function( donation_id ) {
@@ -771,7 +771,6 @@ CHARITABLE = window.CHARITABLE || {};
      * @return  object
      */
     Donation_Form.prototype.get_data = function() {
-
         return this.form.serializeArray().reduce( function( obj, item ) {
             if ( '[]' === item.name.slice( -2 ) ) {
                 var name = item.name.slice( 0, -2 );
@@ -959,65 +958,6 @@ CHARITABLE = window.CHARITABLE || {};
 
 })( CHARITABLE, jQuery );
 
-/**
- * Set up Charitable helper functions.
- */
-( function( exports, $ ) {
-    exports.Helpers = {
-        /**
-         * Sanitize URLs.
-         */
-        sanitize_url : function( input ) {
-            var url = input.value.toLowerCase();
-
-            if ( !/^https?:\/\//i.test( url ) && url.length > 0 ) {
-                url = 'http://' + url;
-                input.value = url;
-            }
-        },
-
-        /**
-         * Disable forms after submission.
-         */
-        disable_forms_after_submission : function( forms ) {
-            forms.forEach( function(form) {
-                var $form = $(form);
-
-                if ( $form.length ) {
-                    $form.append( '<input type="hidden" id="charitable-submit-button-value" />' );
-
-                    $form.find( '[type=submit]' ).on( 'click', function( event ) {
-                        /* If the form submission isn't valid, proceed no further. */
-                        if ( ! $form[0].checkValidity() ) {
-                            return;
-                        }
-
-                        var name = event.currentTarget.name,
-                            value = event.currentTarget.value;
-
-                        $form.find( '#charitable-submit-button-value' )
-                            .attr( 'name', name )
-                            .attr( 'value', value );
-
-                        $form.find( '[type=submit]' )
-                            .attr( 'disabled', 'disabled' );
-
-                        return $form.submit();
-                    } );
-                }
-            } );
-        }
-    };
-})( CHARITABLE, jQuery );
-
-/**
- * URL sanitization.
- *
- * This is provided for backwards compatibility.
- */
-CHARITABLE.SanitizeURL = function( input ) {
-    CHARITABLE.Helpers.sanitize_url( input );
-};
 
 /**
  * Do a version check.
@@ -1070,15 +1010,6 @@ CHARITABLE.VersionCompare = function( version, compare ) {
         });
 
         CHARITABLE.Toggle();
-
-        CHARITABLE.Helpers.disable_forms_after_submission(
-            [
-                '#charitable-registration-form',
-                '#charitable-profile-form',
-                '#charitable-campaign-submission-form'
-            ]
-        );
-
     });
 
 })( jQuery );
