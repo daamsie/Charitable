@@ -3,6 +3,8 @@
  */
 import { CampaignSearchResultsDropdown } from './search-results-dropdown';
 import { CAMPAIGN_DATA } from './campaign-data';
+import { CampaignItem } from './campaign-item';
+import { MenuGroup } from '@wordpress/components';
 
 /**
  * WordPress dependencies
@@ -24,15 +26,15 @@ export class CampaignSearchResults extends Component {
 
 		this.state = {
 			filtered: [],
-			campaign_count: null,
-			campaigns: [],
-			query: '',
-			loaded: false,
-			controllers: [],
+			// campaign_count: null,
+			// campaigns: [],
+			// query: '',
+			// loaded: false,
+			// controllers: [],
 		};
 
-		this.getQuery      = this.getQuery.bind( this );
-		this.updateResults = this.updateResults.bind( this );
+		// this.getQuery      = this.getQuery.bind( this );
+		//this.updateResults = this.updateResults.bind( this );
 	}
 
 	/**
@@ -42,31 +44,66 @@ export class CampaignSearchResults extends Component {
 	 */
 	componentDidMount() {
 		const self = this;
+		
+		self.setFilteredResults();
 
-		apiFetch( {
-			path: '/wp/v2/campaigns?_embed&per_page=100&active_status=' + this.props.campaign_active_status,
-			parse: false
-		} ).then( ( response ) => {
-			response.json().then( ( campaigns ) => {
+		// apiFetch( {
+		// 	path: '/wp/v2/campaigns?_embed&per_page=100&active_status=' + this.props.campaign_active_status,
+		// 	parse: false
+		// } ).then( ( response ) => {
+		// 	response.json().then( ( campaigns ) => {
 
-				self.setState( {
-					campaigns: campaigns,
-					loaded: true,
-					campaign_count: response.headers.get( 'X-WP-Total' ),
-				})
+		// 		self.setState( {
+		// 			campaigns: campaigns,
+		// 			loaded: true,
+		// 			campaign_count: response.headers.get( 'X-WP-Total' ),
+		// 		})
 
-				self.updateResults();
-			} )
-		} );
+		// 		
+		// 	} )
+		// } );
 	}
 
 	/**
 	 * Update the preview when component is updated.
 	 */
-	componentDidUpdate() {
-		if ( this.props.search_string !== this.state.query ) {
-			this.updateResults();
+	componentDidUpdate(prevProps) {
+		/** 
+		 * If either the search string, or the campaigns available to filter over change, 
+		 * we need to update the filtered results.
+		 */
+
+		if ( this.props.search_string !== prevProps.search_string 
+					|| this.props.available_campaigns !== prevProps.available_campaigns ) {
+			this.setFilteredResults();
 		}
+	}
+
+	/**
+	 * Filters all the results to only show the ones matching the search query.
+	 */
+
+	setFilteredResults() 
+	{
+		const query          = this.props.search_string;
+		const queryLowercase = query.toLowerCase();
+		
+		if (typeof this.props.available_campaigns === 'undefined') {
+			return;
+		}
+
+		const filtered       = this.props.available_campaigns.filter( ( campaign ) => {
+			if (queryLowercase.length) {
+				return campaign.title.rendered.toLowerCase().includes( queryLowercase );
+			}
+			else {
+				return campaign;
+			}
+		} );
+
+		this.setState( {			
+			filtered: filtered,
+		} );
 	}
 
 	/**
@@ -74,69 +111,64 @@ export class CampaignSearchResults extends Component {
 	 *
 	 * @return string
 	 */
-	getQuery() {
-		if ( ! this.props.search_string.length ) {
-			return '';
-		}
+	// getQuery() {
+	// 	if ( ! this.props.search_string.length ) {
+	// 		return '';
+	// 	}
 
-		return '/wp/v2/campaigns?_embed&per_page=10&search=' + this.props.search_string;
-	}
+	// 	return '/wp/v2/campaigns?_embed&per_page=10&search=' + this.props.search_string;
+	// }
 
 	/**
 	 * Update the search results.
 	 */
-	updateResults( retry = 0 ) {
-		// Campaigns haven't loaded yet, so retry in 500ms.
-		if ( ! this.state.loaded ) {
+	// updateResults( retry = 0 ) {
+	// 	// Campaigns haven't loaded yet, so retry in 500ms.
+	// 	if ( ! this.state.loaded ) {
 
-			// Avoid retrying forever.
-			if ( retry < 25 ) {
-				retry += 1;
-				return window.setTimeout( this.updateResults, 500, retry );
-			}
+	// 		// Avoid retrying forever.
+	// 		if ( retry < 25 ) {
+	// 			retry += 1;
+	// 			return window.setTimeout( this.updateResults, 500, retry );
+	// 		}
+	// 		this.setState( {
+	// 			loaded: true,
+	// 		} );
+	// 	}
 
-			this.setState( {
-				loaded: true,
-			} );
-		}
-
-		const query          = this.props.search_string;
-		const queryLowercase = query.toLowerCase();
-		const filtered       = this.state.campaigns.filter( ( campaign ) => {
-			return campaign.title.rendered.toLowerCase().includes( queryLowercase );
-		} );
-
-		this.setState( {
-			query: query,
-			filtered: filtered,
-		} );
-	}
+		
+	// }
 
 	/**
 	 * Render.
 	 */
 	render() {
-		if ( ! this.state.loaded || ! this.state.query.length ) {
-			return null;
-		}
+		const maxResults = 15;
+		const { add_or_remove_campaign_callback, selected_campaigns } = this.props;
 
 		if ( 0 === this.state.filtered.length ) {
 			return <span className="charitable-campaign-list-card__search-no-results"> { __( 'No campaigns found' ) } </span>;
 		}
 
 		// Populate the cache.
-		for ( let campaign of this.state.filtered ) {
-			CAMPAIGN_DATA[ campaign.id ] = campaign;
-		}
+		// for ( let campaign of this.state.filtered ) {
+		// 	CAMPAIGN_DATA[ campaign.id ] = campaign;
+		// }
 
-		return (
-			<CampaignSearchResultsDropdown
-				campaigns={ this.state.filtered }
-				add_or_remove_campaign_callback={ this.props.add_or_remove_campaign_callback }
-				selected_campaigns={ this.props.selected_campaigns }
-				is_dropdown_open_callback={ this.props.is_dropdown_open_callback }
-			/>
-		);
+		return ( this.state.filtered.length > 0 ) && (
+			<div className="charitable-campaign-list-card__results">
+			<MenuGroup>
+				{ this.state.filtered.slice(0, maxResults).map( ( campaign ) => (
+					<CampaignItem 
+						key = {'campaign-' + campaign.id}
+						campaign={campaign}
+						isChecked={ selected_campaigns.includes( campaign.id ) }
+						add_or_remove_campaign_callback = { add_or_remove_campaign_callback }
+						 />
+				))}
+			</MenuGroup>
+			</div>
+		)
 	}
 }
 

@@ -2,6 +2,7 @@
  * Block dependencies.
  */
 import { CampaignSearchResults } from './search-results';
+import { TextControl } from '@wordpress/components';
 import { REFS } from './refs';
 
 /**
@@ -28,8 +29,7 @@ export class CampaignSearchField extends Component {
 		};
 
 		this.handleKeyDown       = this.handleKeyDown.bind( this );
-		this.updateSearchResults = this.updateSearchResults.bind( this );
-		this.isDropdownOpen      = this.isDropdownOpen.bind( this );
+		// this.isDropdownOpen      = this.isDropdownOpen.bind( this );
 
 		REFS.search_results = createRef();
 	}
@@ -37,20 +37,11 @@ export class CampaignSearchField extends Component {
 	/**
 	 * Update state to reflect if dropdown is open.
 	 */
-	isDropdownOpen( isOpen ) {
-		this.setState( {
-			dropdown_open: !! isOpen,
-		} );
-	}
-
-	/**
-	 * Update search results.
-	 */
-	updateSearchResults( evt ) {
-		this.setState( {
-			search_text: evt.target.value
-		} );
-	}
+	// isDropdownOpen( isOpen ) {
+	// 	this.setState( {
+	// 		dropdown_open: !! isOpen,
+	// 	} );
+	// }
 
 	/**
 	 * Handle key strokes.
@@ -74,27 +65,27 @@ export class CampaignSearchField extends Component {
 	 */
 	render() {
 		const divClass = 'charitable-campaigns-list-card__search-wrapper';
+		const { label, search_placeholder, add_or_remove_campaign_callback, campaign_active_status, available_campaigns, total_campaign_count, selected_campaigns } = this.props;
 
 		return (
 			<div className={ divClass + ( this.state.dropdown_open ? ' ' + divClass + '--with-results' : '' ) }>
 				<div className="charitable-campaigns-list-card__input-wrapper">
 					<Dashicon icon="search" />
-					<input type="search"
-						className="charitable-campaigns-list-card__search"
-						value={ this.state.search_text }
-						placeholder={ this.props.search_placeholder }
-						tabIndex="0"
-						onKeyDown={ this.handleKeyDown }
-						onChange={ this.updateSearchResults }
-						ref={ REFS.search_field }
-					/>
+					<TextControl
+							label={ label }
+							value={ this.state.search_text }
+							onChange={ ( search_text ) => this.setState( { search_text } ) }
+							onKeyDown={ this.handleKeyDown }
+							placeholder={ search_placeholder }
+					/>	
 				</div>
 				<CampaignSearchResults
 					search_string={ this.state.search_text }
-					add_or_remove_campaign_callback={ this.props.add_or_remove_campaign_callback }
-					selected_campaigns={ this.props.selected_campaigns }
-					is_dropdown_open_callback={ this.isDropdownOpen }
-					campaign_active_status={ this.props.campaign_active_status }
+					add_or_remove_campaign_callback={ add_or_remove_campaign_callback }
+					selected_campaigns={ selected_campaigns }
+					available_campaigns = { available_campaigns }
+					total_campaign_count = { total_campaign_count }
+					campaign_active_status={ campaign_active_status }
 				/>
 			</div>
 		);

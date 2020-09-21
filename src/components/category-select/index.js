@@ -4,6 +4,9 @@
 const { __ } = wp.i18n;
 const { Component } = wp.element;
 const { apiFetch } = wp;
+import { MenuGroup } from '@wordpress/components';
+import { CategoryItem } from './category-item';
+
 
 /**
  * Display a list of campaign categories with checkboxes, counts and a search filter.
@@ -22,9 +25,13 @@ export class CampaignCategorySelect extends Component {
 		}
 
 		this.checkboxChange  = this.checkboxChange.bind( this );
-		//this.accordionToggle = this.accordionToggle.bind( this );
-		//this.filterResults   = this.filterResults.bind( this );
-		this.setFirstLoad    = this.setFirstLoad.bind( this );
+	}
+
+	/**
+	 * Get the preview when component is first loaded.
+	 */
+	componentDidMount() {
+		this.props.loadAvailableCategories();	
 	}
 
 	/**
@@ -50,21 +57,11 @@ export class CampaignCategorySelect extends Component {
 	}
 
 	/**
-	 * Update firstLoad state.
-	 *
-	 * @param Booolean loaded
-	 */
-	setFirstLoad( loaded ) {
-		this.setState( {
-			firstLoad: !! loaded
-		} );
-	}
-
-	/**
 	 * Render the list of categories and the search input.
 	 */
 	render() {
 		let label = null;
+		const {  available_categories, loading_available_categories } = this.props;
 
 		if ( this.props.label.length ) {
 			label = <label>{ this.props.label }</label>;
@@ -76,8 +73,9 @@ export class CampaignCategorySelect extends Component {
 				<CampaignCategoryList
 					selectedCategories={ this.state.selectedCategories }
 					checkboxChange={ this.checkboxChange }
+					available_categories = { available_categories }
+					loading_available_categories = { loading_available_categories }
 					firstLoad={ this.state.firstLoad }
-					setFirstLoad={ this.setFirstLoad }
 				/>
 			</div>
 		)
@@ -101,80 +99,30 @@ class CampaignCategoryList extends Component {
 			query: '',
 		};
 
-		this.updatePreview = this.updatePreview.bind( this );
-		this.getQuery      = this.getQuery.bind( this );
-	}
-
-	/**
-	 * Get the preview when component is first loaded.
-	 */
-	componentDidMount() {
-		if ( this.getQuery() !== this.state.query ) {
-			this.updatePreview();
-		}
-	}
-
-	/**
-	 * Update the preview when component is updated.
-	 */
-	componentDidUpdate() {
-		if ( this.getQuery() !== this.state.query && this.state.loaded ) {
-			this.updatePreview();
-		}
-	}
-
-	/**
-	 * Get the endpoint for the current state of the component.
-	 *
-	 * @return string
-	 */
-	getQuery() {
-		const endpoint = '/wp/v2/campaignCategories';
-		return endpoint;
-	}
-
-	/**
-	 * Update the preview with the latest settings.
-	 */
-	updatePreview() {
-		const self  = this;
-		const query = this.getQuery();
-
-		self.setState( {
-			loaded: false,
-		} );
-
-		apiFetch( { path: query } ).then( categories => {
-			self.setState( {
-				categories: categories,
-				loaded: true,
-				query: query
-			} );
-		} );
 	}
 
 	/**
 	 * Render.
 	 */
 	render() {
-		const { selectedCategories, checkboxChange } = this.props;
+		const { selectedCategories, checkboxChange, available_categories, loading_available_categories } = this.props;
 
-		if ( ! this.state.loaded ) {
+		if ( loading_available_categories ) {
 			return __( 'Loading categories', 'charitable' );
 		}
 
-		if ( 0 === this.state.categories.length ) {
+		if ( 0 === available_categories.length ) {
 			return __( 'No categories found', 'charitable' );
 		}
 
-		const handleCategoriesToCheck = ( evt, parent, categories ) => {
+		const handleCategoriesToCheck = ( isChecked, parent, categories ) => {
 			let slugs = getCategoryChildren( parent, categories ).map( category => {
 				return category.slug;
 			} );
 
 			slugs.push( parent.slug );
 
-			checkboxChange( evt.target.checked, slugs );
+			checkboxChange( isChecked, slugs );
 		}
 
 		const getCategoryChildren = ( parent, categories ) => {
@@ -192,25 +140,19 @@ class CampaignCategoryList extends Component {
 			let filteredCategories = categories;
 
 			return ( filteredCategories.length > 0 ) && (
-				<ul>
+				<MenuGroup>
 					{ filteredCategories.map( ( category ) => (
-						<li key={ category.id } className="charitable-category-list-card__item">
-							<label>
-								<input type="checkbox"
-									id={ 'campaign-category-' + category.slug }
-									value={ category.slug }
-									checked={ selectedCategories.includes( category.slug ) }
-									onChange={ ( evt ) => handleCategoriesToCheck( evt, category, categories ) }
-								/> { category.name }
-								<span className="charitable-category-list-card__taxonomy-count">{ category.count }</span>
-							</label>
-						</li>
+						<CategoryItem 
+							key = {'category-' + category.id}
+							category={category}
+							isChecked={ selectedCategories.includes( category.slug ) }
+							onChange={ ( isChecked ) => handleCategoriesToCheck( isChecked, category, categories ) } />
 					))}
-				</ul>
+				</MenuGroup>
 			)
 		}
 
-		let categoriesData = this.state.categories;
+		let categoriesData = available_categories;
 
 		return (
 			<div className="charitable-category-list-card__results">
