@@ -242,8 +242,8 @@ if ( ! function_exists( 'charitable_template_campaign_progress_bar' ) ) :
 	 * @param  Charitable_Campaign $campaign The campaign object.
 	 * @return void
 	 */
-	function charitable_template_campaign_progress_bar( $campaign ) {
-		charitable_template( 'campaign/progress-bar.php', array( 'campaign' => $campaign ) );
+	function charitable_template_campaign_progress_bar( $campaign, $args ) {
+		charitable_template( 'campaign/progress-bar.php', array( 'campaign' => $campaign, 'style' => $args['progress_bar_style'] ) );
 	}
 
 endif;
@@ -415,12 +415,18 @@ if ( ! function_exists( 'charitable_template_responsive_styles' ) ) :
 		if ( preg_match( '/[px|em]/', $args['responsive'] ) ) {
 			$breakpoint = $args['responsive'];
 		}
+
+		$highlight_colour = charitable_get_highlight_colour();
+
 		?>
 <style type="text/css" media="screen">
-@media only screen and (max-width: <?php echo $breakpoint; ?>) {
-	.campaign-loop.campaign-grid.masonry { -moz-column-count: 1; -webkit-column-count: 1; column-count: 1; }
-	.campaign-loop.campaign-grid .campaign,.campaign-loop.campaign-grid .campaign.hentry { width: 100% !important; }
-}
+	@media only screen and (max-width: <?php echo $breakpoint; ?>) {
+		.campaign-loop.campaign-grid.masonry { -moz-column-count: 1; -webkit-column-count: 1; column-count: 1; }
+		.campaign-loop.campaign-grid .campaign,.campaign-loop.campaign-grid .campaign.hentry { width: 100% !important; }
+	}
+	.campaign-progress-bar .bar,
+	.campaign-donation .donate-button { background-color: <?php echo $highlight_colour; ?>; }
+	.campaign-progress-circle .campaign-progress-half-circle { border-color: <?php echo $highlight_colour; ?>; }
 </style>
 		<?php
 	}
