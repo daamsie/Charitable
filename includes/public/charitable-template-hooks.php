@@ -17,6 +17,80 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( ! function_exists( 'charitable_campaigns_loop_optionally_remove_actions' ) ) :
+	/**
+	 * Optionally remove certain actions from a campaign view based on arguments provided.
+	 *
+	 * @since  1.7.0
+	 *
+	 * @param   array $args The view arguments.
+	 * @return void
+	 */
+	function charitable_campaigns_loop_optionally_remove_actions( $args ) {
+		if ( ! $args['show_image'] ) {
+			remove_action( 'charitable_campaign_content_loop_before_title', 'charitable_template_campaign_loop_thumbnail', 10 );
+		}
+
+		if ( ! $args['show_description'] ) {
+			remove_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_description', 4 );
+		}
+
+		if ( ! $args['show_progress_bar'] ) {
+			remove_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_progress_bar', 6 );
+		}
+
+		if ( ! $args['show_amount_donated'] ) {
+			remove_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_loop_donation_stats', 8 );
+		}
+	}
+
+endif;
+
+
+if ( ! function_exists( 'charitable_campaigns_loop_add_actions' ) ) :
+	/**
+	 * Optionally remove certain actions from a campaign view
+	 *
+	 * @since  1.7.0
+	 *
+	 * @return void
+	 */
+	function charitable_campaigns_loop_add_actions() {
+		/**
+		 * Campaigns loop, right at the start.
+		 *
+		 * @see charitable_template_campaign_loop_add_modal()
+		 */
+		add_action( 'charitable_campaign_loop_before', 'charitable_template_campaign_loop_add_modal' );
+		add_action( 'charitable_campaign_loop_before', 'charitable_template_responsive_styles', 10, 2 );
+
+		/**
+		 * Campaigns loop, before title.
+		 *
+		 * @see charitable_template_campaign_loop_thumbnail()
+		 */
+		add_action( 'charitable_campaign_content_loop_before_title', 'charitable_template_campaign_loop_thumbnail', 10 );
+
+		/**
+		 * Campaigns loop, after the main title.
+		 *
+		 * @see charitable_template_campaign_description()
+		 * @see charitable_template_campaign_progress_bar()
+		 * @see charitable_template_campaign_loop_donation_stats()
+		 * @see charitable_template_campaign_donate_link()
+		 * @see charitable_template_campaign_loop_more_link()
+		 */
+		add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_description', 4 );
+		add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_progress_bar', 6, 2 );
+		add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_loop_donation_stats', 8 );
+		add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_loop_donate_link', 10, 2 );
+		add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_loop_more_link', 10, 2 );
+
+	}
+
+endif;
+
+
 /**
  * Add custom CSS to the <head>.
  *
@@ -56,34 +130,12 @@ add_action( 'charitable_campaign_summary', 'charitable_template_donate_button', 
 add_action( 'charitable_campaign_content_after', 'charitable_template_campaign_donation_form_in_page', 4 );
 
 /**
- * Campaigns loop, right at the start.
+ * Add the campaign loop actions
  *
- * @see charitable_template_campaign_loop_add_modal()
+ * @see charitable_campaigns_loop_add_actions()
  */
-add_action( 'charitable_campaign_loop_before', 'charitable_template_campaign_loop_add_modal' );
-add_action( 'charitable_campaign_loop_before', 'charitable_template_responsive_styles', 10, 2 );
 
-/**
- * Campaigns loop, before title.
- *
- * @see charitable_template_campaign_loop_thumbnail()
- */
-add_action( 'charitable_campaign_content_loop_before_title', 'charitable_template_campaign_loop_thumbnail', 10 );
-
-/**
- * Campaigns loop, after the main title.
- *
- * @see charitable_template_campaign_description()
- * @see charitable_template_campaign_progress_bar()
- * @see charitable_template_campaign_loop_donation_stats()
- * @see charitable_template_campaign_donate_link()
- * @see charitable_template_campaign_loop_more_link()
- */
-add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_description', 4 );
-add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_progress_bar', 6, 2 );
-add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_loop_donation_stats', 8 );
-add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_loop_donate_link', 10, 2 );
-add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_loop_more_link', 10, 2 );
+charitable_campaigns_loop_add_actions();
 
 /**
  * Donation receipt, after the page content (if there is any).
