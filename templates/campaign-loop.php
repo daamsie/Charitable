@@ -25,13 +25,6 @@ $loop_class = charitable_campaign_loop_class( $view_args );
 $args       = charitable_campaign_loop_args( $view_args );
 
 /**
- * Optionally filter out some of the content for this loop based on args.
- *
- * @since 1.7.0
- */
-charitable_campaigns_loop_optionally_remove_actions( $args );
-
-/**
  * Add something before the campaign loop.
  *
  * @since   1.5.0
@@ -67,12 +60,3 @@ wp_reset_postdata();
  * @param   array    $args      Loop args.
  */
 do_action( 'charitable_campaign_loop_after', $campaigns, $args );
-
-
-/**
- * Reset the actions for campaign loops.
- *
- * @since 1.7.0
- */
-
-charitable_campaigns_loop_add_actions();

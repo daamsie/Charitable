@@ -9,7 +9,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.5.0
+ * @version   1.7.0
  */
 
 // Exit if accessed directly.
@@ -23,10 +23,11 @@ if ( ! function_exists( 'charitable_campaigns_loop_optionally_remove_actions' ) 
 	 *
 	 * @since  1.7.0
 	 *
-	 * @param   array $args The view arguments.
+	 * @param  WP_Query $campaigns The campaigns.
+	 * @param  array    $args      The view arguments.
 	 * @return void
 	 */
-	function charitable_campaigns_loop_optionally_remove_actions( $args ) {
+	function charitable_campaigns_loop_optionally_remove_actions( $campaigns, $args ) {
 		if ( ! $args['show_image'] ) {
 			remove_action( 'charitable_campaign_content_loop_before_title', 'charitable_template_campaign_loop_thumbnail', 10 );
 		}
@@ -46,10 +47,39 @@ if ( ! function_exists( 'charitable_campaigns_loop_optionally_remove_actions' ) 
 
 endif;
 
+if ( ! function_exists( 'charitable_campaigns_loop_add_back_optionally_removed_actions' ) ) :
+	/**
+	 * Add back items that were optionally removed.
+	 *
+	 * @since  1.7.0
+	 *
+	 * @param  WP_Query $campaigns The campaigns.
+	 * @param  array    $args      The view arguments.
+	 * @return void
+	 */
+	function charitable_campaigns_loop_add_back_optionally_removed_actions( $campaigns, $args ) {
+		if ( ! $args['show_image'] ) {
+			add_action( 'charitable_campaign_content_loop_before_title', 'charitable_template_campaign_loop_thumbnail', 10 );
+		}
+
+		if ( ! $args['show_description'] ) {
+			add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_description', 4 );
+		}
+
+		if ( ! $args['show_progress_bar'] ) {
+			add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_progress_bar', 6 );
+		}
+
+		if ( ! $args['show_amount_donated'] ) {
+			add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_loop_donation_stats', 8 );
+		}
+	}
+endif;
+
 
 if ( ! function_exists( 'charitable_campaigns_loop_add_actions' ) ) :
 	/**
-	 * Optionally remove certain actions from a campaign view
+	 * Optionally add certain actions into a campaign view
 	 *
 	 * @since  1.7.0
 	 *
@@ -60,10 +90,12 @@ if ( ! function_exists( 'charitable_campaigns_loop_add_actions' ) ) :
 		 * Campaigns loop, right at the start.
 		 *
 		 * @see charitable_template_campaign_loop_add_modal()
+		 * @see charitable_template_responsive_styles()
+		 * @see charitable_campaigns_loop_optionally_remove_actions()
 		 */
 		add_action( 'charitable_campaign_loop_before', 'charitable_template_campaign_loop_add_modal' );
 		add_action( 'charitable_campaign_loop_before', 'charitable_template_responsive_styles', 10, 2 );
-
+		add_action( 'charitable_campaign_loop_before', 'charitable_campaigns_loop_optionally_remove_actions', 10, 2 );
 		/**
 		 * Campaigns loop, before title.
 		 *
@@ -86,6 +118,12 @@ if ( ! function_exists( 'charitable_campaigns_loop_add_actions' ) ) :
 		add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_loop_donate_link', 10, 2 );
 		add_action( 'charitable_campaign_content_loop_after', 'charitable_template_campaign_loop_more_link', 10, 2 );
 
+		/**
+		 * Campaigns loop, right at the end
+		 *
+		 * @see charitable_campaigns_loop_add_back_optionally_removed_actions()
+		 */
+		add_action( 'charitable_campaign_loop_after', 'charitable_campaigns_loop_add_back_optionally_removed_actions', 10, 2 );
 	}
 
 endif;
