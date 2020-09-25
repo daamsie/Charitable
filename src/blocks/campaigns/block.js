@@ -137,7 +137,6 @@ class CharitableCampaignsBlock extends Component {
 				<PanelBody title={ __( 'Display Settings', 'charitable' ) }>
 					<PanelRow>
 						<SelectControl
-							key="orderby-select"
 							label={ __( 'Order by', 'charitable' ) }
 							value={ fullOrderBy }
 							options={ [
@@ -175,7 +174,6 @@ class CharitableCampaignsBlock extends Component {
 					</PanelRow>
 					<PanelRow>
 						<RangeControl
-							key="number-control"
 							label={ __( 'Number of campaigns', 'charitable' ) }
 							value={ number }
 							onChange={ ( value ) => setAttributes( { number: value } ) }
@@ -185,7 +183,6 @@ class CharitableCampaignsBlock extends Component {
 					</PanelRow>
 					<PanelRow>
 						<RangeControl
-							key="columns-select"
 							label={ __( 'Columns', 'charitable' ) }
 							value={ columns }
 							min="1"
@@ -202,7 +199,6 @@ class CharitableCampaignsBlock extends Component {
 					</PanelRow>
 					<PanelRow>
 						<SelectControl
-							key="image-size-select"
 							label={ __( 'Thumbnail Size', 'charitable' ) }
 							value={ imageSize }
 							options={ [
@@ -247,7 +243,6 @@ class CharitableCampaignsBlock extends Component {
 					</PanelRow>
 					<PanelRow>
 						<SelectControl
-							key="progress-bar-style-select"
 							label={ __( 'Progress Bar Style', 'charitable' ) }
 							value={ progressBarStyle }
 							options={ [
@@ -300,7 +295,7 @@ class CharitableCampaignsBlock extends Component {
 		];
 
 		return (
-			<BlockControls key="controls">
+			<BlockControls key="toolbar-controls">
 				<Toolbar controls={ editButton } />
 			</BlockControls>
 		);
@@ -313,7 +308,7 @@ class CharitableCampaignsBlock extends Component {
 	 */
 	getSettingsEditor() {
 		return (
-			<SettingsEditor { ...this.props } update_edit_mode={this.updateEditMode} />
+			<SettingsEditor { ...this.props } update_edit_mode={this.updateEditMode} key="settings-editor" />
 		);
 	}
 
@@ -324,7 +319,7 @@ class CharitableCampaignsBlock extends Component {
 	 */
 	getPreview() {
 		return (
-			<div className="charitable-block-campaigns has-preview">
+			<div className="charitable-block-campaigns has-preview" key="preview">
 				<ServerSideRender
 					block="charitable/campaigns"
 					attributes={ this.props.attributes }
