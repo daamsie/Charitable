@@ -124,7 +124,7 @@ CHARITABLE_ADMIN = window.CHARITABLE_ADMIN || {};
 				return $( id );
 			}
 
-			return $( '[name=' + id + ']' );
+			return $( '[name="' + id + '"]' );
 		};
 
 		get_change_type = function($setting) {
