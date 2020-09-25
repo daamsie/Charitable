@@ -34,25 +34,25 @@ if ( ! class_exists( 'Charitable_Campaigns_Shortcode' ) ) :
 		 */
 		public static function display( $atts ) {
 			$default = array(
-				'id'               		=> '',
-				'orderby'          		=> 'post_date',
-				'order'            		=> '',
-				'number'           		=> get_option( 'posts_per_page' ),
-				'category'         		=> '',
-				'tag'              		=> '',
-				'creator'          		=> '',
-				'exclude'          		=> '',
-				'include_inactive' 		=> false,
-				'columns'          		=> 2,
-				'button'           		=> 'donate',
-				'responsive'       		=> 1,
-				'masonry'          		=> 0,
-				'show_progress_bar' 	=> 1,
+				'id'                  => '',
+				'orderby'             => 'post_date',
+				'order'               => '',
+				'number'              => get_option( 'posts_per_page' ),
+				'category'            => '',
+				'tag'                 => '',
+				'creator'             => '',
+				'exclude'             => '',
+				'include_inactive'    => false,
+				'columns'             => 2,
+				'button'              => 'donate',
+				'responsive'          => 1,
+				'masonry'             => 0,
+				'show_progress_bar'   => 1,
 				'progress_bar_style'  => 'bar',
 				'show_amount_donated' => 1,
-				'show_description' 		=> 1,
-				'show_image'					=> 1,
-				'image_size'					=> 'medium',
+				'show_description'    => 1,
+				'show_image'          => 1,
+				'image_size'          => 'medium',
 			);
 
 			$args              = shortcode_atts( $default, $atts, 'campaigns' );
@@ -68,7 +68,7 @@ if ( ! class_exists( 'Charitable_Campaigns_Shortcode' ) ) :
 			 * @param array $args               All the parsed arguments.
 			 */
 			$template = apply_filters( 'charitable_campaigns_shortcode_template', false, $args );
-			
+
 			/* Fall back to default Charitable_Template if no template returned or if template was not object of 'Charitable_Template' class. */
 			if ( ! is_object( $template ) || ! is_a( $template, 'Charitable_Template' ) ) {
 				$template = new Charitable_Template( 'campaign-loop.php', false );
@@ -86,7 +86,7 @@ if ( ! class_exists( 'Charitable_Campaigns_Shortcode' ) ) :
 			 * @param array $view_args The arguments to pass.
 			 * @param array $args      All the parsed arguments.
 			 */
-			$view_args = apply_filters( 'charitable_campaigns_shortcode_view_args', charitable_array_subset( $args, array( 'campaigns', 'columns', 'button', 'responsive', 'masonry', 'show_description', 'show_progress_bar', 'progress_bar_style', 'show_amount_donated', 'show_image', 'image_size' ) ), $args );
+			$view_args = apply_filters( 'charitable_campaigns_shortcode_view_args', charitable_array_subset( $args, array( 'campaigns', 'number', 'columns', 'button', 'responsive', 'masonry', 'show_description', 'show_progress_bar', 'progress_bar_style', 'show_amount_donated', 'show_image', 'image_size' ) ), $args );
 
 			$template->set_view_args( $view_args );
 
@@ -176,6 +176,7 @@ if ( ! class_exists( 'Charitable_Campaigns_Shortcode' ) ) :
 				);
 			}
 
+			/* Allow excluding certain posts */
 			if ( ! empty( $args['exclude'] ) ) {
 				$query_args['post__not_in'] = explode( ',', $args['exclude'] );
 			}
