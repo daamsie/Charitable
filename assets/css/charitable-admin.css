@@ -1,4 +1,4 @@
-/** 
+/**
  * Clearfix helper class.
  * Credit: h5bp.com/q
  */
@@ -10,7 +10,7 @@
   .cf:after {
     clear: both; }
 
-/** 
+/**
  * Media block
  *
  * Credit: http://www.stubbornella.org/content/2010/06/25/the-media-object-saves-hundreds-of-lines-of-code/
@@ -654,10 +654,10 @@ body.post-type-campaign .postbox-container .empty-container {
 #campaign-creator .creator-facts dd {
   display: inline-block; }
 
-#charitable-post-author-wrap {
-  padding-top: 24px;
-  margin-top: 12px;
-  border-top: 1px solid #e1e1e1; }
+#charitable-campaign-creator-metabox-wrap #campaign-creator {
+  padding-bottom: 24px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #e1e1e1; }
 
 body.post-type-donation #post-body-content,
 body.post-type-donation #titlediv {

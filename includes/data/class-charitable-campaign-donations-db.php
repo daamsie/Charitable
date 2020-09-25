@@ -592,7 +592,6 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 			}
 
 			if ( isset( $args['status'] ) ) {
-
 				$sql_where_clauses[] = 'p.post_status = %s';
 				$parameters[]        = $args['status'];
 
@@ -605,10 +604,8 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 			}
 
 			if ( isset( $args['start_date'] ) ) {
-
 				$sql_where_clauses[] = 'p.post_date >= %s';
 				$parameters[]        = $args['start_date'];
-
 			}
 
 			if ( isset( $args['end_date'] ) ) {

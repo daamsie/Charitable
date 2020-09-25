@@ -242,7 +242,7 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 		 *
 		 * @since  1.4.0
 		 *
-		 * @param  array $data    Submitted data.
+		 * @param  array $data Submitted data.
 		 * @return array
 		 */
 		public function set_default_post_content( $data ) {
