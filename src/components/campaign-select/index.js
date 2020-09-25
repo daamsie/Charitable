@@ -22,7 +22,7 @@ export class CampaignSelect extends Component {
 		super( props );
 
 		this.state = {
-			selected_campaigns: props.selected_campaigns || []
+			selectedCampaigns: props.selectedCampaigns || []
 		}
 
 		this.addOrRemoveCampaign = this.addOrRemoveCampaign.bind( this );
@@ -35,51 +35,51 @@ export class CampaignSelect extends Component {
 	 */
 	addOrRemoveCampaign( id ) {
 
-		let selected_campaigns = this.state.selected_campaigns;
+		let selectedCampaigns = this.state.selectedCampaigns;
 
 		// Add the campaign
-		if ( ! selected_campaigns.includes( id ) ) {
+		if ( ! selectedCampaigns.includes( id ) ) {
 			if ( !! this.props.multiple ) {
-				selected_campaigns.push( id );
+				selectedCampaigns.push( id );
 			} else {
-				selected_campaigns = [ id ];
+				selectedCampaigns = [ id ];
 			}
 		} else {
-			selected_campaigns = selected_campaigns.filter( campaign => campaign !== id );
+			selectedCampaigns = selectedCampaigns.filter( campaign => campaign !== id );
 		}
 
 		this.setState( {
-			selected_campaigns: selected_campaigns
+			selectedCampaigns: selectedCampaigns
 		} );
 
-		this.props.update_campaign_setting_callback( selected_campaigns );
+		this.props.updateCampaignSettingCallback( selectedCampaigns );
 	}
 
 	/**
 	 * Render the list of campaigns and the search input.
 	 */
 	render() {
-		const { label, columns, campaign_active_status, available_campaigns, loading_available_campaigns, total_campaign_count } = this.props;
+		const { label, columns, campaignActiveStatus, availableCampaigns, loadingAvailableCampaigns, totalCampaignCount } = this.props;
 
 		// let fieldLabel = label ? <label>{ label }</label> : null;
 
 		return (
 			<div className="charitable-campaigns-field">
 				<CampaignSelectedResults
-					selected_campaigns={ this.state.selected_campaigns }
-					available_campaigns = { available_campaigns }
-					add_or_remove_campaign_callback={ ( campaign ) => this.addOrRemoveCampaign( campaign ) }
+					selectedCampaigns={ this.state.selectedCampaigns }
+					availableCampaigns = { availableCampaigns }
+					addOrRemoveCampaignCallback={ ( campaign ) => this.addOrRemoveCampaign( campaign ) }
 					columns={ columns }
-					campaign_active_status={ campaign_active_status }
+					campaignActiveStatus={ campaignActiveStatus }
 				/>
 				<CampaignSearchField
 					label={ label }
-					add_or_remove_campaign_callback={ ( campaign ) => this.addOrRemoveCampaign( campaign ) }
-					selected_campaigns={ this.state.selected_campaigns }
-					campaign_active_status={ campaign_active_status }
-					available_campaigns = { available_campaigns }
-					loading_available_campaigns = { loading_available_campaigns }
-					total_campaign_count = { total_campaign_count }
+					addOrRemoveCampaignCallback={ ( campaign ) => this.addOrRemoveCampaign( campaign ) }
+					selectedCampaigns={ this.state.selectedCampaigns }
+					campaignActiveStatus={ campaignActiveStatus }
+					availableCampaigns = { availableCampaigns }
+					loadingAvailableCampaigns = { loadingAvailableCampaigns }
+					totalCampaignCount = { totalCampaignCount }
 				/>
 			</div>
 		)

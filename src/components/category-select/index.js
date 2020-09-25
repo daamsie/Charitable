@@ -19,7 +19,7 @@ export class CampaignCategorySelect extends Component {
 		super( props );
 
 		this.state = {
-			selectedCategories: props.selected_categories,
+			selectedCategories: props.selectedCategories,
 			firstLoad: true,
 		}
 
@@ -52,7 +52,7 @@ export class CampaignCategorySelect extends Component {
 			selectedCategories: selectedCategories
 		} );
 
-		this.props.update_category_setting_callback( selectedCategories );
+		this.props.updateCategorySettingCallback( selectedCategories );
 	}
 
 	/**
@@ -60,7 +60,7 @@ export class CampaignCategorySelect extends Component {
 	 */
 	render() {
 		let label = null;
-		const {  available_categories, loading_available_categories } = this.props;
+		const {  availableCategories, loadingAvailableCategories } = this.props;
 
 		if ( this.props.label.length ) {
 			label = <label>{ this.props.label }</label>;
@@ -72,8 +72,8 @@ export class CampaignCategorySelect extends Component {
 					<CampaignCategoryList
 						selectedCategories={ this.state.selectedCategories }
 						checkboxChange={ this.checkboxChange }
-						available_categories = { available_categories }
-						loading_available_categories = { loading_available_categories }
+						availableCategories = { availableCategories }
+						loadingAvailableCategories = { loadingAvailableCategories }
 						firstLoad={ this.state.firstLoad }
 					/>
 			</div>
@@ -104,13 +104,13 @@ class CampaignCategoryList extends Component {
 	 * Render.
 	 */
 	render() {
-		const { selectedCategories, checkboxChange, available_categories, loading_available_categories } = this.props;
+		const { selectedCategories, checkboxChange, availableCategories, loadingAvailableCategories } = this.props;
 
-		if ( loading_available_categories ) {
+		if ( loadingAvailableCategories ) {
 			return <Spinner />;
 		}
 
-		if ( 0 === available_categories.length ) {
+		if ( 0 === availableCategories.length ) {
 			return __( 'No categories found', 'charitable' );
 		}
 
@@ -151,7 +151,7 @@ class CampaignCategoryList extends Component {
 			)
 		}
 
-		let categoriesData = available_categories;
+		let categoriesData = availableCategories;
 
 		return (
 			<div className="charitable-category-list-card__results">

@@ -39,8 +39,8 @@ export class CampaignSearchResults extends Component {
 	 * Update the filtered results when the component is updated.
 	 */
 	componentDidUpdate(prevProps ) {
-		if ( this.props.search_text !== prevProps.search_text 
-				 || this.props.available_campaigns.length != prevProps.available_campaigns.length) {
+		if ( this.props.searchText !== prevProps.searchText 
+				 || this.props.availableCampaigns.length != prevProps.availableCampaigns.length) {
 			this.updateFilteredResults();
 		}
 	}
@@ -50,9 +50,9 @@ export class CampaignSearchResults extends Component {
 	 */
 
 	updateFilteredResults(  ) {
-		const query          = this.props.search_text;
+		const query          = this.props.searchText;
 		const queryLowercase = query.toLowerCase();
-		const filtered       = this.props.available_campaigns.filter( ( campaign ) => {
+		const filtered       = this.props.availableCampaigns.filter( ( campaign ) => {
 			return campaign.title.rendered.toLowerCase().includes( queryLowercase );
 		} );	
 
@@ -65,7 +65,7 @@ export class CampaignSearchResults extends Component {
 	 * Render.
 	 */
 	render() {
-		const { selected_campaigns, add_or_remove_campaign_callback } = this.props;
+		const { selectedCampaigns, addOrRemoveCampaignCallback } = this.props;
 
 		if ( 0 === this.state.filtered.length ) {
 			return <span className="charitable-campaign-list-card__search-no-results"> { __( 'No campaigns found' ) } </span>;
@@ -78,8 +78,8 @@ export class CampaignSearchResults extends Component {
 				<CampaignSearchResultsItem
 					key={ "campaign-" + campaign.id }
 					campaign={ campaign }
-					add_or_remove_campaign_callback={ add_or_remove_campaign_callback }
-					isSelected={ selected_campaigns.includes( campaign.id ) }
+					addOrRemoveCampaignCallback={ addOrRemoveCampaignCallback }
+					isSelected={ selectedCampaigns.includes( campaign.id ) }
 				/>
 			)
 		}

@@ -23,7 +23,7 @@ export class CampaignSearchField extends Component {
 		super( props );
 
 		this.state = {
-			search_text: '',
+			searchText: '',
 		};
 	}
 
@@ -32,8 +32,8 @@ export class CampaignSearchField extends Component {
 	 */
 	render() {
 		const divClass = 'charitable-campaigns-list-card__search-wrapper';
-		const { label, search_placeholder, add_or_remove_campaign_callback, campaign_active_status, available_campaigns, loading_available_campaigns, total_campaign_count, selected_campaigns } = this.props;
-		let loadingState = loading_available_campaigns ? <Spinner /> : '';
+		const { label, searchPlaceholder, addOrRemoveCampaignCallback, campaignActiveStatus, availableCampaigns, loadingAvailableCampaigns, totalCampaignCount, selectedCampaigns } = this.props;
+		let loadingState = loadingAvailableCampaigns ? <Spinner /> : '';
 
 		return (
 			<div>
@@ -41,21 +41,21 @@ export class CampaignSearchField extends Component {
 					<Dashicon icon="search" />
 					<TextControl
 							label={ label }
-							value={ this.state.search_text }
-							onChange={ ( search_text ) => this.setState( { search_text } ) }
-							placeholder={ search_placeholder }
+							value={ this.state.searchText }
+							onChange={ ( searchText ) => this.setState( { searchText } ) }
+							placeholder={ searchPlaceholder }
 					/>	
 				</div>
 
 				{ loadingState }
 				
 				<CampaignSearchResults
-					search_text={ this.state.search_text }
-					add_or_remove_campaign_callback={ add_or_remove_campaign_callback }
-					selected_campaigns={ selected_campaigns }
-					available_campaigns = { available_campaigns }
-					total_campaign_count = { total_campaign_count }
-					campaign_active_status={ campaign_active_status }
+					searchText={ this.state.searchText }
+					addOrRemoveCampaignCallback={ addOrRemoveCampaignCallback }
+					selectedCampaigns={ selectedCampaigns }
+					availableCampaigns = { availableCampaigns }
+					totalCampaignCount = { totalCampaignCount }
+					campaignActiveStatus={ campaignActiveStatus }
 				/>
 			</div>
 		);

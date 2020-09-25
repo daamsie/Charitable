@@ -28,7 +28,7 @@ export class CampaignSearchResultsItem extends Component {
 	*/
 
 	toggleChecked() {
-		this.props.add_or_remove_campaign_callback(this.props.campaign.id);
+		this.props.addOrRemoveCampaignCallback(this.props.campaign.id);
 	}
 
 	/**

@@ -27,7 +27,7 @@ export class CampaignItem extends Component {
 	 * Add campaign to main list and change UI to show it was added.
 	 */
 	handleClick() {
-		this.props.add_or_remove_campaign_callback( this.props.campaign.id );
+		this.props.addOrRemoveCampaignCallback( this.props.campaign.id );
 	}
 
 	/**
@@ -35,7 +35,7 @@ export class CampaignItem extends Component {
 	 */
 	handleKeyDown( evt ) {
 		if ( 'Enter' === evt.key ) {
-			this.props.add_or_remove_campaign_callback( this.props.campaign.id );
+			this.props.addOrRemoveCampaignCallback( this.props.campaign.id );
 		}
 	}
 
