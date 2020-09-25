@@ -16,27 +16,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $campaign = $view_args['campaign'];
-$style = $view_args['style'];
+$style    = $view_args['style'];
 
 if ( ! $campaign->has_goal() ) :
 	return;
 endif;
 
 $percent_donated = $campaign->get_percent_donated_raw();
-$circle_class = '';
+$circle_class    = '';
 
-if ($percent_donated > 50) {
+if ( 50 < $percent_donated ) {
 	$circle_class = 'campaign-past-halfway';
 }
 
 ?>
 
-<?php if ( $style == 'circle' ) : ?>
+<?php if ( 'circle' === $style ) : ?>
 	<div class="campaign-progress-circle-wrapper">
 		<div class="campaign-progress-circle <?php echo $circle_class; ?>" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?php echo $percent_donated; ?>">
-			<div class="campaign-progress-half-circle campaign-progress-circle-left" style="--campaign-circle-rotation:rotate(<?php echo $percent_donated*3.6 ?>deg)"></div>	
-			<div class="campaign-progress-half-circle campaign-progress-circle-right"></div>	
+			<div class="campaign-progress-half-circle campaign-progress-circle-left" style="--campaign-circle-rotation:rotate(<?php echo $percent_donated * 3.6; ?>deg)"></div>	
+			<?php if ( 50 < $percent_donated ) : ?>
+				<div class="campaign-progress-half-circle campaign-progress-circle-right"></div>	
+			<?php endif ?>
 		</div>
+		<div class="campaign-progress-unfinished"></div>
 	</div>
 <?php else : ?>
 	<div class="campaign-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?php echo $percent_donated; ?>"><span class="bar" style="width: <?php echo $percent_donated; ?>%;"></span></div>

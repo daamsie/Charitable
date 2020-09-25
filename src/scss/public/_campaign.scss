@@ -98,6 +98,14 @@ $default-size: 80px;
     clip: rect(0px, 100px, 100px, 50px); /* Hide half of the progress bar */
     margin-bottom: 1em;
     
+    .campaign-progress-unfinished {
+        border-radius: $default-size;
+        border-width: ($default-size / 6); 
+        border-style: solid;
+        border-color: #eee;
+        height: 100%;
+        width: 100%;
+    }
     .campaign-progress-circle {
         @include circle-size(100%, 100%);
         clip: rect(0, $default-size, $default-size, $default-size / 2);
