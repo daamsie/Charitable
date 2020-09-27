@@ -143,7 +143,7 @@ CHARITABLE = window.CHARITABLE || {};
 
             $li.parents( '.charitable-donation-form' ).find( '.donation-amount.selected' ).removeClass( 'selected' );
 
-            $li.addClass( 'selected' );
+            $li.addClass( 'selected' ).find( '[name=donation_amount]' ).prop( 'checked', true );
 
             if ( $li.hasClass( 'custom-donation-amount' ) ) {
                 $li.find( 'input.custom-donation-input' ).focus();
