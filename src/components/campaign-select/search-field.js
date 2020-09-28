@@ -38,13 +38,13 @@ export class CampaignSearchField extends Component {
 		return (
 			<div>
 				<div className="charitable-campaigns-list-card__input-wrapper">
-					<Dashicon icon="search" />
 					<TextControl
 							label={ label }
 							value={ this.state.searchText }
 							onChange={ ( searchText ) => this.setState( { searchText } ) }
 							placeholder={ searchPlaceholder }
-					/>	
+					/>
+					<Dashicon icon="search" />
 				</div>
 
 				{ loadingState }

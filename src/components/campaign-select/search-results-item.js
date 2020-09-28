@@ -39,12 +39,13 @@ export class CampaignSearchResultsItem extends Component {
 		const label =  campaign.title.rendered;
 		
 		return (
-				<label className="charitable-campaign-list-card__item">
+			<label className="charitable-campaign-list-card__item">
 					<CheckboxControl
 							label={ label }
 							checked={ isSelected }	
 							onChange={ this.toggleChecked }
 					/>
+					{ getCampaignThumbnail( campaign ) }
 				</label>
 		)
 	}

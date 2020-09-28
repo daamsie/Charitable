@@ -46,7 +46,7 @@ export class CategoryItem extends Component {
 						onChange={ this.toggleIsChecked }
 						label={ category.name } 
 						/>
-					<span className="charitable-category-list-card__taxonomy-count">{ category.count }</span>
+					<span className="charitable-category-list-card__taxonomy-count" title={ __( 'Number of campaigns in this category', 'charitable' ) }>{ category.count }</span>
 
 			</MenuItem>
 			)
