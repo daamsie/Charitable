@@ -29,6 +29,7 @@ $highlight_colour = charitable_get_highlight_colour();
 .charitable-notice .errors a { color: <?php echo $highlight_colour; ?>; }
 
 .campaign-progress-bar .bar,
+.charitable-block-campaigns .campaign-donation .donate-button,
 .donate-button,
 .charitable-donation-form .donation-amount.selected,
 .charitable-donation-amount-form .donation-amount.selected { background-color: <?php echo $highlight_colour; ?>; }

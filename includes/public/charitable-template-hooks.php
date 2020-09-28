@@ -137,6 +137,14 @@ endif;
 add_filter( 'wp_head', 'charitable_template_custom_styles' );
 
 /**
+	* Similarly, add the custom CSS to the block editor.
+	*
+	* @see charitable_template_custom_styles()
+	*/
+
+add_action( 'enqueue_block_editor_assets', 'charitable_template_custom_styles' );
+
+/**
  * Single campaign, before content.
  *
  * @see charitable_template_campaign_description()
