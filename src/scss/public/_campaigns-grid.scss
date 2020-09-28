@@ -1,142 +1,150 @@
 .campaign-loop.campaign-list,
 .campaign-loop.campaign-grid {
-    margin: 0 0 1em 0;
-    padding: 0;
-    list-style: none;
+	margin: 0 0 1em 0;
+	padding: 0;
+	list-style: none;
 
-    li.campaign,
-    .campaign.hentry {
-        position: relative;
-        padding: 0;
-        margin: 0 0 1em 0;
-        list-style: none;
-        box-shadow: none;
-        box-sizing: border-box;
+	li.campaign,
+	.campaign.hentry {
+		position: relative;
+		padding: 0;
+		margin: 0 0 1em 0;
+		list-style: none;
+		box-shadow: none;
+		box-sizing: border-box;
 
-        h3 {
-            margin-top: 0;
-            text-decoration: none;
-        }
-    }
+		h3 {
+			margin-top: 0;
+			text-decoration: none;
+		}
+	}
 
-    .wp-post-image {
-        padding-bottom: 1em;
-    }
+	.wp-post-image {
+		padding-bottom: 1em;
+	}
 
-    .campaign-donation-stats {
-        margin-bottom: 1em;
+	.campaign-donation-stats {
+		margin-bottom: 1em;
 
-        .amount,
-        .goal-amount {
-            font-weight: bolder;
-        }
-    }
+		.amount,
+		.goal-amount {
+			font-weight: bolder;
+		}
+	}
 
-    .campaign-donation {
-        .button {
-            display: inline-block;
-        }
-    }
+	.campaign-donation {
+		.button {
+			display: inline-block;
+		}
+	}
 }
 
 .campaign-progress-bar {
-    margin-bottom: 0.5em;
-    overflow: hidden;
+	margin-bottom: 1em;
+	overflow: hidden;
 }
 
 .campaign-loop.campaign-list {
-    li.campaign,
-    .campaign.hentry {
-        padding: 0 0 1em 0;
-        margin: 0 0 1em 0;
-        border-bottom: 1px solid #e6e6e6;
-    }
+
+	li.campaign,
+	.campaign.hentry {
+		padding: 0 0 1em 0;
+		margin: 0 0 1em 0;
+		border-bottom: 1px solid #e6e6e6;
+	}
 }
 
 .campaign-loop.campaign-grid {
-    margin: 0 0 1em 0;
-    padding: 0;
-    @include clearfix;
+	margin: 0 0 1em 0;
+	padding: 0;
+	@include clearfix;
 
-    .wp-post-image {
-        max-width: 100%;
-        width: 100%;
-    }
+	.wp-post-image {
+		max-width: 100%;
+		width: 100%;
+	}
 
-    li.campaign,
-    .campaign.hentry {
-        list-style: none;
-        float: left;
-        margin: 0 2% 1em 0;
-        padding: 1em;
-        border: 1px solid #e6e6e6;
-    }
+	li.campaign,
+	.campaign.hentry {
+		list-style: none;
+		float: left;
+		margin: 0 2% 1em 0;
+		padding: 1em;
+		border: 1px solid #e6e6e6;
+	}
 
-    .campaign-donation {
-        text-align: center;
-    }
+	.campaign-donation {
+		text-align: center;
+	}
 }
 
 .campaign-grid.masonry {
-    -moz-column-gap: 1em;
-    -webkit-column-gap: 1em;
-    column-gap: 1em;
+	-moz-column-gap: 1em;
+	-webkit-column-gap: 1em;
+	column-gap: 1em;
 
-    li.campaign,
-    .campaign.hentry {
-        display: inline-block;
-        margin: 0 0 1em;
-        width: 100%;
-        float: none;
-    }
+	li.campaign,
+	.campaign.hentry {
+		display: inline-block;
+		margin: 0 0 1em;
+		width: 100%;
+		float: none;
+	}
 }
 
 .campaign-grid-2 {
-    li.campaign,
-    .campaign.hentry {
-        width: 49%;
-    }
 
-    li.campaign:nth-child(2n+2),
-    .campaign.hentry:nth-child(2n+2) {
-        margin-right: 0;
-    }
+	li.campaign,
+	.campaign.hentry {
+		width: 49%;
+	}
 
-    &.masonry {
-        -moz-column-count: 2;
-        -webkit-column-count: 2;
-        column-count: 2;
-    }
+	li.campaign:nth-child(2n+2),
+	.campaign.hentry:nth-child(2n+2) {
+		margin-right: 0;
+	}
+
+	&.masonry {
+		-moz-column-count: 2;
+		-webkit-column-count: 2;
+		column-count: 2;
+	}
 }
 
 .campaign-grid-3 {
-    li.campaign,
-    .campaign.hentry {
-        width: 32%;
-    }
-    li.campaign:nth-child(3n+3),
-    .campaign.hentry:nth-child(3n+3) {
-        margin-right: 0;
-    }
-    &.masonry {
-        -moz-column-count: 3;
-        -webkit-column-count: 3;
-        column-count: 3;
-    }
+
+	li.campaign,
+	.campaign.hentry {
+		width: 32%;
+	}
+
+	li.campaign:nth-child(3n+3),
+	.campaign.hentry:nth-child(3n+3) {
+		margin-right: 0;
+	}
+
+	&.masonry {
+		-moz-column-count: 3;
+		-webkit-column-count: 3;
+		column-count: 3;
+	}
 }
 
 .campaign-grid-4 {
-    li.campaign,
-    .campaign.hentry {
-        width: 23.5%;
-    }
-    li.campaign:nth-child(4n+4),
-    .campaign.hentry:nth-child(4n+4) {
-        margin-right: 0;
-    }
-    &.masonry {
-        -moz-column-count: 4;
-        -webkit-column-count: 4;
-        column-count: 4;
-    }
+
+	li.campaign,
+	.campaign.hentry {
+		width: 23.5%;
+	}
+
+	li.campaign:nth-child(4n+4),
+	.campaign.hentry:nth-child(4n+4) {
+		margin-right: 0;
+	}
+
+	&.masonry {
+		-moz-column-count: 4;
+		-webkit-column-count: 4;
+		column-count: 4;
+	}
 }
