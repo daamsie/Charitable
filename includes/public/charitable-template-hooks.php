@@ -29,7 +29,7 @@ if ( ! function_exists( 'charitable_campaigns_loop_optionally_remove_actions' ) 
 	 */
 	function charitable_campaigns_loop_optionally_remove_actions( $campaigns, $args ) {
 		if ( ! $args['show_image'] ) {
-			remove_action( 'charitable_campaign_content_loop_before_title', 'charitable_template_campaign_loop_thumbnail', 10 );
+			remove_action( 'charitable_campaign_content_loop_before_title', 'charitable_template_campaign_loop_thumbnail', 10, 2 );
 		}
 
 		if ( ! $args['show_description'] ) {
@@ -59,7 +59,7 @@ if ( ! function_exists( 'charitable_campaigns_loop_add_back_optionally_removed_a
 	 */
 	function charitable_campaigns_loop_add_back_optionally_removed_actions( $campaigns, $args ) {
 		if ( ! $args['show_image'] ) {
-			add_action( 'charitable_campaign_content_loop_before_title', 'charitable_template_campaign_loop_thumbnail', 10 );
+			add_action( 'charitable_campaign_content_loop_before_title', 'charitable_template_campaign_loop_thumbnail', 10, 2 );
 		}
 
 		if ( ! $args['show_description'] ) {
@@ -92,16 +92,18 @@ if ( ! function_exists( 'charitable_campaigns_loop_add_actions' ) ) :
 		 * @see charitable_template_campaign_loop_add_modal()
 		 * @see charitable_template_responsive_styles()
 		 * @see charitable_campaigns_loop_optionally_remove_actions()
+		 * @see charitable_template_campaigns_block_custom_styles()
 		 */
 		add_action( 'charitable_campaign_loop_before', 'charitable_template_campaign_loop_add_modal' );
 		add_action( 'charitable_campaign_loop_before', 'charitable_template_responsive_styles', 10, 2 );
+		add_action( 'charitable_campaign_loop_before', 'charitable_template_campaigns_block_custom_styles', 10, 2 );
 		add_action( 'charitable_campaign_loop_before', 'charitable_campaigns_loop_optionally_remove_actions', 10, 2 );
 		/**
 		 * Campaigns loop, before title.
 		 *
 		 * @see charitable_template_campaign_loop_thumbnail()
 		 */
-		add_action( 'charitable_campaign_content_loop_before_title', 'charitable_template_campaign_loop_thumbnail', 10 );
+		add_action( 'charitable_campaign_content_loop_before_title', 'charitable_template_campaign_loop_thumbnail', 10, 2 );
 
 		/**
 		 * Campaigns loop, after the main title.

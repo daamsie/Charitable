@@ -16,11 +16,12 @@ const {
 	SelectControl,
 	ToggleControl,
 	RangeControl,
+	TextareaControl,
 } = wp.components;
 const {
 	InspectorControls,
 	BlockControls
-} = wp.editor;
+} = wp.blockEditor;
 
 /**
  * The campaigns block UI.
@@ -30,7 +31,7 @@ class CharitableCampaignsBlock extends Component {
 		super( ...arguments );
 
 		this.state = {
-			edit_mode: false,
+			editMode: false,
 		};
 
 		this.updateEditMode         = this.updateEditMode.bind( this );
@@ -51,7 +52,7 @@ class CharitableCampaignsBlock extends Component {
 	 */
 	updateEditMode() {
 		this.setState( {
-			edit_mode: ! this.state.edit_mode
+			editMode: ! this.state.editMode
 		} );
 	}
 
@@ -126,13 +127,14 @@ class CharitableCampaignsBlock extends Component {
 		const { number, 
 			orderBy, order, columns, masonryLayout, responsiveLayout, 
 			imageSize, showImage, showDescription, showAmountDonated, 
-			showProgressBar, progressBarStyle } = attributes;
+			showProgressBar, progressBarStyle, customCSS } = attributes;
 
 		const fullOrderBy = orderBy + '/' + order;
 
 		return (
 			<InspectorControls
 				key="inspector"
+				className="charitable-campaigns-inspector"
 				description={ __( 'Configure', 'charitable' ) } >
 				<PanelBody title={ __( 'Display Settings', 'charitable' ) }>
 					<PanelRow>
@@ -197,29 +199,31 @@ class CharitableCampaignsBlock extends Component {
 							onChange={ this.toggleImage }
 						/>
 					</PanelRow>
-					<PanelRow>
-						<SelectControl
-							label={ __( 'Thumbnail Size', 'charitable' ) }
-							value={ imageSize }
-							options={ [
-								{
-									label: __( 'Thumbnail', 'charitable' ),
-									value: 'thumbnail',
-								},
-								{
-									label: __( 'Medium', 'charitable' ),
-									value: 'medium',
-								},
-								{
-									label: __( 'Large', 'charitable' ),
-									value: 'large',
-								}
-							] }
-							onChange={ ( value ) => {
-								setAttributes( { imageSize: value } );
-							} }
-						/>
-					</PanelRow>
+					{ showImage &&
+						<PanelRow>
+							<SelectControl
+								label={ __( 'Thumbnail Size', 'charitable' ) }
+								value={ imageSize }
+								options={ [
+									{
+										label: __( 'Thumbnail', 'charitable' ),
+										value: 'thumbnail',
+									},
+									{
+										label: __( 'Medium', 'charitable' ),
+										value: 'medium',
+									},
+									{
+										label: __( 'Large', 'charitable' ),
+										value: 'large',
+									}
+								] }
+								onChange={ ( value ) => {
+									setAttributes( { imageSize: value } );
+								} }
+							/>
+						</PanelRow>
+					}
 					<PanelRow>
 						<ToggleControl
 							label={ __( 'Show Description', 'charitable' ) }
@@ -241,25 +245,27 @@ class CharitableCampaignsBlock extends Component {
 							onChange={ this.toggleProgressBar }
 						/>
 					</PanelRow>
-					<PanelRow>
-						<SelectControl
-							label={ __( 'Progress Bar Style', 'charitable' ) }
-							value={ progressBarStyle }
-							options={ [
-								{
-									label: __( 'Bar', 'charitable' ),
-									value: 'bar',
-								},
-								{
-									label: __( 'Circle', 'charitable' ),
-									value: 'circle',
-								}
-							] }
-							onChange={ ( value ) => {
-								setAttributes( { progressBarStyle: value } );
-							} }
-						/>
-					</PanelRow>
+					{ showProgressBar && 
+						<PanelRow>
+							<SelectControl
+								label={ __( 'Progress Bar Style', 'charitable' ) }
+								value={ progressBarStyle }
+								options={ [
+									{
+										label: __( 'Bar', 'charitable' ),
+										value: 'bar',
+									},
+									{
+										label: __( 'Circle', 'charitable' ),
+										value: 'circle',
+									}
+								] }
+								onChange={ ( value ) => {
+									setAttributes( { progressBarStyle: value } );
+								} }
+							/>
+						</PanelRow>
+					}
 					<PanelRow>
 						<ToggleControl
 							label={ __( 'Masonry layout', 'charitable' ) }
@@ -273,6 +279,15 @@ class CharitableCampaignsBlock extends Component {
 							checked={ responsiveLayout }
 							onChange={ this.toggleResponsiveLayout }
 						/>
+					</PanelRow>
+					<PanelRow>
+						<TextareaControl 
+							label={ __( 'Custom CSS', 'charitable' ) }
+							value={ customCSS }
+							className="custom-css-textarea"
+        			onChange={ (value) => {
+								setAttributes( { customCSS: value } ) 
+							} } />
 					</PanelRow>
 				</PanelBody>
 			</InspectorControls>
@@ -290,7 +305,7 @@ class CharitableCampaignsBlock extends Component {
 				icon: 'filter',
 				title: __( 'Filter Campaigns', 'charitable' ),
 				onClick: this.updateEditMode,
-				isActive: this.state.edit_mode,
+				isActive: this.state.editMode,
 			},
 		];
 
@@ -308,7 +323,7 @@ class CharitableCampaignsBlock extends Component {
 	 */
 	getSettingsEditor() {
 		return (
-			<SettingsEditor { ...this.props } update_edit_mode={this.updateEditMode} key="settings-editor" />
+			<SettingsEditor { ...this.props } update_editMode={this.updateEditMode} key="settings-editor" />
 		);
 	}
 
@@ -335,7 +350,7 @@ class CharitableCampaignsBlock extends Component {
 		return [
 			this.getInspectorControls(),
 			this.getToolbarControls(),
-			this.state.edit_mode ? this.getSettingsEditor() : this.getPreview()
+			this.state.editMode ? this.getSettingsEditor() : this.getPreview()
 		];
 	}
 }

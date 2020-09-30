@@ -19,7 +19,7 @@ class Block extends Component {
         super( ...arguments );
 
         this.state = {
-            edit_mode: false,
+            editMode: false,
             amount_raised: null,
             ready: false
 		};
@@ -81,7 +81,7 @@ class Block extends Component {
 	 */
 	updateEditMode() {
 		this.setState( {
-			edit_mode: ! this.state.edit_mode
+			editMode: ! this.state.editMode
 		} );
 	}
 
@@ -107,7 +107,7 @@ class Block extends Component {
 				icon: 'edit',
 				title: __( 'Edit Goal', 'charitable' ),
 				onClick: this.updateEditMode,
-                isActive: this.state.edit_mode
+                isActive: this.state.editMode
 			},
 		];
 
@@ -149,7 +149,7 @@ class Block extends Component {
             <>
                 { this.getInspectorControls() }
                 { this.getToolbarControls() }
-                { this.state.edit_mode ? this.getSettingsEditor() : this.getPreview() }
+                { this.state.editMode ? this.getSettingsEditor() : this.getPreview() }
             </>
         );
     }

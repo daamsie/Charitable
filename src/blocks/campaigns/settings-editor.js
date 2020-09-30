@@ -255,7 +255,7 @@ export class SettingsEditor extends Component {
 					{ this.getCurrentView() }
 					
 					<Button isPrimary="true" 
-									onClick={this.props.update_edit_mode}>
+									onClick={this.props.update_editMode}>
 						{ __( 'Done', 'charitable' ) }
 					</Button>
 				</div>

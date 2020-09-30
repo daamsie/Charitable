@@ -2,6 +2,7 @@
  * Block dependencies
  */
 import icon from './icon';
+import css from './customCSSDefault';
 import CharitableCampaignsBlock from './block';
 
 /**
@@ -182,7 +183,16 @@ registerBlockType( 'charitable/campaigns', {
 		progressBarStyle: {
 			type: 'string',
 			default: 'bar'
-		}
+		},
+
+		/**
+		 * Allow custom CSS to be added to this block
+		 * */ 
+		customCSS: {
+			type: 'string',
+			default: css
+		},
+
 	},
 
 	/**

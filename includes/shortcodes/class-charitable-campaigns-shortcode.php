@@ -49,6 +49,7 @@ if ( ! class_exists( 'Charitable_Campaigns_Shortcode' ) ) :
 				'masonry'             => 0,
 				'show_progress_bar'   => 1,
 				'progress_bar_style'  => 'bar',
+				'custom_css'          => '',
 				'show_amount_donated' => 1,
 				'show_description'    => 1,
 				'show_image'          => 1,
@@ -86,7 +87,7 @@ if ( ! class_exists( 'Charitable_Campaigns_Shortcode' ) ) :
 			 * @param array $view_args The arguments to pass.
 			 * @param array $args      All the parsed arguments.
 			 */
-			$view_args = apply_filters( 'charitable_campaigns_shortcode_view_args', charitable_array_subset( $args, array( 'campaigns', 'number', 'columns', 'button', 'responsive', 'masonry', 'show_description', 'show_progress_bar', 'progress_bar_style', 'show_amount_donated', 'show_image', 'image_size' ) ), $args );
+			$view_args = apply_filters( 'charitable_campaigns_shortcode_view_args', charitable_array_subset( $args, array( 'campaigns', 'number', 'columns', 'button', 'responsive', 'masonry', 'show_description', 'show_progress_bar', 'progress_bar_style', 'show_amount_donated', 'show_image', 'image_size', 'custom_css' ) ), $args );
 
 			$template->set_view_args( $view_args );
 

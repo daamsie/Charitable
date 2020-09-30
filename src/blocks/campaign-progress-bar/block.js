@@ -16,7 +16,7 @@ class Block extends Component {
         super( ...arguments );
 
         this.state = {
-            edit_mode: false
+            editMode: false
 		};
 
         this.updateCampaignId      = this.updateCampaignId.bind( this );
@@ -69,7 +69,7 @@ class Block extends Component {
 	 */
 	updateEditMode() {
 		this.setState( {
-			edit_mode: ! this.state.edit_mode
+			editMode: ! this.state.editMode
 		} );
 	}
 

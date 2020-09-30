@@ -20,7 +20,13 @@
 	}
 
 	.wp-post-image {
-		padding-bottom: 1em;
+		border: 0;
+		margin-bottom: 0;
+		box-shadow: none;
+		&.size-thumbnail {
+			height: auto;
+			width: auto;
+		}
 	}
 
 	.campaign-donation-stats {

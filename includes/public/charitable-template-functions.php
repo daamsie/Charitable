@@ -240,10 +240,17 @@ if ( ! function_exists( 'charitable_template_campaign_progress_bar' ) ) :
 	 * @since  1.0.0
 	 *
 	 * @param  Charitable_Campaign $campaign The campaign object.
+	 * @param  array               $args     The view arguments.
 	 * @return void
 	 */
 	function charitable_template_campaign_progress_bar( $campaign, $args ) {
-		charitable_template( 'campaign/progress-bar.php', array( 'campaign' => $campaign, 'style' => $args['progress_bar_style'] ) );
+		charitable_template(
+			'campaign/progress-bar.php',
+			array(
+				'campaign' => $campaign,
+				'style'    => $args['progress_bar_style'],
+			)
+		);
 	}
 
 endif;
@@ -429,18 +436,58 @@ if ( ! function_exists( 'charitable_template_responsive_styles' ) ) :
 endif;
 
 
+if ( ! function_exists( 'charitable_template_campaigns_block_custom_styles' ) ) :
+
+	/**
+	 * Add custom styles for the campaign loop.
+	 *
+	 * @since  1.4.0
+	 *
+	 * @param  WP_Query $campaigns The campaigns that will be displayed.
+	 * @param  array    $args      The view arguments.
+	 * @return void
+	 */
+	function charitable_template_campaigns_block_custom_styles( $campaigns, $args ) {
+		if ( ! isset( $args['custom_css'] ) ) {
+			return;
+		}
+
+		$css = $args['custom_css'];
+
+		?>
+<style type="text/css" media="screen">
+		<?php echo $css; ?>
+</style>
+		<?php
+	}
+
+endif;
+
+
 if ( ! function_exists( 'charitable_template_campaign_loop_thumbnail' ) ) :
 
 	/**
 	 * Output the campaign thumbnail on campaigns displayed within the loop.
 	 *
 	 * @since  1.0.0
+	 * @since  1.7.0 Added $args so we can access the image size required.
 	 *
 	 * @param  Charitable_Campaign $campaign The campaign object.
+	 * @param  mixed[]             $args     Optional arguments.
+	 *
 	 * @return void
 	 */
-	function charitable_template_campaign_loop_thumbnail( $campaign ) {
-		charitable_template( 'campaign-loop/thumbnail.php', array( 'campaign' => $campaign ) );
+	function charitable_template_campaign_loop_thumbnail( $campaign, $args ) {
+
+		$size = $args['image_size'];
+
+		charitable_template(
+			'campaign-loop/thumbnail.php',
+			array(
+				'campaign' => $campaign,
+				'size'     => $size,
+			)
+		);
 	}
 
 endif;
@@ -550,55 +597,55 @@ if ( ! function_exists( 'charitable_template_donation_form' ) ) :
 	 * @param  array $args        Args to pass to the view.
 	 * @return false|void
 	 */
-	function charitable_template_donation_form( $campaign_id, $args = array() ) {
-		if ( Charitable::CAMPAIGN_POST_TYPE !== get_post_type( $campaign_id ) ) {
-			return false;
-		}
-
-		if ( ! array_key_exists( 'campaign_id', $args ) ) {
-			$args['campaign_id'] = $campaign_id;
-		}
-
-		if ( ! charitable_campaign_can_receive_donations( $args['campaign_id'] ) ) {
-			return false;
-		}
-
-		$donation_id = get_query_var( 'donation_id', false );
-
-		/* If a donation ID is included, make sure it belongs to the current user. */
-		if ( $donation_id && ! charitable_user_can_access_donation( $donation_id ) ) {
-			return false;
-		}
-
-		if ( ! wp_script_is( 'charitable-script', 'enqueued' ) ) {
-			Charitable_Public::get_instance()->enqueue_donation_form_scripts();
-		}
-
-		$form = charitable_get_campaign( $campaign_id )->get_donation_form();
-
-		/**
-		 * Do something before rendering the donation form.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param Charitable_Donation_Form $form The donation form instance.
-		 */
-		do_action( 'charitable_donation_form_before', $form );
-
-		$args['form']     = $form;
-		$args['campaign'] = $form->get_campaign();
-
-		charitable_template( 'donation-form/form-donation.php', $args );
-
-		/**
-		 * Do something after rendering the donation form.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param Charitable_Donation_Form $form The donation form instance.
-		 */
-		do_action( 'charitable_donation_form_after', $form );
+function charitable_template_donation_form( $campaign_id, $args = array() ) {
+	if ( Charitable::CAMPAIGN_POST_TYPE !== get_post_type( $campaign_id ) ) {
+		return false;
 	}
+
+	if ( ! array_key_exists( 'campaign_id', $args ) ) {
+		$args['campaign_id'] = $campaign_id;
+	}
+
+	if ( ! charitable_campaign_can_receive_donations( $args['campaign_id'] ) ) {
+		return false;
+	}
+
+	$donation_id = get_query_var( 'donation_id', false );
+
+	/* If a donation ID is included, make sure it belongs to the current user. */
+	if ( $donation_id && ! charitable_user_can_access_donation( $donation_id ) ) {
+		return false;
+	}
+
+	if ( ! wp_script_is( 'charitable-script', 'enqueued' ) ) {
+		Charitable_Public::get_instance()->enqueue_donation_form_scripts();
+	}
+
+	$form = charitable_get_campaign( $campaign_id )->get_donation_form();
+
+	/**
+	 * Do something before rendering the donation form.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param Charitable_Donation_Form $form The donation form instance.
+	 */
+	do_action( 'charitable_donation_form_before', $form );
+
+	$args['form']     = $form;
+	$args['campaign'] = $form->get_campaign();
+
+	charitable_template( 'donation-form/form-donation.php', $args );
+
+	/**
+	 * Do something after rendering the donation form.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param Charitable_Donation_Form $form The donation form instance.
+	 */
+	do_action( 'charitable_donation_form_after', $form );
+}
 
 endif;
 
@@ -617,42 +664,42 @@ if ( ! function_exists( 'charitable_template_donation_receipt_output' ) ) :
 	 * @param  Charitable_Donation|null $donation Optional. Useful when the donation is not the current donation.
 	 * @return string
 	 */
-	function charitable_template_donation_receipt_output( $content, $donation = null ) {
-		if ( is_null( $donation ) ) {
-			$donation = charitable_get_current_donation();
-		}
+function charitable_template_donation_receipt_output( $content, $donation = null ) {
+	if ( is_null( $donation ) ) {
+		$donation = charitable_get_current_donation();
+	}
 
-		if ( ! $donation || 'simple' != $donation->get_donation_type() ) {
-			return $content;
-		}
-
-		ob_start();
-
-		if ( ! $donation->is_from_current_user() ) {
-			charitable_template_from_session(
-				'donation-receipt/not-authorized.php',
-				array( 'content' => $content ),
-				'donation_receipt',
-				array( 'donation_id' => $donation->ID )
-			);
-
-			return ob_get_clean();
-		}
-
-		do_action( 'charitable_donation_receipt_page', $donation );
-
-		charitable_template(
-			'content-donation-receipt.php',
-			array(
-				'content'  => $content,
-				'donation' => $donation,
-			)
-		);
-
-		$content = ob_get_clean();
-
+	if ( ! $donation || 'simple' != $donation->get_donation_type() ) {
 		return $content;
 	}
+
+	ob_start();
+
+	if ( ! $donation->is_from_current_user() ) {
+		charitable_template_from_session(
+			'donation-receipt/not-authorized.php',
+			array( 'content' => $content ),
+			'donation_receipt',
+			array( 'donation_id' => $donation->ID )
+		);
+
+		return ob_get_clean();
+	}
+
+	do_action( 'charitable_donation_receipt_page', $donation );
+
+	charitable_template(
+		'content-donation-receipt.php',
+		array(
+			'content'  => $content,
+			'donation' => $donation,
+		)
+	);
+
+	$content = ob_get_clean();
+
+	return $content;
+}
 
 endif;
 
