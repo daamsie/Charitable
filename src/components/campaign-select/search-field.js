@@ -32,7 +32,7 @@ export class CampaignSearchField extends Component {
 	 */
 	render() {
 		const divClass = 'charitable-campaigns-list-card__search-wrapper';
-		const { label, searchPlaceholder, addOrRemoveCampaignCallback, campaignActiveStatus, availableCampaigns, loadingAvailableCampaigns, totalCampaignCount, selectedCampaigns } = this.props;
+		const { label, searchPlaceholder, addOrRemoveCampaignCallback, availableCampaigns, loadingAvailableCampaigns, selectedCampaigns } = this.props;
 		let loadingState = loadingAvailableCampaigns ? <Spinner /> : '';
 
 		return (
@@ -46,7 +46,7 @@ export class CampaignSearchField extends Component {
 					/>
 					<Dashicon icon="search" />
 				</div>
-
+				
 				{ loadingState }
 				
 				<CampaignSearchResults
@@ -54,8 +54,6 @@ export class CampaignSearchField extends Component {
 					addOrRemoveCampaignCallback={ addOrRemoveCampaignCallback }
 					selectedCampaigns={ selectedCampaigns }
 					availableCampaigns = { availableCampaigns }
-					totalCampaignCount = { totalCampaignCount }
-					campaignActiveStatus={ campaignActiveStatus }
 				/>
 			</div>
 		);

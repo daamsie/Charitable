@@ -41,13 +41,13 @@ export class CampaignSelectedResults extends Component {
 	 * Update the preview when component is updated.
 	 */
 	componentDidUpdate(prevProps) {
-		if ( this.props.availableCampaigns !== prevProps.availableCampaigns  ) {
+		if ( this.props.availableCampaigns !== prevProps.availableCampaigns) {
 			this.updateCampaignPositions();
 		}
 	}
 
 	/**
-	 * Store the current campaign positions for referencing
+	 * Store the current campaign positions for referencing.
 	 */
 	updateCampaignPositions() {
 		const campaignPositions = getCampaignPositionsArray(this.props.availableCampaigns);
@@ -91,10 +91,10 @@ export class CampaignSelectedResults extends Component {
 		let header    = null;
 		let campaigns = null;
 
-		if ( 0 < selectedCampaigns.length ) {
+		if ( 0 < campaignElements.length ) {
 			campaigns = <ul className="charitable-campaigns-list-card__selected-results-list">{ campaignElements.length ? campaignElements : __( 'Loading...', 'charitable' ) }</ul>
 		
-			if ( 1 === selectedCampaigns.length ) {
+			if ( 1 === campaignElements.length ) {
 				header = __( 'campaign selected', 'charitable' ) 
 			} else {
 				header = __( 'campaigns selected', 'charitable' ) 
@@ -103,7 +103,7 @@ export class CampaignSelectedResults extends Component {
 			return (
 				<div className="charitable-campaigns-list-card__selected-results-wrapper">
 					<div role="menu" className="charitable-campaigns-list-card__selected-results" aria-orientation="vertical" aria-label={ __( 'Selected campaigns', 'charitable' ) }>
-						<strong>{ selectedCampaigns.length + ' ' + header }</strong>
+						<strong>{ campaignElements.length + ' ' + header }</strong>
 						{ campaigns }
 					</div>
 					<HorizontalRule />

@@ -83,6 +83,7 @@ export class SettingsEditor extends Component {
 		}
 
 		const campaignCount = 100; // Basically trying to fetch them all here.
+		const nowDateString = new Date().toString();
 		this.setState( {
 			loadingAvailableCampaigns: true
 		});
@@ -94,6 +95,9 @@ export class SettingsEditor extends Component {
 			parse: false
 		} ).then( ( response ) => {
 			response.json().then( ( campaigns ) => {
+				// Mark up any inactive ones for easy reference.
+				campaigns = campaigns.map((campaign) => Object.assign(campaign, { active: nowDateString > campaign.end_date && campaign.end_date !== '' ? false : true }));
+
 				self.setState( {
 					availableCampaigns: campaigns,	
 					loadingAvailableCampaigns: false,

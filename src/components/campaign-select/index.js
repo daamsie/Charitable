@@ -1,3 +1,4 @@
+import { bind } from 'file-loader';
 /**
  * Block dependencies
  */
@@ -22,10 +23,57 @@ export class CampaignSelect extends Component {
 		super( props );
 
 		this.state = {
-			selectedCampaigns: props.selectedCampaigns || []
+			selectedCampaigns: props.selectedCampaigns || [],
+			filteredCampaigns: props.availableCampaigns,
 		}
 
 		this.addOrRemoveCampaign = this.addOrRemoveCampaign.bind( this );
+		this.filterOutInactiveCampaigns = this.filterOutInactiveCampaigns.bind( this );
+		this.showAllCampaigns = this.showAllCampaigns.bind( this );
+	}
+
+	/**
+	 * Set the filtered results when mounting
+	 */
+	componentDidMount() {
+		if (!this.props.attributes.includeInactive) {
+			this.filterOutInactiveCampaigns();
+		}
+	}
+
+	/**
+	 * Update the filtered results when the component is updated.
+	 */
+	componentDidUpdate(prevProps) {
+		if (this.props !== prevProps) {
+			if (!this.props.attributes.includeInactive) {
+				this.filterOutInactiveCampaigns();
+			}
+			else {
+				this.showAllCampaigns();
+			}
+		}
+	}
+
+	/**
+	 * Reset to show all campaigns if needed.
+	 */
+
+	showAllCampaigns() {
+		this.setState( {
+			filteredCampaigns: this.props.availableCampaigns,
+		} );
+	}
+
+	/**
+	 * Filter out inactive campaigns if needed.
+	 */
+
+	filterOutInactiveCampaigns() {
+		const filtered = this.props.availableCampaigns.filter( ( campaign ) => campaign.active);
+		this.setState( {
+			filteredCampaigns: filtered,
+		} );
 	}
 
 	/**
@@ -67,7 +115,7 @@ export class CampaignSelect extends Component {
 			<div className="charitable-campaigns-field">
 				<CampaignSelectedResults
 					selectedCampaigns={ this.state.selectedCampaigns }
-					availableCampaigns = { availableCampaigns }
+					availableCampaigns = { this.state.filteredCampaigns }
 					addOrRemoveCampaignCallback={ ( campaign ) => this.addOrRemoveCampaign( campaign ) }
 					columns={ columns }
 					campaignActiveStatus={ campaignActiveStatus }
@@ -77,7 +125,7 @@ export class CampaignSelect extends Component {
 					addOrRemoveCampaignCallback={ ( campaign ) => this.addOrRemoveCampaign( campaign ) }
 					selectedCampaigns={ this.state.selectedCampaigns }
 					campaignActiveStatus={ campaignActiveStatus }
-					availableCampaigns = { availableCampaigns }
+					availableCampaigns = { this.state.filteredCampaigns }
 					loadingAvailableCampaigns = { loadingAvailableCampaigns }
 					totalCampaignCount = { totalCampaignCount }
 				/>

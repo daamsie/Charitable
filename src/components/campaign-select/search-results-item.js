@@ -45,6 +45,7 @@ export class CampaignSearchResultsItem extends Component {
 							checked={ isSelected }	
 							onChange={ this.toggleChecked }
 					/>
+					{ !campaign.active && <span className='label inactive'>{__( 'Inactive' )}</span>}
 					{ getCampaignThumbnail( campaign ) }
 				</label>
 		)
