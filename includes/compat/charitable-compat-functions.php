@@ -114,11 +114,11 @@ function charitable_compat_theme_highlight_colour( $colour ) {
 	$colours    = include( 'styles/highlight-colours.php' );
 	$stylesheet = strtolower( wp_get_theme()->stylesheet );
 
-	if ( 'twentytwenty' === $stylesheet ) {
+	if ( 'twentytwenty' === $stylesheet && function_exists( 'twentytwenty_get_color_for_area' ) ) {
 		return sanitize_hex_color( twentytwenty_get_color_for_area( 'content', 'accent' ) );
 	}
 
-	if ( 'divi' === $stylesheet ) {
+	if ( 'divi' === $stylesheet && function_exists( 'et_get_option' ) ) {
 		$stylesheet = 'divi-' . et_get_option( 'color_schemes', 'none' );
 	}
 
