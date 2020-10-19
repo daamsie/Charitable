@@ -531,7 +531,7 @@ if ( ! function_exists( 'charitable_template_campaign_loop_more_link' ) ) :
 	 * @return void
 	 */
 	function charitable_template_campaign_loop_more_link( $campaign, $args = array() ) {
-		if ( ! isset( $args['button'] ) || 'details' != $args['button'] ) {
+		if ( ! isset( $args['button'] ) || 'details' !== $args['button'] ) {
 			return;
 		}
 
@@ -925,9 +925,12 @@ if ( ! function_exists( 'charitable_template_forgot_password_content' ) ) :
 
 		} else {
 
-			charitable_template( 'account/forgot-password.php', array(
-				'form' => new Charitable_Forgot_Password_Form(),
-			) );
+			charitable_template(
+				'account/forgot-password.php',
+				array(
+					'form' => new Charitable_Forgot_Password_Form(),
+				)
+			);
 
 		}
 
@@ -955,9 +958,12 @@ if ( ! function_exists( 'charitable_template_reset_password_content' ) ) :
 
 		ob_start();
 
-		charitable_template( 'account/reset-password.php', array(
-			'form' => new Charitable_Reset_Password_Form(),
-		) );
+		charitable_template(
+			'account/reset-password.php',
+			array(
+				'form' => new Charitable_Reset_Password_Form(),
+			)
+		);
 
 		$content = ob_get_clean();
 

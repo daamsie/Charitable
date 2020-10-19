@@ -1,4 +1,4 @@
-/**
+/** 
  * Clearfix helper class.
  * Credit: h5bp.com/q
  */
@@ -10,7 +10,7 @@
   .cf:after {
     clear: both; }
 
-/**
+/** 
  * Media block
  *
  * Credit: http://www.stubbornella.org/content/2010/06/25/the-media-object-saves-hundreds-of-lines-of-code/
@@ -158,6 +158,11 @@
     font-weight: bold; }
 .charitable-metabox .charitable-metabox-header {
   margin: 24px 0; }
+.charitable-metabox h4.charitable-metabox-header {
+  border-bottom: 1px solid #dedede;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  font-size: 14px; }
 .charitable-metabox .inside > .charitable-metabox-header:first-child {
   margin-top: 0; }
 
@@ -430,6 +435,14 @@ body.post-type-campaign .postbox-container .empty-container {
 #campaign-end-date .charitable-metabox-header,
 #campaign-description .charitable-metabox-header {
   margin: 24px 0; }
+#campaign-title h4.charitable-metabox-header,
+#campaign-goal h4.charitable-metabox-header,
+#campaign-end-date h4.charitable-metabox-header,
+#campaign-description h4.charitable-metabox-header {
+  border-bottom: 1px solid #dedede;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  font-size: 14px; }
 #campaign-title .inside > .charitable-metabox-header:first-child,
 #campaign-goal .inside > .charitable-metabox-header:first-child,
 #campaign-end-date .inside > .charitable-metabox-header:first-child,

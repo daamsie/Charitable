@@ -245,10 +245,10 @@ function charitable_sanitize_date( $date, $return_format = 'U' ) {
 	list( $month, $day, $year ) = explode( ' ', $date );
 
 	$day   = trim( $day, ',' );
-	$month = 1 + array_search( $month, array_values( $wp_locale->month ) );
-	$time  = mktime( 0, 0, 0, $month, $day, $year );
+	$month = 1 + array_search( $month, array_values( $wp_locale->month ), true );
+	$time  = mktime( 0, 0, 0, $month, (int) $day, (int) $year );
 
-	if ( 'U' == $return_format ) {
+	if ( 'U' === $return_format ) {
 		return $time;
 	}
 

@@ -195,7 +195,7 @@ if ( ! class_exists( 'Charitable_Export_Donations' ) ) :
 				$query_args['end_date'] = charitable_sanitize_date( $this->args['end_date'], 'Y-m-d 23:59:59' );
 			}
 
-			if ( 'all' != $this->args['campaign_id'] ) {
+			if ( 'all' !== $this->args['campaign_id'] ) {
 				$query_args['campaign_id'] = $this->args['campaign_id'];
 			}
 

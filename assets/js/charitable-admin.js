@@ -140,8 +140,7 @@ CHARITABLE_ADMIN = window.CHARITABLE_ADMIN || {};
 		on_change = function() {
 			var $trigger = $( this ),
 				trigger_idx = $trigger.data( 'trigger_idx' ),
-				settings,
-				change;
+				settings;
 
 			trigger_idx.forEach( function( id ) {
 				settings = triggers[id]['settings'];
