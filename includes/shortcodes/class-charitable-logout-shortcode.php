@@ -46,6 +46,8 @@ if ( ! class_exists( 'Charitable_Logout_Shortcode' ) ) :
 
 			$args = shortcode_atts( $defaults, $atts, 'charitable_logout' );
 
+			ob_start();
+
 			charitable_template( 'shortcodes/logout.php', $args );
 
 			/**
