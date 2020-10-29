@@ -158,6 +158,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 			$this->maybe_start_public();
 
 			Charitable_Addons::load( $this );
+			Charitable_Packages::load();
 		}
 
 		/**

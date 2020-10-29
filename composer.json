@@ -5,13 +5,23 @@
     "keywords": ["charitable", "wpcharitable", "donations", "fundraising", "donation"],
     "homepage": "https://www.wpcharitable.com/",
     "license": "GPL-2.0+",
+    "prefer-stable": true,
     "support": {
         "issues": "https://www.wpcharitable.com/support/"
     },
     "require-dev": {
-        "php-coveralls/php-coveralls": "v2.0.0",
-        "phpunit/phpunit": "*",
-        "phpunit/php-timer": "^1.0"
+        "php-coveralls/php-coveralls": "v2.4.2",
+        "phpunit/phpunit": "^9.4.2",
+        "phpunit/php-timer": "^5.0.3"
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "require": {
+        "wpcharitable/charitable-spamblocker": "1.0.0",
+        "composer/installers": "1.9.0"
+    },
+    "extra": {
+        "installer-paths": {
+            "packages/charitable-spamblocker": [ "wpcharitable/charitable-spamblocker" ]
+        }
+    }
 }

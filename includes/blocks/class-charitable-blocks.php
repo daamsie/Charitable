@@ -447,7 +447,7 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 
 				/* It's a core field, so this will be edited elsewhere. */
 				if ( 'core' === $data_type ) {
-					$field['admin_form'] = false;
+					// $field['admin_form'] = false;
 				} elseif ( is_array( $rest_api ) ) {
 					$editor = array_key_exists( 'editor', $rest_api ) ? $rest_api['editor'] : array();
 
@@ -459,7 +459,7 @@ if ( ! class_exists( 'Charitable_Blocks' ) ) :
 						$field['rest_api']['editor'] = $editor;
 					}
 
-					$field['admin_form'] = false;
+					// $field['admin_form'] = false;
 				}
 
 				$fields[ $key ] = $field;
