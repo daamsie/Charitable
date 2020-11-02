@@ -3,7 +3,7 @@
  * Plugin Name:       Charitable - Spam Blocker
  * Plugin URI:        https://github.com/Charitable/Charitable-Spam-Blocker
  * Description:       Add a series of tools to help block spam donation form submissions.
- * Version:           1.0.0
+ * Version:           1.0.3
  * Author:            WP Charitable
  * Author URI:        https://www.wpcharitable.com
  * Requires at least: 5.0
@@ -19,11 +19,14 @@
 namespace Charitable\Packages\SpamBlocker;
 
 use \Charitable\Extensions\Activation\Activation;
+use \Charitable\Packages\SpamBlocker\Domain\Bootstrap;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+define( 'CHARITABLE_SPAMBLOCKER_FEATURE_PLUGIN', true );
 
 /**
  * Load plugin class, but only if Charitable is found and activated.
@@ -40,8 +43,7 @@ add_action(
 
 		if ( $activation->ok() ) {
 			spl_autoload_register( '\Charitable\Packages\SpamBlocker\autoloader' );
-
-			return new SpamBlocker( __FILE__ );
+			return new Bootstrap();
 		}
 
 		/* translators: %s: link to activate Charitable */
@@ -77,9 +79,6 @@ function autoloader( $class ) {
 	/* Plugin namespace prefix. */
 	$prefix = 'Charitable\\Packages\\SpamBlocker\\';
 
-	/* Base directory for the namespace prefix. */
-	$base_dir = __DIR__ . '/src/';
-
 	/* Check if the class name uses the namespace prefix. */
 	$len = strlen( $prefix );
 
@@ -91,7 +90,7 @@ function autoloader( $class ) {
 	$relative_class = substr( $class, $len );
 
 	/* Get the file path. */
-	$file = $base_dir . str_replace( '\\', '/', $relative_class ) . '.php';
+	$file = __DIR__ . '/src/' . str_replace( '\\', '/', $relative_class ) . '.php';
 
 	/* Bail out if the file doesn't exist. */
 	if ( ! file_exists( $file ) ) {

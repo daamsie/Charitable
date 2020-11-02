@@ -32,7 +32,7 @@ if ( ! class_exists( 'Charitable_Packages' ) ) :
 		 * @var   array
 		 */
 		private $packages = array(
-			'charitable-spamblocker' => '\\Charitable\\Packages\\SpamBlocker\\Package',
+			'charitable-spamblocker' => '\\Charitable\\Packages\\SpamBlocker\\Domain\\Package',
 		);
 
 		/**

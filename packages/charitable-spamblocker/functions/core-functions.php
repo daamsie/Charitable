@@ -9,9 +9,8 @@
  * @version   1.0.0
  */
 
-use \Charitable\Packages\SpamBlocker\SpamBlocker;
+use \Charitable\Packages\SpamBlocker\Domain\Bootstrap;
 use \Charitable\Packages\SpamBlocker\Deprecated;
-use \Charitable\Packages\SpamBlocker\Template;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -19,17 +18,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * This returns the original Charitable_SpamBlocker object.
+ * This returns the original bootstrap object.
  *
  * Use this whenever you want to get an instance of the class. There is no
  * reason to instantiate a new object, though you can do so if you're stubborn :)
  *
  * @since   1.0.0
  *
- * @return \Charitable\Pro\SpamBlocker\SpamBlocker
+ * @return \Charitable\Packages\SpamBlocker\Domain\Bootstrap
  */
 function charitable_spamblocker() {
-	return SpamBlocker::get_instance();
+	return Bootstrap::get_instance();
 }
 
 /**
@@ -37,29 +36,8 @@ function charitable_spamblocker() {
  *
  * @since  1.0.0
  *
- * @return \Charitable\Pro\SpamBlocker\Deprecated
+ * @return \Charitable\Packages\SpamBlocker\Deprecated
  */
 function charitable_spamblocker_deprecated() {
 	return Deprecated::get_instance();
 }
-
-/**
- * Displays a template.
- *
- * @since  1.0.0
- *
- * @param  string|array $template_name A single template name or an ordered array of template.
- * @param  array        $args          Optional array of arguments to pass to the view.
- * @return \Charitable\Pro\SpamBlocker\Template
- */
-// function charitable_spamblocker_template( $template_name, array $args = array() ) {
-// 	if ( empty( $args ) ) {
-// 		$template = new Template( $template_name );
-// 	} else {
-// 		$template = new Template( $template_name, false );
-// 		$template->set_view_args( $args );
-// 		$template->render();
-// 	}
-
-// 	return $template;
-// }

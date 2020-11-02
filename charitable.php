@@ -169,9 +169,11 @@ if ( ! class_exists( 'Charitable' ) ) :
 		 * @return void
 		 */
 		private function load_dependencies() {
-			$includes_path = $this->get_path( 'includes' );
+			/* Load Composer packages. */
+			require_once( $this->get_path( 'directory' ) . 'vendor/autoload.php' );
 
 			/* Load files with hooks & functions. Classes are autoloaded. */
+			$includes_path = $this->get_path( 'includes' );
 			require_once( $includes_path . 'charitable-core-functions.php' );
 			require_once( $includes_path . 'campaigns/charitable-campaign-functions.php' );
 			require_once( $includes_path . 'campaigns/charitable-campaign-hooks.php' );
