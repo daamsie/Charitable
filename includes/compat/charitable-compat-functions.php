@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.44
+ * @version   1.6.45
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -78,6 +78,12 @@ function charitable_load_compat_functions() {
 	if ( defined( 'ICL_SITEPRESS_VERSION' ) ) {
 		new Charitable_WPML_Compat();
 	}
+
+	/* Weglot */
+	if ( defined( 'WEGLOT_VERSION' ) ) {
+		new Charitable_Weglot_Compat();
+	}
+
 
 	/* Permalink Manager */
 	if ( defined( 'PERMALINK_MANAGER_PLUGIN_NAME' ) ) {
@@ -174,6 +180,11 @@ function charitable_compat_load_locale_functions( $locale_enabled ) {
 
 	/* TranslatePress */
 	if ( class_exists( 'TRP_Translate_Press' ) ) {
+		return true;
+	}
+
+	/* Weglot */
+	if ( defined( 'WEGLOT_VERSION' ) ) {
 		return true;
 	}
 
