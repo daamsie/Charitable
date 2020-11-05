@@ -3,11 +3,11 @@
  * Plugin Name:       Charitable
  * Plugin URI:        https://www.wpcharitable.com
  * Description:       The WordPress fundraising alternative for non-profits, created to help non-profits raise money on their own website.
- * Version:           1.6.45-beta.1
+ * Version:           1.6.45-beta.2
  * Author:            WP Charitable
  * Author URI:        https://wpcharitable.com
  * Requires at least: 4.1
- * Tested up to:      5.5.1
+ * Tested up to:      5.5.3
  *
  * Text Domain:       charitable
  * Domain Path:       /i18n/languages/
