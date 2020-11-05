@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.6.43
- * @version   1.6.43
+ * @version   1.6.45
  */
 
 // Exit if accessed directly.
@@ -131,7 +131,17 @@ if ( ! class_exists( 'Charitable_Locale' ) ) :
 		 * @return array
 		 */
 		public function save_donation_locale( $meta_fields ) {
-			$meta_fields['locale'] = get_locale();
+			/**
+			 * Filter the locale. By default this will use the result of get_locale().
+			 *
+			 * @see get_locale
+			 *
+			 * @since 1.6.45
+			 *
+			 * @param string $locale The locale.
+			 */
+			$meta_fields['locale'] = apply_filters( 'charitable_donation_locale', get_locale() );
+
 			return $meta_fields;
 		}
 

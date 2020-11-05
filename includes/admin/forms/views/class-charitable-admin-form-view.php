@@ -9,7 +9,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.5.9
+ * @version   1.6.45
  */
 
 // Exit if accessed directly.
@@ -345,13 +345,13 @@ if ( ! class_exists( 'Charitable_Admin_Form_View' ) ) :
 		 * @return boolean
 		 */
 		protected function is_field_checked( $field ) {
-			if ( array_key_exists( 'checked', $field ) ) {
+			if ( isset( $field['checked'] ) ) {
 				return $field['checked'];
 			}
 
 			$value = $this->get_current_value( $field );
 
-			if ( array_key_exists( 'value', $field ) ) {
+			if ( isset( $field['value'] ) ) {
 				return $field['value'] == $value;
 			}
 
@@ -367,16 +367,36 @@ if ( ! class_exists( 'Charitable_Admin_Form_View' ) ) :
 		 * @return mixed
 		 */
 		protected function get_current_value( $field ) {
-			global $post;
-
 			if ( empty( $field['key'] ) ) {
 				return;
 			}
 
 			$default = array_key_exists( 'default', $field ) ? $field['default'] : '';
-			$value   = get_post_meta( $post->ID, $field['key'], true );
 
-			return $value ? $value : $default;
+			if ( ! in_array( $field['key'], $this->get_post_custom_keys() ) ) {
+				return $default;
+			}
+
+			return get_post_meta( $this->get_post()->ID, $field['key'], true );
+		}
+
+		/**
+		 * Get the post object.
+		 *
+		 * @since  1.6.45
+		 *
+		 * @global WP_Post $post
+		 *
+		 * @return WP_Post|Null
+		 */
+		public function get_post() {
+			if ( ! isset( $this->post ) ) {
+				global $post;
+
+				$this->post = $post;
+			}
+
+			return $this->post;
 		}
 
 		/**
@@ -387,12 +407,12 @@ if ( ! class_exists( 'Charitable_Admin_Form_View' ) ) :
 		 * @return array
 		 */
 		protected function get_post_custom_keys() {
-			if ( ! is_a( $this->post, 'WP_Post' ) ) {
+			if ( ! is_a( $this->get_post(), 'WP_Post' ) ) {
 				return array();
 			}
 
 			if ( ! isset( $this->post_custom_keys ) ) {
-				$this->post_custom_keys = get_post_custom_keys( $this->post->ID );
+				$this->post_custom_keys = get_post_custom_keys( $this->get_post()->ID );
 
 				if ( ! is_array( $this->post_custom_keys ) ) {
 					$this->post_custom_keys = array();
