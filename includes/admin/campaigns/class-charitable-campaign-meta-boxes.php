@@ -133,7 +133,7 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 		 * @return void
 		 */
 		public function campaign_form_top( $post ) {
-			if ( Charitable::CAMPAIGN_POST_TYPE == $post->post_type ) {
+			if ( Charitable::CAMPAIGN_POST_TYPE === $post->post_type ) {
 				do_meta_boxes( Charitable::CAMPAIGN_POST_TYPE, 'campaign-top', $post );
 			}
 		}
@@ -154,7 +154,7 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 					'fields' => $this->get_section_fields( $section ),
 				);
 
-				if ( 'campaign-donation-options' == $section ) {
+				if ( 'campaign-donation-options' === $section ) {
 					/**
 					 * Filter the fields in the Donation Options panel.
 					 *
@@ -452,7 +452,6 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 		private function panel_has_fields( $panel ) {
 			return array_key_exists( 'view', $panel ) || count( $panel['fields'] );
 		}
-
 
 		/**
 		 * Set default post content when the extended description is left empty.

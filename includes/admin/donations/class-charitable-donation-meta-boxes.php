@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.39
+ * @version   1.6.45
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -476,6 +476,11 @@ if ( ! class_exists( 'Charitable_Donation_Meta_Boxes' ) ) :
 				return $send_email;
 			}
 
+			/* If this isn't the `charitable_after_save_donation` hook, don't send the email. */
+			if ( ! doing_action( 'charitable_after_save_donation' ) ) {
+				return false;
+			}
+
 			/* If this isn't a manually created donation, send the email. */
 			if ( 'manual' !== $donation->get_gateway() ) {
 				return $send_email;
@@ -490,7 +495,7 @@ if ( ! class_exists( 'Charitable_Donation_Meta_Boxes' ) ) :
 		 *
 		 * @since  1.6.15
 		 *
-		 * @param  boolean $send_email Whether to send the email.
+		 * @param  boolean             $send_email Whether to send the email.
 		 * @param  Charitable_Donation $donation   The donation object.
 		 * @return boolean
 		 */
@@ -507,6 +512,11 @@ if ( ! class_exists( 'Charitable_Donation_Meta_Boxes' ) ) :
 			/* If we're not saving the donation, send the email. */
 			if ( ! $this->is_admin_donation_save() ) {
 				return $send_email;
+			}
+
+			/* If this isn't the `charitable_after_save_donation` hook, don't send the email. */
+			if ( ! doing_action( 'charitable_after_save_donation' ) ) {
+				return false;
 			}
 
 			/* If this isn't a manually created donation, send the email. */

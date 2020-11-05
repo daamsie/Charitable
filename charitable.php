@@ -3,11 +3,11 @@
  * Plugin Name:       Charitable
  * Plugin URI:        https://www.wpcharitable.com
  * Description:       The WordPress fundraising alternative for non-profits, created to help non-profits raise money on their own website.
- * Version:           1.6.44
+ * Version:           1.6.45
  * Author:            WP Charitable
  * Author URI:        https://wpcharitable.com
  * Requires at least: 4.1
- * Tested up to:      5.5
+ * Tested up to:      5.5.3
  *
  * Text Domain:       charitable
  * Domain Path:       /i18n/languages/
@@ -31,7 +31,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 	class Charitable {
 
 		/* Plugin version. */
-		const VERSION = '1.6.44';
+		const VERSION = '1.6.45';
 
 		/* Version of database schema. */
 		const DB_VERSION = '20180522';
@@ -158,6 +158,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 			$this->maybe_start_public();
 
 			Charitable_Addons::load( $this );
+			Charitable_Packages::load();
 		}
 
 		/**
@@ -168,9 +169,11 @@ if ( ! class_exists( 'Charitable' ) ) :
 		 * @return void
 		 */
 		private function load_dependencies() {
-			$includes_path = $this->get_path( 'includes' );
+			/* Load Composer packages. */
+			require_once( $this->get_path( 'directory' ) . 'vendor/autoload.php' );
 
 			/* Load files with hooks & functions. Classes are autoloaded. */
+			$includes_path = $this->get_path( 'includes' );
 			require_once( $includes_path . 'charitable-core-functions.php' );
 			require_once( $includes_path . 'campaigns/charitable-campaign-functions.php' );
 			require_once( $includes_path . 'campaigns/charitable-campaign-hooks.php' );

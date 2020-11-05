@@ -22,6 +22,15 @@ $end_date     = isset( $_GET['end_date'] ) ? sanitize_text_field( $_GET['end_dat
 $post_status  = isset( $_GET['post_status'] ) ? $_GET['post_status'] : 'all';
 $report_type  = isset( $_GET['report_type'] ) ? $_GET['report_type'] : 'donations';
 
+$campaigns = get_posts(
+	array(
+		'post_type'      => 'campaign',
+		'post_status'    => array( 'draft', 'pending', 'private', 'publish' ),
+		'perm'           => 'readable',
+		'posts_per_page' => -1,
+	)
+);
+
 /**
  * Filter the type of exportable report types.
  *
@@ -59,12 +68,7 @@ $report_types = apply_filters(
 		<select id="charitable-donations-export-campaign" name="campaign_id">
 			<option value="all"><?php _e( 'All Campaigns', 'charitable' ); ?></option>
 			<?php
-			foreach ( get_posts( array(
-				'post_type'      => 'campaign',
-				'post_status'    => array( 'draft', 'pending', 'private', 'publish' ),
-				'perm'           => 'readable',
-				'posts_per_page' => -1,
-			) ) as $campaign ) :
+			foreach ( $campaigns as $campaign ) :
 			?>
 				<option value="<?php echo $campaign->ID; ?>"><?php echo get_the_title( $campaign->ID ); ?></option>
 			<?php endforeach ?>
@@ -79,7 +83,14 @@ $report_types = apply_filters(
 		<?php else : ?>
 			<input type="hidden" name="report_type" value="<?php echo esc_attr( key( $report_types ) ); ?>" />
 		<?php endif ?>
-		<?php do_action( 'charitable_export_donations_form' ); ?>
+		<?php
+		/**
+		 * Add additional fields to the end of the donations export form.
+		 *
+		 * @since 1.4.0
+		 */
+		do_action( 'charitable_export_donations_form' );
+		?>
 		<button name="charitable-export-donations" class="button button-primary"><?php _e( 'Export', 'charitable' ); ?></button>
 	</form>
 </div>

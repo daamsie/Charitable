@@ -2,10 +2,10 @@
 /**
  * A base class to be extended by specific form classes.
  *
- * @package		Charitable/Classes/Charitable_Form
- * @version 	1.0.0
- * @author 		Eric Daams
- * @copyright 	Copyright (c) 2020, Studio 164a
+ * @package     Charitable/Classes/Charitable_Form
+ * @version     1.0.0
+ * @author      Eric Daams
+ * @copyright   Copyright (c) 2020, Studio 164a
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -98,7 +98,8 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 				__METHOD__,
 				sprintf(
 					/* translators: %s: class name */
-					__( 'None of the callbacks are required as of Charitable 1.5; use `Charitable_Public_Form_View` instead. Issue encountered in %s class.' ), get_class( $this )
+					__( 'None of the callbacks are required as of Charitable 1.5; use `Charitable_Public_Form_View` instead. Issue encountered in %s class.' ),
+					get_class( $this )
 				),
 				'1.5.0'
 			);
@@ -197,11 +198,15 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 			 * @param array           $fields The hidden fields as a key=>value array.
 			 * @param Charitable_Form $form   This instance of `Charitable_Form`.
 			 */
-			return apply_filters( 'charitable_form_hidden_fields', array(
-				$this->nonce_name   => wp_create_nonce( $this->nonce_action ),
-				'_wp_http_referer'  => wp_unslash( $_SERVER['REQUEST_URI'] ),
-				'charitable_action' => $this->form_action,
-			), $this );
+			return apply_filters(
+				'charitable_form_hidden_fields',
+				array(
+					$this->nonce_name   => wp_create_nonce( $this->nonce_action ),
+					'_wp_http_referer'  => wp_unslash( $_SERVER['REQUEST_URI'] ),
+					'charitable_action' => $this->form_action,
+				),
+				$this
+			);
 		}
 
 		/**
@@ -440,9 +445,9 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 		 * Upload a file.
 		 *
 		 * @param  string $file_key  Reference to a single element of `$_FILES`. Call the
-		 * 							  function once for each uploaded file.
+		 *                            function once for each uploaded file.
 		 * @param  array  $overrides Optional. An associative array of names=>values to
-		 * 							  override default variables. Default false.
+		 *                            override default variables. Default false.
 		 * @return  array|WP_Error On success, returns an associative array of file attributes.
 		 *                         On failure, returns $overrides['upload_error_handler'](&$file, $message )
 		 *                         or array( 'error'=>$message ).
@@ -690,10 +695,14 @@ if ( ! class_exists( 'Charitable_Form' ) ) :
 				$this->view()->render_hidden_fields();
 			}
 
-			return $form->view()->render_field( $field, $key, array(
-				'index'     => $index,
-				'namespace' => $namespace,
-			) );
+			return $form->view()->render_field(
+				$field,
+				$key,
+				array(
+					'index'     => $index,
+					'namespace' => $namespace,
+				)
+			);
 		}
 	}
 

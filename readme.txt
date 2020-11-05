@@ -3,8 +3,8 @@ Contributors: WPCharitable, ericdaams
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40164a%2ecom
 Tags: donate, wordpress donation plugin, wpcharitable, peer to peer fundraising, recurring donations, donation plugin, donation form, paypal donations, stripe donations, give, fundraise, fundraising
 Requires at least: 4.1
-Tested up to: 5.5
-Stable tag: 1.6.44
+Tested up to: 5.5.3
+Stable tag: 1.6.45
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -230,6 +230,13 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 6. Setting up Charitable: The Email settings area.
 
 == Changelog ==
+
+= 1.6.45 =
+* FIX: If you are using Weglot, the donation receipt page and donation-related emails will be in the same language used by the donor when they donated. [#835](https://github.com/Charitable/Charitable/issues/835)
+* FIX: Prevent errors from displaying in the donation processing response to avoid donations being blocked.
+* FIX: Check hidden fields when checking if a donation is a recurring donation. [#819](https://github.com/Charitable/Charitable/issues/819)
+* FIX: In some cases, using the logout shortcode would result in it being displayed multiple times or too early. This has been fixed. [#834](https://github.com/Charitable/Charitable/issues/834)
+* FIX: Prevent a fatal error encountered when using the Twenty Twenty theme and Oxygen Builder. [#829](https://github.com/Charitable/Charitable/issues/829)
 
 = 1.6.44 =
 * NEW: When using WPML, the total funds raised by a campaign will now include both the campaign itself and any translations of the same campaign. [#811](https://github.com/Charitable/Charitable/issues/811)

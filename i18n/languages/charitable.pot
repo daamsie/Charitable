@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Charitable package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Charitable 1.6.44\n"
+"Project-Id-Version: Charitable 1.6.45\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2020-08-28 06:14:32+00:00\n"
+"POT-Creation-Date: 2020-11-05 07:03:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,11 +24,13 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "X-Generator: grunt-wp-i18n 1.0.3\n"
 
-#: charitable.php:814
+#: charitable.php:817
+#: packages/charitable-spamblocker/src/Domain/Bootstrap.php:252
 msgid "Cloning this object is forbidden."
 msgstr ""
 
-#: charitable.php:829
+#: charitable.php:832
+#: packages/charitable-spamblocker/src/Domain/Bootstrap.php:267
 msgid "Unserializing instances of this class is forbidden."
 msgstr ""
 
@@ -4689,6 +4691,7 @@ msgstr ""
 #: includes/admin/customizer/class-charitable-customizer.php:122
 #: includes/admin/customizer/class-charitable-customizer.php:169
 #: includes/emails/class-charitable-email-email-verification.php:149
+#: packages/charitable-spamblocker/src/Modules/Captcha/Captcha.php:70
 msgid "Yes"
 msgstr ""
 
@@ -4696,6 +4699,7 @@ msgstr ""
 #: includes/admin/customizer/class-charitable-customizer.php:123
 #: includes/admin/customizer/class-charitable-customizer.php:170
 #: includes/emails/class-charitable-email-email-verification.php:150
+#: packages/charitable-spamblocker/src/Modules/Captcha/Captcha.php:71
 msgid "No"
 msgstr ""
 
@@ -4820,18 +4824,18 @@ msgid ""
 "`Charitable_Public_Form_View` instead. Issue encountered in %s class."
 msgstr ""
 
-#: includes/abstracts/abstract-class-charitable-form.php:230
+#: includes/abstracts/abstract-class-charitable-form.php:235
 msgid "Unable to submit form. Please try again."
 msgstr ""
 
-#: includes/abstracts/abstract-class-charitable-form.php:236
+#: includes/abstracts/abstract-class-charitable-form.php:241
 #. translators: %1$s: nonce name; %2$s: nonce action; %3$s: submitted nonce
 msgid ""
 "Nonce verification failed for nonce with name \"%1$s\" and action \"%2$s\". "
 "Submitted nonce is \"%3$s\"."
 msgstr ""
 
-#: includes/abstracts/abstract-class-charitable-form.php:349
+#: includes/abstracts/abstract-class-charitable-form.php:354
 msgid ""
 "There were problems with your form submission. The following required "
 "fields were not filled out:"
@@ -4894,7 +4898,7 @@ msgstr ""
 
 #: includes/admin/campaigns/class-charitable-campaign-list-table.php:74
 #: includes/admin/donor/class-charitable-donor-list-table.php:176
-#: includes/admin/views/donations-page/export-form.php:35
+#: includes/admin/views/donations-page/export-form.php:44
 #: includes/data/class-charitable-post-types.php:153
 #: includes/gateways/class-charitable-gateway-paypal.php:79
 msgid "Donations"
@@ -5276,7 +5280,7 @@ msgstr ""
 #: includes/admin/donations/class-charitable-donation-list-table.php:287
 #: includes/admin/views/campaigns-page/export-form.php:44
 #: includes/admin/views/campaigns-page/filter-form.php:27
-#: includes/admin/views/donations-page/export-form.php:53
+#: includes/admin/views/donations-page/export-form.php:62
 #: includes/admin/views/donations-page/filter-form.php:47
 msgid "All"
 msgstr ""
@@ -5969,7 +5973,7 @@ msgstr ""
 #: includes/admin/views/campaigns-page/export-form.php:68
 #: includes/admin/views/campaigns-page/filter-form.php:42
 #: includes/admin/views/campaigns-page/filter-form.php:47
-#: includes/admin/views/donations-page/export-form.php:48
+#: includes/admin/views/donations-page/export-form.php:57
 #: includes/admin/views/donations-page/filter-form.php:42
 msgid "From:"
 msgstr ""
@@ -5978,7 +5982,7 @@ msgstr ""
 #: includes/admin/views/campaigns-page/export-form.php:69
 #: includes/admin/views/campaigns-page/filter-form.php:43
 #: includes/admin/views/campaigns-page/filter-form.php:48
-#: includes/admin/views/donations-page/export-form.php:49
+#: includes/admin/views/donations-page/export-form.php:58
 #: includes/admin/views/donations-page/filter-form.php:43
 msgid "To:"
 msgstr ""
@@ -5990,19 +5994,19 @@ msgstr ""
 
 #: includes/admin/views/campaigns-page/export-form.php:71
 #: includes/admin/views/campaigns-page/filter-form.php:50
-#: includes/admin/views/donations-page/export-form.php:51
+#: includes/admin/views/donations-page/export-form.php:60
 #: includes/admin/views/donations-page/filter-form.php:45
 msgid "Filter by Status"
 msgstr ""
 
 #: includes/admin/views/campaigns-page/export-form.php:78
-#: includes/admin/views/donations-page/export-form.php:73
+#: includes/admin/views/donations-page/export-form.php:77
 msgid "Type of Report"
 msgstr ""
 
 #: includes/admin/views/campaigns-page/export-form.php:96
 #: includes/admin/views/campaigns-page/export.php:15
-#: includes/admin/views/donations-page/export-form.php:83
+#: includes/admin/views/donations-page/export-form.php:94
 #: includes/admin/views/donations-page/export.php:13
 msgid "Export"
 msgstr ""
@@ -6013,7 +6017,7 @@ msgstr ""
 
 #: includes/admin/views/campaigns-page/filter-form.php:64
 #: includes/admin/views/campaigns-page/filters.php:20
-#: includes/admin/views/donations-page/filter-form.php:60
+#: includes/admin/views/donations-page/filter-form.php:67
 #: includes/admin/views/donations-page/filters.php:20
 msgid "Filter"
 msgstr ""
@@ -6055,21 +6059,21 @@ msgstr[1] ""
 msgid "Recent Donations"
 msgstr ""
 
-#: includes/admin/views/donations-page/export-form.php:41
+#: includes/admin/views/donations-page/export-form.php:50
 msgid "Export Donations"
 msgstr ""
 
-#: includes/admin/views/donations-page/export-form.php:47
+#: includes/admin/views/donations-page/export-form.php:56
 #: includes/admin/views/donations-page/filter-form.php:41
 msgid "Filter by Date"
 msgstr ""
 
-#: includes/admin/views/donations-page/export-form.php:58
+#: includes/admin/views/donations-page/export-form.php:67
 #: includes/admin/views/donations-page/filter-form.php:52
 msgid "Filter by Campaign"
 msgstr ""
 
-#: includes/admin/views/donations-page/export-form.php:60
+#: includes/admin/views/donations-page/export-form.php:69
 #: includes/admin/views/donations-page/filter-form.php:54
 msgid "All Campaigns"
 msgstr ""
@@ -6143,20 +6147,24 @@ msgstr ""
 msgid "+ Add New Contribution Rule"
 msgstr ""
 
-#: includes/admin/views/metaboxes/campaign-creator.php:24
+#: includes/admin/views/metaboxes/campaign-creator.php:35
 msgid "User ID"
 msgstr ""
 
-#: includes/admin/views/metaboxes/campaign-creator.php:27
+#: includes/admin/views/metaboxes/campaign-creator.php:38
 msgid "Public Profile"
 msgstr ""
 
-#: includes/admin/views/metaboxes/campaign-creator.php:28
+#: includes/admin/views/metaboxes/campaign-creator.php:39
 msgid "Edit Profile"
 msgstr ""
 
-#: includes/admin/views/metaboxes/campaign-creator.php:33
+#: includes/admin/views/metaboxes/campaign-creator.php:45
 msgid "Change the campaign creator"
+msgstr ""
+
+#: includes/admin/views/metaboxes/campaign-creator.php:47
+msgid "Select a user"
 msgstr ""
 
 #: includes/admin/views/metaboxes/campaign-description.php:19
@@ -6652,6 +6660,35 @@ msgstr ""
 msgid "Scheduled"
 msgstr ""
 
+#: includes/class-charitable-packages.php:128
+#: includes/class-charitable-packages.php:144
+#. Translators: %s package name.
+msgid "Missing the Charitable %s package"
+msgstr ""
+
+#: includes/class-charitable-packages.php:130
+msgid ""
+"Your installation of Charitable is incomplete. If you installed Charitable "
+"from GitHub, please run `composer install` to install packages"
+msgstr ""
+
+#: includes/class-charitable-packages.php:153
+#. translators: %s: code instruction
+msgid ""
+"Your installation of Charitable is incomplete. If you installed Charitable "
+"from GitHub, please run %s in the Charitable directory to set up your "
+"development environment."
+msgstr ""
+
+#: includes/class-charitable-packages.php:176
+#. Translators: 1: package name. 2: required class method
+msgid "The %1$s package is missing an %2$s method."
+msgstr ""
+
+#: includes/class-charitable-packages.php:191
+msgid "Invalid package could not be installed."
+msgstr ""
+
 #: includes/currency/class-charitable-currency.php:124
 msgid "Amount must be passed as a string."
 msgstr ""
@@ -6916,7 +6953,7 @@ msgstr ""
 msgid "Vietnamese Dong (%s)"
 msgstr ""
 
-#: includes/data/class-charitable-campaign-donations-db.php:837
+#: includes/data/class-charitable-campaign-donations-db.php:834
 msgid ""
 "Field expected to be `campaign`, `campaign_id`, `donation`, `donation_id`, "
 "`donor` or `donor_id`."
@@ -7220,37 +7257,37 @@ msgstr ""
 msgid "Retry email send"
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:295
+#: includes/donations/class-charitable-donation-processor.php:298
 msgid "Campaign ID was not found. Unable to create donation."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:310
+#: includes/donations/class-charitable-donation-processor.php:313
 msgid "Unable to process donation."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:414
+#: includes/donations/class-charitable-donation-processor.php:417
 msgid ""
 "A donation cannot be inserted without an array of campaigns being donated "
 "to."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:423
+#: includes/donations/class-charitable-donation-processor.php:426
 msgid "A donation cannot be inserted without valid user data."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:448
+#: includes/donations/class-charitable-donation-processor.php:451
 msgid "We were unable to save the donation. Please try again."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:461
+#: includes/donations/class-charitable-donation-processor.php:464
 msgid "Payment attempted."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:461
+#: includes/donations/class-charitable-donation-processor.php:464
 msgid "Donation created."
 msgstr ""
 
-#: includes/donations/class-charitable-donation-processor.php:813
+#: includes/donations/class-charitable-donation-processor.php:816
 #. translators: %s: error message
 msgid "Payment failed with errors: %s"
 msgstr ""
@@ -8622,7 +8659,7 @@ msgstr ""
 msgid "Campaign Manager"
 msgstr ""
 
-#: includes/users/class-charitable-user.php:695
+#: includes/users/class-charitable-user.php:702
 msgid "Unable to add donor. Email not set for logged out user."
 msgstr ""
 
@@ -8768,6 +8805,126 @@ msgstr ""
 
 #: includes/widgets/class-charitable-donors-widget.php:122
 msgid "Hide if there are no donors"
+msgstr ""
+
+#: packages/charitable-spamblocker/charitable-spam-blocker.php:50
+#. translators: %s: link to activate Charitable
+msgid ""
+"Charitable Spam Blocker requires Charitable! Please <a href=\"%s\">activate "
+"it</a> to continue."
+msgstr ""
+
+#: packages/charitable-spamblocker/charitable-spam-blocker.php:53
+#. translators: %s: link to install Charitable
+msgid ""
+"Charitable Spam Blocker requires Charitable! Please <a href=\"%s\">install "
+"it</a> to continue."
+msgstr ""
+
+#: packages/charitable-spamblocker/charitable-spam-blocker.php:56
+#. translators: %s: link to update Charitable
+msgid ""
+"Charitable Spam Blocker requires Charitable 1.6.40+! Please <a "
+"href=\"%s\">update Charitable</a> to continue."
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Admin/Settings.php:54
+msgid "Security"
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/Captcha.php:51
+msgid "Captcha"
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/Captcha.php:56
+msgid "Captcha Provider"
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/Captcha.php:59
+msgid "Disabled"
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/Captcha.php:60
+msgid "Google reCAPTCHA"
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/Captcha.php:61
+msgid "hCaptcha"
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/Captcha.php:67
+msgid "Require Captcha for Logged In Users"
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/GoogleReCAPTCHA.php:64
+msgid "Google reCAPTCHA Settings"
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/GoogleReCAPTCHA.php:73
+msgid "Google reCAPTCHA Site Key"
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/GoogleReCAPTCHA.php:76
+msgid ""
+"Your reCAPTCHA \"Site key\" setting. Find this at <a "
+"href=\"https://www.google.com/recaptcha/admin\" "
+"target=\"_blank\">www.google.com/recaptcha/admin</a>."
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/GoogleReCAPTCHA.php:84
+msgid "Google reCAPTCHA Secret Key"
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/GoogleReCAPTCHA.php:87
+msgid ""
+"Your reCAPTCHA \"Secret key\" setting. Find this at <a "
+"href=\"https://www.google.com/recaptcha/admin\" "
+"target=\"_blank\">www.google.com/recaptcha/admin</a>."
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/GoogleReCAPTCHA.php:163
+#: packages/charitable-spamblocker/src/Modules/Captcha/HCaptcha.php:160
+msgid "Your form submission failed because the captcha failed to be validated."
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/GoogleReCAPTCHA.php:399
+#: packages/charitable-spamblocker/src/Modules/Captcha/HCaptcha.php:401
+msgid "Missing captcha token."
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/GoogleReCAPTCHA.php:415
+#: packages/charitable-spamblocker/src/Modules/Captcha/HCaptcha.php:418
+msgid "Failed to verify captcha."
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/GoogleReCAPTCHA.php:422
+#: packages/charitable-spamblocker/src/Modules/Captcha/HCaptcha.php:425
+msgid "Captcha validation failed."
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/HCaptcha.php:64
+msgid "hCaptcha Settings"
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/HCaptcha.php:73
+msgid "hCaptcha Site Key"
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/HCaptcha.php:76
+msgid ""
+"Your hCaptcha \"Sitekey\" setting. Find this in <a "
+"href=\"https://dashboard.hcaptcha.com/sites\" target=\"_blank\">your "
+"hCaptcha dashboard</a>."
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/HCaptcha.php:84
+msgid "hCaptcha Secret Key"
+msgstr ""
+
+#: packages/charitable-spamblocker/src/Modules/Captcha/HCaptcha.php:87
+msgid ""
+"Your hCaptcha Secret Key setting can be found in the Settings page in your "
+"hCaptcha dashboard."
 msgstr ""
 
 #: templates/account/email-not-verified.php:23
@@ -8963,7 +9120,7 @@ msgctxt "set donation status to x"
 msgid "Set to %s"
 msgstr ""
 
-#: includes/admin/views/metaboxes/campaign-creator.php:25
+#: includes/admin/views/metaboxes/campaign-creator.php:36
 msgctxt "joined on date"
 msgid "Joined on"
 msgstr ""

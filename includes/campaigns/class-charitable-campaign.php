@@ -882,7 +882,7 @@ if ( ! class_exists( 'Charitable_Campaign' ) ) :
 		 *
 		 * @since  1.0.0
 		 *
-		 * @return string|false        String if campaign has a goal. False if no goal is set.
+		 * @return string|false String if campaign has a goal. False if no goal is set.
 		 */
 		public function get_percent_donated() {
 			$percent = $this->get_percent_donated_raw();

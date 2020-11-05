@@ -611,15 +611,15 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 		 * @since  1.5.0
 		 *
 		 * @global string $typenow The current post type.
+		 * @global string $pagenow The current page.
 		 *
-		 * @param  string $which
 		 * @return void
 		 */
 		public function modal_forms() {
-			global $typenow;
+			global $typenow, $pagenow;
 
 			/* Add the modal form. */
-			if ( in_array( $typenow, array( Charitable::DONATION_POST_TYPE ) ) ) {
+			if ( 'edit.php' === $pagenow && in_array( $typenow, array( Charitable::DONATION_POST_TYPE ), true ) ) {
 				charitable_admin_view( 'donations-page/export-form' );
 				charitable_admin_view( 'donations-page/filter-form' );
 			}
@@ -634,17 +634,18 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 		 *
 		 * @global string $typenow The current post type.
 		 *
+		 * @param  string $hook The current page hook.
 		 * @return void
 		 */
 		public function load_scripts( $hook ) {
-			if ( 'edit.php' != $hook ) {
+			if ( 'edit.php' !== $hook ) {
 				return;
 			}
 
 			global $typenow;
 
 			/* Enqueue the scripts for donation page */
-			if ( in_array( $typenow, array( Charitable::DONATION_POST_TYPE ) ) ) {
+			if ( in_array( $typenow, array( Charitable::DONATION_POST_TYPE ), true ) ) {
 				wp_enqueue_style( 'lean-modal-css' );
 				wp_enqueue_script( 'jquery' );
 				wp_enqueue_script( 'lean-modal' );
@@ -658,14 +659,15 @@ if ( ! class_exists( 'Charitable_Donation_List_Table' ) ) :
 		 * @since  1.5.0
 		 *
 		 * @global string $typenow The current post type.
+		 * @global string $pagenow The current admin page.
 		 *
-		 * @param  array  $vars    The array of args to pass to WP_Query.
+		 * @param  array $vars The array of args to pass to WP_Query.
 		 * @return array
 		 */
 		public function filter_request_query( $vars ) {
-			global $typenow;
+			global $typenow, $pagenow;
 
-			if ( Charitable::DONATION_POST_TYPE != $typenow ) {
+			if ( 'edit.php' !== $pagenow || Charitable::DONATION_POST_TYPE !== $typenow ) {
 				return $vars;
 			}
 

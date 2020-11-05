@@ -492,7 +492,7 @@ if ( ! function_exists( 'charitable_template_campaign_loop_more_link' ) ) :
 	 * @return void
 	 */
 	function charitable_template_campaign_loop_more_link( $campaign, $args = array() ) {
-		if ( ! isset( $args['button'] ) || 'details' != $args['button'] ) {
+		if ( ! isset( $args['button'] ) || 'details' !== $args['button'] ) {
 			return;
 		}
 
