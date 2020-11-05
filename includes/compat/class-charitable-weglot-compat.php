@@ -54,10 +54,6 @@ if ( ! class_exists( 'Charitable_Weglot_Compat' ) ) :
 			add_filter( 'charitable_permalink_donation_receipt_page', array( $this, 'get_weglot_page_url' ), 10, 2 );
 			add_filter( 'charitable_is_page_donation_receipt_page', array( $this, 'is_donation_receipt_page' ), 10, 2 );
 
-			/* Terms & Conditions and Privacy Policy */
-			// add_filter( 'charitable_option_terms_conditions_page', array( $this, 'get_weglot_page_id' ) );
-			// add_filter( 'charitable_option_privacy_policy_page', array( $this, 'get_Weglot_page_id' ) );
-
 			/**
 			 * Do something with this class instance.
 			 *
