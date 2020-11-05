@@ -31,28 +31,34 @@ if ( ! class_exists( 'Charitable_DB' ) ) :
 		/**
 		 * The name of our database table
 		 *
-		 * @since  1.0.0
+		 * @since 1.0.0
+		 *
+		 * @var   string
 		 */
 		public $table_name;
 
 		/**
 		 * The version of our database table
 		 *
-		 * @since  1.0.0
+		 * @since 1.0.0
+		 *
+		 * @var   string
 		 */
 		public $version;
 
 		/**
 		 * The name of the primary column
 		 *
-		 * @since  1.0.0
+		 * @since 1.0.0
+		 *
+		 * @var   string
 		 */
 		public $primary_key;
 
 		/**
 		 * Get things started
 		 *
-		 * @since  1.0.0
+		 * @since 1.0.0
 		 */
 		public function __construct() {}
 
@@ -79,7 +85,7 @@ if ( ! class_exists( 'Charitable_DB' ) ) :
 		 *
 		 * @since  1.0.0
 		 *
-		 * @param  string $column
+		 * @param  string $column The column to get the format for.
 		 * @return %s, %d or %f
 		 */
 		public function get_column_format( $column ) {
@@ -174,7 +180,7 @@ if ( ! class_exists( 'Charitable_DB' ) ) :
 		}
 
 		/**
-		 * Retrieve all values in a specific column by the the specified column / value.
+		 * Retrieve all values in a specific column by the specified column / value.
 		 *
 		 * @since  1.5.11
 		 *

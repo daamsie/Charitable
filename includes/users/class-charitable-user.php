@@ -541,12 +541,19 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 				return get_avatar( $this->ID, $size );
 			}
 
-			return apply_filters( 'charitable_user_avatar_custom', sprintf( '<img src="%s" alt="%s" class="avatar photo" width="%s" height="%s" />',
-				$attachment_src[0],
-				esc_attr( $this->display_name ),
-				$attachment_src[1],
-				$attachment_src[2]
-			), $avatar_attachment_id, $size, $this );
+			return apply_filters(
+				'charitable_user_avatar_custom',
+				sprintf(
+					'<img src="%s" alt="%s" class="avatar photo" width="%s" height="%s" />',
+					$attachment_src[0],
+					esc_attr( $this->display_name ),
+					$attachment_src[1],
+					$attachment_src[2]
+				),
+				$avatar_attachment_id,
+				$size,
+				$this
+			);
 		}
 
 		/**
@@ -566,7 +573,7 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 				/* The gravatars are returned as fully formatted img tags, so we need to pull out the src. */
 				$gravatar = get_avatar( $this->ID, $size );
 
-				preg_match( "@src='([^']+)'@" , $gravatar, $matches );
+				preg_match( "@src='([^']+)'@", $gravatar, $matches );
 
 				$avatar = array_pop( $matches );
 			}
@@ -602,19 +609,19 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 */
 		public function get_current_campaigns( $args = array() ) {
 			$defaults = array(
-				'author' => $this->ID,
-				'meta_query'    => array(
-					'relation'      => 'OR',
+				'author'     => $this->ID,
+				'meta_query' => array(
+					'relation' => 'OR',
 					array(
-						'key'       => '_campaign_end_date',
-						'value'     => date( 'Y-m-d H:i:s' ),
-						'compare'   => '>=',
-						'type'      => 'datetime',
+						'key'     => '_campaign_end_date',
+						'value'   => date( 'Y-m-d H:i:s' ),
+						'compare' => '>=',
+						'type'    => 'datetime',
 					),
 					array(
-						'key'       => '_campaign_end_date',
-						'value'     => '0',
-					)
+						'key'   => '_campaign_end_date',
+						'value' => '0',
+					),
 				),
 			);
 
@@ -735,7 +742,7 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 * @return int
 		 */
 		public static function create_profile( $submitted = array(), $keys = array() ) {
-			$user = new Charitable_User();
+			$user    = new Charitable_User();
 			$user_id = $user->update_profile( $submitted, $keys );
 			return new Charitable_User( $user_id );
 		}

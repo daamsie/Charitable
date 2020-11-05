@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.44
+ * @version   1.6.45
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -79,6 +79,12 @@ function charitable_load_compat_functions() {
 		new Charitable_WPML_Compat();
 	}
 
+	/* Weglot */
+	if ( defined( 'WEGLOT_VERSION' ) ) {
+		new Charitable_Weglot_Compat();
+	}
+
+
 	/* Permalink Manager */
 	if ( defined( 'PERMALINK_MANAGER_PLUGIN_NAME' ) ) {
 		require_once( $includes_path . 'compat/charitable-permalink-manager-compat-functions.php' );
@@ -114,11 +120,11 @@ function charitable_compat_theme_highlight_colour( $colour ) {
 	$colours    = include( 'styles/highlight-colours.php' );
 	$stylesheet = strtolower( wp_get_theme()->stylesheet );
 
-	if ( function_exists( 'twentytwenty_get_color_for_area' ) ) {
+	if ( 'twentytwenty' === $stylesheet && function_exists( 'twentytwenty_get_color_for_area' ) ) {
 		return sanitize_hex_color( twentytwenty_get_color_for_area( 'content', 'accent' ) );
 	}
 
-	if ( 'divi' === $stylesheet ) {
+	if ( 'divi' === $stylesheet && function_exists( 'et_get_option' ) ) {
 		$stylesheet = 'divi-' . et_get_option( 'color_schemes', 'none' );
 	}
 
@@ -174,6 +180,11 @@ function charitable_compat_load_locale_functions( $locale_enabled ) {
 
 	/* TranslatePress */
 	if ( class_exists( 'TRP_Translate_Press' ) ) {
+		return true;
+	}
+
+	/* Weglot */
+	if ( defined( 'WEGLOT_VERSION' ) ) {
 		return true;
 	}
 

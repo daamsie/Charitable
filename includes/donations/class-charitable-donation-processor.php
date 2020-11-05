@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.6.44
+ * @version   1.6.45
  */
 
 // Exit if accessed directly.
@@ -291,6 +291,9 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 		 * @return void
 		 */
 		public static function ajax_process_donation_form_submission() {
+			/* Prevent any displayed errors from messing with the AJAX response. */
+			ini_set( 'display_errors', false );
+
 			if ( ! isset( $_POST['campaign_id'] ) ) {
 				wp_send_json_error( new WP_Error( 'missing_campaign_id', __( 'Campaign ID was not found. Unable to create donation.', 'charitable' ) ) );
 			}

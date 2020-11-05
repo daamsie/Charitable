@@ -97,8 +97,8 @@ if ( ! class_exists( 'Charitable_Field' ) ) :
 			if ( ! is_array( $arg ) ) {
 				charitable_get_deprecated()->doing_it_wrong(
 					__METHOD__,
-					/* translators: %1$s: argument key; %2$s: setting */
 					sprintf(
+						/* translators: %1$s: argument key; %2$s: setting */
 						_x( 'Attempting to set an argument setting for a non-array argument. Argument: %1$s; Setting: %2$s', 'argument key', 'charitable' ),
 						$key,
 						$setting

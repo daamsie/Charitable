@@ -160,6 +160,11 @@
     font-weight: bold; }
 .charitable-metabox .charitable-metabox-header {
   margin: 24px 0; }
+.charitable-metabox h4.charitable-metabox-header {
+  border-bottom: 1px solid #dedede;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  font-size: 14px; }
 .charitable-metabox .inside > .charitable-metabox-header:first-child {
   margin-top: 0; }
 
@@ -437,6 +442,14 @@ body.post-type-campaign .postbox-container .empty-container {
 #campaign-end-date .charitable-metabox-header,
 #campaign-description .charitable-metabox-header {
   margin: 24px 0; }
+#campaign-title h4.charitable-metabox-header,
+#campaign-goal h4.charitable-metabox-header,
+#campaign-end-date h4.charitable-metabox-header,
+#campaign-description h4.charitable-metabox-header {
+  border-bottom: 1px solid #dedede;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  font-size: 14px; }
 #campaign-title .inside > .charitable-metabox-header:first-child,
 #campaign-goal .inside > .charitable-metabox-header:first-child,
 #campaign-end-date .inside > .charitable-metabox-header:first-child,
@@ -668,10 +681,10 @@ body.post-type-campaign .postbox-container .empty-container {
 #campaign-creator .creator-facts dd {
   display: inline-block; }
 
-#charitable-post-author-wrap {
-  padding-top: 24px;
-  margin-top: 12px;
-  border-top: 1px solid #e1e1e1; }
+#charitable-campaign-creator-metabox-wrap #campaign-creator {
+  padding-bottom: 24px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #e1e1e1; }
 
 /* --- Gutenberg Editor --- */
 .gutenberg #campaign-settings input,
