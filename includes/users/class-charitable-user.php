@@ -751,20 +751,13 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 * Update the user's details with submitted values.
 		 *
 		 * @since  1.0.0
+		 * @since  1.7.0 Both arguments are now required.
 		 *
 		 * @param  array $submitted The submitted values.
-		 * @param  array $keys The keys of fields that are to be updated.
+		 * @param  array $keys      The keys of fields that are to be updated.
 		 * @return int
 		 */
-		public function update_profile( $submitted = array(), $keys = array() ) {
-			if ( empty( $submitted ) ) {
-				$submitted = $_POST;
-			}
-
-			if ( empty( $keys ) ) {
-				$keys = array_keys( $submitted );
-			}
-
+		public function update_profile( $submitted, $keys ) {
 			$user_id = $this->update_core_user( $submitted );
 
 			/* If there were problems with creating the user, stop here. */
