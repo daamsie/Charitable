@@ -1153,7 +1153,7 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 				return $field;
 			}
 
-			if ( 'user' == $field['data_type'] ) {
+			if ( 'user' === $field['data_type'] ) {
 				$field['value'] = $this->get_user_value( $key, $field['default'] );
 			} else {
 				$field['value'] = $field['default'];
