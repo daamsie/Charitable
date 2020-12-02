@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.44
+ * @version   1.6.46
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -85,19 +85,26 @@ if ( ! class_exists( 'Charitable_Campaign_Donation_Endpoint' ) ) :
 		public function get_page_url( $args = array() ) {
 			global $wp_rewrite;
 
-			$campaign_id  = array_key_exists( 'campaign_id', $args ) ? $args['campaign_id'] : get_the_ID();
-			$campaign_url = get_permalink( $campaign_id );
+			/**
+			 * A campaign ID must be passed for us to get a
+			 * campaign donation endpoint URL.
+			 */
+			if ( ! isset( $args['campaign_id'] ) ) {
+				return false;
+			}
+
+			$campaign_url = get_permalink( $args['campaign_id'] );
 
 			if ( $this->force_https ) {
 				$campaign_url = str_replace( 'http://', 'https://', $campaign_url );
 			}
 
-			if ( 'same_page' == charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
+			if ( 'same_page' === charitable_get_option( 'donation_form_display', 'separate_page' ) ) {
 				return $campaign_url;
 			}
 
 			if ( $wp_rewrite->using_permalinks()
-				&& ! in_array( get_post_status( $campaign_id ), array( 'pending', 'draft' ) )
+				&& ! in_array( get_post_status( $args['campaign_id'] ), array( 'pending', 'draft' ) )
 				&& ! isset( $_GET['preview'] ) ) {
 
 				$url = parse_url( $campaign_url );
@@ -133,7 +140,7 @@ if ( ! class_exists( 'Charitable_Campaign_Donation_Endpoint' ) ) :
 				return false;
 			}
 
-			return 'separate_page' != charitable_get_option( 'donation_form_display', 'separate_page' );
+			return 'separate_page' !== charitable_get_option( 'donation_form_display', 'separate_page' );
 		}
 
 		/**

@@ -1,3 +1,7 @@
+# 1.6.46
+* FIX: Prevent endless redirect when using Weglot and displaying donation forms on the same page as the campaign.
+* FIX: Improve compatibility with WP Super Cache.
+
 # 1.6.45
 * FIX: If you are using Weglot, the donation receipt page and donation-related emails will be in the same language used by the donor when they donated. [#835](https://github.com/Charitable/Charitable/issues/835)
 * FIX: Prevent errors from displaying in the donation processing response to avoid donations being blocked.

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypa
 Tags: donate, wordpress donation plugin, wpcharitable, peer to peer fundraising, recurring donations, donation plugin, donation form, paypal donations, stripe donations, give, fundraise, fundraising
 Requires at least: 4.1
 Tested up to: 5.5.3
-Stable tag: 1.6.45
+Stable tag: 1.6.46
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -230,6 +230,10 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 6. Setting up Charitable: The Email settings area.
 
 == Changelog ==
+
+= 1.6.46 =
+* FIX: Prevent endless redirect when using Weglot and displaying donation forms on the same page as the campaign.
+* FIX: Improve compatibility with WP Super Cache.
 
 = 1.6.45 =
 * FIX: If you are using Weglot, the donation receipt page and donation-related emails will be in the same language used by the donor when they donated. [#835](https://github.com/Charitable/Charitable/issues/835)
