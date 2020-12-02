@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.45
+ * @version   1.6.46
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -25,48 +25,48 @@ function charitable_load_compat_functions() {
 	$includes_path = charitable()->get_path( 'includes' );
 
 	/* WP Super Cache */
-	if ( function_exists( 'wp_super_cache_text_domain' ) ) {
-		require_once( $includes_path . 'compat/charitable-wp-super-cache-compat-functions.php' );
+	if ( function_exists( 'wpsupercache_activate' ) ) {
+		require_once $includes_path . 'compat/charitable-wp-super-cache-compat-functions.php';
 	}
 
 	/* W3TC */
 	if ( defined( 'W3TC' ) && W3TC ) {
-		require_once( $includes_path . 'compat/charitable-w3tc-compat-functions.php' );
+		require_once $includes_path . 'compat/charitable-w3tc-compat-functions.php';
 	}
 
 	/* WP Rocket */
 	if ( defined( 'WP_ROCKET_VERSION' ) ) {
-		require_once( $includes_path . 'compat/charitable-wp-rocket-compat-functions.php' );
+		require_once $includes_path . 'compat/charitable-wp-rocket-compat-functions.php';
 	}
 
 	/* WP Fastest Cache */
 	if ( class_exists( 'WpFastestCache' ) ) {
-		require_once( $includes_path . 'compat/charitable-wp-fastest-cache-compat-functions.php' );
+		require_once $includes_path . 'compat/charitable-wp-fastest-cache-compat-functions.php';
 	}
 
 	/* Litespeed Cache */
 	if ( class_exists( 'LiteSpeed_Cache' ) ) {
-		require_once( $includes_path . 'compat/charitable-litespeed-cache-compat-functions.php' );
+		require_once $includes_path . 'compat/charitable-litespeed-cache-compat-functions.php';
 	}
 
 	/* Twenty Seventeen */
 	if ( 'twentyseventeen' == wp_get_theme()->stylesheet ) {
-		require_once( $includes_path . 'compat/charitable-twentyseventeen-compat-functions.php' );
+		require_once $includes_path . 'compat/charitable-twentyseventeen-compat-functions.php';
 	}
 
 	/* Ultimate Member */
 	if ( class_exists( 'UM' ) ) {
-		require_once( $includes_path . 'compat/charitable-ultimate-member-compat-functions.php' );
+		require_once $includes_path . 'compat/charitable-ultimate-member-compat-functions.php';
 	}
 
 	/* GDPR Cookie Compliance */
 	if ( function_exists( 'gdpr_cookie_is_accepted' ) ) {
-		require_once( $includes_path . 'compat/charitable-gdpr-cookie-compliance-compat-functions.php' );
+		require_once $includes_path . 'compat/charitable-gdpr-cookie-compliance-compat-functions.php';
 	}
 
 	/* WooCommerce */
 	if ( defined( 'WC_PLUGIN_FILE' ) ) {
-		require_once( $includes_path . 'compat/charitable-woocommerce-compat-functions.php' );
+		require_once $includes_path . 'compat/charitable-woocommerce-compat-functions.php';
 	}
 
 	/* Polylang */
@@ -84,10 +84,9 @@ function charitable_load_compat_functions() {
 		new Charitable_Weglot_Compat();
 	}
 
-
 	/* Permalink Manager */
 	if ( defined( 'PERMALINK_MANAGER_PLUGIN_NAME' ) ) {
-		require_once( $includes_path . 'compat/charitable-permalink-manager-compat-functions.php' );
+		require_once $includes_path . 'compat/charitable-permalink-manager-compat-functions.php';
 	}
 }
 
@@ -99,7 +98,7 @@ function charitable_load_compat_functions() {
  * @return void
  */
 function charitable_compat_styles() {
-	$styles = include( 'styles/inline-styles.php' );
+	$styles = include 'styles/inline-styles.php';
 
 	foreach ( $styles as $stylesheet => $custom_styles ) {
 		wp_add_inline_style( $stylesheet, $custom_styles );
@@ -117,7 +116,7 @@ add_action( 'wp_enqueue_scripts', 'charitable_compat_styles', 20 );
  * @return string
  */
 function charitable_compat_theme_highlight_colour( $colour ) {
-	$colours    = include( 'styles/highlight-colours.php' );
+	$colours    = include 'styles/highlight-colours.php';
 	$stylesheet = strtolower( wp_get_theme()->stylesheet );
 
 	if ( 'twentytwenty' === $stylesheet && function_exists( 'twentytwenty_get_color_for_area' ) ) {
