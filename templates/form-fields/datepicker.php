@@ -49,7 +49,7 @@ $datepicker_json_args = json_encode( $json_args );
 
 wp_add_inline_script(
 	'jquery-ui-datepicker',
-	"jQuery(document).ready( function(){ jQuery( '.datepicker' ).datepicker( {$datepicker_json_args} ); });"
+	"jQuery(document).ready( function(){ jQuery( '.charitable-datepicker' ).datepicker( {$datepicker_json_args} ); });"
 );
 
 wp_enqueue_style( 'charitable-datepicker' );
@@ -66,7 +66,7 @@ wp_enqueue_style( 'charitable-datepicker' );
 	<?php endif ?>
 	<input
 		type="text"
-		class="datepicker"
+		class="charitable-datepicker"
 		name="<?php echo esc_attr( $field['key'] ); ?>"
 		value="<?php echo esc_attr( $value ); ?>"
 		id="charitable_field_<?php echo esc_attr( $field['key'] ); ?>_element"
