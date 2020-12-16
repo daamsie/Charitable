@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 return [
+	'twentytwenty'    => '#cd2653',
 	'twentynineteen'  => '#0073aa',
 	'hello-elementor' => '#cc3366',
 	'divi-none'       => '#2ea3f2',

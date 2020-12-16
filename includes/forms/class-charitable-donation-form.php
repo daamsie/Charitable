@@ -285,23 +285,23 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 		public function get_user_account_fields() {
 			$account_fields = array(
 				'user_pass' => array(
-					'label'     => __( 'Password', 'charitable' ),
-					'type'      => 'password',
-					'priority'  => 4,
-					'required'  => true,
+					'label'                 => __( 'Password', 'charitable' ),
+					'type'                  => 'password',
+					'priority'              => 4,
+					'required'              => true,
 					'requires_registration' => true,
-					'data_type' => 'user',
+					'data_type'             => 'user',
 				),
 			);
 
 			if ( apply_filters( 'charitable_donor_usernames', false ) ) {
 				$account_fields['user_login'] = array(
-					'label'     => __( 'Username', 'charitable' ),
-					'type'      => 'text',
-					'priority'  => 2,
-					'required'  => true,
+					'label'                 => __( 'Username', 'charitable' ),
+					'type'                  => 'text',
+					'priority'              => 2,
+					'required'              => true,
 					'requires_registration' => true,
-					'data_type' => 'user',
+					'data_type'             => 'user',
 				);
 			}
 
@@ -649,11 +649,11 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 			$ret = true;
 
 			if ( ! $this->validate_nonce() || ! $this->validate_honeypot() ) {
-
-				charitable_get_notices()->add_error( __( 'There was an error with processing your form submission. Please reload the page and try again.', 'charitable' ) );
+				charitable_get_notices()->add_error(
+					__( 'Unfortunately, we were unable to verify your form submission. Please reload the page and try again.', 'charitable' )
+				);
 
 				$ret = false;
-
 			}
 
 			/**
@@ -679,11 +679,13 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 
 			/* Don't process donations with dummy emails. */
 			if ( array_key_exists( 'email', $_POST ) && ! is_email( $_POST['email'] ) ) {
-				charitable_get_notices()->add_error( sprintf(
-					/* translators: %s: email address */
-					__( '%s is not a valid email address.', 'charitable' ),
-					$_POST['email']
-				) );
+				charitable_get_notices()->add_error(
+					sprintf(
+						/* translators: %s: email address */
+						__( '%s is not a valid email address.', 'charitable' ),
+						$_POST['email']
+					)
+				);
 
 				$ret = false;
 			}
@@ -754,10 +756,12 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 
 				$ret = false;
 			} elseif ( $minimum == 0 && $amount <= 0 && ! apply_filters( 'charitable_permit_0_donation', false ) ) {
-				charitable_get_notices()->add_error( sprintf(
-					__( 'You must donate more than %s.', 'charitable' ),
-					charitable_format_money( $minimum )
-				) );
+				charitable_get_notices()->add_error(
+					sprintf(
+						__( 'You must donate more than %s.', 'charitable' ),
+						charitable_format_money( $minimum )
+					)
+				);
 
 				$ret = false;
 			}
@@ -1149,7 +1153,7 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 				return $field;
 			}
 
-			if ( 'user' == $field['data_type'] ) {
+			if ( 'user' === $field['data_type'] ) {
 				$field['value'] = $this->get_user_value( $key, $field['default'] );
 			} else {
 				$field['value'] = $field['default'];
@@ -1217,7 +1221,8 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 		protected function get_test_mode_active_notice() {
 			$notice = $this->get_credentialed_notice(
 				__( 'Test mode is active.', 'charitable' ),
-				sprintf( '<a href="%s">%s</a>.',
+				sprintf(
+					'<a href="%s">%s</a>.',
 					admin_url( 'admin.php?page=charitable-settings&tab=gateways' ),
 					__( 'Disable Test Mode', 'charitable' )
 				)
@@ -1284,9 +1289,12 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 
 			if ( is_null( $this->get_submitted_value( 'gateway' ) ) ) {
 
-				charitable_get_notices()->add_error( sprintf( '<p>%s</p>',
-					__( 'Your donation could not be processed. No payment gateway was selected.', 'charitable' )
-				) );
+				charitable_get_notices()->add_error(
+					sprintf(
+						'<p>%s</p>',
+						__( 'Your donation could not be processed. No payment gateway was selected.', 'charitable' )
+					)
+				);
 
 				return false;
 			}

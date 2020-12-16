@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.39
+ * @version   1.6.45
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -169,7 +169,7 @@ if ( ! class_exists( 'Charitable_Campaign_List_Table' ) ) :
 				return;
 			}
 
-			if ( 'top' == $which && $this->is_campaigns_page() ) {
+			if ( 'top' === $which && $this->is_campaigns_page() ) {
 				charitable_admin_view( 'campaigns-page/export' );
 			}
 		}
@@ -223,7 +223,7 @@ if ( ! class_exists( 'Charitable_Campaign_List_Table' ) ) :
 
 			if ( $this->is_campaigns_page() ) {
 				wp_enqueue_style( 'lean-modal-css' );
-				wp_enqueue_script( 'jquery-core' );
+				wp_enqueue_script( 'jquery' );
 				wp_enqueue_script( 'lean-modal' );
 				wp_enqueue_script( 'charitable-admin-tables' );
 			}
@@ -374,12 +374,14 @@ if ( ! class_exists( 'Charitable_Campaign_List_Table' ) ) :
 		 * @since  1.6.0
 		 *
 		 * @global string $typenow The current post type.
+		 * @global string $pagenow The current admin page.
+		 *
 		 * @return boolean
 		 */
 		private function is_campaigns_page() {
-			global $typenow;
+			global $typenow, $pagenow;
 
-			return in_array( $typenow, array( Charitable::CAMPAIGN_POST_TYPE ) );
+			return 'edit.php' === $pagenow && in_array( $typenow, array( Charitable::CAMPAIGN_POST_TYPE ), true );
 		}
 	}
 

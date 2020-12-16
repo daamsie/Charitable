@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.25
+ * @version   1.6.45
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -63,12 +63,15 @@ if ( ! class_exists( 'Charitable_Donation_Receipt_Endpoint' ) ) :
 
 			$donation_id = isset( $args['donation_id'] ) ? $args['donation_id'] : get_the_ID();
 
-			if ( 'auto' != $receipt_page ) {
+			if ( 'auto' !== $receipt_page ) {
 				return esc_url_raw( add_query_arg( array( 'donation_id' => $donation_id ), get_permalink( $receipt_page ) ) );
 			}
 
 			if ( $wp_rewrite->using_permalinks() ) {
-				$url = sprintf( '%s/donation-receipt/%d', untrailingslashit( home_url() ), $donation_id );
+				$url = $this->sanitize_endpoint_url(
+					home_url(),
+					'donation-receipt/' . $donation_id
+				);
 			} else {
 				$url = esc_url_raw(
 					add_query_arg(

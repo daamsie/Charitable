@@ -60,13 +60,66 @@
     display: block;
     height: 100%; }
 
+.charitable-campaign-progress-bar-block {
+  margin: 0 0 1em;
+  font-size: 0.9em; }
+  .charitable-campaign-progress-bar-block .charitable-campaign-progress-bar-percent-raised {
+    float: left; }
+  .charitable-campaign-progress-bar-block .charitable-campaign-progress-bar-goal {
+    float: right; }
+    .charitable-campaign-progress-bar-block .charitable-campaign-progress-bar-goal .charitable-campaign-progress-bar-goal {
+      font-size: 1em; }
+  .charitable-campaign-progress-bar-block .campaign-progress-bar {
+    clear: both; }
+    .charitable-campaign-progress-bar-block .campaign-progress-bar .campaign-progress-bar-tracker {
+      height: 100%; }
+  .charitable-campaign-progress-bar-block .charitable-campaign-stat-figure {
+    font-size: 1.2em;
+    font-weight: bold; }
+
+.charitable-campaign-stats-block {
+  font-size: 0.9em; }
+  .charitable-campaign-stats-block .charitable-campaign-stats {
+    display: flex;
+    margin: 0 0 1em; }
+  .charitable-campaign-stats-block .charitable-campaign-stat {
+    flex: auto; }
+  .charitable-campaign-stats-block .charitable-campaign-stat-figure {
+    font-size: 1.2em;
+    font-weight: bold; }
+
+.charitable-campaign-block-container .donate-button {
+  width: 100%;
+  margin: 0 0 1em;
+  font-size: 1.2em; }
+
 /* Donate Button */
-.donate-button {
-  padding: 6px 24px;
-  font-size: 1em;
-  line-height: 1.5em;
-  border: none;
-  color: #fff; }
+.campaign-donation {
+  display: inline-block;
+  border-radius: 4px; }
+  .campaign-donation.has-amount-field .charitable-custom-amount-field {
+    display: inline-block;
+    margin: 0 !important;
+    width: 50% !important;
+    height: 100% !important;
+    background-color: #fff; }
+  .campaign-donation.has-amount-field .donate-button {
+    display: inline-block;
+    margin-left: 0 !important;
+    width: 50%; }
+  .campaign-donation .donate-button {
+    padding: 6px 24px;
+    font-size: 1em;
+    line-height: 1.5em;
+    border: none;
+    color: #fff;
+    text-align: center; }
+    .campaign-donation .donate-button.medium-size {
+      font-size: 1.5em;
+      padding: 1em 24px; }
+    .campaign-donation .donate-button.large-size {
+      font-size: 3em;
+      padding: 1em 24px; }
 
 /* Forms */
 .charitable-button {
@@ -312,26 +365,44 @@
   display: block;
   clear: left; }
 
-.charitable-table tr, .charitable-table td {
-  padding-right: 1.5em; }
-@media (max-width: 48em) {
-  .charitable-table {
-    border: none !important; }
-    .charitable-table thead {
-      display: none; }
-    .charitable-table tr {
-      display: block;
-      padding: 1em 0;
-      margin-bottom: 1em; }
-      .charitable-table tr td {
+.charitable-table {
+  text-align: left;
+  vertical-align: top; }
+  .charitable-table tbody tr {
+    overflow: hidden; }
+    .charitable-table tbody tr td {
+      vertical-align: top; }
+      .charitable-table tbody tr td .small {
+        font-size: .85em; }
+      .charitable-table tbody tr td .actions {
+        padding: 0.25em 0; }
+    .charitable-table tbody tr:nth-child(2n+1) {
+      background: #f4f4f4; }
+  @media (max-width: 48em) {
+    .charitable-table.charitable-responsive-table {
+      border: none !important; }
+      .charitable-table.charitable-responsive-table thead {
+        display: none; }
+      .charitable-table.charitable-responsive-table tr {
         display: block;
-        padding: 0.5em 0 !important;
-        text-align: right !important;
-        border: none !important; }
-        .charitable-table tr td::before {
-          content: attr(data-title) ": ";
-          font-weight: 700;
-          float: left; } }
+        padding: 1em 0;
+        margin-bottom: 1em; }
+        .charitable-table.charitable-responsive-table tr td {
+          display: block;
+          padding: .25em 0.5em !important;
+          border: none !important;
+          line-height: 1.3; }
+          .charitable-table.charitable-responsive-table tr td::before {
+            content: attr(data-title) ": ";
+            font-weight: 700;
+            width: 100%; }
+          .charitable-table.charitable-responsive-table tr td .actions {
+            text-align: right; }
+    .charitable-table.charitable-donation-summary tr, .charitable-table.charitable-donation-details tr {
+      display: flex;
+      justify-content: space-between; }
+    .charitable-table.charitable-donation-summary td, .charitable-table.charitable-donation-summary th, .charitable-table.charitable-donation-details td, .charitable-table.charitable-donation-details th {
+      border: none !important; } }
 
 /* Campaigns grid */
 .campaign-loop.campaign-list,

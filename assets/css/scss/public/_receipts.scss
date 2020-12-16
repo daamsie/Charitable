@@ -18,36 +18,65 @@
 }
 
 .charitable-table {
-    tr, td {
-        padding-right: 1.5em;
-    }
+	text-align: left;
+	vertical-align: top;
 
+	tbody tr {
+		overflow: hidden;
+		td {
+			vertical-align: top;
+			.small {
+				font-size: .85em;
+			}
+			.actions {
+				padding: 0.25em 0;
+			}
+		}
+		&:nth-child(2n+1) {
+			background: #f4f4f4;
+		}
+	}
 
 	@include bp( 768, false ) {
-		border: none !important;
+		&.charitable-responsive-table {
+			border: none !important;
 
-		thead {
-			display: none;
-		}
+			thead {
+				display: none;
+			}
 
-		tr {
-			display: block;
-			padding: 1em 0;
-			margin-bottom: 1em;
-
-			td {
+			tr {
 				display: block;
-				padding: 0.5em 0 !important;
-				text-align: right !important;
-				border: none !important;
+				padding: 1em 0;
+				margin-bottom: 1em;
 
-				&::before {
-					content: attr(data-title) ": ";
-					font-weight: 700;
-					float: left;
+				td {
+					display: block;
+					padding: .25em 0.5em !important;
+					border: none !important;
+					line-height: 1.3;
+					&::before {
+						content: attr(data-title) ": ";
+						font-weight: 700;
+						width: 100%;
+					}
+
+					.actions {
+						text-align: right;
+					}
 				}
 			}
 		}
 
+		&.charitable-donation-summary,
+		&.charitable-donation-details {
+			tr {
+				display: flex;
+				justify-content: space-between;
+			}
+			td, th {
+				border: none !important;
+			}
+		}
 	}
 }

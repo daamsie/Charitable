@@ -2,11 +2,12 @@
 /**
  * Donor model.
  *
- * @package     Charitable/Classes/Charitable_Donor
- * @version     1.0.0
- * @author      Eric Daams
- * @copyright   Copyright (c) 2020, Studio 164a
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @package   Charitable/Classes/Charitable_Donor
+ * @author    Eric Daams
+ * @copyright Copyright (c) 2020, Studio 164a
+ * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since     1.0.0
+ * @version   1.7.0
  */
 
 // Exit if accessed directly.
@@ -483,26 +484,6 @@ if ( ! class_exists( 'Charitable_Donor' ) ) :
 			}
 
 			return $this->mapped_keys;
-		}
-
-		/**
-		 * Return a value from the donor meta.
-		 *
-		 * @deprecated 1.7.0
-		 *
-		 * @since  1.2.4
-		 * @since  1.4.0 Deprecated
-		 *
-		 * @param  string $key The particular field to get the value for.
-		 * @return mixed
-		 */
-		public function get_value( $key ) {
-			charitable_get_deprecated()->deprecated_function(
-				__METHOD__,
-				'1.4.0',
-				'Charitable_Donor::get_donor_meta()'
-			);
-			return $this->get_donor_meta( $key );
 		}
 	}
 

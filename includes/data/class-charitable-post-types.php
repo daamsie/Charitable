@@ -58,6 +58,7 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
 			add_action( 'init', array( $this, 'register_post_types' ), 5 );
 			add_action( 'init', array( $this, 'register_post_statuses' ), 5 );
 			add_action( 'init', array( $this, 'register_taxonomies' ), 6 );
+			add_action( 'rest_api_init', array( $this, 'register_rest_fields' ) );
 		}
 
 		/**
@@ -82,7 +83,7 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
 			$args = apply_filters(
 				'charitable_campaign_post_type',
 				array(
-					'labels'              => array(
+					'labels'                => array(
 						'name'               => __( 'Campaigns', 'charitable' ),
 						'singular_name'      => __( 'Campaign', 'charitable' ),
 						'menu_name'          => _x( 'Campaigns', 'Admin menu name', 'charitable' ),
@@ -98,25 +99,38 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
 						'not_found_in_trash' => __( 'No Campaigns found in trash', 'charitable' ),
 						'parent'             => __( 'Parent Campaign', 'charitable' ),
 					),
-					'description'         => __( 'This is where you can create new campaigns for people to support.', 'charitable' ),
-					'public'              => true,
-					'show_ui'             => true,
-					'capability_type'     => 'campaign',
-					'menu_icon'           => '',
-					'map_meta_cap'        => true,
-					'publicly_queryable'  => true,
-					'exclude_from_search' => false,
-					'hierarchical'        => false,
-					'rewrite'             => array(
+					'description'           => __( 'This is where you can create new campaigns for people to support.', 'charitable' ),
+					'public'                => true,
+					'show_ui'               => true,
+					'capability_type'       => 'campaign',
+					'menu_icon'             => '',
+					'map_meta_cap'          => true,
+					'publicly_queryable'    => true,
+					'exclude_from_search'   => false,
+					'hierarchical'          => false,
+					'rewrite'               => array(
 						'slug'       => 'campaigns',
 						'with_front' => true,
 					),
-					'query_var'           => true,
-					'supports'            => array( 'title', 'thumbnail', 'comments' ),
-					'has_archive'         => false,
-					'show_in_nav_menus'   => true,
-					'show_in_menu'        => false,
-					'show_in_admin_bar'   => true,
+					'query_var'             => true,
+					'supports'              => array(
+						'title',
+						'thumbnail',
+						'comments',
+						'editor',
+					),
+					'has_archive'           => false,
+					'show_in_nav_menus'     => true,
+					'show_in_menu'          => false,
+					'show_in_admin_bar'     => true,
+					'show_in_rest'          => true,
+					'rest_base'             => 'campaigns',
+					'rest_controller_class' => 'WP_REST_Posts_Controller',
+					'template'              => array(
+						array(
+							'charitable/campaign-block-container',
+						),
+					),
 				)
 			);
 
@@ -287,19 +301,22 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
 			);
 
 			$args = array(
-				'labels'            => $labels,
-				'hierarchical'      => true,
-				'public'            => true,
-				'show_ui'           => true,
-				'show_admin_column' => true,
-				'show_in_nav_menus' => true,
-				'show_tagcloud'     => true,
-				'capabilities'      => array(
+				'labels'                => $labels,
+				'hierarchical'          => true,
+				'public'                => true,
+				'show_ui'               => true,
+				'show_admin_column'     => true,
+				'show_in_nav_menus'     => true,
+				'show_tagcloud'         => true,
+				'capabilities'          => array(
 					'manage_terms' => 'manage_campaign_terms',
 					'edit_terms'   => 'edit_campaign_terms',
 					'delete_terms' => 'delete_campaign_terms',
 					'assign_terms' => 'assign_campaign_terms',
 				),
+				'show_in_rest'          => true,
+				'rest_base'             => 'campaignCategories',
+				'rest_controller_class' => 'WP_REST_Terms_Controller',
 			);
 
 			register_taxonomy( 'campaign_category', array( 'campaign' ), $args );
@@ -325,25 +342,45 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
 			);
 
 			$args = array(
-				'labels'            => $labels,
-				'hierarchical'      => false,
-				'public'            => true,
-				'show_ui'           => true,
-				'show_admin_column' => true,
-				'show_in_nav_menus' => true,
-				'show_tagcloud'     => true,
-				'capabilities'      => array(
+				'labels'                => $labels,
+				'hierarchical'          => false,
+				'public'                => true,
+				'show_ui'               => true,
+				'show_admin_column'     => true,
+				'show_in_nav_menus'     => true,
+				'show_tagcloud'         => true,
+				'capabilities'          => array(
 					'manage_terms' => 'manage_campaign_terms',
 					'edit_terms'   => 'edit_campaign_terms',
 					'delete_terms' => 'delete_campaign_terms',
 					'assign_terms' => 'assign_campaign_terms',
 				),
+				'show_in_rest'          => true,
+				'rest_base'             => 'campaignTags',
+				'rest_controller_class' => 'WP_REST_Terms_Controller',
 			);
 
 			register_taxonomy( 'campaign_tag', array( 'campaign' ), $args );
 
 			register_taxonomy_for_object_type( 'campaign_category', 'campaign' );
 			register_taxonomy_for_object_type( 'campaign_tag', 'campaign' );
+		}
+
+		/**
+		 * Register meta to include in the WordPress REST API.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @return void
+		 */
+		public function register_rest_fields() {
+			foreach ( charitable()->campaign_fields()->get_rest_api_fields() as $field ) {
+				register_rest_field(
+					'campaign',
+					$field->field,
+					$field->rest_api
+				);
+			}
 		}
 	}
 

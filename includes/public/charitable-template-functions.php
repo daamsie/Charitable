@@ -9,7 +9,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.5.14
+ * @version   1.7.0
  */
 
 // Exit if accessed directly.
@@ -74,45 +74,6 @@ html { margin-top: 0 !important; }
 * html body { margin-top: 0 !important; }
 </style>
 		<?php
-	}
-
-endif;
-
-// //////////////////////////////
-// BODY CLASSES
-// //////////////////////////////
-if ( ! function_exists( 'charitable_add_body_classes' ) ) :
-
-	/**
-	 * Adds custom body classes to certain templates.
-	 *
-	 * @since  1.3.0
-	 *
-	 * @param  string[] $classes Body classes.
-	 * @return string[]
-	 */
-	function charitable_add_body_classes( $classes ) {
-		if ( charitable_is_page( 'donation_receipt_page' ) ) {
-			$classes[] = 'campaign-donation-receipt';
-		}
-
-		if ( charitable_is_page( 'donation_processing_page' ) ) {
-			$classes[] = 'campaign-donation-processing';
-		}
-
-		if ( charitable_is_page( 'campaign_donation_page' ) ) {
-			$classes[] = 'campaign-donation-page';
-		}
-
-		if ( charitable_is_page( 'campaign_widget_page' ) ) {
-			$classes[] = 'campaign-widget';
-		}
-
-		if ( charitable_is_page( 'email_preview' ) ) {
-			$classes[] = 'email-preview';
-		}
-
-		return $classes;
 	}
 
 endif;
@@ -531,7 +492,7 @@ if ( ! function_exists( 'charitable_template_campaign_loop_more_link' ) ) :
 	 * @return void
 	 */
 	function charitable_template_campaign_loop_more_link( $campaign, $args = array() ) {
-		if ( ! isset( $args['button'] ) || 'details' != $args['button'] ) {
+		if ( ! isset( $args['button'] ) || 'details' !== $args['button'] ) {
 			return;
 		}
 
@@ -572,36 +533,76 @@ if ( ! function_exists( 'charitable_template_campaign_loop_modal_donation_window
 
 endif;
 
-// //////////////////////////////
-// DONATION RECEIPT
-// //////////////////////////////
-if ( ! function_exists( 'charitable_template_donation_receipt_content' ) ) :
+/**********************************************/
+/* DONATION FORM
+/**********************************************/
+
+if ( ! function_exists( 'charitable_template_donation_form' ) ) :
 
 	/**
-	 * Display the donation form. This is used with the_content filter.
+	 * Display a campaign's donation form.
 	 *
-	 * @since  1.0.0
+	 * @since  1.5.9
 	 *
-	 * @param  string $content Page content.
-	 * @return string
+	 * @param  int   $campaign_id The campaign ID.
+	 * @param  array $args        Args to pass to the view.
+	 * @return false|void
 	 */
-	function charitable_template_donation_receipt_content( $content ) {
-
-		if ( ! in_the_loop() || ! charitable_is_page( 'donation_receipt_page' ) ) {
-			return $content;
+	function charitable_template_donation_form( $campaign_id, $args = array() ) {
+		if ( Charitable::CAMPAIGN_POST_TYPE !== get_post_type( $campaign_id ) ) {
+			return false;
 		}
 
-		/* If we are NOT using the automatic option, this is a static page with the shortcode, so don't filter again. */
-		if ( 'auto' != charitable_get_option( 'donation_receipt_page', 'auto' ) ) {
-			return $content;
+		if ( ! array_key_exists( 'campaign_id', $args ) ) {
+			$args['campaign_id'] = $campaign_id;
 		}
 
-		return charitable_template_donation_receipt_output( $content );
+		if ( ! charitable_campaign_can_receive_donations( $args['campaign_id'] ) ) {
+			return false;
+		}
 
+		$donation_id = get_query_var( 'donation_id', false );
+
+		/* If a donation ID is included, make sure it belongs to the current user. */
+		if ( $donation_id && ! charitable_user_can_access_donation( $donation_id ) ) {
+			return false;
+		}
+
+		if ( ! wp_script_is( 'charitable-script', 'enqueued' ) ) {
+			Charitable_Public::get_instance()->enqueue_donation_form_scripts();
+		}
+
+		$form = charitable_get_campaign( $campaign_id )->get_donation_form();
+
+		/**
+		 * Do something before rendering the donation form.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param Charitable_Donation_Form $form The donation form instance.
+		 */
+		do_action( 'charitable_donation_form_before', $form );
+
+		$args['form']     = $form;
+		$args['campaign'] = $form->get_campaign();
+
+		charitable_template( 'donation-form/form-donation.php', $args );
+
+		/**
+		 * Do something after rendering the donation form.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param Charitable_Donation_Form $form The donation form instance.
+		 */
+		do_action( 'charitable_donation_form_after', $form );
 	}
 
 endif;
 
+/**********************************************/
+/* DONATION RECEIPT
+/**********************************************/
 if ( ! function_exists( 'charitable_template_donation_receipt_output' ) ) :
 
 	/**
@@ -709,36 +710,6 @@ endif;
 // //////////////////////////////
 // DONATION FORM
 // //////////////////////////////
-if ( ! function_exists( 'charitable_template_donation_form_content' ) ) :
-
-	/**
-	 * Display the donation form. This is used with the_content filter.
-	 *
-	 * @since  1.0.0
-	 *
-	 * @param  string $content Page content.
-	 * @return string
-	 */
-	function charitable_template_donation_form_content( $content ) {
-
-		if ( ! charitable_is_main_loop() || ! charitable_is_page( 'campaign_donation_page' ) ) {
-			return $content;
-		}
-
-		if ( 'separate_page' != charitable_get_option( 'donation_form_display', 'separate_page' )
-			&& false === get_query_var( 'donate', false ) ) {
-			return $content;
-		}
-
-		ob_start();
-
-		charitable_template( 'content-donation-form.php' );
-
-		return ob_get_clean();
-	}
-
-endif;
-
 if ( ! function_exists( 'charitable_template_donation_form_login' ) ) :
 
 	/**
@@ -866,105 +837,9 @@ if ( ! function_exists( 'charitable_template_donation_form_current_amount_text' 
 
 endif;
 
-
-
-// //////////////////////////////
-// DONATION PROCESSING PAGE
-// //////////////////////////////
-if ( ! function_exists( 'charitable_template_donation_processing_content' ) ) :
-
-	/**
-	 * Render the content of the donation processing page.
-	 *
-	 * @since  1.2.0
-	 *
-	 * @param  string $content Default content to be rendered.
-	 * @return string
-	 */
-	function charitable_template_donation_processing_content( $content ) {
-		if ( ! charitable_is_page( 'donation_processing_page' ) ) {
-			return $content;
-		}
-
-		$donation = charitable_get_current_donation();
-
-		if ( ! $donation ) {
-			return $content;
-		}
-
-		$content = apply_filters( 'charitable_processing_donation_' . $donation->get_gateway(), $content, $donation );
-
-		return $content;
-	}
-
-endif;
-
 // //////////////////////////////
 // ACCOUNT PAGES
 // //////////////////////////////
-if ( ! function_exists( 'charitable_template_forgot_password_content' ) ) :
-
-	/**
-	 * Render the content of the forgot password page.
-	 *
-	 * @since  1.4.0
-	 *
-	 * @param  string $content Default content to be rendered.
-	 * @return string
-	 */
-	function charitable_template_forgot_password_content( $content = '' ) {
-		if ( ! charitable_is_page( 'forgot_password_page' ) ) {
-			return $content;
-		}
-
-		ob_start();
-
-		if ( isset( $_GET['email_sent'] ) ) {
-
-			charitable_template( 'account/forgot-password-sent.php' );
-
-		} else {
-
-			charitable_template( 'account/forgot-password.php', array(
-				'form' => new Charitable_Forgot_Password_Form(),
-			) );
-
-		}
-
-		$content = ob_get_clean();
-
-		return $content;
-	}
-
-endif;
-
-if ( ! function_exists( 'charitable_template_reset_password_content' ) ) :
-
-	/**
-	 * Render the content of the reset password page.
-	 *
-	 * @since  1.4.0
-	 *
-	 * @param  string $content Default content to be rendered.
-	 * @return string
-	 */
-	function charitable_template_reset_password_content( $content = '' ) {
-		if ( ! charitable_is_page( 'reset_password_page' ) ) {
-			return $content;
-		}
-
-		ob_start();
-
-		charitable_template( 'account/reset-password.php', array(
-			'form' => new Charitable_Reset_Password_Form(),
-		) );
-
-		$content = ob_get_clean();
-
-		return $content;
-	}
-
-endif;
 
 if ( ! function_exists( 'charitable_template_form_login_link' ) ) :
 

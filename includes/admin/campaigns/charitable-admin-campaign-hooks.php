@@ -55,7 +55,7 @@ add_action( 'add_meta_boxes_' . Charitable::CAMPAIGN_POST_TYPE, array( $registry
  * @see Charitable_Campaign_Meta_Boxes::set_default_post_content()
  */
 add_action( 'save_post_' . Charitable::CAMPAIGN_POST_TYPE, array( $registry->get( 'campaign_meta_boxes' ), 'save_campaign' ), 10, 2 );
-add_filter( 'wp_insert_post_data', array( $registry->get( 'campaign_meta_boxes' ), 'set_default_post_content' ) );
+// add_filter( 'wp_insert_post_data', array( $registry->get( 'campaign_meta_boxes' ), 'set_default_post_content' ) );
 
 /**
  * Set up admin messages & notifications displayed based on actions taken.

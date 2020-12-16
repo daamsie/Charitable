@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.5.7
+ * @version   1.6.45
  */
 
 // Exit if accessed directly.
@@ -45,6 +45,8 @@ if ( ! class_exists( 'Charitable_Logout_Shortcode' ) ) :
 			);
 
 			$args = shortcode_atts( $defaults, $atts, 'charitable_logout' );
+
+			ob_start();
 
 			charitable_template( 'shortcodes/logout.php', $args );
 

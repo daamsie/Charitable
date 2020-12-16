@@ -13,7 +13,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.6.37
+ * @version   1.6.44
  */
 
 // Exit if accessed directly.
@@ -394,27 +394,6 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		}
 
 		/**
-		 * Return an array of fields used for the address.
-		 *
-		 * @since  1.0.0
-		 *
-		 * @return array
-		 */
-		public function get_address_fields() {
-			return apply_filters(
-				'charitable_user_address_fields',
-				array(
-					'donor_address',
-					'donor_address_2',
-					'donor_city',
-					'donor_state',
-					'donor_postcode',
-					'donor_country',
-				)
-			);
-		}
-
-		/**
 		 * Returns printable address of donor.
 		 *
 		 * @since  1.0.0
@@ -423,18 +402,16 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 * @return string
 		 */
 		public function get_address( $donation_id = '' ) {
-			$address_fields = false;
+			$address_details = false;
 
 			if ( $donation_id ) {
-
-				$address_fields = get_post_meta( $donation_id, 'donor', true );
-
+				$address_details = get_post_meta( $donation_id, 'donor', true );
 			}
 
 			/* If the address fields were not set by the check above, get them from the user meta. */
-			if ( ! is_array( $address_fields ) ) {
+			if ( ! is_array( $address_details ) ) {
 
-				$address_fields = array(
+				$address_details = array(
 					'first_name' => $this->get( 'first_name' ),
 					'last_name'  => $this->get( 'last_name' ),
 					'company'    => $this->get( 'donor_company' ),
@@ -448,9 +425,21 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 
 			}
 
-			$address_fields = apply_filters( 'charitable_user_address_fields', $address_fields, $this, $donation_id );
+			/**
+			 * Filter the address details for the current user.
+			 *
+			 * Please note that prior to 1.6.44, the hook used here was `charitable_user_address_fields`,
+			 * which is used elsewhere in a different context and thus resulted in unexpected results.
+			 *
+			 * @since 1.6.44
+			 *
+			 * @param array           $address_details The address details.
+			 * @param Charitable_User $user            The user object.
+			 * @param int             $donation_id     The donation ID.
+			 */
+			$address_details = apply_filters( 'charitable_user_address_details', $address_details, $this, $donation_id );
 
-			return charitable_get_location_helper()->get_formatted_address( $address_fields );
+			return charitable_get_location_helper()->get_formatted_address( $address_details );
 		}
 
 		/**
@@ -552,12 +541,19 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 				return get_avatar( $this->ID, $size );
 			}
 
-			return apply_filters( 'charitable_user_avatar_custom', sprintf( '<img src="%s" alt="%s" class="avatar photo" width="%s" height="%s" />',
-				$attachment_src[0],
-				esc_attr( $this->display_name ),
-				$attachment_src[1],
-				$attachment_src[2]
-			), $avatar_attachment_id, $size, $this );
+			return apply_filters(
+				'charitable_user_avatar_custom',
+				sprintf(
+					'<img src="%s" alt="%s" class="avatar photo" width="%s" height="%s" />',
+					$attachment_src[0],
+					esc_attr( $this->display_name ),
+					$attachment_src[1],
+					$attachment_src[2]
+				),
+				$avatar_attachment_id,
+				$size,
+				$this
+			);
 		}
 
 		/**
@@ -577,7 +573,7 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 				/* The gravatars are returned as fully formatted img tags, so we need to pull out the src. */
 				$gravatar = get_avatar( $this->ID, $size );
 
-				preg_match( "@src='([^']+)'@" , $gravatar, $matches );
+				preg_match( "@src='([^']+)'@", $gravatar, $matches );
 
 				$avatar = array_pop( $matches );
 			}
@@ -613,19 +609,19 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 */
 		public function get_current_campaigns( $args = array() ) {
 			$defaults = array(
-				'author' => $this->ID,
-				'meta_query'    => array(
-					'relation'      => 'OR',
+				'author'     => $this->ID,
+				'meta_query' => array(
+					'relation' => 'OR',
 					array(
-						'key'       => '_campaign_end_date',
-						'value'     => date( 'Y-m-d H:i:s' ),
-						'compare'   => '>=',
-						'type'      => 'datetime',
+						'key'     => '_campaign_end_date',
+						'value'   => date( 'Y-m-d H:i:s' ),
+						'compare' => '>=',
+						'type'    => 'datetime',
 					),
 					array(
-						'key'       => '_campaign_end_date',
-						'value'     => '0',
-					)
+						'key'   => '_campaign_end_date',
+						'value' => '0',
+					),
 				),
 			);
 
@@ -746,7 +742,7 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 * @return int
 		 */
 		public static function create_profile( $submitted = array(), $keys = array() ) {
-			$user = new Charitable_User();
+			$user    = new Charitable_User();
 			$user_id = $user->update_profile( $submitted, $keys );
 			return new Charitable_User( $user_id );
 		}
@@ -755,20 +751,13 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 * Update the user's details with submitted values.
 		 *
 		 * @since  1.0.0
+		 * @since  1.7.0 Both arguments are now required.
 		 *
 		 * @param  array $submitted The submitted values.
-		 * @param  array $keys The keys of fields that are to be updated.
+		 * @param  array $keys      The keys of fields that are to be updated.
 		 * @return int
 		 */
-		public function update_profile( $submitted = array(), $keys = array() ) {
-			if ( empty( $submitted ) ) {
-				$submitted = $_POST;
-			}
-
-			if ( empty( $keys ) ) {
-				$keys = array_keys( $submitted );
-			}
-
+		public function update_profile( $submitted, $keys ) {
 			$user_id = $this->update_core_user( $submitted );
 
 			/* If there were problems with creating the user, stop here. */
@@ -1063,6 +1052,49 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 
 			return $this->core_keys;
 		}
+
+		/**
+		 * Deprecated function.
+		 *
+		 * Return an array of fields used for the address.
+		 *
+		 * @deprecated 2.2.0
+		 *
+		 * @since  1.0.0
+		 * @since  1.6.44 Deprecated.
+		 *
+		 * @return array
+		 */
+		public function get_address_fields() {
+			charitable_get_deprecated()->deprecated_function(
+				__METHOD__,
+				'1.6.44',
+				''
+			);
+
+			/**
+			 * Deprecated filter in deprecated method.
+			 *
+			 * Please note that prior to 1.6.44, the hook used here was `charitable_user_address_fields`,
+			 * which is used elsewhere in a different context and thus resulted in unexpected results.
+			 *
+			 * @since 1.6.44
+			 *
+			 * @param array $address_fields The address fields.
+			 */
+			return apply_filters(
+				'charitable_user_address_fields_deprecated',
+				array(
+					'donor_address',
+					'donor_address_2',
+					'donor_city',
+					'donor_state',
+					'donor_postcode',
+					'donor_country',
+				)
+			);
+		}
+
 	}
 
 endif;

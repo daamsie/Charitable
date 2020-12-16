@@ -90,21 +90,26 @@ if ( ! class_exists( 'Charitable_Donation_Factory' ) ) :
 		}
 
 		/**
-		 * Get the product class name.
+		 * Get the donation class name.
 		 *
-		 * @since   1.4.0
+		 * @since  1.4.0
 		 *
-		 * @param  	WP_Post $the_donation
-		 * @return 	string
+		 * @param  WP_Post $donation The post object for the donation.
+		 * @return string
 		 */
-		private function get_donation_class( $the_donation ) {
-			$donation_id = absint( $the_donation->ID );
-			$donation_type  = $the_donation->post_type;
+		private function get_donation_class( $donation ) {
+			$classname = $this->get_classname_from_donation_type( $donation->post_type );
 
-			$classname = $this->get_classname_from_donation_type( $donation_type );
-
-			// Filter classname so that the class can be overridden if extended.
-			return apply_filters( 'charitable_donation_class', $classname, $donation_type, $donation_id );
+			/**
+			 * Filter classname so that the class can be overridden if extended.
+			 *
+			 * @since 1.4.0
+			 *
+			 * @param string $classname   The name of the class to use for this donation.
+			 * @param string $post_type   The post type of the donation.
+			 * @param int    $donation_id The donation ID.
+			 */
+			return apply_filters( 'charitable_donation_class', $classname, $donation->post_type, absint( $donation->ID ) );
 		}
 	}
 

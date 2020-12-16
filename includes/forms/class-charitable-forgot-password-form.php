@@ -97,7 +97,7 @@ if ( ! class_exists( 'Charitable_Forgot_Password_Form' ) ) :
 			$form = new Charitable_Forgot_Password_Form();
 
 			if ( ! $form->validate_nonce() || ! $form->validate_honeypot() ) {
-				charitable_get_notices()->add_error( __( 'There was an error with processing your form submission. Please reload the page and try again.', 'charitable' ) );
+				charitable_get_notices()->add_error( __( 'Unfortunately, we were unable to verify your form submission. Please reload the page and try again.', 'charitable' ) );
 				return;
 			}
 

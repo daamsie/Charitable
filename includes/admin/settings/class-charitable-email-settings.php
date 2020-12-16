@@ -68,7 +68,7 @@ if ( ! class_exists( 'Charitable_Email_Settings' ) ) :
 			}
 
 			return array(
-				'section'              => array(
+				'section'               => array(
 					'title'    => '',
 					'type'     => 'hidden',
 					'priority' => 10000,

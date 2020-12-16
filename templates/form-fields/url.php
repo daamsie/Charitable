@@ -5,7 +5,7 @@
  * @author  Studio 164a
  * @package Charitable/Templates/Form Fields
  * @since   1.0.0
- * @version 1.0.0
+ * @version 1.6.44
  */
 
 if ( ! isset( $view_args['form'] ) || ! isset( $view_args['field'] ) ) {
@@ -26,6 +26,10 @@ if ( ! isset( $field['attrs']['pattern'] ) ) {
 /* Set the default onblur attribute */
 if ( ! isset( $field['attrs']['onblur'] ) ) {
 	$field['attrs']['onblur'] = 'CHARITABLE.SanitizeURL(this)';
+}
+
+if ( ! wp_script_is( 'charitable-url-sanitizer', 'enqueued' ) ) {
+	wp_enqueue_script( 'charitable-url-sanitizer' );
 }
 
 ?>

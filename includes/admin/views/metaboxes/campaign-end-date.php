@@ -2,10 +2,11 @@
 /**
  * Renders the end date field for the Campaign post type.
  *
- * @author  Studio 164a
- * @package Charitable/Admin Views/Metaboxes
- * @since   1.0.0
- * @version 1.6.35
+ * @author    Studio 164a
+ * @package   Charitable/Admin Views/Metaboxes
+ * @copyright Copyright (c) 2020, Studio 164a
+ * @since     1.0.0
+ * @version   1.6.35
  */
 
 global $post;

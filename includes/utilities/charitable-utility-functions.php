@@ -9,7 +9,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.6.0
+ * @version   1.6.45
  */
 
 // Exit if accessed directly.
@@ -245,10 +245,10 @@ function charitable_sanitize_date( $date, $return_format = 'U' ) {
 	list( $month, $day, $year ) = explode( ' ', $date );
 
 	$day   = trim( $day, ',' );
-	$month = 1 + array_search( $month, array_values( $wp_locale->month ) );
-	$time  = mktime( 0, 0, 0, $month, $day, $year );
+	$month = 1 + array_search( $month, array_values( $wp_locale->month ), true );
+	$time  = mktime( 0, 0, 0, $month, (int) $day, (int) $year );
 
-	if ( 'U' == $return_format ) {
+	if ( 'U' === $return_format ) {
 		return $time;
 	}
 

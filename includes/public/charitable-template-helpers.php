@@ -385,3 +385,23 @@ function charitable_get_button_class( $button ) {
 
 	return implode( ' ', $classes );
 }
+
+/**
+ * Get the highlight colour.
+ *
+ * @since  1.7.0
+ *
+ * @return string
+ */
+function charitable_get_highlight_colour() {
+	/**
+	 * Filter the default highlight colour.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $colour Default colour as a CSS-compatible string (hex, rgb, etc.)
+	 */
+	$default_colour = apply_filters( 'charitable_default_highlight_colour', '#f89d35' );
+
+	return charitable_get_option( 'highlight_colour', $default_colour );
+}
