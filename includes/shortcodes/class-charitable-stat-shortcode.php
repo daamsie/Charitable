@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.6.0
- * @version   1.6.0
+ * @version   1.7.0
  */
 
 // Exit if accessed directly.
@@ -78,6 +78,7 @@ if ( ! class_exists( 'Charitable_Stat_Shortcode' ) ) :
 		 */
 		public function get_query_result() {
 			switch ( $this->type ) {
+				case 'percentage':
 				case 'progress':
 					$total = $this->report->get_report( 'amount' );
 
@@ -89,6 +90,10 @@ if ( ! class_exists( 'Charitable_Stat_Shortcode' ) ) :
 					$total   = charitable_sanitize_amount( $total, true );
 					$percent = ( $total / $goal ) * 100;
 
+					if ($this->type =='percentage' ) {
+						return (string) $percent . "%";
+					}
+
 					return '<div class="campaign-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' . $percent . '"><span class="bar" style="width:' . $percent . '%;"></span></div>';
 
 				case 'total':
@@ -96,7 +101,7 @@ if ( ! class_exists( 'Charitable_Stat_Shortcode' ) ) :
 
 				case 'donors':
 				case 'donations':
-					return (string) $this->report->get_report( $this->type );
+					return (string) $this->report->get_report( $this->type );	
 			}
 		}
 
@@ -146,8 +151,8 @@ if ( ! class_exists( 'Charitable_Stat_Shortcode' ) ) :
 		 * @return array
 		 */
 		private function get_report_args() {
-			$args = $this->args;
-			$args['report_type'] = in_array( $this->type, array( 'progress', 'total' ) ) ? 'amount' : $this->type;
+			$args                = $this->args;
+			$args['report_type'] = in_array( $this->type, array( 'progress', 'total', 'percentage' ) ) ? 'amount' : $this->type;
 
 			return $args;
 		}
