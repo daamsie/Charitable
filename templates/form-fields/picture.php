@@ -2,6 +2,8 @@
 /**
  * The template used to display file form fields.
  *
+ * Override this template by copying it to yourtheme/charitable/form-fields/picture.php
+ *
  * @author  Studio 164a
  * @package Charitable/Templates/Form Fields
  * @since   1.0.0

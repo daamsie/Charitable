@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.4.0
- * @version   1.5.7
+ * @version   1.6.45
  */
 
 // Exit if accessed directly.
@@ -46,7 +46,7 @@ if ( ! class_exists( 'Charitable_My_Donations_Shortcode' ) ) :
 			/* If the user is logged out, show the login form. */
 			if ( ! is_user_logged_in() ) {
 
-				if ( false == $args['hide_login'] ) {
+				if ( false === $args['hide_login'] ) {
 					$args['redirect'] = charitable_get_current_url();
 
 					echo Charitable_Login_Shortcode::display( $args );
@@ -74,7 +74,7 @@ if ( ! class_exists( 'Charitable_My_Donations_Shortcode' ) ) :
 				if ( ! $user->is_verified() ) {
 					$query_args['user_id'] = $user->ID;
 
-					if ( array_key_exists( 'charitable_action', $_GET ) && 'verify_email' == $_GET['charitable_action'] ) {
+					if ( array_key_exists( 'charitable_action', $_GET ) && 'verify_email' === $_GET['charitable_action'] ) {
 						$redirect = array_key_exists( 'redirect_url', $_GET ) ? $_GET['redirect_url'] : false;
 						$message  = sprintf(
 							/* translators: %s: email verification link */

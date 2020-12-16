@@ -71,7 +71,7 @@ class Test_Charitable_Donation_Functions extends Charitable_UnitTestCase {
 
 		$donation_id = $this->create_donation( 'charitable-pending' );
 
-		$page = charitable_get_donation_cancel_page_permalink( false, array( 'donation_id' => $donation_id ) );
+		$page = charitable_get_permalink( 'donation_cancellation', array( 'donation_id' => $donation_id ) );
 
 		$this->go_to( $page );
 
@@ -95,7 +95,7 @@ class Test_Charitable_Donation_Functions extends Charitable_UnitTestCase {
 
 		$campaign_donation = current( charitable_get_donation( $donation_id )->get_campaign_donations() );
 
-		$donate_url = charitable_get_campaign_donation_page_permalink( false, array( 'campaign_id' => $campaign_donation->campaign_id ) );
+		$donate_url = charitable_get_permalink( 'campaign_donation', array( 'campaign_id' => $campaign_donation->campaign_id ) );
 
 		$this->go_to( $donate_url );
 

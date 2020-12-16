@@ -20,7 +20,7 @@ if ( ! class_exists( 'Charitable_Donation_Fields' ) ) :
 	/**
 	 * Charitable_Donation_Fields
 	 *
-	 * @deprecated 1.9.0
+	 * @deprecated 2.1.0
 	 *
 	 * @since 1.5.0
 	 * @since 1.6.0 Deprecated. Use Charitable_Object_Fields instead.
@@ -30,7 +30,7 @@ if ( ! class_exists( 'Charitable_Donation_Fields' ) ) :
 		/**
 		 * Create class object.
 		 *
-		 * @deprecated 1.9.0
+		 * @deprecated 2.1.0
 		 *
 		 * @since 1.5.0
 		 * @since 1.6.0 Deprecated. Use Charitable_Object_Fields instead.

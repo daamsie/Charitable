@@ -3,8 +3,8 @@ Contributors: WPCharitable, ericdaams
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40164a%2ecom
 Tags: donate, wordpress donation plugin, wpcharitable, peer to peer fundraising, recurring donations, donation plugin, donation form, paypal donations, stripe donations, give, fundraise, fundraising
 Requires at least: 4.1
-Tested up to: 5.4.2
-Stable tag: 1.6.42
+Tested up to: 5.5.3
+Stable tag: 1.6.46
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,12 +120,13 @@ Looking for more functionality? Our paid extensions give you the flexibility and
 **[Recover Payment Gateway Fees](https://www.wpcharitable.com/extensions/charitable-fee-relief/?utm_source=readme&utm_medium=description-tab&utm_content=upgrades&utm_campaign=plugin-page-referrals)**
 
 * Grow your donations by letting your donors cover the payment gateway fees.
-* Supports PayPal, Stripe, Authorize.Net and PayFast.
+* Supports PayPal, Stripe, Braintree, Authorize.Net, Windcave and PayFast.
 * Works with recurring donations.
 
 **Premium Payment Gateways**
 
 * [Stripe](https://www.wpcharitable.com/extensions/charitable-stripe/?utm_source=readme&utm_medium=description-tab&utm_content=upgrades&utm_campaign=plugin-page-referrals)
+* [Braintree](https://www.wpcharitable.com/extensions/charitable-braintree/?utm_source=readme&utm_medium=description-tab&utm_content=upgrades&utm_campaign=plugin-page-referrals)
 * [Authorize.Net](https://www.wpcharitable.com/extensions/charitable-authorize-net/?utm_source=readme&utm_medium=description-tab&utm_content=upgrades&utm_campaign=plugin-page-referrals)
 * [Windcave](https://www.wpcharitable.com/extensions/charitable-windcave/?utm_source=readme&utm_medium=description-tab&utm_content=upgrades&utm_campaign=plugin-page-referrals)
 * [PayFast](https://www.wpcharitable.com/extensions/charitable-payfast/?utm_source=readme&utm_medium=description-tab&utm_content=upgrades&utm_campaign=plugin-page-referrals) - leading South African payment gateway.
@@ -180,6 +181,7 @@ Yes you can! If you use PayPal, donors will be redirected to PayPal to complete 
 Better yet, let your donors make credit card donations directly on your WordPress website with the following payment gateway extensions:
 
 * [Stripe](https://www.wpcharitable.com/extensions/charitable-stripe?utm_source=readme&utm_medium=faq-tab&utm_content=avoid-paypal&utm_campaign=plugin-page-referrals)
+* [Braintree](https://www.wpcharitable.com/extensions/charitable-braintree?utm_source=readme&utm_medium=faq-tab&utm_content=avoid-paypal&utm_campaign=plugin-page-referrals)
 * [Authorize.Net](https://www.wpcharitable.com/extensions/charitable-authorize-net?utm_source=readme&utm_medium=faq-tab&utm_content=avoid-paypal&utm_campaign=plugin-page-referrals)
 
 Want to use a different payment gateway? [Click here to let us know!](https://www.wpcharitable.com/support?utm_source=readme&utm_medium=faq-tab&utm_content=avoid-paypal&utm_campaign=plugin-page-referrals)
@@ -194,7 +196,7 @@ You can use the `[charitable_donation_form]` shortcode to embed a particular cam
 
 = Can I collect recurring donations with Charitable? =
 
-You can accept monthly, quarterly or semi-annually or annually recurring donations with the [Recurring Donations extension](https://www.wpcharitable.com/extensions/charitable-recurring-donations/?utm_source=readme&utm_medium=faq-tab&utm_campaign=recurring). This works with PayPal, Stripe, Authorize.Net and PayFast.
+You can accept monthly, quarterly or semi-annually or annually recurring donations with the [Recurring Donations extension](https://www.wpcharitable.com/extensions/charitable-recurring-donations/?utm_source=readme&utm_medium=faq-tab&utm_campaign=recurring). This works with PayPal, Stripe, Braintree, Authorize.Net and PayFast.
 
 = Can I run peer-to-peer fundraising campaigns with Charitable? =
 
@@ -228,6 +230,35 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 6. Setting up Charitable: The Email settings area.
 
 == Changelog ==
+
+= 1.6.46 =
+* FIX: Prevent endless redirect when using Weglot and displaying donation forms on the same page as the campaign.
+* FIX: Improve compatibility with WP Super Cache.
+
+= 1.6.45 =
+* FIX: If you are using Weglot, the donation receipt page and donation-related emails will be in the same language used by the donor when they donated. [#835](https://github.com/Charitable/Charitable/issues/835)
+* FIX: Prevent errors from displaying in the donation processing response to avoid donations being blocked.
+* FIX: Check hidden fields when checking if a donation is a recurring donation. [#819](https://github.com/Charitable/Charitable/issues/819)
+* FIX: In some cases, using the logout shortcode would result in it being displayed multiple times or too early. This has been fixed. [#834](https://github.com/Charitable/Charitable/issues/834)
+* FIX: Prevent a fatal error encountered when using the Twenty Twenty theme and Oxygen Builder. [#829](https://github.com/Charitable/Charitable/issues/829)
+
+= 1.6.44 =
+* NEW: When using WPML, the total funds raised by a campaign will now include both the campaign itself and any translations of the same campaign. [#811](https://github.com/Charitable/Charitable/issues/811)
+* FIX: Ensure that the selected recurring donation amount is picked up when you reach a donation form via the Donate widget. [#804](https://github.com/Charitable/Charitable/issues/804)
+* FIX: Improved display of checkboxes in TwentyTwenty theme. [#812](https://github.com/Charitable/Charitable/issues/812)
+* FIX: When using WPML, clicking Donate button on the non-primary language version of a campaign results leads back to the primary language version of the campaign, instead of the donation form. [#810](https://github.com/Charitable/Charitable/issues/810)
+* FIX: Prevent users with only subscriber access from reaching the WordPress dashboard. [#807](https://github.com/Charitable/Charitable/issues/807)
+* FIX: Allow users with the 'translator' role in WPML to access the WordPress dashboard. [#801](https://github.com/Charitable/Charitable/issues/801)
+* FIX: Use `jquery` as the dependency for Charitable scripts, instead of `jquery-core`. [#817](https://github.com/Charitable/Charitable/issues/817)
+* FIX: Split some parts of the charitable.js file into small, single-purpose Javascript files to be loaded when needed. [#815](https://github.com/Charitable/Charitable/issues/815)
+* FIX: Avoided clash of `charitable_user_address_fields` filter name. This was used in three separate places in different ways. The one most commonly used was in the context of loading fields to show in the Profile Form, and this is where the filter is still used unchanged. In `Charitable_User::get_address()`, the filter name has changed to `charitable_user_address_details`. [#816](https://github.com/Charitable/Charitable/issues/816)
+* DEPRECATED: `Charitable_User::get_address_fields()` function is deprecated and will be removed. It was previously unused anywhere by Charitable or its extensions. [#816](https://github.com/Charitable/Charitable/issues/816)
+
+= 1.6.43 =
+* NEW: When using Polylang, the total funds raised by a campaign will now include both the campaign itself and any translations of the same campaign. [#798](https://github.com/Charitable/Charitable/issues/798)
+* NEW: Made the picture form field a little more flexible, allowing the remove button to be always shown and to have its text customized. This change was required for updates in Ambassadors 2.0.9. [#796](https://github.com/Charitable/Charitable/issues/796)
+* FIX: Changed the campaign status tags, allowing them to be translated. [#797](https://github.com/Charitable/Charitable/issues/797)
+* FIX: When using TranslatePress, Charitable will record the locale used by the donor when making their donation and will use that locale when sending them donation-specific emails, like their donation receipt. [#795](https://github.com/Charitable/Charitable/issues/795)
 
 = 1.6.42 =
 * NEW: Built-in support for WP Debugging plugin, which will automatically added `CHARITABLE_DEBUG` constant to your wp-config.php file if you enable debugging. [#793](https://github.com/Charitable/Charitable/issues/793)

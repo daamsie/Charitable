@@ -3,7 +3,7 @@
 class Test_Charitable_User extends Charitable_UnitTestCase {
 
 	/**
-	 * We have three different users to test several different 
+	 * We have three different users to test several different
 	 * ways a donor may be created.
 	 *
 	 * 1. James Gordon: Totally new user when he makes his first donation.
@@ -23,7 +23,7 @@ class Test_Charitable_User extends Charitable_UnitTestCase {
 		$this->james_gordon = Charitable_User::create_profile( array(
 			'user_email' => 'james@gotham.com',
 			'first_name' => 'James',
-			'last_name'	 => 'Gordon', 
+			'last_name'	 => 'Gordon',
 			'user_pass'  => 'password', // Required for the user to be created at the moment.
 			'address'    => '22 Batman Avenue',
 			'address_2'  => '',
@@ -35,19 +35,19 @@ class Test_Charitable_User extends Charitable_UnitTestCase {
 
 		/* Create a campaign wth a donation from James Gordon */
 		Charitable_Donation_Helper::create_donation( array(
-			'user_id'   => $this->james_gordon->ID, 
+			'user_id'   => $this->james_gordon->ID,
 			'donor_id'  => $this->james_gordon->get_donor_id(),
 			'campaigns' => array(
-				array( 
+				array(
 					'campaign_id' 	=> Charitable_Campaign_Helper::create_campaign(),
 					'amount'		=> 100
 				)
-			), 
-			'status'    => 'charitable-completed', 
+			),
+			'status'    => 'charitable-completed',
 			'gateway'   => 'paypal',
-			'note'      => 'This is a note'	
+			'note'      => 'This is a note'
 		) );
-	}	
+	}
 
 	public function test_get_user_id() {
 		$this->assertGreaterThan( 0, $this->james_gordon->ID );
@@ -71,23 +71,23 @@ class Test_Charitable_User extends Charitable_UnitTestCase {
 	 * @depends test_is_donor
 	 */
 	public function test_is_donor_with_non_donor() {
-		$user_id = $this->factory->user->create( array( 
+		$user_id = $this->factory->user->create( array(
 			'user_email' => 'carmine@gotham.com',
-			'first_name' => 'Carmine', 
-			'last_name'  => 'Falcone' 
+			'first_name' => 'Carmine',
+			'last_name'  => 'Falcone'
 		) );
 
 		$user = new Charitable_User( $user_id );
 		$this->assertFalse( $user->is_donor() );
-	}	
+	}
 
 	/**
 	 * @depends test_is_donor
 	 */
 	public function test_is_donor_with_non_wpuser() {
-		$donor_id = charitable_get_table( 'donors' )->insert( array( 
+		$donor_id = charitable_get_table( 'donors' )->insert( array(
 			'email'      => 'fish.mooney@gotham.com',
-			'first_name' => 'Fish', 
+			'first_name' => 'Fish',
 			'last_name'	 => 'Mooney'
 		) );
 
@@ -119,7 +119,7 @@ class Test_Charitable_User extends Charitable_UnitTestCase {
 	/**
 	 * @depends test_get_user_email
 	 */
-	public function test_get_last_name() {		
+	public function test_get_last_name() {
 		$this->assertEquals( 'Gordon',  $this->james_gordon->get('last_name') );
 	}
 
@@ -166,19 +166,12 @@ class Test_Charitable_User extends Charitable_UnitTestCase {
 	}
 
 	/**
-	 * @depends test_get_donor
+	 *
 	 */
-	public function test_get_address_fields() {
-		$this->assertCount( 6, $this->james_gordon->get_address_fields() );
-	}
-
-	/**
-	 * @depends test_get_address_fields
-	 */	
 	public function test_get_address() {
 		$expected = "James Gordon<br/>22 Batman Avenue<br/>Gotham, GOTHAM STATE 29292<br/>United States (US)";
 		$this->assertEquals( $expected, $this->james_gordon->get_address() );
-	}	
+	}
 
 	/**
 	 * @depends test_get_donor

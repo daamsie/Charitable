@@ -131,7 +131,7 @@ if ( ! class_exists( 'Charitable_Campaign_Endpoint' ) ) :
 			 *
 			 * @uses charitable_use_campaign_template
 			 */
-			if ( ! apply_filters( 'charitable_use_campaign_template', true ) ) {
+			if ( ! apply_filters( 'charitable_use_campaign_template', ! has_blocks( get_the_ID() ) ) ) {
 				return $content;
 			}
 

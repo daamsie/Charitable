@@ -58,7 +58,7 @@ $campaign_id = $view_args['campaign'];
 			echo apply_filters( 'charitable_donor_loop_donor_name', $donor->get_name(), $view_args );
 		?>
 		</p>
-	<?php
+		<?php
 	endif;
 
 	if ( $view_args['show_location'] && strlen( $donor->get_location() ) ) :
@@ -76,11 +76,11 @@ $campaign_id = $view_args['campaign'];
 			echo apply_filters( 'charitable_donor_loop_donor_location', $donor->get_location(), $view_args );
 		?>
 		</div>
-	<?php
+		<?php
 	endif;
 
 	if ( $view_args['show_amount'] ) :
-	?>
+		?>
 		<div class="donor-donation-amount">
 		<?php
 			/**

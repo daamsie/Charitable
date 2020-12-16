@@ -1,3 +1,32 @@
+# 1.6.46
+* FIX: Prevent endless redirect when using Weglot and displaying donation forms on the same page as the campaign.
+* FIX: Improve compatibility with WP Super Cache.
+
+# 1.6.45
+* FIX: If you are using Weglot, the donation receipt page and donation-related emails will be in the same language used by the donor when they donated. [#835](https://github.com/Charitable/Charitable/issues/835)
+* FIX: Prevent errors from displaying in the donation processing response to avoid donations being blocked.
+* FIX: Check hidden fields when checking if a donation is a recurring donation. [#819](https://github.com/Charitable/Charitable/issues/819)
+* FIX: In some cases, using the logout shortcode would result in it being displayed multiple times or too early. This has been fixed. [#834](https://github.com/Charitable/Charitable/issues/834)
+* FIX: Prevent a fatal error encountered when using the Twenty Twenty theme and Oxygen Builder. [#829](https://github.com/Charitable/Charitable/issues/829)
+
+# 1.6.44
+* NEW: When using WPML, the total funds raised by a campaign will now include both the campaign itself and any translations of the same campaign. [#811](https://github.com/Charitable/Charitable/issues/811)
+* FIX: Ensure that the selected recurring donation amount is picked up when you reach a donation form via the Donate widget. [#804](https://github.com/Charitable/Charitable/issues/804)
+* FIX: Improved display of checkboxes in TwentyTwenty theme. [#812](https://github.com/Charitable/Charitable/issues/812)
+* FIX: When using WPML, clicking Donate button on the non-primary language version of a campaign results leads back to the primary language version of the campaign, instead of the donation form. [#810](https://github.com/Charitable/Charitable/issues/810)
+* FIX: Prevent users with only subscriber access from reaching the WordPress dashboard. [#807](https://github.com/Charitable/Charitable/issues/807)
+* FIX: Allow users with the 'translator' role in WPML to access the WordPress dashboard. [#801](https://github.com/Charitable/Charitable/issues/801)
+* FIX: Use `jquery` as the dependency for Charitable scripts, instead of `jquery-core`. [#817](https://github.com/Charitable/Charitable/issues/817)
+* FIX: Split some parts of the charitable.js file into small, single-purpose Javascript files to be loaded when needed. [#815](https://github.com/Charitable/Charitable/issues/815)
+* FIX: Avoided clash of `charitable_user_address_fields` filter name. This was used in three separate places in different ways. The one most commonly used was in the context of loading fields to show in the Profile Form, and this is where the filter is still used unchanged. In `Charitable_User::get_address()`, the filter name has changed to `charitable_user_address_details`. [#816](https://github.com/Charitable/Charitable/issues/816)
+* DEPRECATED: `Charitable_User::get_address_fields()` function is deprecated and will be removed. It was previously unused anywhere by Charitable or its extensions. [#816](https://github.com/Charitable/Charitable/issues/816)
+
+# 1.6.43
+* NEW: When using Polylang, the total funds raised by a campaign will now include both the campaign itself and any translations of the same campaign. [#798](https://github.com/Charitable/Charitable/issues/798)
+* NEW: Made the picture form field a little more flexible, allowing the remove button to be always shown and to have its text customized. This change was required for updates in Ambassadors 2.0.9. [#796](https://github.com/Charitable/Charitable/issues/796)
+* FIX: Changed the campaign status tags, allowing them to be translated. [#797](https://github.com/Charitable/Charitable/issues/797)
+* FIX: When using TranslatePress, Charitable will record the locale used by the donor when making their donation and will use that locale when sending them donation-specific emails, like their donation receipt. [#795](https://github.com/Charitable/Charitable/issues/795)
+
 # 1.6.42
 * NEW: Built-in support for WP Debugging plugin, which will automatically added `CHARITABLE_DEBUG` constant to your wp-config.php file if you enable debugging. [#793](https://github.com/Charitable/Charitable/issues/793)
 * FIX: When using Polylang, Charitable will now pick up the current language version of Charitable pages including the profile, login, registration, donation receipt, privacy policy and terms and conditions pages. [#790](https://github.com/Charitable/Charitable/issues/790)

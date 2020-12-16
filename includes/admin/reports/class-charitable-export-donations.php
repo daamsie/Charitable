@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.6.25
+ * @version   1.7.0
  */
 
 /* Exit if accessed directly */
@@ -195,22 +195,13 @@ if ( ! class_exists( 'Charitable_Export_Donations' ) ) :
 				$query_args['end_date'] = charitable_sanitize_date( $this->args['end_date'], 'Y-m-d 23:59:59' );
 			}
 
-			if ( 'all' != $this->args['campaign_id'] ) {
+			if ( 'all' !== $this->args['campaign_id'] ) {
 				$query_args['campaign_id'] = $this->args['campaign_id'];
 			}
 
 			if ( 'all' != $this->args['status'] ) {
 				$query_args['status'] = $this->args['status'];
 			}
-
-			/**
-			 * Filter name with misspelling.
-			 *
-			 * @deprecated 1.7.0
-			 *
-			 * @since 1.3.5
-			 */
-			$query_args = apply_filters( 'chairtable_export_donations_query_args', $query_args, $this->args );
 
 			/**
 			 * Filter donations query arguments.

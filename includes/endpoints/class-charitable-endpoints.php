@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.41
+ * @version   1.7.0
  */
 
 // Exit if accessed directly.
@@ -91,7 +91,11 @@ if ( ! class_exists( 'Charitable_Endpoints' ) ) :
 			if ( $this->endpoint_exists( $endpoint_id ) ) {
 				charitable_get_deprecated()->doing_it_wrong(
 					__METHOD__,
-					sprintf( __( 'Endpoint %s has already been registered.', 'charitable' ), $endpoint_id ),
+					sprintf(
+						/* translators: %s: endpoint id */
+						__( 'Endpoint %s has already been registered.', 'charitable' ),
+						$endpoint_id
+					),
 					'1.5.0'
 				);
 
@@ -638,6 +642,7 @@ if ( ! class_exists( 'Charitable_Endpoints' ) ) :
 
 						if ( $this->is_page( $endpoint_id, array( 'strict' => true ) ) ) {
 							$this->current_endpoint = $endpoint_id;
+
 							return $this->current_endpoint;
 						}
 					}

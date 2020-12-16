@@ -9,7 +9,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.39
+ * @version   1.7.0
  */
 
 // Exit if accessed directly.
@@ -174,6 +174,12 @@ add_filter( 'request', array( Charitable_Donation_List_Table::get_instance(), 'f
 /**
  * Set up sorting for query results.
  *
+ * The distinct clause is required since it is possible (with Charitable EDD)
+ * to have multiple campaign donations for a single campaign, which results in
+ * copies of the same row being returned because of the left join.
+ *
  * @see Charitable_Donation_List_Table::sort_donations()
+ * @see Charitable_Donation_List_Table::distinct_clause()
  */
 add_filter( 'posts_clauses', array( Charitable_Donation_List_Table::get_instance(), 'sort_donations' ) );
+add_filter( 'posts_distinct', array( Charitable_Donation_List_Table::get_instance(), 'distinct_clause' ) );

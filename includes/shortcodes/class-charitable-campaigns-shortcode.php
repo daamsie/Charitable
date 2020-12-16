@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.5.7
+ * @version   1.6.45
  */
 
 // Exit if accessed directly.
@@ -186,7 +186,7 @@ if ( ! class_exists( 'Charitable_Campaigns_Shortcode' ) ) :
 				if ( ! isset( $query_args['order'] ) ) {
 					$query_args['order'] = 'DESC';
 				}
-			} elseif ( ! in_array( $args['orderby'], array( 'popular', 'ending' ) ) ) {
+			} elseif ( ! in_array( $args['orderby'], array( 'popular', 'ending' ), true ) ) {
 				$query_args['orderby'] = $args['orderby'];
 			}
 

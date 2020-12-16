@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.6.39
+ * @version   1.7.0
  */
 
 // Exit if accessed directly.
@@ -225,25 +225,6 @@ if ( ! class_exists( 'Charitable_Admin_Pages' ) ) :
 		 */
 		public function render_settings_page() {
 			charitable_admin_view( 'settings/settings' );
-		}
-
-		/**
-		 * Display the Charitable donations page.
-		 *
-		 * @since  1.0.0
-		 *
-		 * @return void
-		 *
-		 * @deprecated 1.4.0
-		 */
-		public function render_donations_page() {
-			charitable_get_deprecated()->deprecated_function(
-				__METHOD__,
-				'1.4.0',
-				__( 'Donations page now rendered by WordPress default manage_edit-donation_columns', 'charitable' )
-			);
-
-			charitable_admin_view( 'donations-page/page' );
 		}
 
 		/**

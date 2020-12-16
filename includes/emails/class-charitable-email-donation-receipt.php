@@ -2,11 +2,12 @@
 /**
  * Class that models the donation receipt email.
  *
- * @version     1.0.0
- * @package     Charitable/Classes/Charitable_Email_Donation_Receipt
- * @author      Eric Daams
- * @copyright   Copyright (c) 2020, Studio 164a
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @package   Charitable/Classes/Charitable_Email_Donation_Receipt
+ * @author    Eric Daams
+ * @copyright Copyright (c) 2020, Studio 164a
+ * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since     1.0.0
+ * @version   1.7.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -188,7 +189,7 @@ if ( ! class_exists( 'Charitable_Email_Donation_Receipt' ) ) :
 			/**
 			 * Deprecated hook. Use charitable_email_donation_receipt_recipient instead.
 			 *
-			 * @deprecated 1.9.0
+			 * @deprecated 2.1.0
 			 *
 			 * @since 1.0.0
 			 * @since 1.6.0 Deprecated

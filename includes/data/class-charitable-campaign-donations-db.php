@@ -441,16 +441,16 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 			return $this->get_distinct_ids( 'donor_id', $campaign_id, 'campaign_id' );
 		}
 
-		 /**
-		  * Return the number of users who have donated to the given campaign.
-		  *
-		  * @since  1.0.0
-		  *
-		  * @global wpdb $wpdb
-		  * @param  int|int[] $campaign    The campaign ID, or list of campaign IDs.
-		  * @param  boolean   $include_all Whether to include all donations (true), or only include approved donations (false).
-		  * @return int
-		  */
+		/**
+		 * Return the number of users who have donated to the given campaign.
+		 *
+		 * @since  1.0.0
+		 *
+		 * @global wpdb $wpdb
+		 * @param  int|int[] $campaign    The campaign ID, or list of campaign IDs.
+		 * @param  boolean   $include_all Whether to include all donations (true), or only include approved donations (false).
+		 * @return int
+		 */
 		public function count_campaign_donors( $campaign, $include_all = false ) {
 			global $wpdb;
 
@@ -592,7 +592,6 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 			}
 
 			if ( isset( $args['status'] ) ) {
-
 				$sql_where_clauses[] = 'p.post_status = %s';
 				$parameters[]        = $args['status'];
 
@@ -605,10 +604,8 @@ if ( ! class_exists( 'Charitable_Campaign_Donations_DB' ) ) :
 			}
 
 			if ( isset( $args['start_date'] ) ) {
-
 				$sql_where_clauses[] = 'p.post_date >= %s';
 				$parameters[]        = $args['start_date'];
-
 			}
 
 			if ( isset( $args['end_date'] ) ) {

@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2020, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.0
+ * @version   1.7.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -97,6 +97,7 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 						'context'  => 'normal',
 						'priority' => 'high',
 						'view'     => 'metaboxes/campaign-settings',
+						'__block_editor_compatible_meta_box' => true,
 					),
 				)
 			);
@@ -132,12 +133,10 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 		 * @return void
 		 */
 		public function campaign_form_top( $post ) {
-			if ( Charitable::CAMPAIGN_POST_TYPE == $post->post_type ) {
+			if ( Charitable::CAMPAIGN_POST_TYPE === $post->post_type ) {
 				do_meta_boxes( Charitable::CAMPAIGN_POST_TYPE, 'campaign-top', $post );
 			}
 		}
-
-
 
 		/**
 		 * Return campaign settings panels.
@@ -155,7 +154,7 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 					'fields' => $this->get_section_fields( $section ),
 				);
 
-				if ( 'campaign-donation-options' == $section ) {
+				if ( 'campaign-donation-options' === $section ) {
 					/**
 					 * Filter the fields in the Donation Options panel.
 					 *
@@ -208,15 +207,6 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 				$value = isset( $submitted[ $key ] ) ? $submitted[ $key ] : false;
 
 				/**
-				 * This filter is deprecated. Use charitable_sanitize_campaign_meta{$key} instead.
-				 *
-				 * @deprecated 1.7.0
-				 *
-				 * @since 1.4.12 Deprecated.
-				 */
-				$value = apply_filters( 'charitable_sanitize_campaign_meta', $value, $key, $submitted, $campaign_id );
-
-				/**
 				 * Filter this meta value. The filter hook is
 				 * charitable_sanitize_campaign_meta{$key}. For example,
 				 * for _campaign_end_date the filter hook will be:
@@ -242,26 +232,6 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 			 * @param WP_Post $post An instance of `WP_Post`.
 			 */
 			do_action( 'charitable_campaign_save', $post );
-		}
-
-		/**
-		 * Set default post content when the extended description is left empty.
-		 *
-		 * @since  1.4.0
-		 *
-		 * @param  array $data    Submitted data.
-		 * @return array
-		 */
-		public function set_default_post_content( $data ) {
-			if ( Charitable::CAMPAIGN_POST_TYPE != $data['post_type'] ) {
-				return $data;
-			}
-
-			if ( 0 === strlen( $data['post_content'] ) ) {
-				$data['post_content'] = '<!-- Code is poetry -->';
-			}
-
-			return $data;
 		}
 
 		/**
@@ -316,7 +286,7 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 				),
 				9 => sprintf(
 					__( 'Campaign scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview Campaign</a>', 'charitable' ),
-					date_i18n( __( 'M j, Y @ G:i', 'charitable' ),strtotime( $post->post_date ) ),
+					date_i18n( __( 'M j, Y @ G:i', 'charitable' ), strtotime( $post->post_date ) ),
 					esc_url( get_permalink( $post_ID ) )
 				),
 				10 => sprintf(
@@ -481,6 +451,29 @@ if ( ! class_exists( 'Charitable_Campaign_Meta_Boxes' ) ) :
 		 */
 		private function panel_has_fields( $panel ) {
 			return array_key_exists( 'view', $panel ) || count( $panel['fields'] );
+		}
+
+		/**
+		 * Set default post content when the extended description is left empty.
+		 *
+		 * @deprecated 2.1.0
+		 *
+		 * @since  1.4.0
+		 * @since  1.7.0 Deprecated.
+		 *
+		 * @param  array $data    Submitted data.
+		 * @return array
+		 */
+		public function set_default_post_content( $data ) {
+			if ( Charitable::CAMPAIGN_POST_TYPE != $data['post_type'] ) {
+				return $data;
+			}
+
+			if ( 0 === strlen( $data['post_content'] ) ) {
+				$data['post_content'] = '<!-- Code is poetry -->';
+			}
+
+			return $data;
 		}
 	}
 

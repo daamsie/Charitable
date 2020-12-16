@@ -3,11 +3,11 @@
  * Plugin Name:       Charitable
  * Plugin URI:        https://www.wpcharitable.com
  * Description:       The WordPress fundraising alternative for non-profits, created to help non-profits raise money on their own website.
- * Version:           1.6.42
+ * Version:           1.6.46
  * Author:            WP Charitable
  * Author URI:        https://wpcharitable.com
  * Requires at least: 4.1
- * Tested up to:      5.4.2
+ * Tested up to:      5.5.3
  *
  * Text Domain:       charitable
  * Domain Path:       /i18n/languages/
@@ -31,7 +31,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 	class Charitable {
 
 		/* Plugin version. */
-		const VERSION = '1.6.42';
+		const VERSION = '1.6.46';
 
 		/* Version of database schema. */
 		const DB_VERSION = '20180522';
@@ -158,6 +158,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 			$this->maybe_start_public();
 
 			Charitable_Addons::load( $this );
+			Charitable_Packages::load();
 		}
 
 		/**
@@ -168,11 +169,12 @@ if ( ! class_exists( 'Charitable' ) ) :
 		 * @return void
 		 */
 		private function load_dependencies() {
-			$includes_path = $this->get_path( 'includes' );
+			/* Load Composer packages. */
+			require_once( $this->get_path( 'directory' ) . 'vendor/autoload.php' );
 
 			/* Load files with hooks & functions. Classes are autoloaded. */
+			$includes_path = $this->get_path( 'includes' );
 			require_once( $includes_path . 'charitable-core-functions.php' );
-			require_once( $includes_path . 'api/charitable-api-functions.php' );
 			require_once( $includes_path . 'campaigns/charitable-campaign-functions.php' );
 			require_once( $includes_path . 'campaigns/charitable-campaign-hooks.php' );
 			require_once( $includes_path . 'compat/charitable-compat-functions.php' );
@@ -263,9 +265,15 @@ if ( ! class_exists( 'Charitable' ) ) :
 				$this->registry->register_object( Charitable_User_Dashboard::get_instance() );
 				$this->registry->register_object( Charitable_Locations::get_instance() );
 				$this->registry->register_object( Charitable_Currency::get_instance() );
-
 				$this->registry->register_object( new Charitable_Privacy );
 				$this->registry->register_object( new Charitable_Debugging );
+				$this->registry->register_object( new Charitable_Assets );
+				$this->registry->register_object( new Charitable_API );
+				$this->registry->register_object( new Charitable_Locale );
+
+				if ( function_exists( 'register_block_type' ) ) {
+					$this->registry->register_object( new Charitable_Blocks );
+				}
 			}
 
 			return $this->registry;
@@ -290,7 +298,6 @@ if ( ! class_exists( 'Charitable' ) ) :
 			add_action( 'setup_theme', array( 'Charitable_Customizer', 'start' ) );
 			add_action( 'after_setup_theme', array( $this, 'load_template_files' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'maybe_start_qunit' ), 100 );
-			add_action( 'rest_api_init', 'charitable_register_api_routes' );
 
 			/**
 			 * We do this on priority 20 so that any functionality that is loaded on init (such
@@ -362,7 +369,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 
 			wp_register_script( 'qunit', 'https://code.jquery.com/qunit/qunit-2.3.3.js', array(), '2.3.3', true );
 			/* Version: '20170615-15:44' */
-			wp_register_script( 'qunit-tests', $this->get_path( 'directory', false ) . 'tests/qunit/tests.js', array( 'jquery-core', 'qunit' ), time(), true );
+			wp_register_script( 'qunit-tests', $this->get_path( 'directory', false ) . 'tests/qunit/tests.js', array( 'jquery', 'qunit' ), time(), true );
 			wp_enqueue_script( 'qunit-tests' );
 
 			wp_register_style( 'qunit', 'https://code.jquery.com/qunit/qunit-2.3.3.css', array(), '2.3.3', 'all' );
@@ -582,9 +589,6 @@ if ( ! class_exists( 'Charitable' ) ) :
 		 * @return Charitable_Donation_Field_Registry
 		 */
 		public function donation_fields() {
-
-			// throw new Exception();
-			// die;
 			if ( ! $this->registry->has( 'donation_field_registry' ) ) {
 				$donation_fields = new Charitable_Donation_Field_Registry();
 
