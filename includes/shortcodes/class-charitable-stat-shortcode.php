@@ -91,7 +91,7 @@ if ( ! class_exists( 'Charitable_Stat_Shortcode' ) ) :
 					$percent = ( $total / $goal ) * 100;
 
 					if ( $this->type === 'percentage' ) {
-						return (string) number_format( $percent, 2 ) . "%";
+						return number_format( $percent, 2 ) . "%";
 					}
 
 					return '<div class="campaign-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' . $percent . '"><span class="bar" style="width:' . $percent . '%;"></span></div>';
