@@ -341,7 +341,7 @@ if ( ! function_exists( 'charitable_template_campaign_modal_donation_window' ) )
 	function charitable_template_campaign_modal_donation_window() {
 		global $wp_query;
 
-		if ( Charitable::CAMPAIGN_POST_TYPE != get_post_type() ) {
+		if ( Charitable::CAMPAIGN_POST_TYPE !== get_post_type() ) {
 			return false;
 		}
 
@@ -471,7 +471,7 @@ if ( ! function_exists( 'charitable_template_campaign_loop_donate_link' ) ) :
 	 * @return void
 	 */
 	function charitable_template_campaign_loop_donate_link( $campaign, $args = array() ) {
-		if ( isset( $args['button'] ) && 'donate' != $args['button'] ) {
+		if ( isset( $args['button'] ) && 'donate' !== $args['button'] ) {
 			return;
 		}
 
@@ -492,7 +492,7 @@ if ( ! function_exists( 'charitable_template_campaign_loop_more_link' ) ) :
 	 * @return void
 	 */
 	function charitable_template_campaign_loop_more_link( $campaign, $args = array() ) {
-		if ( ! isset( $args['button'] ) || 'details' != $args['button'] ) {
+		if ( ! isset( $args['button'] ) || 'details' !== $args['button'] ) {
 			return;
 		}
 
@@ -620,7 +620,7 @@ if ( ! function_exists( 'charitable_template_donation_receipt_output' ) ) :
 			$donation = charitable_get_current_donation();
 		}
 
-		if ( ! $donation || 'simple' != $donation->get_donation_type() ) {
+		if ( ! $donation || 'simple' !== $donation->get_donation_type() ) {
 			return $content;
 		}
 
@@ -681,7 +681,7 @@ if ( ! function_exists( 'charitable_template_donation_receipt_offline_payment_in
 	 * @return void
 	 */
 	function charitable_template_donation_receipt_offline_payment_instructions( Charitable_Donation $donation ) {
-		if ( 'offline' != $donation->get_gateway() ) {
+		if ( 'offline' !== $donation->get_gateway() ) {
 			return;
 		}
 
