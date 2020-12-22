@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function charitable_is_terms_and_conditions_activated() {
 	return 0 != charitable_get_option( 'terms_conditions_page', 0 )
 		&& '' != charitable_get_option( 'terms_conditions', __( 'I have read and agree to the website [terms].', 'charitable' ) );
-}
+	}
 
 /**
  * Check whether the privacy policy is active.
@@ -77,7 +77,7 @@ function charitable_get_terms_and_conditions() {
 	$content = apply_filters( 'the_content', get_post_field( 'post_content', charitable_get_option( 'terms_conditions_page', 0 ), 'display' ) );
 
 	add_filter( 'the_content', array( $endpoints, 'get_content' ) );
-
+	
 	return $content;
 }
 
@@ -128,3 +128,25 @@ function charitable_get_privacy_policy_field_text() {
 
 	return str_replace( '[privacy_policy]', $replace, $text );
 }
+
+/**
+ * Provides an option to not show the terms text on the donation page
+ * 
+ * @since 1.7.0
+ * 
+ * @return object
+ * returns the filters to apply which will remove the text of the terms and conditions
+ */
+function charitable_remove_terms_text() {
+	/**
+			 * Filter the boolean to get desired result
+			 * 
+			 * True will remove the terms
+			 * False (default value) will show the terms 
+			 * 
+			 * @since 1.0.0
+			 *
+			 * @return bool default is false
+			 */
+	return apply_filters('charitable_donation_form_remove_terms', false);
+}	

@@ -170,12 +170,13 @@ if ( ! class_exists( 'Charitable_Registration_Form' ) ) :
 			}
 
 			if ( charitable_is_terms_and_conditions_activated() ) {
-				$fields['terms_text'] = array(
-					'type'     => 'content',
-					'content'  => '<div class="charitable-terms-text">' . charitable_get_terms_and_conditions() . '</div>',
-					'priority' => 24,
-				);
-
+				if ( ! charitable_remove_terms_text() ) {
+					$fields['terms_text'] = array(
+						'type'     => 'content',
+						'content'  => '<div class="charitable-terms-text">' . charitable_get_terms_and_conditions() . '</div>',
+						'priority' => 24,
+					);
+				}
 				$fields['accept_terms'] = array(
 					'type'      => 'checkbox',
 					'label'     => charitable_get_terms_and_conditions_field_label(),
