@@ -131,22 +131,25 @@ function charitable_get_privacy_policy_field_text() {
 
 /**
  * Provides an option to not show the terms text on the donation page
+ * Will instead redirect to the terms and conditions page that you have chosen in the settings
+ * 
+ * To use, add the line of code "add_filter('charitable_use_inline_terms_text', false);" to your own addon code
  * 
  * @since 1.7.0
  * 
- * @return object
- * returns the filters to apply which will remove the text of the terms and conditions
+ * @return boolean
+ * applies the filters on charitable_use_inline_terms_text
  */
-function charitable_remove_terms_text() {
+function charitable_use_inline_terms_text() {
 	/**
 			 * Filter the boolean to get desired result
 			 * 
-			 * True will remove the terms
-			 * False (default value) will show the terms 
+			 * True (default value) will show the terms
+			 * False will remove the terms 
 			 * 
 			 * @since 1.0.0
 			 *
-			 * @return bool default is false
+			 * @return bool default is true
 			 */
-	return apply_filters('charitable_donation_form_remove_terms', false);
+	return apply_filters('charitable_use_inline_terms_text', true);
 }	

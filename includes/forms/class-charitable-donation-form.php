@@ -961,7 +961,7 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 			}
 
 			if ( charitable_is_terms_and_conditions_activated() ) {
-				if ( ! charitable_remove_terms_text() ) {
+				if ( charitable_use_inline_terms_text() ) {
 					$terms_fields['terms_text'] = array(
 						'type'     => 'content',
 						'content'  => '<div class="charitable-terms-text">' . charitable_get_terms_and_conditions() . '</div>',

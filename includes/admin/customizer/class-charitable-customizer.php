@@ -124,7 +124,6 @@ if ( ! class_exists( 'Charitable_Customizer' ) ) :
 									),
 								),
 							),
-
 							'donation_form_show_login' => array(
 								'setting' => array(
 									'transport' => 'refresh',
