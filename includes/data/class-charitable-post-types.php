@@ -126,11 +126,6 @@ if ( ! class_exists( 'Charitable_Post_Types' ) ) :
 					'show_in_rest'          => true,
 					'rest_base'             => 'campaigns',
 					'rest_controller_class' => 'WP_REST_Posts_Controller',
-					'template'              => array(
-						array(
-							'charitable/campaign-block-container',
-						),
-					),
 				)
 			);
 

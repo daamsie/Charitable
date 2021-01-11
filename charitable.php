@@ -270,10 +270,6 @@ if ( ! class_exists( 'Charitable' ) ) :
 				$this->registry->register_object( new Charitable_Assets );
 				$this->registry->register_object( new Charitable_API );
 				$this->registry->register_object( new Charitable_Locale );
-
-				if ( function_exists( 'register_block_type' ) ) {
-					$this->registry->register_object( new Charitable_Blocks );
-				}
 			}
 
 			return $this->registry;
