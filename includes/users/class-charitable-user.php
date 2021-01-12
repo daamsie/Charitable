@@ -485,31 +485,43 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 * @param  int $campaign_id Optional. If set, returns total donated to this particular campaign.
 		 * @return float
 		 */
-		public function get_total_donated( $campaign_id = false ) {
-			$amount = wp_cache_get( $this->get_donor_id(), 'charitable_donor_total_donation_amount_' . $campaign_id );
+		public function get_total_donated( $campaign_id_array = 0 ) {
 
-			if ( false === $amount ) {
+			$total_amount = 0;
 
-				$args = apply_filters(
-					'charitable_user_total_donated_query_args',
-					array(
-						'output'          => 'raw',
-						'donor_id'        => $this->get_donor_id(),
-						'distinct_donors' => true,
-						'fields'          => 'amount',
-						'campaign'        => (int) $campaign_id,
-					),
-					$this
-				);
-
-				$query = new Charitable_Donor_Query( $args );
-
-				$amount = $query->current()->amount;
-
-				wp_cache_set( $this->get_donor_id(), $amount, 'charitable_donor_total_donation_amount_' . $campaign_id );
+			if ( gettype( $campaign_id_array ) !== "array" ) {
+				$campaign_id_array = array( $campaign_id_array );
 			}
 
-			return (float) $amount;
+			foreach ( $campaign_id_array as $campaign_id ) {
+
+				$amount = wp_cache_get( $this->get_donor_id(), 'charitable_donor_total_donation_amount_' . $campaign_id );
+
+				if ( false === $amount ) {
+
+					$args = apply_filters(
+						'charitable_user_total_donated_query_args',
+						array(
+							'output'          => 'raw',
+							'donor_id'        => $this->get_donor_id(),
+							'distinct_donors' => true,
+							'fields'          => 'amount',
+							'campaign'        => $campaign_id,
+						),
+						$this
+					);
+
+					$query = new Charitable_Donor_Query( $args );
+
+					$amount = $query->current()->amount;
+
+					wp_cache_set( $this->get_donor_id(), $amount, 'charitable_donor_total_donation_amount_' . $campaign_id );
+				}
+
+				if ( is_numeric($amount) ) $total_amount += $amount;
+			}
+
+			return (float) $total_amount;
 		}
 
 		/**
@@ -541,19 +553,12 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 				return get_avatar( $this->ID, $size );
 			}
 
-			return apply_filters(
-				'charitable_user_avatar_custom',
-				sprintf(
-					'<img src="%s" alt="%s" class="avatar photo" width="%s" height="%s" />',
-					$attachment_src[0],
-					esc_attr( $this->display_name ),
-					$attachment_src[1],
-					$attachment_src[2]
-				),
-				$avatar_attachment_id,
-				$size,
-				$this
-			);
+			return apply_filters( 'charitable_user_avatar_custom', sprintf( '<img src="%s" alt="%s" class="avatar photo" width="%s" height="%s" />',
+				$attachment_src[0],
+				esc_attr( $this->display_name ),
+				$attachment_src[1],
+				$attachment_src[2]
+			), $avatar_attachment_id, $size, $this );
 		}
 
 		/**
@@ -573,7 +578,7 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 				/* The gravatars are returned as fully formatted img tags, so we need to pull out the src. */
 				$gravatar = get_avatar( $this->ID, $size );
 
-				preg_match( "@src='([^']+)'@", $gravatar, $matches );
+				preg_match( "@src='([^']+)'@" , $gravatar, $matches );
 
 				$avatar = array_pop( $matches );
 			}
@@ -609,19 +614,19 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 */
 		public function get_current_campaigns( $args = array() ) {
 			$defaults = array(
-				'author'     => $this->ID,
-				'meta_query' => array(
-					'relation' => 'OR',
+				'author' => $this->ID,
+				'meta_query'    => array(
+					'relation'      => 'OR',
 					array(
-						'key'     => '_campaign_end_date',
-						'value'   => date( 'Y-m-d H:i:s' ),
-						'compare' => '>=',
-						'type'    => 'datetime',
+						'key'       => '_campaign_end_date',
+						'value'     => date( 'Y-m-d H:i:s' ),
+						'compare'   => '>=',
+						'type'      => 'datetime',
 					),
 					array(
-						'key'   => '_campaign_end_date',
-						'value' => '0',
-					),
+						'key'       => '_campaign_end_date',
+						'value'     => '0',
+					)
 				),
 			);
 
@@ -742,7 +747,7 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 * @return int
 		 */
 		public static function create_profile( $submitted = array(), $keys = array() ) {
-			$user    = new Charitable_User();
+			$user = new Charitable_User();
 			$user_id = $user->update_profile( $submitted, $keys );
 			return new Charitable_User( $user_id );
 		}
@@ -751,13 +756,20 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 * Update the user's details with submitted values.
 		 *
 		 * @since  1.0.0
-		 * @since  1.7.0 Both arguments are now required.
 		 *
 		 * @param  array $submitted The submitted values.
-		 * @param  array $keys      The keys of fields that are to be updated.
+		 * @param  array $keys The keys of fields that are to be updated.
 		 * @return int
 		 */
-		public function update_profile( $submitted, $keys ) {
+		public function update_profile( $submitted = array(), $keys = array() ) {
+			if ( empty( $submitted ) ) {
+				$submitted = $_POST;
+			}
+
+			if ( empty( $keys ) ) {
+				$keys = array_keys( $submitted );
+			}
+
 			$user_id = $this->update_core_user( $submitted );
 
 			/* If there were problems with creating the user, stop here. */
