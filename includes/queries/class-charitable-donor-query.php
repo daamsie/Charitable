@@ -71,7 +71,7 @@ if ( ! class_exists( 'Charitable_Donor_Query' ) ) :
 			);
 
 			$this->args             = wp_parse_args( $args, $defaults );
-			$this->args['campaign'] = $this->sanitize_campaign( $this->args['campaign'] );
+			$this->args['campaign'] = charitable_sanitize_campaign_args( $this->args['campaign'] );
 			$this->position         = 0;
 
 			$this->prepare_query();
@@ -351,38 +351,6 @@ if ( ! class_exists( 'Charitable_Donor_Query' ) ) :
 			return $where_statement . " AND {$this->table_alias}.email IN ({$placeholders})";
 		}
 
-		/**
-		 * Sanitize the campaign argument.
-		 *
-		 * @since  1.5.0
-		 *
-		 * @return int/int[]
-		 */
-		protected function sanitize_campaign( $campaign ) {
-
-			if ( is_array( $campaign ) ) {
-
-				$campains = [];
-				
-				foreach( $campaign as $campaign_id ) {
-					$campaigns[] = (int) $this->sanitize_campaign( $campaign_id );
-				}
-
-				return $campaigns;
-			}
-
-			switch ( $campaign ) {
-				case '':
-				case 'all':
-					return 0;
-
-				case 'current':
-					return charitable_get_current_campaign_id();
-
-				default:
-					return $campaign;
-			}
-		}
 	}
 
 endif;

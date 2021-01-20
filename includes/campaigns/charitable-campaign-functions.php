@@ -164,3 +164,37 @@ function charitable_get_campaign_taxonomy_terms_list( Charitable_Campaign $campa
 function charitable_get_campaign_featured_image( Charitable_Campaign $campaign ) {
 	return get_post_thumbnail_id( $campaign->ID );
 }
+
+/**
+ * Sanitize a campaign argument.
+ *
+ * @since  1.7.0
+ *
+ * @param mixed $campaign The array of campaigns in string or int form
+ * @return int/int[]
+ */
+function charitable_sanitize_campaign_args( $campaign ) {
+
+	if ( is_array( $campaign ) ) {
+
+		$campains = [];
+		
+		foreach( $campaign as $single_campaign ) {
+			$campaigns[] = (int) charitable_sanitize_campaign_args( $single_campaign );
+		}
+
+		return $campaigns;
+	}
+
+	switch ( $campaign ) {
+		case '':
+		case 'all':
+			return 0;
+
+		case 'current':
+			return charitable_get_current_campaign_id();
+
+		default:
+			return $campaign;
+	}
+}
