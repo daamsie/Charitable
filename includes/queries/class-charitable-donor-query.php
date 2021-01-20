@@ -351,6 +351,17 @@ if ( ! class_exists( 'Charitable_Donor_Query' ) ) :
 			return $where_statement . " AND {$this->table_alias}.email IN ({$placeholders})";
 		}
 
+			/**
+		 * Sanitize a campaign argument.
+		 *
+		 * @since  1.7.0
+		 *
+		 * @param mixed $campaign The array of campaigns in string or int form
+		 * @return int/int[]
+		 */
+		protected function sanitize_campaign() {
+			return charitable_sanitize_campaign_args( $this->args['campaign'] );
+		}
 	}
 
 endif;

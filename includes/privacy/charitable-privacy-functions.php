@@ -130,26 +130,22 @@ function charitable_get_privacy_policy_field_text() {
 }
 
 /**
- * Provides an option to not show the terms text on the donation page
- * Will instead redirect to the terms and conditions page that you have chosen in the settings
+ * Applies the filters on charitable_use_inline_terms_text.
  * 
- * To use, add the line of code "add_filter('charitable_use_inline_terms_text', false);" to your own addon code
+ * Provides an option to not show the terms text on the donation page, and
+ * will instead redirect to the terms and conditions page that you have chosen in the settings.
+ * 
+ * To use, add the line of code "add_filter('charitable_use_inline_terms_text', false);" to your own addon code.
  * 
  * @since 1.7.0
  * 
  * @return boolean
- * applies the filters on charitable_use_inline_terms_text
+ * True (default value) will show the terms
+ * False will remove the terms 
  */
 function charitable_use_inline_terms_text() {
 	/**
-			 * Filter the boolean to get desired result
-			 * 
-			 * True (default value) will show the terms
-			 * False will remove the terms 
-			 * 
-			 * @since 1.0.0
-			 *
-			 * @return bool default is true
-			 */
+	 * Filter the boolean to get desired result
+	 */
 	return apply_filters('charitable_use_inline_terms_text', true);
 }	
