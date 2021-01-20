@@ -51,6 +51,10 @@ if ( ! class_exists( 'Charitable_Donors_Shortcode' ) ) :
 			if ( false !== strpos( $args['campaign'], ',' ) ) {
 				$args['campaign'] = explode( ',', $args['campaign'] );
 			}
+
+			//Needs to be sanitized to accept 'current' as an option
+			$args['campaign'] = self::sanitize_campaign( $args['campaign'] );
+
 			$args['donors'] = self::get_donors( $args );
 
 			/**
@@ -151,6 +155,40 @@ if ( ! class_exists( 'Charitable_Donors_Shortcode' ) ) :
 
 			return new Charitable_Donor_Query( $query_args );
 		}
+
+		/**
+		 * Sanitize the campaign argument.
+		 *
+		 * @since  1.5.0
+		 *
+		 * @return int/int[]
+		 */
+		protected function sanitize_campaign( $campaign ) {
+
+			if ( is_array( $campaign ) ) {
+
+				$campains = [];
+				
+				foreach( $campaign as $single_campaign ) {
+					$campaigns[] = (int) self::sanitize_campaign( $single_campaign );
+				}
+
+				return $campaigns;
+			}
+
+			switch ( $campaign ) {
+				case '':
+				case 'all':
+					return 0;
+
+				case 'current':
+					return charitable_get_current_campaign_id();
+
+				default:
+					return $campaign;
+			}
+		}
+
 	}
 
 endif;
