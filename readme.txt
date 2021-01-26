@@ -3,8 +3,8 @@ Contributors: WPCharitable, ericdaams
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40164a%2ecom
 Tags: donate, wordpress donation plugin, wpcharitable, peer to peer fundraising, recurring donations, donation plugin, donation form, paypal donations, stripe donations, give, fundraise, fundraising
 Requires at least: 4.1
-Tested up to: 5.5.3
-Stable tag: 1.6.46
+Tested up to: 5.6
+Stable tag: 1.6.47
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -230,6 +230,10 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 6. Setting up Charitable: The Email settings area.
 
 == Changelog ==
+
+= 1.6.47 =
+* SECURITY FIX: Prevent email verification emails from being triggered without the input of the registered user. [#863](https://github.com/Charitable/Charitable/issues/863)
+* FIX: Updated Weglot support to handle updates in Weglot 3.3.0. [#861](https://github.com/Charitable/Charitable/issues/861)
 
 = 1.6.46 =
 * FIX: Prevent endless redirect when using Weglot and displaying donation forms on the same page as the campaign.

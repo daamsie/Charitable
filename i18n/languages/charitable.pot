@@ -1,14 +1,14 @@
-# Copyright (C) 2020 WP Charitable
+# Copyright (C) 2021 WP Charitable
 # This file is distributed under the same license as the Charitable package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Charitable 1.6.46\n"
+"Project-Id-Version: Charitable 1.6.47\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2020-12-02 05:22:47+00:00\n"
+"POT-Creation-Date: 2021-01-26 07:56:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2020-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2021-MO-DA HO:MI+ZONE\n"
 "Last-Translator: WP-Translations (http://wp-translations.org/)\n"
 "Language-Team: WP-Translations <wpt@wp-translations.org>\n"
 "Language: en_US\n"
@@ -24,12 +24,12 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "X-Generator: grunt-wp-i18n 1.0.3\n"
 
-#: charitable.php:817
+#: charitable.php:813
 #: packages/charitable-spamblocker/src/Domain/Bootstrap.php:252
 msgid "Cloning this object is forbidden."
 msgstr ""
 
-#: charitable.php:832
+#: charitable.php:828
 #: packages/charitable-spamblocker/src/Domain/Bootstrap.php:267
 msgid "Unserializing instances of this class is forbidden."
 msgstr ""
@@ -4899,7 +4899,7 @@ msgstr ""
 #: includes/admin/campaigns/class-charitable-campaign-list-table.php:74
 #: includes/admin/donor/class-charitable-donor-list-table.php:176
 #: includes/admin/views/donations-page/export-form.php:44
-#: includes/data/class-charitable-post-types.php:153
+#: includes/data/class-charitable-post-types.php:148
 #: includes/gateways/class-charitable-gateway-paypal.php:79
 msgid "Donations"
 msgstr ""
@@ -5039,7 +5039,7 @@ msgid "Campaign Categories"
 msgstr ""
 
 #: includes/admin/class-charitable-admin-pages.php:169
-#: includes/data/class-charitable-post-types.php:286
+#: includes/data/class-charitable-post-types.php:281
 #: includes/fields/default-fields/campaign-fields.php:369
 #: includes/widgets/class-charitable-campaign-terms-widget.php:80
 msgid "Categories"
@@ -5050,7 +5050,7 @@ msgid "Campaign Tags"
 msgstr ""
 
 #: includes/admin/class-charitable-admin-pages.php:175
-#: includes/data/class-charitable-post-types.php:327
+#: includes/data/class-charitable-post-types.php:322
 #: includes/fields/default-fields/campaign-fields.php:380
 #: includes/widgets/class-charitable-campaign-terms-widget.php:81
 msgid "Tags"
@@ -5230,7 +5230,7 @@ msgstr ""
 #: includes/admin/donations/class-charitable-donation-list-table.php:84
 #: includes/admin/views/metaboxes/donation/donation-form.php:21
 #: includes/admin/views/metaboxes/donation/donation-overview.php:46
-#: includes/data/class-charitable-post-types.php:154
+#: includes/data/class-charitable-post-types.php:149
 #: includes/gateways/class-charitable-gateway-paypal.php:714
 msgid "Donation"
 msgstr ""
@@ -5265,7 +5265,7 @@ msgstr ""
 #: includes/admin/donations/class-charitable-donation-list-table.php:243
 #: includes/admin/views/metaboxes/campaign-benefactors/summary.php:27
 #: includes/data/class-charitable-post-types.php:92
-#: includes/data/class-charitable-post-types.php:158
+#: includes/data/class-charitable-post-types.php:153
 msgid "Edit"
 msgstr ""
 
@@ -5397,7 +5397,7 @@ msgid "Donation Actions"
 msgstr ""
 
 #: includes/admin/donations/class-charitable-donation-meta-boxes.php:201
-#: includes/data/class-charitable-post-types.php:159
+#: includes/data/class-charitable-post-types.php:154
 msgid "Donation Details"
 msgstr ""
 
@@ -7008,185 +7008,185 @@ msgstr ""
 msgid "This is where you can create new campaigns for people to support."
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:156
+#: includes/data/class-charitable-post-types.php:151
 msgid "Add Donation"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:157
+#: includes/data/class-charitable-post-types.php:152
 msgid "Add New Donation"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:160
+#: includes/data/class-charitable-post-types.php:155
 #: includes/emails/class-charitable-email-new-donation.php:223
 msgid "New Donation"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:161
-#: includes/data/class-charitable-post-types.php:162
+#: includes/data/class-charitable-post-types.php:156
+#: includes/data/class-charitable-post-types.php:157
 msgid "View Donation"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:163
+#: includes/data/class-charitable-post-types.php:158
 msgid "Search Donations"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:164
+#: includes/data/class-charitable-post-types.php:159
 msgid "No Donations found"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:165
+#: includes/data/class-charitable-post-types.php:160
 msgid "No Donations found in trash"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:166
+#: includes/data/class-charitable-post-types.php:161
 msgid "Parent Donation"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:201
+#: includes/data/class-charitable-post-types.php:196
 #. translators: %s: count
 msgid "Pending (%s)"
 msgid_plural "Pending (%s)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/data/class-charitable-post-types.php:214
+#: includes/data/class-charitable-post-types.php:209
 #. translators: %s: count
 msgid "Paid (%s)"
 msgid_plural "Paid (%s)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/data/class-charitable-post-types.php:227
+#: includes/data/class-charitable-post-types.php:222
 #. translators: %s: count
 msgid "Failed (%s)"
 msgid_plural "Failed (%s)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/data/class-charitable-post-types.php:240
+#: includes/data/class-charitable-post-types.php:235
 #. translators: %s: count
 msgid "Canceled (%s)"
 msgid_plural "Canceled (%s)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/data/class-charitable-post-types.php:253
+#: includes/data/class-charitable-post-types.php:248
 #. translators: %s: count
 msgid "Refunded (%s)"
 msgid_plural "Refunded (%s)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/data/class-charitable-post-types.php:266
+#: includes/data/class-charitable-post-types.php:261
 #. translators: %s: count
 msgid "Pre Approved (%s)"
 msgid_plural "Pre Approved (%s)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/data/class-charitable-post-types.php:287
+#: includes/data/class-charitable-post-types.php:282
 msgid "All Campaign Categories"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:288
+#: includes/data/class-charitable-post-types.php:283
 msgid "Parent Campaign Category"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:289
+#: includes/data/class-charitable-post-types.php:284
 msgid "Parent Campaign Category:"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:290
+#: includes/data/class-charitable-post-types.php:285
 msgid "New Campaign Category Name"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:291
+#: includes/data/class-charitable-post-types.php:286
 msgid "Add New Campaign Category"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:292
+#: includes/data/class-charitable-post-types.php:287
 msgid "Edit Campaign Category"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:293
+#: includes/data/class-charitable-post-types.php:288
 msgid "Update Campaign Category"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:294
+#: includes/data/class-charitable-post-types.php:289
 msgid "View Campaign Category"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:295
+#: includes/data/class-charitable-post-types.php:290
 msgid "Separate campaign categories with commas"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:296
+#: includes/data/class-charitable-post-types.php:291
 msgid "Add or remove campaign categories"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:297
-#: includes/data/class-charitable-post-types.php:338
+#: includes/data/class-charitable-post-types.php:292
+#: includes/data/class-charitable-post-types.php:333
 msgid "Choose from the most used"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:298
+#: includes/data/class-charitable-post-types.php:293
 msgid "Popular Campaign Categories"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:299
+#: includes/data/class-charitable-post-types.php:294
 msgid "Search Campaign Categories"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:300
-#: includes/data/class-charitable-post-types.php:341
+#: includes/data/class-charitable-post-types.php:295
+#: includes/data/class-charitable-post-types.php:336
 msgid "Not Found"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:328
+#: includes/data/class-charitable-post-types.php:323
 msgid "All Campaign Tags"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:329
+#: includes/data/class-charitable-post-types.php:324
 msgid "Parent Campaign Tag"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:330
+#: includes/data/class-charitable-post-types.php:325
 msgid "Parent Campaign Tag:"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:331
+#: includes/data/class-charitable-post-types.php:326
 msgid "New Campaign Tag Name"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:332
+#: includes/data/class-charitable-post-types.php:327
 msgid "Add New Campaign Tag"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:333
+#: includes/data/class-charitable-post-types.php:328
 msgid "Edit Campaign Tag"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:334
+#: includes/data/class-charitable-post-types.php:329
 msgid "Update Campaign Tag"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:335
+#: includes/data/class-charitable-post-types.php:330
 msgid "View Campaign Tag"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:336
+#: includes/data/class-charitable-post-types.php:331
 msgid "Separate campaign tags with commas"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:337
+#: includes/data/class-charitable-post-types.php:332
 msgid "Add or remove campaign tags"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:339
+#: includes/data/class-charitable-post-types.php:334
 msgid "Popular Campaign Tags"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:340
+#: includes/data/class-charitable-post-types.php:335
 msgid "Search Campaign Tags"
 msgstr ""
 
@@ -9171,57 +9171,57 @@ msgctxt "Admin menu name"
 msgid "Campaigns"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:155
+#: includes/data/class-charitable-post-types.php:150
 msgctxt "Admin menu name"
 msgid "Donations"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:199
+#: includes/data/class-charitable-post-types.php:194
 msgctxt "Pending Donation Status"
 msgid "Pending"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:212
+#: includes/data/class-charitable-post-types.php:207
 msgctxt "Paid Donation Status"
 msgid "Paid"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:225
+#: includes/data/class-charitable-post-types.php:220
 msgctxt "Failed Donation Status"
 msgid "Failed"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:238
+#: includes/data/class-charitable-post-types.php:233
 msgctxt "Canceled Donation Status"
 msgid "Canceled"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:251
+#: includes/data/class-charitable-post-types.php:246
 msgctxt "Refunded Donation Status"
 msgid "Refunded"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:264
+#: includes/data/class-charitable-post-types.php:259
 msgctxt "Pre Approved Donation Status"
 msgid "Pre Approved"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:284
+#: includes/data/class-charitable-post-types.php:279
 msgctxt "Taxonomy General Name"
 msgid "Campaign Categories"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:325
+#: includes/data/class-charitable-post-types.php:320
 msgctxt "Taxonomy General Name"
 msgid "Campaign Tags"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:285
+#: includes/data/class-charitable-post-types.php:280
 msgctxt "Taxonomy Singular Name"
 msgid "Campaign Category"
 msgstr ""
 
-#: includes/data/class-charitable-post-types.php:326
+#: includes/data/class-charitable-post-types.php:321
 msgctxt "Taxonomy Singular Name"
 msgid "Campaign Tag"
 msgstr ""

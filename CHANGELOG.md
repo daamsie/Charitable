@@ -1,3 +1,7 @@
+# 1.6.47
+* SECURITY FIX: Prevent email verification emails from being triggered without the input of the registered user. [#863](https://github.com/Charitable/Charitable/issues/863)
+* FIX: Updated Weglot support to handle updates in Weglot 3.3.0. [#861](https://github.com/Charitable/Charitable/issues/861)
+
 # 1.6.46
 * FIX: Prevent endless redirect when using Weglot and displaying donation forms on the same page as the campaign.
 * FIX: Improve compatibility with WP Super Cache.
@@ -47,7 +51,7 @@
 * FIX: Get the month names for the current locale when showing a datepicker field in the front-end. Currently this only affects the front-end campaign in Charitable Ambassadors. [#781](https://github.com/Charitable/Charitable/issues/781)
 
 # 1.6.39
-* SECURIY FIX: Prevent disclosure of campaign and donation information in the WordPress dashboard to users who should not have access to it. [#775](https://github.com/Charitable/Charitable/issues/775)
+* SECURITY FIX: Prevent disclosure of campaign and donation information in the WordPress dashboard to users who should not have access to it. [#775](https://github.com/Charitable/Charitable/issues/775)
 * NEW: Add CSS classes via `post_class` filter to target campaigns that have/have not reached their fundraising goal, or which have/have not ended. [#769](https://github.com/Charitable/Charitable/issues/769)
 * FIX: Donation Receipt & Donation Notification didn't send when marking a donation as paid via the Donation Actions meta box or by editing the donation. [#771](https://github.com/Charitable/Charitable/issues/771)
 * FIX: Add default background colour of white to the custom donation amount field to avoid issues where themes do not provide a colour for the input field. [#766](https://github.com/Charitable/Charitable/issues/766)

@@ -4,10 +4,10 @@
  *
  * @package   Charitable/Classes/Charitable_Weglot_Compat
  * @author    Eric Daams
- * @copyright Copyright (c) 2020, Studio 164a
+ * @copyright Copyright (c) 2021, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.6.45
- * @version   1.6.45
+ * @version   1.6.47
  */
 
 // Exit if accessed directly.
@@ -131,7 +131,18 @@ if ( ! class_exists( 'Charitable_Weglot_Compat' ) ) :
 				return $default;
 			}
 
-			return weglot_create_url_object( $default )->getForLanguage( weglot_get_current_language() );
+			/**
+			 * Backwards compatibility for Weglot versions prior to 3.3.0.
+			 *
+			 * @see https://github.com/Charitable/Charitable/issues/861
+			 */
+			if ( version_compare( WEGLOT_VERSION, '3.3.0', '<' ) ) {
+				$language = weglot_get_current_language();
+			} else {
+				$language = weglot_get_service( 'Language_Service_Weglot' )->get_language_from_internal( weglot_get_original_language() );
+			}
+
+			return weglot_create_url_object( $default )->getForLanguage( $language );
 		}
 
 		/**
@@ -155,7 +166,18 @@ if ( ! class_exists( 'Charitable_Weglot_Compat' ) ) :
 				return $is_page;
 			}
 
-			return charitable_get_permalink( $endpoint, $args ) === weglot_create_url_object( weglot_get_current_full_url() )->getForLanguage( weglot_get_original_language() );
+			/**
+			 * Backwards compatibility for Weglot versions prior to 3.3.0.
+			 *
+			 * @see https://github.com/Charitable/Charitable/issues/861
+			 */
+			if ( version_compare( WEGLOT_VERSION, '3.3.0', '<' ) ) {
+				$language = weglot_get_original_language();
+			} else {
+				$language = weglot_get_service( 'Language_Service_Weglot' )->get_language_from_internal( weglot_get_original_language() );
+			}
+
+			return charitable_get_permalink( $endpoint, $args ) === weglot_create_url_object( weglot_get_current_full_url() )->getForLanguage( $language );
 		}
 
 		/**
