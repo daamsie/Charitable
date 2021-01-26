@@ -2,12 +2,12 @@
 /**
  * Class that manages the hook functions for the forgot password form.
  *
- * @package     Charitable/User Management/User Management
- * @author      Rafe Colton, Eric Daams
- * @copyright   Copyright (c) 2020, Studio 164a
- * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
- * @since      1.4.0
- * @version     1.6.44
+ * @package   Charitable/User Management/User Management
+ * @author    Rafe Colton, Eric Daams
+ * @copyright Copyright (c) 2020, Studio 164a
+ * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since     1.4.0
+ * @version   1.6.47
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -346,7 +346,7 @@ if ( ! class_exists( 'Charitable_User_Management' ) ) :
 		 */
 		public function send_verification_email( $user = '', $redirect_url = '', $force_send = null ) {
 			if ( empty( $user ) && array_key_exists( 'user', $_GET ) ) {
-				$user = get_user_by( 'id', $_GET['user'] );
+				$user = wp_get_current_user();
 			}
 
 			if ( ! is_a( $user, 'WP_User' ) ) {
