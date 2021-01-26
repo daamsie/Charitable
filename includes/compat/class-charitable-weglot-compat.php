@@ -174,7 +174,7 @@ if ( ! class_exists( 'Charitable_Weglot_Compat' ) ) :
 			if ( version_compare( WEGLOT_VERSION, '3.3.0', '<' ) ) {
 				$language = weglot_get_original_language();
 			} else {
-				$language = weglot_get_service( 'Language_Service_Weglot' )->get_language_from_internal( weglot_get_original_language() )
+				$language = weglot_get_service( 'Language_Service_Weglot' )->get_language_from_internal( weglot_get_original_language() );
 			}
 
 			return charitable_get_permalink( $endpoint, $args ) === weglot_create_url_object( weglot_get_current_full_url() )->getForLanguage( $language );
