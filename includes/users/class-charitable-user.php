@@ -10,7 +10,7 @@
  *
  * @package   Charitable/Classes/Charitable_User
  * @author    Eric Daams
- * @copyright Copyright (c) 2020, Studio 164a
+ * @copyright Copyright (c) 2021, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
  * @version   1.6.44
