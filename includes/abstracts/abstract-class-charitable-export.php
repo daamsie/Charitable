@@ -122,11 +122,37 @@ if ( ! class_exists( 'Charitable_Export' ) ) :
 			$output = fopen( 'php://output', 'w' );
 
 			/* Print first row headers. */
-			fputcsv( $output, array_values( $this->columns ) );
+
+			$delimiter = ',';
+			$enclosure = '"';
+
+			/**
+			 * Allows user to change the delimiter used when exporting campaigns/donations
+			 * 
+			 * @since 1.7.0
+			 * 
+			 * @param $delimiter The delimiter to be used in the exported file
+			 * 
+			 * Note: the chosen delimiter must only be 1 char, no strings allowed
+			 */
+			$delimiter = apply_filters( 'charitable_export_delimiter', $delimiter );
+
+			/**
+			 * Allows user to change the enclosure character used when exporting campaigns/donations
+			 * 
+			 * @since 1.7.0
+			 * 
+			 * @param $enclosure The enclosure character to be used in the exported file
+			 * 
+			 * Note: the chosen enclosure character must only be 1 char, no strings allowed
+			 */
+			$enclosure = apply_filters( 'charitable_export_enclosure', $enclosure );
+
+			fputcsv( $output, array_values( $this->columns ), $delimiter, $enclosure );
 
 			/* Print the data */
 			foreach ( $data as $row ) {
-				fputcsv( $output, $row );
+				fputcsv( $output, $row, $delimiter, $enclosure );
 			}
 
 			fclose( $output );
