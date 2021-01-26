@@ -127,6 +127,10 @@ if ( ! class_exists( 'Charitable_Campaign_Donation_Endpoint' ) ) :
 		public function is_page( $args = array() ) {
 			global $wp_query;
 
+			if ( is_null( $wp_query->get_queried_object() ) ) {
+				return false;
+			}
+
 			if ( ! $wp_query->is_singular( Charitable::CAMPAIGN_POST_TYPE ) ) {
 				return false;
 			}
