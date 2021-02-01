@@ -47,8 +47,11 @@ if ( ! class_exists( 'Charitable_Donors_Shortcode' ) ) :
 				'hide_if_no_donors' => 0,
 			);
 
-			$args           = shortcode_atts( $default, $atts, 'charitable_donors' );
-			$args['donors'] = self::get_donors( $args );
+			$args = shortcode_atts( $default, $atts, 'charitable_donors' );
+
+			/* Sanitize the campaigns. */
+			$args['campaign'] = charitable_sanitize_campaign_args( explode( ',', $args['campaign'] ) );
+			$args['donors']   = self::get_donors( $args );
 
 			/**
 			 * Replace the default template with your own.
@@ -139,6 +142,7 @@ if ( ! class_exists( 'Charitable_Donors_Shortcode' ) ) :
 			 * @param  array $args       All the parsed arguments.
 			 * @return array
 			 */
+
 			$query_args = apply_filters(
 				'charitable_donors_shortcode_donor_query_args',
 				charitable_array_subset( $args, array( 'number', 'orderby', 'order', 'campaign', 'distinct_donors' ) ),

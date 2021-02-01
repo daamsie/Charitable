@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function charitable_is_terms_and_conditions_activated() {
 	return 0 != charitable_get_option( 'terms_conditions_page', 0 )
 		&& '' != charitable_get_option( 'terms_conditions', __( 'I have read and agree to the website [terms].', 'charitable' ) );
-}
+	}
 
 /**
  * Check whether the privacy policy is active.
@@ -127,4 +127,27 @@ function charitable_get_privacy_policy_field_text() {
 	);
 
 	return str_replace( '[privacy_policy]', $replace, $text );
+}
+
+/**
+ * Applies the filters on charitable_use_inline_terms_text.
+ *
+ * Provides an option to not show the terms text on the donation page, and
+ * will instead redirect to the terms and conditions page that you have chosen in the settings.
+ *
+ * To use, add the line of code "add_filter('charitable_use_inline_terms_text', false);" to your own addon code.
+ *
+ * @since  1.7.0
+ *
+ * @return boolean
+ */
+function charitable_use_inline_terms_text() {
+	/**
+	 * Set whether to use inline terms text.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param boolean $use_inline Whether to use inline terms text.
+	 */
+	return apply_filters('charitable_use_inline_terms_text', true);
 }

@@ -71,7 +71,7 @@ if ( ! class_exists( 'Charitable_Donor_Query' ) ) :
 			);
 
 			$this->args             = wp_parse_args( $args, $defaults );
-			$this->args['campaign'] = $this->sanitize_campaign();
+			$this->args['campaign'] = charitable_sanitize_campaign_args( $this->args['campaign'] );
 			$this->position         = 0;
 
 			$this->prepare_query();
@@ -352,24 +352,24 @@ if ( ! class_exists( 'Charitable_Donor_Query' ) ) :
 		}
 
 		/**
-		 * Sanitize the campaign argument.
+		 * Sanitize a campaign argument.
+		 *
+		 * @deprecated 2.2.0
 		 *
 		 * @since  1.5.0
+		 * @since  1.7.0 Deprecated.
 		 *
-		 * @return int
+		 * @param mixed $campaign The array of campaigns in string or int form
+		 * @return int/int[]
 		 */
 		protected function sanitize_campaign() {
-			switch ( $this->args['campaign'] ) {
-				case '':
-				case 'all':
-					return 0;
+			charitable_get_deprecated()->deprecated_function(
+				__METHOD__,
+				'1.7.0',
+				'charitable_sanitize_campaign_args()'
+			);
 
-				case 'current':
-					return charitable_get_current_campaign_id();
-
-				default:
-					return $this->args['campaign'];
-			}
+			return charitable_sanitize_campaign_args( $this->args['campaign'] );
 		}
 	}
 

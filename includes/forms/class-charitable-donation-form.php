@@ -961,11 +961,13 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 			}
 
 			if ( charitable_is_terms_and_conditions_activated() ) {
-				$terms_fields['terms_text'] = array(
-					'type'     => 'content',
-					'content'  => '<div class="charitable-terms-text">' . charitable_get_terms_and_conditions() . '</div>',
-					'priority' => 12,
-				);
+				if ( charitable_use_inline_terms_text() ) {
+					$terms_fields['terms_text'] = array(
+						'type'     => 'content',
+						'content'  => '<div class="charitable-terms-text">' . charitable_get_terms_and_conditions() . '</div>',
+						'priority' => 12,
+					);
+				}
 
 				$terms_fields['accept_terms'] = array(
 					'type'      => 'checkbox',
@@ -1153,7 +1155,7 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 				return $field;
 			}
 
-			if ( 'user' === $field['data_type'] ) {
+			if ( 'user' == $field['data_type'] ) {
 				$field['value'] = $this->get_user_value( $key, $field['default'] );
 			} else {
 				$field['value'] = $field['default'];
