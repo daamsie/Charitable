@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2021, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.0.0
- * @version   1.6.40
+ * @version   1.7.0
  */
 
 // Exit if accessed directly.
@@ -127,24 +127,28 @@ if ( ! class_exists( 'Charitable_Export' ) ) :
 			$enclosure = '"';
 
 			/**
-			 * Allows user to change the delimiter used when exporting campaigns/donations
-			 * 
+			 * Change the delimiter used when exporting campaigns/donations.
+			 *
+			 * Note: the chosen delimiter must only be 1 char, no strings allowed.
+			 *
+			 * @see https://www.php.net/manual/en/function.fputcsv.php
+			 *
 			 * @since 1.7.0
-			 * 
-			 * @param $delimiter The delimiter to be used in the exported file
-			 * 
-			 * Note: the chosen delimiter must only be 1 char, no strings allowed
+			 *
+			 * @param $delimiter The delimiter to be used in the exported file.
 			 */
 			$delimiter = apply_filters( 'charitable_export_delimiter', $delimiter );
 
 			/**
-			 * Allows user to change the enclosure character used when exporting campaigns/donations
-			 * 
+			 * Change the enclosure character used when exporting campaigns/donations.
+			 *
+			 * Note: the chosen delimiter must only be 1 char, no strings allowed.
+			 *
+			 * @see https://www.php.net/manual/en/function.fputcsv.php
+			 *
 			 * @since 1.7.0
-			 * 
-			 * @param $enclosure The enclosure character to be used in the exported file
-			 * 
-			 * Note: the chosen enclosure character must only be 1 char, no strings allowed
+			 *
+			 * @param $enclosure The enclosure character to be used in the exported file.
 			 */
 			$enclosure = apply_filters( 'charitable_export_enclosure', $enclosure );
 
