@@ -174,11 +174,9 @@ function charitable_get_campaign_featured_image( Charitable_Campaign $campaign )
  * @return int/int[]
  */
 function charitable_sanitize_campaign_args( $campaign ) {
-
 	if ( is_array( $campaign ) ) {
+		$campaigns = [];
 
-		$campains = [];
-		
 		foreach( $campaign as $single_campaign ) {
 			$campaigns[] = (int) charitable_sanitize_campaign_args( $single_campaign );
 		}

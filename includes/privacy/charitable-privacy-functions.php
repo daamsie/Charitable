@@ -77,7 +77,7 @@ function charitable_get_terms_and_conditions() {
 	$content = apply_filters( 'the_content', get_post_field( 'post_content', charitable_get_option( 'terms_conditions_page', 0 ), 'display' ) );
 
 	add_filter( 'the_content', array( $endpoints, 'get_content' ) );
-	
+
 	return $content;
 }
 
@@ -131,21 +131,23 @@ function charitable_get_privacy_policy_field_text() {
 
 /**
  * Applies the filters on charitable_use_inline_terms_text.
- * 
+ *
  * Provides an option to not show the terms text on the donation page, and
  * will instead redirect to the terms and conditions page that you have chosen in the settings.
- * 
+ *
  * To use, add the line of code "add_filter('charitable_use_inline_terms_text', false);" to your own addon code.
- * 
- * @since 1.7.0
- * 
+ *
+ * @since  1.7.0
+ *
  * @return boolean
- * True (default value) will show the terms
- * False will remove the terms 
  */
 function charitable_use_inline_terms_text() {
 	/**
-	 * Filter the boolean to get desired result
+	 * Set whether to use inline terms text.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param boolean $use_inline Whether to use inline terms text.
 	 */
 	return apply_filters('charitable_use_inline_terms_text', true);
-}	
+}

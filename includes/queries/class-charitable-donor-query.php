@@ -351,15 +351,24 @@ if ( ! class_exists( 'Charitable_Donor_Query' ) ) :
 			return $where_statement . " AND {$this->table_alias}.email IN ({$placeholders})";
 		}
 
-			/**
+		/**
 		 * Sanitize a campaign argument.
 		 *
-		 * @since  1.7.0
+		 * @deprecated 2.2.0
+		 *
+		 * @since  1.5.0
+		 * @since  1.7.0 Deprecated.
 		 *
 		 * @param mixed $campaign The array of campaigns in string or int form
 		 * @return int/int[]
 		 */
 		protected function sanitize_campaign() {
+			charitable_get_deprecated()->deprecated_function(
+				__METHOD__,
+				'1.7.0',
+				'charitable_sanitize_campaign_args()'
+			);
+
 			return charitable_sanitize_campaign_args( $this->args['campaign'] );
 		}
 	}

@@ -46,16 +46,12 @@ if ( ! class_exists( 'Charitable_Donors_Shortcode' ) ) :
 				'show_avatar'       => 1,
 				'hide_if_no_donors' => 0,
 			);
-			$args           = shortcode_atts( $default, $atts, 'charitable_donors' );
 
-			if ( false !== strpos( $args['campaign'], ',' ) ) {
-				$args['campaign'] = explode( ',', $args['campaign'] );
-			}
+			$args = shortcode_atts( $default, $atts, 'charitable_donors' );
 
-			//Needs to be sanitized to accept 'current' as an option
-			$args['campaign'] = charitable_sanitize_campaign_args( $args['campaign'] );
-
-			$args['donors'] = self::get_donors( $args );
+			/* Sanitize the campaigns. */
+			$args['campaign'] = charitable_sanitize_campaign_args( explode( ',', $args['campaign'] ) );
+			$args['donors']   = self::get_donors( $args );
 
 			/**
 			 * Replace the default template with your own.
