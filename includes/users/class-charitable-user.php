@@ -486,7 +486,12 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 		 * @return float
 		 */
 		public function get_total_donated( $campaign_id = false ) {
-			$amount = wp_cache_get( $this->get_donor_id(), 'charitable_donor_total_donation_amount_' . $campaign_id );
+
+			if ( is_array( $campaign_id ) && $campaign_id !== false ) {
+				$campaign_id_string = implode( '_' , $campaign_id );
+			}
+
+			$amount = wp_cache_get( $this->get_donor_id(), 'charitable_donor_total_donation_amount_' . $campaign_id_string );
 
 			if ( false === $amount ) {
 
@@ -497,7 +502,7 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 						'donor_id'        => $this->get_donor_id(),
 						'distinct_donors' => true,
 						'fields'          => 'amount',
-						'campaign'        => (int) $campaign_id,
+						'campaign'        => $campaign_id,
 					),
 					$this
 				);
@@ -506,7 +511,7 @@ if ( ! class_exists( 'Charitable_User' ) ) :
 
 				$amount = $query->current()->amount;
 
-				wp_cache_set( $this->get_donor_id(), $amount, 'charitable_donor_total_donation_amount_' . $campaign_id );
+				wp_cache_set( $this->get_donor_id(), $amount, 'charitable_donor_total_donation_amount_' . $campaign_id_string );
 			}
 
 			return (float) $amount;

@@ -46,8 +46,15 @@ if ( ! class_exists( 'Charitable_Donors_Shortcode' ) ) :
 				'show_avatar'       => 1,
 				'hide_if_no_donors' => 0,
 			);
-
 			$args           = shortcode_atts( $default, $atts, 'charitable_donors' );
+
+			if ( false !== strpos( $args['campaign'], ',' ) ) {
+				$args['campaign'] = explode( ',', $args['campaign'] );
+			}
+
+			//Needs to be sanitized to accept 'current' as an option
+			$args['campaign'] = charitable_sanitize_campaign_args( $args['campaign'] );
+
 			$args['donors'] = self::get_donors( $args );
 
 			/**
@@ -139,6 +146,7 @@ if ( ! class_exists( 'Charitable_Donors_Shortcode' ) ) :
 			 * @param  array $args       All the parsed arguments.
 			 * @return array
 			 */
+
 			$query_args = apply_filters(
 				'charitable_donors_shortcode_donor_query_args',
 				charitable_array_subset( $args, array( 'number', 'orderby', 'order', 'campaign', 'distinct_donors' ) ),

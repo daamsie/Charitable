@@ -124,6 +124,22 @@ if ( ! class_exists( 'Charitable_Customizer' ) ) :
 									),
 								),
 							),
+							'donation_form_show_login' => array(
+								'setting' => array(
+									'transport' => 'refresh',
+									'default'   => 1,
+								),
+								'control' => array(
+									'type'     => 'radio',
+									'label'    => __( 'Display login option', 'charitable' ),
+									'priority' => 1026,
+									'choices'  => array(
+										1 => __( 'Yes', 'charitable' ),
+										0 => __( 'No', 'charitable' ),
+									),
+								),
+							),
+
 						),
 					),
 					'charitable_privacy'              => array(
