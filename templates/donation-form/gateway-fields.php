@@ -25,6 +25,7 @@ $classes  = $view_args['classes'];
 $gateways = $field['gateways'];
 $default  = isset( $field['default'] ) && isset( $gateways[ $field['default'] ] ) ? $field['default'] : key( $gateways );
 
+
 ?>
 <fieldset id="charitable-gateway-fields" class="charitable-fieldset">
 	<?php
@@ -37,16 +38,16 @@ $default  = isset( $field['default'] ) && isset( $gateways[ $field['default'] ] 
 	if ( count( $gateways ) > 1 ) :
 		?>
 		<fieldset class="charitable-fieldset-field-wrapper">
-			<div class="charitable-fieldset-field-header" id="charitable-gateway-selector-header"><?php _e( 'Choose Your Payment Method', 'charitable' ) ?></div>
+			<div class="charitable-fieldset-field-header" id="charitable-gateway-selector-header"><?php _e( 'Choose Your Payment Method', 'charitable' ); ?></div>
 			<ul id="charitable-gateway-selector" class="charitable-radio-list charitable-form-field">
 				<?php foreach ( $gateways as $gateway_id => $details ) : ?>
 					<li><input type="radio"
-							id="gateway-<?php echo esc_attr( $gateway_id ); ?>"
+							id="gateway-<?php echo esc_attr( $gateway_id . '-' . $form->get_form_identifier() ); ?>"
 							name="gateway"
 							value="<?php echo esc_attr( $gateway_id ); ?>"
 							aria-describedby="charitable-gateway-selector-header"
 							<?php checked( $default, $gateway_id ); ?> />
-						<label for="gateway-<?php echo esc_attr( $gateway_id ); ?>"><?php echo $details['label']; ?></label>
+						<label for="gateway-<?php echo esc_attr( $gateway_id . '-' . $form->get_form_identifier() ); ?>"><?php echo $details['label']; ?></label>
 					</li>
 				<?php endforeach ?>
 			</ul>
@@ -60,7 +61,7 @@ $default  = isset( $field['default'] ) && isset( $gateways[ $field['default'] ] 
 		endif;
 
 		?>
-		<div id="charitable-gateway-fields-<?php echo $gateway_id; ?>" class="charitable-gateway-fields charitable-form-fields cf" data-gateway="<?php echo $gateway_id ?>">
+		<div id="charitable-gateway-fields-<?php echo $gateway_id; ?>" class="charitable-gateway-fields charitable-form-fields cf" data-gateway="<?php echo $gateway_id; ?>">
 			<?php $form->view()->render_fields( $details['fields'] ); ?>
 		</div><!-- #charitable-gateway-fields-<?php echo $gateway_id; ?> -->
 	<?php endforeach ?>
