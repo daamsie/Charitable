@@ -106,7 +106,7 @@ if ( ! class_exists( 'Charitable_WPML_Compat' ) ) :
 					$this->sitepress->get_element_translations( $trid, 'post_campaign' ),
 					'element_id'
 				)
-			 );
+			);
 		}
 
 		/**
@@ -410,9 +410,11 @@ if ( ! class_exists( 'Charitable_WPML_Compat' ) ) :
 		public function get_donation_receipt_page_url( $default, $args ) {
 			$wpml_url = $this->get_wpml_page_url( 'donation_receipt_page', $default, $args );
 
-			if ( $wpml_url !== $default ) {
+			if ( false === $wpml_url ) {
+				return $default;
+			} elseif ( $wpml_url !== $default ) {
 				$donation_id = isset( $args['donation_id'] ) ? $args['donation_id'] : get_the_ID();
-				$wpml_url     = esc_url_raw( add_query_arg( array( 'donation_id' => $donation_id ), $wpml_url ) );
+				$wpml_url    = esc_url_raw( add_query_arg( array( 'donation_id' => $donation_id ), $wpml_url ) );
 			}
 
 			return $wpml_url;
