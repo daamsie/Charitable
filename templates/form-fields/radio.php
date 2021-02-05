@@ -25,6 +25,7 @@ $classes     = $view_args['classes'];
 $is_required = isset( $field['required'] ) ? $field['required'] : false;
 $options     = isset( $field['options'] ) ? $field['options'] : array();
 $value       = isset( $field['value'] ) ? $field['value'] : '';
+$form_id     = $form->get_form_identifier();
 
 if ( empty( $options ) ) {
 	return;
@@ -44,13 +45,13 @@ if ( empty( $options ) ) {
 		<ul class="charitable-radio-list <?php echo esc_attr( $view_args['classes'] ); ?>">
 			<?php foreach ( $options as $option => $label ) : ?>
 				<li><input type="radio"
-						id="<?php echo esc_attr( $field['key'] . '-' . $option ); ?>"
+						id="<?php echo esc_attr( $field['key'] . '-' . $option . '-' . $form_id ); ?>"
 						name="<?php echo esc_attr( $field['key'] ); ?>"
 						value="<?php echo esc_attr( $option ); ?>"
 						aria-describedby="charitable_field_<?php echo esc_attr( $field['key'] ); ?>_label"
 						<?php checked( $value, $option ); ?>
 						<?php echo charitable_get_arbitrary_attributes( $field ); ?> />
-					<label for="<?php echo esc_attr( $field['key'] . '-' . $option ); ?>"><?php echo $label; ?></label>
+					<label for="<?php echo esc_attr( $field['key'] . '-' . $option . '-' . $form_id); ?>"><?php echo $label; ?></label>
 				</li>
 			<?php endforeach ?>
 		</ul>
