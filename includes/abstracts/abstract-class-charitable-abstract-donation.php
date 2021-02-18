@@ -898,7 +898,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 
 			$old_status = $this->get_status();
 
-			if ( $old_status == $new_status ) {
+			if ( $old_status === $new_status ) {
 				return 0;
 			}
 
