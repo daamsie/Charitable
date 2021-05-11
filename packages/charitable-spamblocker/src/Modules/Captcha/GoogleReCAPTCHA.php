@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2020, Eric Daams
  * @license   http://opensource.org/licenses/gpl-1.0.0.php GNU Public License
  * @version   1.0.0
- * @since     1.0.0
+ * @since     1.0.4
  */
 
 namespace Charitable\Packages\SpamBlocker\Modules\Captcha;
@@ -395,7 +395,7 @@ if ( ! class_exists( '\Charitable\Packages\SpamBlocker\Modules\Captcha\GoogleReC
 		 * @return boolean
 		 */
 		public function is_captcha_valid() {
-			if ( ! array_key_exists( 'grecaptcha_token', $_POST ) ) {
+			if ( ! array_key_exists( 'charitable_grecaptcha_token', $_POST ) ) {
 				charitable_get_notices()->add_error( __( 'Missing captcha token.', 'charitable-spamblocker' ) );
 				return false;
 			}
@@ -405,7 +405,7 @@ if ( ! class_exists( '\Charitable\Packages\SpamBlocker\Modules\Captcha\GoogleReC
 				array(
 					'body' => array(
 						'secret'   => charitable_get_option( 'recaptcha_secret_key' ),
-						'response' => $_POST['grecaptcha_token'],
+						'response' => $_POST['charitable_grecaptcha_token'],
 						'remoteip' => $_SERVER['REMOTE_ADDR'],
 					),
 				)

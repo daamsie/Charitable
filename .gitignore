@@ -7,3 +7,4 @@ phpdoc.xml
 coverage.xml
 package-lock.json
 cypress
+.github
