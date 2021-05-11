@@ -16,7 +16,7 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "wpcharitable/charitable-spamblocker": "^1.0.4",
+        "wpcharitable/charitable-spamblocker": "^1.0.5",
         "composer/installers": "1.9.0"
     },
     "extra": {

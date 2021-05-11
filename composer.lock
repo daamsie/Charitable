@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b66783496227256a46fd05c0fea742b6",
+    "content-hash": "60502a8d1049039521bec05485ab394d",
     "packages": [
         {
             "name": "composer/installers",
@@ -196,23 +196,23 @@
         },
         {
             "name": "wpcharitable/charitable-spamblocker",
-            "version": "1.0.4",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Charitable/Charitable-Spam-Blocker.git",
-                "reference": "7760c842d40c4701f93e1c0254feb46ba515cfd2"
+                "reference": "d23729d419c655cd6c7c61f26c060e3f2cc809dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Charitable/Charitable-Spam-Blocker/zipball/7760c842d40c4701f93e1c0254feb46ba515cfd2",
-                "reference": "7760c842d40c4701f93e1c0254feb46ba515cfd2",
+                "url": "https://api.github.com/repos/Charitable/Charitable-Spam-Blocker/zipball/d23729d419c655cd6c7c61f26c060e3f2cc809dc",
+                "reference": "d23729d419c655cd6c7c61f26c060e3f2cc809dc",
                 "shasum": ""
             },
             "require": {
                 "wpcharitable/charitable-extension-activation": "^1.1"
             },
             "require-dev": {
-                "wp-cli/i18n-command": "2.2.5"
+                "wp-cli/i18n-command": "2.2.6"
             },
             "type": "wordpress-plugin",
             "autoload": {
@@ -242,7 +242,7 @@
                 "issues": "https://github.com/Charitable/Charitable-Spam-Blocker/issues",
                 "source": "https://github.com/Charitable/Charitable-Spam-Blocker"
             },
-            "time": "2020-12-21T04:06:11+00:00"
+            "time": "2021-05-11T04:26:04+00:00"
         }
     ],
     "packages-dev": [
