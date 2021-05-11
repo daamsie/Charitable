@@ -3,8 +3,8 @@ Contributors: WPCharitable, ericdaams
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypal%40164a%2ecom
 Tags: donate, wordpress donation plugin, wpcharitable, peer to peer fundraising, recurring donations, donation plugin, donation form, paypal donations, stripe donations, give, fundraise, fundraising
 Requires at least: 4.1
-Tested up to: 5.6
-Stable tag: 1.6.47
+Tested up to: 5.7.1
+Stable tag: 1.6.48
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,7 +120,7 @@ Looking for more functionality? Our paid extensions give you the flexibility and
 **[Recover Payment Gateway Fees](https://www.wpcharitable.com/extensions/charitable-fee-relief/?utm_source=readme&utm_medium=description-tab&utm_content=upgrades&utm_campaign=plugin-page-referrals)**
 
 * Grow your donations by letting your donors cover the payment gateway fees.
-* Supports PayPal, Stripe, Braintree, Authorize.Net, Windcave and PayFast.
+* Supports PayPal, Stripe, Braintree, Authorize.Net, Mollie, Windcave, PayFast and Paystack.
 * Works with recurring donations.
 
 **Premium Payment Gateways**
@@ -128,9 +128,10 @@ Looking for more functionality? Our paid extensions give you the flexibility and
 * [Stripe](https://www.wpcharitable.com/extensions/charitable-stripe/?utm_source=readme&utm_medium=description-tab&utm_content=upgrades&utm_campaign=plugin-page-referrals)
 * [Braintree](https://www.wpcharitable.com/extensions/charitable-braintree/?utm_source=readme&utm_medium=description-tab&utm_content=upgrades&utm_campaign=plugin-page-referrals)
 * [Authorize.Net](https://www.wpcharitable.com/extensions/charitable-authorize-net/?utm_source=readme&utm_medium=description-tab&utm_content=upgrades&utm_campaign=plugin-page-referrals)
+* [Mollie](https://www.wpcharitable.com/extensions/charitable-mollie/?utm_source=readme&utm_medium=description-tab&utm_content=upgrades&utm_campaign=plugin-page-referrals)
 * [Windcave](https://www.wpcharitable.com/extensions/charitable-windcave/?utm_source=readme&utm_medium=description-tab&utm_content=upgrades&utm_campaign=plugin-page-referrals)
-* [PayFast](https://www.wpcharitable.com/extensions/charitable-payfast/?utm_source=readme&utm_medium=description-tab&utm_content=upgrades&utm_campaign=plugin-page-referrals) - leading South African payment gateway.
-* [PayUMoney](https://www.wpcharitable.com/extensions/charitable-payu-money/?utm_source=readme&utm_medium=description-tab&utm_content=upgrades&utm_campaign=plugin-page-referrals) - Indian payment gateway.
+* [PayFast](https://www.wpcharitable.com/extensions/charitable-payfast/?utm_source=readme&utm_medium=description-tab&utm_content=upgrades&utm_campaign=plugin-page-referrals)
+* [Paystack](https://www.wpcharitable.com/extensions/charitable-paystack/?utm_source=readme&utm_medium=description-tab&utm_content=upgrades&utm_campaign=plugin-page-referrals)
 
 **[Email Marketing & Newsletter Integration](https://www.wpcharitable.com/extensions/charitable-newsletter-connect/?utm_source=readme&utm_medium=description-tab&utm_content=upgrades&utm_campaign=plugin-page-referrals)**
 
@@ -230,6 +231,10 @@ You can post in the [support forum](https://wordpress.org/support/plugin/charita
 6. Setting up Charitable: The Email settings area.
 
 == Changelog ==
+
+= 1.6.48 =
+* FIX: Better compatibility with TranslatePress to allow certain strings that were otherwise not translateable to be translated.
+* FIX: Removed a PHP notice that would appear on 404 pages. [#864](https://github.com/Charitable/Charitable/issues/864)
 
 = 1.6.47 =
 * SECURITY FIX: Prevent email verification emails from being triggered without the input of the registered user. [#863](https://github.com/Charitable/Charitable/issues/863)

@@ -49,6 +49,7 @@ return array(
 	'Charitable_Campaign' => 'campaigns/class-charitable-campaign.php',
 	'Charitable_Campaigns' => 'campaigns/class-charitable-campaigns.php',
 	'Charitable_Polylang_Compat' => 'compat/class-charitable-polylang-compat.php',
+	'Charitable_Translatepress_Compat' => 'compat/class-charitable-translatepress-compat.php',
 	'Charitable_Weglot_Compat' => 'compat/class-charitable-weglot-compat.php',
 	'Charitable_WPML_Compat' => 'compat/class-charitable-wpml-compat.php',
 	'Charitable_Cron' => 'cron/class-charitable-cron.php',
