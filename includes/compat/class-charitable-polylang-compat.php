@@ -98,18 +98,18 @@ if ( ! class_exists( 'Charitable_Polylang_Compat' ) ) :
 				return;
 			}
 
-			$field_apis = [
-				[
+			$field_apis = array(
+				array(
 					'fields' => charitable()->donation_fields(),
-					'forms'  => [ 'donation_form', 'admin_form' ],
-				],
-				[
+					'forms'  => array( 'donation_form', 'admin_form' ),
+				),
+				array(
 					'fields' => charitable()->campaign_fields(),
-					'forms'  => [ 'campaign_form', 'admin_form' ],
-				]
-			];
+					'forms'  => array( 'campaign_form', 'admin_form' ),
+				),
+			);
 
-			$translateable_form_fields = [ 'label', 'placeholder' ];
+			$translateable_form_fields = array( 'label', 'placeholder' );
 
 			foreach ( $field_apis as $api ) {
 				$fields = $api['fields'];
@@ -141,7 +141,7 @@ if ( ! class_exists( 'Charitable_Polylang_Compat' ) ) :
 								$options[ $key ] = pll__( $value );
 							}
 
-							if ( in_array( $field->field, [ 'country', 'state' ] ) ) {
+							if ( in_array( $field->field, array( 'country', 'state' ) ) ) {
 								asort( $options );
 							}
 
