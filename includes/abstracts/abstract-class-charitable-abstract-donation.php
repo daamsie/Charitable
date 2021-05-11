@@ -898,7 +898,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 
 			$old_status = $this->get_status();
 
-			if ( $old_status == $new_status ) {
+			if ( $old_status === $new_status ) {
 				return 0;
 			}
 
@@ -997,7 +997,7 @@ if ( ! class_exists( 'Charitable_Abstract_Donation' ) ) :
 		 *
 		 * @since  1.4.5
 		 *
-		 * @return false|Charitable_Donation
+		 * @return false|Charitable_Abstract_Donation
 		 */
 		public function get_donation_plan() {
 			if ( ! isset( $this->donation_plan ) ) {

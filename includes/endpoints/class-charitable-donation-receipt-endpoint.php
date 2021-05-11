@@ -101,7 +101,7 @@ if ( ! class_exists( 'Charitable_Donation_Receipt_Endpoint' ) ) :
 
 			$receipt_page = charitable_get_option( 'donation_receipt_page', 'auto' );
 
-			if ( 'auto' != $receipt_page ) {
+			if ( 'auto' !== $receipt_page ) {
 				return is_page( $receipt_page );
 			}
 

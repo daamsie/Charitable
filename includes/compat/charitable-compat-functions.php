@@ -7,7 +7,7 @@
  * @copyright Copyright (c) 2021, Studio 164a
  * @license   http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since     1.5.0
- * @version   1.6.46
+ * @version   1.6.48
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -82,6 +82,11 @@ function charitable_load_compat_functions() {
 	/* Weglot */
 	if ( defined( 'WEGLOT_VERSION' ) ) {
 		new Charitable_Weglot_Compat();
+	}
+
+	/* TranslatePress */
+	if ( class_exists( 'TRP_Translate_Press' ) ) {
+		new Charitable_Translatepress_Compat();
 	}
 
 	/* Permalink Manager */

@@ -1,3 +1,7 @@
+# 1.6.48
+* FIX: Better compatibility with TranslatePress to allow certain strings that were otherwise not translateable to be translated.
+* FIX: Removed a PHP notice that would appear on 404 pages. [#864](https://github.com/Charitable/Charitable/issues/864)
+
 # 1.6.47
 * SECURITY FIX: Prevent email verification emails from being triggered without the input of the registered user. [#863](https://github.com/Charitable/Charitable/issues/863)
 * FIX: Updated Weglot support to handle updates in Weglot 3.3.0. [#861](https://github.com/Charitable/Charitable/issues/861)

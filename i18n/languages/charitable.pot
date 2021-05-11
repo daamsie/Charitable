@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Charitable package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Charitable 1.6.47\n"
+"Project-Id-Version: Charitable 1.6.48\n"
 "Report-Msgid-Bugs-To: https://www.wpcharitable.com/\n"
-"POT-Creation-Date: 2021-01-26 07:56:34+00:00\n"
+"POT-Creation-Date: 2021-05-11 04:18:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4689,7 +4689,8 @@ msgstr ""
 
 #: includes/abstracts/abstract-class-charitable-abstract-donation.php:729
 #: includes/admin/customizer/class-charitable-customizer.php:122
-#: includes/admin/customizer/class-charitable-customizer.php:169
+#: includes/admin/customizer/class-charitable-customizer.php:137
+#: includes/admin/customizer/class-charitable-customizer.php:185
 #: includes/emails/class-charitable-email-email-verification.php:149
 #: packages/charitable-spamblocker/src/Modules/Captcha/Captcha.php:70
 msgid "Yes"
@@ -4697,7 +4698,8 @@ msgstr ""
 
 #: includes/abstracts/abstract-class-charitable-abstract-donation.php:729
 #: includes/admin/customizer/class-charitable-customizer.php:123
-#: includes/admin/customizer/class-charitable-customizer.php:170
+#: includes/admin/customizer/class-charitable-customizer.php:138
+#: includes/admin/customizer/class-charitable-customizer.php:186
 #: includes/emails/class-charitable-email-email-verification.php:150
 #: packages/charitable-spamblocker/src/Modules/Captcha/Captcha.php:71
 msgid "No"
@@ -5130,15 +5132,19 @@ msgstr ""
 msgid "Only show required fields"
 msgstr ""
 
-#: includes/admin/customizer/class-charitable-customizer.php:130
+#: includes/admin/customizer/class-charitable-customizer.php:134
+msgid "Display login option"
+msgstr ""
+
+#: includes/admin/customizer/class-charitable-customizer.php:146
 msgid "User Privacy"
 msgstr ""
 
-#: includes/admin/customizer/class-charitable-customizer.php:140
+#: includes/admin/customizer/class-charitable-customizer.php:156
 msgid "Privacy policy page"
 msgstr ""
 
-#: includes/admin/customizer/class-charitable-customizer.php:148
+#: includes/admin/customizer/class-charitable-customizer.php:164
 #: includes/privacy/charitable-privacy-functions.php:45
 #: includes/privacy/charitable-privacy-functions.php:122
 msgid ""
@@ -5147,28 +5153,28 @@ msgid ""
 "[privacy_policy]."
 msgstr ""
 
-#: includes/admin/customizer/class-charitable-customizer.php:153
+#: includes/admin/customizer/class-charitable-customizer.php:169
 msgid "Privacy policy"
 msgstr ""
 
-#: includes/admin/customizer/class-charitable-customizer.php:154
+#: includes/admin/customizer/class-charitable-customizer.php:170
 msgid ""
 "Information about your website privacy policy for people to see when they "
 "donate, register an account, or manage their profile. Leave empty to "
 "disable."
 msgstr ""
 
-#: includes/admin/customizer/class-charitable-customizer.php:165
+#: includes/admin/customizer/class-charitable-customizer.php:181
 msgid "Contact consent field"
 msgstr ""
 
-#: includes/admin/customizer/class-charitable-customizer.php:166
+#: includes/admin/customizer/class-charitable-customizer.php:182
 msgid ""
 "Display a checkbox asking people for their consent to being contacted when "
 "they donate, register an account, or manage their profile."
 msgstr ""
 
-#: includes/admin/customizer/class-charitable-customizer.php:177
+#: includes/admin/customizer/class-charitable-customizer.php:193
 #: includes/data/class-charitable-donors-db.php:267
 #: includes/forms/class-charitable-donation-form.php:956
 #: includes/forms/class-charitable-profile-form.php:349
@@ -5177,43 +5183,43 @@ msgstr ""
 msgid "Yes, I am happy for you to contact me via email or phone."
 msgstr ""
 
-#: includes/admin/customizer/class-charitable-customizer.php:182
+#: includes/admin/customizer/class-charitable-customizer.php:198
 msgid "Contact consent label"
 msgstr ""
 
-#: includes/admin/customizer/class-charitable-customizer.php:184
+#: includes/admin/customizer/class-charitable-customizer.php:200
 msgid "A short statement describing how you would like to contact people."
 msgstr ""
 
-#: includes/admin/customizer/class-charitable-customizer.php:190
+#: includes/admin/customizer/class-charitable-customizer.php:206
 msgid "Terms & Conditions"
 msgstr ""
 
-#: includes/admin/customizer/class-charitable-customizer.php:200
+#: includes/admin/customizer/class-charitable-customizer.php:216
 msgid "Terms and conditions page"
 msgstr ""
 
-#: includes/admin/customizer/class-charitable-customizer.php:208
+#: includes/admin/customizer/class-charitable-customizer.php:224
 #: includes/privacy/charitable-privacy-functions.php:30
 #: includes/privacy/charitable-privacy-functions.php:98
 msgid "I have read and agree to the website [terms]."
 msgstr ""
 
-#: includes/admin/customizer/class-charitable-customizer.php:213
+#: includes/admin/customizer/class-charitable-customizer.php:229
 msgid "Terms and conditions"
 msgstr ""
 
-#: includes/admin/customizer/class-charitable-customizer.php:214
+#: includes/admin/customizer/class-charitable-customizer.php:230
 msgid ""
 "Display a checkbox asking people to accept the website terms and conditions "
 "when they make a donation or register an account. Leave empty to disable."
 msgstr ""
 
-#: includes/admin/customizer/class-charitable-customizer.php:250
+#: includes/admin/customizer/class-charitable-customizer.php:266
 msgid "Design Options"
 msgstr ""
 
-#: includes/admin/customizer/class-charitable-customizer.php:262
+#: includes/admin/customizer/class-charitable-customizer.php:278
 msgid "Highlight Color"
 msgstr ""
 
@@ -7897,7 +7903,7 @@ msgstr ""
 #: includes/forms/class-charitable-donation-form.php:653
 #: includes/forms/class-charitable-forgot-password-form.php:100
 #: includes/forms/class-charitable-profile-form.php:511
-#: includes/forms/class-charitable-registration-form.php:220
+#: includes/forms/class-charitable-registration-form.php:221
 #: includes/forms/class-charitable-reset-password-form.php:171
 msgid ""
 "Unfortunately, we were unable to verify your form submission. Please reload "
@@ -7905,7 +7911,7 @@ msgid ""
 msgstr ""
 
 #: includes/forms/class-charitable-donation-form.php:685
-#: includes/forms/class-charitable-registration-form.php:237
+#: includes/forms/class-charitable-registration-form.php:238
 #. translators: %s: email address
 #. translators: %s: submitted email address
 msgid "%s is not a valid email address."
@@ -7915,23 +7921,23 @@ msgstr ""
 msgid "The gateway submitted is not valid."
 msgstr ""
 
-#: includes/forms/class-charitable-donation-form.php:997
+#: includes/forms/class-charitable-donation-form.php:999
 msgid "Terms and Conditions"
 msgstr ""
 
-#: includes/forms/class-charitable-donation-form.php:1191
+#: includes/forms/class-charitable-donation-form.php:1193
 msgid "There are no active payment gateways."
 msgstr ""
 
-#: includes/forms/class-charitable-donation-form.php:1223
+#: includes/forms/class-charitable-donation-form.php:1225
 msgid "Test mode is active."
 msgstr ""
 
-#: includes/forms/class-charitable-donation-form.php:1227
+#: includes/forms/class-charitable-donation-form.php:1229
 msgid "Disable Test Mode"
 msgstr ""
 
-#: includes/forms/class-charitable-donation-form.php:1295
+#: includes/forms/class-charitable-donation-form.php:1297
 msgid "Your donation could not be processed. No payment gateway was selected."
 msgstr ""
 
@@ -8034,7 +8040,7 @@ msgstr ""
 msgid "This email address is already in use."
 msgstr ""
 
-#: includes/forms/class-charitable-registration-form.php:262
+#: includes/forms/class-charitable-registration-form.php:263
 #: includes/shortcodes/class-charitable-my-donations-shortcode.php:81
 #. translators: %s: email verification link
 msgid ""
@@ -8555,12 +8561,12 @@ msgstr ""
 msgid "Personal data erased."
 msgstr ""
 
-#: includes/public/charitable-template-functions.php:831
+#: includes/public/charitable-template-functions.php:835
 #. translators: %s: donation amount
 msgid "Your Donation Amount: %s."
 msgstr ""
 
-#: includes/public/charitable-template-functions.php:832
+#: includes/public/charitable-template-functions.php:836
 msgid "Change"
 msgstr ""
 
@@ -8659,7 +8665,7 @@ msgstr ""
 msgid "Campaign Manager"
 msgstr ""
 
-#: includes/users/class-charitable-user.php:702
+#: includes/users/class-charitable-user.php:707
 msgid "Unable to add donor. Email not set for logged out user."
 msgstr ""
 
@@ -9236,7 +9242,7 @@ msgctxt "customizer menu type label"
 msgid "Custom Link"
 msgstr ""
 
-#: includes/forms/class-charitable-donation-form.php:1192
+#: includes/forms/class-charitable-donation-form.php:1194
 msgctxt "enable payment gateway"
 msgid "Enable one now"
 msgstr ""
