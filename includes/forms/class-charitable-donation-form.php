@@ -406,7 +406,7 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 			$has_gateway_fields = false;
 
 			foreach ( $gateways_helper->get_active_gateways() as $gateway_id => $gateway_class ) {
-				$gateway        = new $gateway_class;
+				$gateway        = new $gateway_class();
 				$gateway_fields = $this->add_credit_card_fields( array(), $gateway );
 
 				/**
@@ -420,8 +420,9 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 				$gateway_fields          = apply_filters( 'charitable_donation_form_gateway_fields', $gateway_fields, $gateway );
 				$has_gateway_fields      = $has_gateway_fields || ! empty( $gateway_fields );
 				$gateways[ $gateway_id ] = array(
-					'label'  => $gateway->get_label(),
-					'fields' => $gateway_fields,
+					'label'           => $gateway->get_label(),
+					'payment_methods' => $gateway->get_payment_methods(),
+					'fields'          => $gateway_fields,
 				);
 			}
 
@@ -1281,7 +1282,7 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 		 *
 		 * @since  1.0.0
 		 *
-		 * @param  array   $required_fields
+		 * @param  array $required_fields
 		 * @return boolean
 		 */
 		protected function is_missing_required_fields( $required_fields ) {

@@ -50,6 +50,14 @@ if ( ! class_exists( 'Charitable_Gateway' ) ) :
 		protected $supports = array();
 
 		/**
+		 * Payment methods that will be enabled by this gateway.
+		 *
+		 * @var     Payment_Method[]
+		 * @since   x.x.x
+		 */
+		protected $payment_methods = array();
+
+		/**
 		 * Return the gateway name.
 		 *
 		 * @since   1.0.0
@@ -59,6 +67,19 @@ if ( ! class_exists( 'Charitable_Gateway' ) ) :
 		public function get_name() {
 			return $this->name;
 		}
+
+
+		/**
+		 * Retrieve the gateway payment methods.
+		 *
+		 * @since   x.x.x
+		 *
+		 * @return  string
+		 */
+		public function get_payment_methods() {
+			return $this->payment_methods;
+		}
+
 
 		/**
 		 * Returns the default gateway label to be displayed to donors.
@@ -257,7 +278,7 @@ if ( ! class_exists( 'Charitable_Gateway' ) ) :
 		 *
 		 * @since   1.0.0
 		 *
-		 * @param   array   $settings
+		 * @param   array $settings
 		 * @return  array
 		 */
 		abstract public function gateway_settings( $settings );

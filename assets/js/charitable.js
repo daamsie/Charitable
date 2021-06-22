@@ -918,7 +918,8 @@ CHARITABLE = window.CHARITABLE || {};
          *
          * @access private
          */
-        var on_toggle = function() {
+        var on_toggle = function(e) {
+            e.preventDefault;
             var $this   = $( this ),
                 $target = get_target( $this );
 

@@ -33,6 +33,16 @@ if ( ! interface_exists( 'Charitable_Gateway_Interface' ) ) :
 		 * @return string
 		 */
 		public static function get_gateway_id();
+
+		/**
+		 * Return the gateway payment methods.
+		 *
+		 * @since  x.x.x
+		 *
+		 * @return string
+		 */
+		public function get_payment_methods();
+
 	}
 
 endif;
