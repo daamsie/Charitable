@@ -36,19 +36,23 @@ if ( ! class_exists( 'Charitable_Payment_Method' ) ) :
 		protected $label;
 
 		/**
-		 * @var     array An icon for this payment method
+		 * @var     bool Is this payment method enabled?
+		 */
+		protected $enabled = true;
+
+		/**
+		 * @var     string An SVG icon for this payment method
 		 * @since   x.x.x
 		 */
 		protected $icon;
 
 		/**
-		 * An array of supported currencies. Leave blank to support all currencies
+		 * An array of supported currencies. An empty array will support all currencies
 		 *
 		 * @var     string[]
 		 * @since   x.x.x
 		 */
-		protected $currencies = array();
-
+		public $currencies = array();
 
 		/**
 		 * Initialize the object
@@ -56,10 +60,43 @@ if ( ! class_exists( 'Charitable_Payment_Method' ) ) :
 		 * @since x.x.x
 		 */
 		public function __construct( $key, $label, $icon, array $currencies = array() ) {
-			$this->key         = $key;
-			$this->label       = $label;
-			$this->icon        = $icon;
-			$this->$currencies = $currencies;
+			$this->key        = $key;
+			$this->label      = $label;
+			$this->icon       = $icon;
+			$this->currencies = $currencies;
+		}
+
+		/**
+		 * Enable the payment method.
+		 *
+		 * @since   x.x.x
+		 *
+		 * @return  void
+		 */
+		public function enable() {
+			$this->enabled = true;
+		}
+
+		/**
+		 * Disable the payment method.
+		 *
+		 * @since   x.x.x
+		 *
+		 * @return  void
+		 */
+		public function disable() {
+			$this->enabled = false;
+		}
+
+		/**
+		 * Is the payment method enabled?
+		 *
+		 * @since   x.x.x
+		 *
+		 * @return  bool
+		 */
+		public function is_enabled() {
+			return $this->enabled;
 		}
 
 		/**

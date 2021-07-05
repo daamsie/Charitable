@@ -424,6 +424,14 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 					'payment_methods' => $gateway->get_payment_methods(),
 					'fields'          => $gateway_fields,
 				);
+
+				// Filter out any payment methods that are not enabled.
+				$gateways[ $gateway_id ]['payment_methods'] = array_filter(
+					$gateways[ $gateway_id ]['payment_methods'],
+					function( $method ) {
+						return $method->is_enabled();
+					}
+				);
 			}
 
 			/* Add the payment section if there are gateway fields to be filled out. */

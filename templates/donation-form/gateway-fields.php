@@ -42,12 +42,13 @@ $default  = isset( $field['default'] ) && isset( $gateways[ $field['default'] ] 
 				<?php foreach ( $gateways as $gateway_id => $gateway ) : ?>
 					<?php foreach ( $gateway['payment_methods'] as $payment_method ) : ?>
 						<li class="charitable-gateway-tab"><input type="radio"
-								id="gateway-<?php echo esc_attr( $payment_method->get_key() ); ?>"
-								name="gateway"
-								value="<?php echo esc_attr( $payment_method->get_key() ); ?>"
+								id="gateway-<?php echo esc_attr( $gateway_id ); ?>-<?php echo esc_attr( $payment_method->get_key() ); ?>"
+								name="gateway-payment-method"
+								class="charitable-<?php echo esc_attr( $gateway_id ); ?>-payment-method"
+								value="<?php echo esc_attr( $gateway_id ); ?>-<?php echo esc_attr( $payment_method->get_key() ); ?>"
 								aria-describedby="charitable-gateway-selector-header"
 								<?php checked( $default, $payment_method->get_key() ); ?> />
-							<label for="gateway-<?php echo esc_attr( $payment_method->get_key() ); ?>">
+							<label for="gateway-<?php echo esc_attr( $gateway_id ); ?>-<?php echo esc_attr( $payment_method->get_key() ); ?>">
 								<?php echo $payment_method->get_icon(); ?>
 								<?php echo $payment_method->get_label(); ?>
 							</label>
@@ -55,6 +56,7 @@ $default  = isset( $field['default'] ) && isset( $gateways[ $field['default'] ] 
 					<?php endforeach ?>
 				<?php endforeach ?>
 			</ul>
+			<input type="hidden" name="gateway" value="" />
 		</fieldset>
 		<?php
 	endif;
