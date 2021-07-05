@@ -794,10 +794,11 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 		public function get_donation_values() {
 			$submitted = $this->get_submitted_values();
 			$values    = array(
-				'ID'        => $this->get_validated_donation_id(),
-				'user_id'   => get_current_user_id(),
-				'gateway'   => $submitted['gateway'],
-				'campaigns' => array(
+				'ID'             => $this->get_validated_donation_id(),
+				'user_id'        => get_current_user_id(),
+				'gateway'        => $submitted['gateway'],
+				'payment_method' => $submitted['gateway-payment-method'],
+				'campaigns'      => array(
 					array(
 						'campaign_id' => $submitted['campaign_id'],
 						'amount'      => self::get_donation_amount(),

@@ -409,7 +409,8 @@ if ( ! class_exists( 'Charitable_Donation_Processor' ) ) :
 			 *
 			 * @param array $values The donation values to be saved.
 			 */
-			$this->donation_data = apply_filters( 'charitable_donation_values', $values );
+			$this->donation_data                   = apply_filters( 'charitable_donation_values', $values );
+			$this->donation_data['payment_method'] = explode( '-', $values['payment_method'] )[1];
 
 			if ( ! $this->get_campaign_donations_data() ) {
 				charitable_get_deprecated()->doing_it_wrong(
