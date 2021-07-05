@@ -167,8 +167,10 @@ CHARITABLE = window.CHARITABLE || {};
          * @access private
          */
         var on_change_payment_gateway = function() {
+            var gateway = $(this).val().split('-')[0];
+            $('input[name=gateway]').val( gateway );
             self.hide_inactive_payment_methods();
-            self.show_active_payment_methods( $(this).val() );
+            self.show_active_payment_methods( gateway );
         };
 
         /**
@@ -313,7 +315,7 @@ CHARITABLE = window.CHARITABLE || {};
 
             if ( self.get_all_payment_methods().length ) {
                 self.hide_inactive_payment_methods();
-                self.form.on( 'change', '#charitable-gateway-selector input[name=gateway]', on_change_payment_gateway );
+                self.form.on( 'change', '#charitable-gateway-selector input[name=gateway-payment-method]', on_change_payment_gateway );
             }
 
             self.form.on( 'click', '.change-donation', on_click_change_amount_link );
@@ -525,7 +527,7 @@ CHARITABLE = window.CHARITABLE || {};
      * @return  string
      */
     Donation_Form.prototype.get_payment_method = function() {
-        return this.form.find( '[type=hidden][name=gateway], [name=gateway]:checked' ).val() || '';
+        return this.form.find( '[type=hidden][name=gateway]').val() || '';
     };
 
     /**
@@ -534,7 +536,7 @@ CHARITABLE = window.CHARITABLE || {};
      * @return  object
      */
     Donation_Form.prototype.get_all_payment_methods = function() {
-        return this.form.find( '#charitable-gateway-selector input[name=gateway]' );
+        return this.form.find( '#charitable-gateway-selector input[name=gateway-payment-method]' );
     };
 
     /**
@@ -544,7 +546,13 @@ CHARITABLE = window.CHARITABLE || {};
      */
     Donation_Form.prototype.hide_inactive_payment_methods = function() {
         var active = this.get_payment_method();
-        var fields = this.form.find( '.charitable-gateway-fields[data-gateway!=' + active + ']' );
+        var fields;
+        if (active === '') {
+            fields = this.form.find('.charitable-gateway-fields');
+        }
+        else { 
+            fields = this.form.find('.charitable-gateway-fields[data-gateway!=' + active + ']');
+        }
 
         fields.hide();
         fields.find( 'input[required],select[required],textarea[required]' ).attr( 'data-required', 1 ).attr( 'required', false );
