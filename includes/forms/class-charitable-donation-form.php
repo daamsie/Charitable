@@ -434,16 +434,13 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 				);
 			}
 
-			/* Add the payment section if there are gateway fields to be filled out. */
-			if ( $has_gateway_fields || count( $gateways ) > 1 ) {
-				$fields['payment_fields'] = array(
-					'type'     => 'gateway-fields',
-					'legend'   => __( 'Payment', 'charitable' ),
-					'default'  => $default_gateway,
-					'gateways' => $gateways,
-					'priority' => 60,
-				);
-			}
+			$fields['payment_fields'] = array(
+				'type'     => 'gateway-fields',
+				'legend'   => __( 'Payment', 'charitable' ),
+				'default'  => $default_gateway,
+				'gateways' => $gateways,
+				'priority' => 60,
+			);
 
 			return $fields;
 		}

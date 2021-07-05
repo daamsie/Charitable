@@ -25,6 +25,11 @@ if ( ! class_exists( 'Charitable_Payment_Method' ) ) :
 	class Charitable_Payment_Method {
 
 		/**
+		 * @var     string The payment method's gateway
+		 */
+		protected $gateway = '';
+
+		/**
 		 * @var     string The payment method's key
 		 */
 		protected $key = '';
@@ -47,6 +52,11 @@ if ( ! class_exists( 'Charitable_Payment_Method' ) ) :
 		protected $icon;
 
 		/**
+		 * @var     boolean Does this payment method require fields to be rendered
+		 * @since   x.x.x
+		 */
+		protected $fields_required = false;
+		/**
 		 * An array of supported currencies. An empty array will support all currencies
 		 *
 		 * @var     string[]
@@ -59,11 +69,13 @@ if ( ! class_exists( 'Charitable_Payment_Method' ) ) :
 		 *
 		 * @since x.x.x
 		 */
-		public function __construct( $key, $label, $icon, array $currencies = array() ) {
-			$this->key        = $key;
-			$this->label      = $label;
-			$this->icon       = $icon;
-			$this->currencies = $currencies;
+		public function __construct( $gateway, $key, $label, $icon, $fields_required = false, array $currencies = array() ) {
+			$this->gateway          = $gateway;
+			$this->key              = $key;
+			$this->label            = $label;
+			$this->icon             = $icon;
+			$this->currencies       = $currencies;
+			$this->$fields_required = $fields_required;
 		}
 
 		/**
@@ -98,6 +110,18 @@ if ( ! class_exists( 'Charitable_Payment_Method' ) ) :
 		public function is_enabled() {
 			return $this->enabled;
 		}
+
+		/**
+		 * Return the gateway this belongs to.
+		 *
+		 * @since   x.x.x
+		 *
+		 * @return  string
+		 */
+		public function get_gateway() {
+			return $this->gateway;
+		}
+
 
 		/**
 		 * Return the payment method key.
@@ -141,6 +165,17 @@ if ( ! class_exists( 'Charitable_Payment_Method' ) ) :
 		 */
 		public function get_currencies() {
 			return $this->currencies;
+		}
+
+		/**
+		 * Are fields required?
+		 *
+		 * @since   x.x.x
+		 *
+		 * @return  boolean
+		 */
+		public function are_fields_required() {
+			return $this->fields_required;
 		}
 
 

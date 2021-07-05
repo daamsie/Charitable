@@ -315,7 +315,12 @@ CHARITABLE = window.CHARITABLE || {};
 
             if ( self.get_all_payment_methods().length ) {
                 self.hide_inactive_payment_methods();
-                self.form.on( 'change', '#charitable-gateway-selector input[name=gateway-payment-method]', on_change_payment_gateway );
+                self.form.on('change', '#charitable-gateway-selector input[name=gateway-payment-method]', on_change_payment_gateway);
+                // When the gateway specific js is loaded, we can trigger a click. But not before. 
+                var gateway = $("input[name=gateway]").val();
+                $body.on(`charitable-${gateway}:ready`, function () {
+                    $("#charitable-gateway-selector input[name=gateway-payment-method]").first().trigger("click");    
+                })
             }
 
             self.form.on( 'click', '.change-donation', on_click_change_amount_link );
@@ -337,6 +342,8 @@ CHARITABLE = window.CHARITABLE || {};
             }
 
             $body.trigger( 'charitable:form:loaded', self );
+            $body.trigger( 'charitable-paypal:ready' );
+            $body.trigger( 'charitable-offline:ready' );
         };
 
         init();
