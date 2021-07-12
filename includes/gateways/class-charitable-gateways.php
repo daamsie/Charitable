@@ -202,7 +202,7 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 			$gateways = array();
 
 			foreach ( $this->get_active_gateways() as $id => $class ) {
-				$gateway         = new $class;
+				$gateway         = new $class();
 				$gateways[ $id ] = $gateway->get_label();
 			}
 
@@ -220,7 +220,7 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 			$gateways = array();
 
 			foreach ( $this->get_active_gateways() as $id => $class ) {
-				$gateway    = new $class;
+				$gateway    = new $class();
 				$gateways[] = $gateway->get_name();
 			}
 
@@ -249,7 +249,7 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 		 */
 		public function get_gateway_object( $gateway ) {
 			$class  = $this->get_gateway( $gateway );
-			$object = $class ? new $class : null;
+			$object = $class ? new $class() : null;
 
 			/**
 			 * Filter the gateway object.
@@ -360,7 +360,7 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 		public function all_gateways_support( $feature ) {
 			foreach ( $this->get_active_gateways() as $gateway_id => $gateway_class ) {
 
-				$gateway_object = new $gateway_class;
+				$gateway_object = new $gateway_class();
 
 				if ( false === $gateway_object->supports( $feature ) ) {
 					return false;
@@ -383,7 +383,7 @@ if ( ! class_exists( 'Charitable_Gateways' ) ) :
 		public function any_gateway_supports( $feature ) {
 			foreach ( $this->get_active_gateways() as $gateway_id => $gateway_class ) {
 
-				$gateway_object = new $gateway_class;
+				$gateway_object = new $gateway_class();
 
 				if ( true === $gateway_object->supports( $feature ) ) {
 					return true;

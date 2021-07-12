@@ -1,0 +1,3 @@
+[submodule "packages/charitable-gateways"]
+	path = packages/charitable-gateways
+	url = git@github.com:daamsie/Charitable-Gateways.git

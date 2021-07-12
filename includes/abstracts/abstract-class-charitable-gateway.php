@@ -14,6 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use Charitable\Gateways\PaymentMethods\PaymentMethod;
+
 if ( ! class_exists( 'Charitable_Gateway' ) ) :
 
 	/**
@@ -72,7 +74,7 @@ if ( ! class_exists( 'Charitable_Gateway' ) ) :
 		/**
 		 * Retrieve the gateway payment methods.
 		 *
-		 * @since   x.x.x
+		 * @since   1.7.0
 		 *
 		 * @return  string
 		 */
@@ -80,6 +82,29 @@ if ( ! class_exists( 'Charitable_Gateway' ) ) :
 			return $this->payment_methods;
 		}
 
+		/**
+		 * Register a payment method
+		 *
+		 * @since   1.7.0
+		 *
+		 * @return void
+		 */
+		public function register_payment_methods() {
+			// Register payment methods through here.
+			// Setup a default payment method style for older gateway implementations to fall back to.
+			$key   = $this::ID;
+			$label = $this->defaults['label'];
+			$icon  = '';
+
+			$opts = array(
+				'fields_required' => false, // TODO: We need to detect if this gateway needs to show CC fields or anything similar?
+				'supports'        => $this->supports,
+			);
+
+			// For fallback, we expect the gateway and the payment method key to be the same,
+			// hence the duplication of $key when setting up the PaymentMethod.
+			$this->payment_methods[] = new PaymentMethod( $key, $key, $label, $icon, $opts );
+		}
 
 		/**
 		 * Returns the default gateway label to be displayed to donors.

@@ -406,7 +406,8 @@ if ( ! class_exists( 'Charitable_Donation_Form' ) ) :
 			$has_gateway_fields = false;
 
 			foreach ( $gateways_helper->get_active_gateways() as $gateway_id => $gateway_class ) {
-				$gateway        = new $gateway_class();
+				$gateway = new $gateway_class();
+				$gateway->register_payment_methods();
 				$gateway_fields = $this->add_credit_card_fields( array(), $gateway );
 
 				/**

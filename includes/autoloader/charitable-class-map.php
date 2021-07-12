@@ -149,7 +149,6 @@ return array(
 	'Charitable_Donations_Query'                     => 'queries/class-charitable-donations-query.php',
 	'Charitable_Donor_Query'                         => 'queries/class-charitable-donor-query.php',
 	'Charitable_Request'                             => 'request/class-charitable-request.php',
-	'Charitable_Payment_Method'                      => 'public/class-charitable-payment-method.php',
 	'Charitable_Campaigns_Shortcode'                 => 'shortcodes/class-charitable-campaigns-shortcode.php',
 	'Charitable_Donation_Form_Shortcode'             => 'shortcodes/class-charitable-donation-form-shortcode.php',
 	'Charitable_Donation_Receipt_Shortcode'          => 'shortcodes/class-charitable-donation-receipt-shortcode.php',
