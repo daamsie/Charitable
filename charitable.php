@@ -31,7 +31,7 @@ if ( ! class_exists( 'Charitable' ) ) :
 	class Charitable {
 
 		/* Plugin version. */
-		const VERSION = '1.6.47';
+		const VERSION = '1.7.0-alpha';
 
 		/* Version of database schema. */
 		const DB_VERSION = '20180522';
